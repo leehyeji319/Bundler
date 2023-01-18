@@ -31,6 +31,11 @@ function Home() {
   // const { columns, rows } = authorsTableData();
   // const { columns: pColumns, rows: pRows } = projectsTableData();
 
+  const commentList = [
+    { name: "정세권", reply: "댓글 1" },
+    { name: "정둘권", reply: "댓글 2" },
+  ];
+
   return (
     <HomeLayout>
       <HomeNavbar />
@@ -40,6 +45,9 @@ function Home() {
         id="jsk33a@naver.com"
         title="이 문제의 제목입니다."
         description="이 문제에 대해 설명 하시오"
+        solution="정답~~"
+        answer="내가 쓴 답~~"
+        commentList={commentList}
         action={{
           type: "internal",
           route: "/home",
