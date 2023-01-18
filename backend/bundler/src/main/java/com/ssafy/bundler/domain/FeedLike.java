@@ -1,13 +1,18 @@
 package com.ssafy.bundler.domain;
 
-import com.ssafy.bundler.domain.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static jakarta.persistence.FetchType.LAZY;
-@Getter @Setter
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
 public class FeedLike {
 
 	@Id
@@ -21,4 +26,9 @@ public class FeedLike {
 	@Column(name = "user_id")
 	private Long userId;
 
+	@Builder
+	public FeedLike(Long feedId, Long userId) {
+		this.feedId = feedId;
+		this.userId = userId;
+	}
 }

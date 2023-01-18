@@ -12,12 +12,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class User extends BaseEntity {
 
 	@Id
@@ -46,10 +49,6 @@ public class User extends BaseEntity {
 	@JoinColumn(name = "feed_like_id")
 	private List<FeedLike> feedUserLikeList = new ArrayList<>();
 
-	// @OneToMany(cascade = ALL)
-	// @JoinColumn(name = "user_card_id")
-	// private List<UserCardHit> userCardHitList = new ArrayList<>();
-
 	@OneToMany(mappedBy = "writer", cascade = ALL)
 	private List<Feed> feedList = new ArrayList<>();
 
@@ -59,4 +58,19 @@ public class User extends BaseEntity {
 	@OneToMany(mappedBy = "followFrom", cascade = ALL)
 	private List<Follow> followFromList = new ArrayList<>();
 
+	@Builder
+	public User(String userEmail, String userPassword, String userNickname, String userProfileImage,
+		String userIntroduction, boolean isDeleted, List<FeedLike> feedUserLikeList, List<Feed> feedList,
+		List<Follow> followToList, List<Follow> followFromList) {
+		this.userEmail = userEmail;
+		this.userPassword = userPassword;
+		this.userNickname = userNickname;
+		this.userProfileImage = userProfileImage;
+		this.userIntroduction = userIntroduction;
+		this.isDeleted = isDeleted;
+		this.feedUserLikeList = feedUserLikeList;
+		this.feedList = feedList;
+		this.followToList = followToList;
+		this.followFromList = followFromList;
+	}
 }

@@ -18,12 +18,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
 @Entity
+@NoArgsConstructor
 public class Feed extends BaseEntity {
 
 	@Id
@@ -66,9 +67,25 @@ public class Feed extends BaseEntity {
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Category> categoryList = new ArrayList<>();
 
-	//===== 로그인 사용자 =====//
-
 	//사용자가 좋아요한 피드
 	private boolean isFeedLiked;
+
+	@Builder
+	public Feed(String feedTitle, String feedContent, int feedLikeCnt, int feedCommentCnt,
+		boolean isDeleted, User writer, Card card, Bundle bundle, FeedType feedType,
+		List<Comment> commentList, List<Category> categoryList, boolean isFeedLiked) {
+		this.feedTitle = feedTitle;
+		this.feedContent = feedContent;
+		this.feedLikeCnt = feedLikeCnt;
+		this.feedCommentCnt = feedCommentCnt;
+		this.isDeleted = isDeleted;
+		this.writer = writer;
+		this.card = card;
+		this.bundle = bundle;
+		this.feedType = feedType;
+		this.commentList = commentList;
+		this.categoryList = categoryList;
+		this.isFeedLiked = isFeedLiked;
+	}
 
 }

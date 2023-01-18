@@ -5,12 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
 @Entity
+@NoArgsConstructor
 public class UserCardHit {
 
 	@Id
@@ -27,4 +28,10 @@ public class UserCardHit {
 	@Column(name = "user_submit")
 	private String userSubmit;
 
+	@Builder
+	public UserCardHit(Long cardId, Long userId, String userSubmit) {
+		this.cardId = cardId;
+		this.userId = userId;
+		this.userSubmit = userSubmit;
+	}
 }

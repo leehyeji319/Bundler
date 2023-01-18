@@ -1,11 +1,16 @@
 package com.ssafy.bundler.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Getter @Setter
+@Getter
 @Entity
+@NoArgsConstructor
 public class Link {
 
 	@Id
@@ -24,4 +29,11 @@ public class Link {
 	@Column(name = "link_description")
 	private String linkDescription;
 
+	@Builder
+	public Link(String linkUrl, String linkImage, String linkTitle, String linkDescription) {
+		this.linkUrl = linkUrl;
+		this.linkImage = linkImage;
+		this.linkTitle = linkTitle;
+		this.linkDescription = linkDescription;
+	}
 }
