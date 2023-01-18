@@ -19,18 +19,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
 @Entity
+@NoArgsConstructor
 public class Card {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	private Long id;
+	@Column(name = "card_id")
+	private Long cardId;
 
 	private int scrapCnt;
 
@@ -50,7 +51,14 @@ public class Card {
 	@JoinColumn(name = "user_card_id")
 	private List<UserCardHit> userCardHitList = new ArrayList<>();
 
-	//
-	// private UserCardHit userCardHit;
-
+	@Builder
+	public Card(int scrapCnt, String description, String commentary,
+		CardType cardType, Link link, List<UserCardHit> userCardHitList) {
+		this.scrapCnt = scrapCnt;
+		this.description = description;
+		this.commentary = commentary;
+		this.cardType = cardType;
+		this.link = link;
+		this.userCardHitList = userCardHitList;
+	}
 }

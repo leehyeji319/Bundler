@@ -24,10 +24,6 @@ import lombok.Getter;
 )
 public abstract class BaseEntity {
 
-	// @Id
-	// @GeneratedValue(strategy = GenerationType.IDENTITY)
-	// protected Long id;
-
 	@CreatedDate
 	@Column(nullable = false)
 	private LocalDateTime createdAt;

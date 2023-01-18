@@ -7,12 +7,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class Follow extends BaseEntity {
 
 	@Id
@@ -30,4 +33,9 @@ public class Follow extends BaseEntity {
 	@JoinColumn(name = "follow_from_id")
 	private User followFrom;
 
+	@Builder
+	public Follow(User followTo, User followFrom) {
+		this.followTo = followTo;
+		this.followFrom = followFrom;
+	}
 }
