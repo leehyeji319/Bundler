@@ -27,7 +27,7 @@ import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
-import SignIn from "layouts/authentication/sign-in";
+// import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
 // Bundler Project Pages import
@@ -35,6 +35,7 @@ import Home from "pages/home";
 import Search from "pages/searchall";
 import SearchId from "pages/searchid";
 import Make from "pages/make";
+import AuthLogin from "pages/auth/login";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -79,6 +80,14 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
+  },
+  {
+    type: "collapse",
+    name: "로그인",
+    key: "sign-in",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/auth/login",
+    component: <AuthLogin />,
   },
   {
     type: "divider",
@@ -126,14 +135,6 @@ const routes = [
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,
-  },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignIn />,
   },
   {
     type: "collapse",
