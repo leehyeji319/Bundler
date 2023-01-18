@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,8 +29,10 @@ public class Comment extends BaseEntity {
 
 	private String content; // 댓글 내용
 
+	@Builder
 	public Comment(User writer, String content) {
 		this.writer = writer;
 		this.content = content;
 	}
+
 }

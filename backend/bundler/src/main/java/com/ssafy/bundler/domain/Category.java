@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,5 +44,10 @@ public class Category {
 		child.setParent(this);
 	}
 
-	// public Categ
+	@Builder
+	public Category(String name, Category parent, List<Category> child) {
+		this.name = name;
+		this.parent = parent;
+		this.child = child;
+	}
 }
