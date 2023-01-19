@@ -13,6 +13,7 @@ import Footer from "examples/Footer";
 
 // Card Image
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
+import HomeInput from "pages/home/components/homeInput";
 
 function Home() {
   const bundle = {
@@ -53,6 +54,7 @@ function Home() {
   return (
     <HomeLayout>
       <HomeNavbar />
+      <HomeInput />
       {bundle.cardList.map((card) => (
         <HomeCard
           key={card.cardId}

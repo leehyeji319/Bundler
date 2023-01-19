@@ -11,19 +11,14 @@
 import PropTypes from "prop-types";
 
 // @mui material components
-import Card from "@mui/material/Card";
-// import MuiLink from "@mui/material/Link";
-// import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
+import { Card, Modal, Button, Box, Input } from "@mui/material";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-// import MDButton from "components/MDButton";
 
-// Modal
+// React
 import { useState } from "react";
-import { Button, Box } from "@mui/material";
 
 function HomeCard({ image, category, id, title, description, solution, answer, commentList }) {
   const [open, setOpen] = useState(false);
@@ -105,6 +100,17 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
               <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
                 댓글란
               </MDTypography>
+              <Input
+                placeholder="Type in here…"
+                type="text"
+                color="primary"
+                sx={{
+                  color: "primary",
+                  display: "inline",
+                  fontWeight: "bold",
+                  fontSize: 20,
+                }}
+              />
               <ul>
                 {commentList.map((comment) => (
                   <li>
