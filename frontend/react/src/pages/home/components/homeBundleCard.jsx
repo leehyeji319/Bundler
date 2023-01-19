@@ -16,29 +16,50 @@ import CardImg from "assets/images/bundler/bundlerRabbit.png";
 // Hooks
 import { useState } from "react";
 
-function HomeBundle({ bundleTitle, bundleAuthor, cardList }) {
+function HomeBundleCard({ bundleTitle, bundleAuthor, cardList }) {
   const [cardOpen, setCardOpen] = useState(false);
   const handleCardOpen = () => setCardOpen(true);
   const handleCardClose = () => setCardOpen(false);
+  // const [open, setOpen] = useState(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
 
-  function Cards() {
-    return cardList.map((card) => (
-      <HomeCard
-        key={card.cardId}
-        image={card.cardImage}
-        category={card.category}
-        id={card.id}
-        title={card.title}
-        description={card.description}
-        solution={card.solution}
-        answer={card.answer}
-        commentList={card.commentList}
-      />
-    ));
-  }
+  // const style = {
+  //   position: "absolute",
+  //   top: "30%",
+  //   left: "50%",
+  //   transform: "translate(-50%, -50%)",
+  //   width: 800,
+  //   bgcolor: "background.paper",
+  //   border: "none",
+  //   boxShadow: 24,
+  //   outline: 0,
+  //   borderRadius: 5,
+  // };
 
   return (
     <Card sx={{ ml: 10, mb: 3, maxWidth: 800 }}>
+      {/* <Modal open={open} onClose={handleClose}> */}
+      {cardList.map((card) => (
+        <HomeCard
+          key={card.cardId}
+          image={card.cardImage}
+          category={card.category}
+          id={card.id}
+          title={card.title}
+          description={card.description}
+          solution={card.solution}
+          answer={card.answer}
+          commentList={card.commentList}
+          action={{
+            type: "internal",
+            route: "/home",
+            color: "info",
+            label: "상세 보기",
+          }}
+        />
+      ))}
+      {/* </Modal> */}
       <MDBox p={3} mx={3}>
         <MDBox>
           <MDBox
@@ -62,13 +83,31 @@ function HomeBundle({ bundleTitle, bundleAuthor, cardList }) {
             </MDTypography>
           </MDBox>
         </MDBox>
+        {/* <MDBox mt={2} mb={3}>
+          <MDTypography display="inline" variant="h6" textTransform="capitalize" fontWeight="bold">
+            {title}
+          </MDTypography>
+        </MDBox>
+        <MDBox mt={2} mb={3}>
+          <MDTypography variant="body2" component="p" color="text">
+            {description}
+          </MDTypography>
+        </MDBox> */}
         <Button onClick={handleCardOpen}>카드 슬래쉬~~</Button>
-        {cardOpen === true && (
-          <div>
-            <Cards />
-            <Button onClick={handleCardClose}>카드 Close</Button>
-          </div>
-        )}
+        {cardOpen === true &&
+          cardList.map((card) => (
+            <HomeCard
+              key={card.cardId}
+              image={card.cardImage}
+              category={card.category}
+              id={card.id}
+              title={card.title}
+              description={card.description}
+              solution={card.solution}
+              answer={card.answer}
+              commentList={card.commentList}
+            />
+          ))(<Button onClick={handleCardClose}>카드 닫기</Button>)}
       </MDBox>
     </Card>
   );
@@ -80,7 +119,7 @@ HomeCard.defaultProps = {
 };
 
 // Typechecking props for the SimpleBlogCard
-HomeBundle.propTypes = {
+HomeBundleCard.propTypes = {
   bundleTitle: PropTypes.string.isRequired,
   bundleAuthor: PropTypes.string.isRequired,
   cardList: PropTypes.arrayOf(
@@ -104,4 +143,4 @@ HomeBundle.propTypes = {
   ).isRequired,
 };
 
-export default HomeBundle;
+export default HomeBundleCard;
