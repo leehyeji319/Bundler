@@ -3,13 +3,13 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // import template
-import SignTemplate from "pages/auth/login/template/signTemplate";
+import App from "pages/auth/login/template/App";
 
 function AuthLogin() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <SignTemplate />
+      <App />
     </DashboardLayout>
   );
 }

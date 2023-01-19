@@ -5,34 +5,21 @@ import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
-// import Switch from "@mui/material/Switch";
-// import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material/";
+
 // @mui icons
-// import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
-// import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-// import MDTypography from "components/MDTypography";
-// import MDInput from "components/MDInput";
-// import MDButton from "components/MDButton";
 import "./signTemplate.css";
-// import Home from "pages/home";
-// Authentication layout components
-// import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 
 // Images
-// import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-// import CardImg from "assets/images/bundler/bundlerRabbit.png";
 import Logo from "assets/images/bundler/loginlogo.png";
 
 function SignTemplate() {
-  // const [rememberMe, setRememberMe] = useState(false);
-  // const handleSetRememberMe = () => setRememberMe(!rememberMe);
   return (
     <div className="container">
       <Card sx={{ minWidth: 500, maxWidth: 600 }}>
