@@ -28,7 +28,7 @@ import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 // import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
+// import SignUp from "layouts/authentication/sign-up";
 
 // Bundler Project Pages import
 import Home from "pages/home";
@@ -36,6 +36,7 @@ import Search from "pages/searchall";
 import SearchId from "pages/searchid";
 import Make from "pages/make";
 import AuthLogin from "pages/auth/login";
+import SignUp from "pages/signup";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -84,10 +85,18 @@ const routes = [
   {
     type: "collapse",
     name: "로그인",
-    key: "sign-in",
+    key: "login",
     icon: <Icon fontSize="small">login</Icon>,
     route: "/auth/login/",
     component: <AuthLogin />,
+  },
+  {
+    type: "collapse",
+    name: "회원가입",
+    key: "signup",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/signup/",
+    component: <SignUp />,
   },
   {
     type: "divider",
@@ -133,14 +142,14 @@ const routes = [
     route: "/notifications",
     component: <Notifications />,
   },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
+  //   {
+  //     type: "collapse",
+  //     name: "Sign Up",
+  //     key: "sign-up",
+  //     icon: <Icon fontSize="small">assignment</Icon>,
+  //     route: "/authentication/sign-up",
+  //     component: <SignUp />,
+  //   },
 ];
 
 export default routes;
