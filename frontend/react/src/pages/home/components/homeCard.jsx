@@ -44,7 +44,7 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
   };
 
   return (
-    <Card sx={{ mx: 18, mb: 3, maxWidth: 800 }}>
+    <Card sx={{ ml: 10, mb: 3, maxWidth: 800 }}>
       <Modal open={open} onClose={handleClose}>
         <Card sx={style}>
           <MDBox p={3} bgColor="#152744">
@@ -52,7 +52,7 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
               <MDBox
                 component="img"
                 src={image}
-                alt={title}
+                alt={image}
                 borderRadius="lg"
                 shadow="md"
                 width="10%"
@@ -101,18 +101,20 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
                 {answer}
               </MDTypography>
             </MDBox>
-            <Box sx={{ borderTop: "solid 1px white" }}>
+            <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
               <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
                 댓글란
               </MDTypography>
-              <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-                {commentList[0].name}
-              </MDTypography>
-              <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-                {commentList[0].reply}
-              </MDTypography>
+              <ul>
+                {commentList.map((comment) => (
+                  <li>
+                    <MDTypography variant="body2" textTransform="capitalize">
+                      {comment.name} : {comment.reply}
+                    </MDTypography>
+                  </li>
+                ))}
+              </ul>
             </Box>
-            {/* <Button onClick={handleClose}>닫기</Button> */}
           </MDBox>
         </Card>
       </Modal>
@@ -155,6 +157,11 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
   );
 }
 
+// Default Vlaue
+// HomeCard.defaultProps = {
+//   commentList: null,
+// };
+
 // Typechecking props for the SimpleBlogCard
 HomeCard.propTypes = {
   image: PropTypes.string.isRequired,
@@ -164,26 +171,13 @@ HomeCard.propTypes = {
   description: PropTypes.string.isRequired,
   solution: PropTypes.string.isRequired,
   answer: PropTypes.string.isRequired,
-  action: PropTypes.shape({
-    type: PropTypes.oneOf(["external", "internal"]).isRequired,
-    route: PropTypes.string.isRequired,
-    color: PropTypes.oneOf([
-      "primary",
-      "secondary",
-      "info",
-      "success",
-      "warning",
-      "error",
-      "dark",
-      "light",
-      "default",
-    ]),
-    label: PropTypes.string.isRequired,
-  }).isRequired,
-  commentList: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    reply: PropTypes.string.isRequired,
-  }).isRequired,
+  commentList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      reply: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
 };
 
 export default HomeCard;
