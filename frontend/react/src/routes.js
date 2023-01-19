@@ -21,7 +21,7 @@
 */
 
 // Material Dashboard 2 React layouts
-import Dashboard from "layouts/dashboard";
+// import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
@@ -92,17 +92,14 @@ const routes = [
   {
     type: "divider",
   },
+
   {
     type: "collapse",
-    name: "dashboard",
-    key: "dashboard",
-    icon: (
-      <Icon color="" fontSize="small">
-        home
-      </Icon>
-    ),
-    route: "/dashboard",
-    component: <Dashboard />,
+    name: "홈",
+    key: "home",
+    icon: <Icon fontSize="small">home</Icon>,
+    route: "/home",
+    component: <Home />,
   },
   {
     type: "collapse",
