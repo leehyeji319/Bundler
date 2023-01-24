@@ -33,28 +33,28 @@ function SignUpTemplate() {
           </div>
         </div>
         {/* 이메일 비밀번호 받기 */}
-        <div className="container">
-          <MDBox component="form" role="form">
+        <div className="container3">
+          <MDBox component="form" role="form" width={350}>
             <MDBox mt={1} mb={2}>
-              <TextField label="이메일" id="Email" bgColor="#81D8CF" />
+              <TextField label="이메일" id="Email" bgColor="#81D8CF" fullWidth />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="닉네임" id="nickname" />
+              <TextField label="닉네임" id="nickname" fullWidth />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="비밀번호" id="password" />
+              <TextField label="비밀번호" id="password" fullWidth />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="비밀번호 재확인" id="passwordReconfirm" />
+              <TextField label="비밀번호 재확인" id="passwordReconfirm" fullWidth />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="비밀번호 찾기 질문" id="passwordQuestion" />
+              <TextField label="비밀번호 찾기 질문" id="passwordQuestion" fullWidth />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="비밀번호 찾기 정답" id="passwordQuestionAnswer" />
+              <TextField label="비밀번호 찾기 정답" id="passwordQuestionAnswer" fullWidth />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="한 줄 소개" id="oneline" />
+              <TextField label="한 줄 소개" id="oneline" fullWidth />
             </MDBox>
 
             {/* 가입 버튼 */}
@@ -73,7 +73,7 @@ function SignUpTemplate() {
               </Button>
             </MDBox>
             {/* github 가입하기 */}
-            <MDBox mt={0} mb={1} textAlign="center">
+            <MDBox mt={0} mb={5} textAlign="center">
               <MDBox mt={4} mb={3} component={MuiLink} to="">
                 <Button
                   sx={{
