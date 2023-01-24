@@ -1,5 +1,5 @@
-// import { useState } from "react";
-
+import { React, useState } from "react";
+import axios from "axios";
 // react-router-dom components
 // import { Link } from "react-router-dom";
 
@@ -20,6 +20,46 @@ import "./signupTemplate.css";
 import bundlerRabbit from "assets/images/bundler/bundler_rabbit.png";
 
 function SignUpTemplate() {
+  // setEmail 함수로 email 대응 하는 값을 변경할 수 있게 useState 생성
+  const [email, setEmail] = useState("");
+  // setNickname 함수로 nickname 대응 하는 값을 변경할 수 있게 useState 생성
+  const [nickname, setNickname] = useState("");
+  // setPassword 함수로 password 대응 하는 값을 변경할 수 있게 useState 생성
+  const [password, setPassword] = useState("");
+  // setConfirmPassword 함수로 confirmPassword 대응 하는 값을 변경할 수 있게 useState 생성
+  const [confirmPassword, setConfirmPassword] = useState("");
+  // setPasswordQuestion 함수로 passwordQuestion 대응 하는 값을 변경할 수 있게 useState 생성
+  const [passwordQuestion, setPasswordQuestion] = useState("");
+  // setPasswordQuestionAnswer 함수로 passwordQuestionAnswer 대응 하는 값을 변경할 수 있게 useState 생성
+  const [passwordQuestionAnswer, setPasswordQuestionAnswer] = useState("");
+  // setOneline 함수로 oneline 대응 하는 값을 변경할 수 있게 useState 생성
+  const [oneline, setOneline] = useState("");
+
+  // signUp 함수를 실행하면
+  const signUp = () => {
+    // 아래와 같은 조건으로 axios 보냄
+    axios({
+      url: "http://localhost:8123/signUp",
+      method: "POST",
+      withCredentials: true,
+      data: {
+        email,
+        nickname,
+        password,
+        confirmPassword,
+        passwordQuestion,
+        passwordQuestionAnswer,
+        oneline,
+      },
+    })
+      // axios 요청이 성공한다면 200과 함께 로그인 화면을 보여줌
+      .then((result) => {
+        if (result.status === 200) {
+          window.open("/auth/login", "_self");
+        }
+      });
+  };
+
   return (
     <div className="container">
       <Card sx={{ minWidth: 500, maxWidth: 600 }}>
@@ -36,30 +76,76 @@ function SignUpTemplate() {
         <div className="container3">
           <MDBox component="form" role="form" width={350}>
             <MDBox mt={1} mb={2}>
-              <TextField label="이메일" id="Email" bgColor="#81D8CF" fullWidth />
+              <TextField
+                label="이메일"
+                id="Email"
+                bgColor="#81D8CF"
+                fullWidth
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="닉네임" id="nickname" fullWidth />
+              <TextField
+                label="닉네임"
+                id="nickname"
+                fullWidth
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="비밀번호" id="password" fullWidth />
+              <TextField
+                label="비밀번호"
+                id="password"
+                fullWidth
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="비밀번호 재확인" id="passwordReconfirm" fullWidth />
+              <TextField
+                label="비밀번호 재확인"
+                id="confirmPassword"
+                fullWidth
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="비밀번호 찾기 질문" id="passwordQuestion" fullWidth />
+              <TextField
+                label="비밀번호 찾기 질문"
+                id="passwordQuestion"
+                fullWidth
+                value={passwordQuestion}
+                onChange={(e) => setPasswordQuestion(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="비밀번호 찾기 정답" id="passwordQuestionAnswer" fullWidth />
+              <TextField
+                label="비밀번호 찾기 정답"
+                id="passwordQuestionAnswer"
+                fullWidth
+                value={passwordQuestionAnswer}
+                onChange={(e) => setPasswordQuestionAnswer(e.target.value)}
+              />
             </MDBox>
             <MDBox mb={2}>
-              <TextField label="한 줄 소개" id="oneline" fullWidth />
+              <TextField
+                label="한 줄 소개"
+                id="oneline"
+                fullWidth
+                value={oneline}
+                onChange={(e) => setOneline(e.target.value)}
+              />
             </MDBox>
 
             {/* 가입 버튼 */}
             <MDBox mt={4} mb={1}>
               <Button
+                type="button"
+                onClick={signUp}
+                className="signUpButton"
                 sx={{
                   bgcolor: "#81D8CF",
                   color: "#000000",
