@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material/";
 
 // @mui icons
-import GitHubIcon from "@mui/icons-material/GitHub";
+// import GitHubIcon from "@mui/icons-material/GitHub";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -18,6 +18,7 @@ import "./signTemplate.css";
 
 // Images
 import Logo from "assets/images/bundler/loginlogo.png";
+import GithubLogin from "./components/GithubLogin";
 
 function SignTemplate() {
   return (
@@ -73,7 +74,8 @@ function SignTemplate() {
             {/* github 로그인 */}
             <MDBox mt={0} mb={1} textAlign="center">
               <MDBox mt={4} mb={3} component={MuiLink} to="">
-                <Button
+                <GithubLogin />
+                {/* <Button
                   sx={{
                     bgcolor: "#FFFFFF",
                     color: "#000000",
@@ -85,7 +87,7 @@ function SignTemplate() {
                   startIcon={<GitHubIcon />}
                 >
                   GitHub
-                </Button>
+                </Button> */}
               </MDBox>
             </MDBox>
           </MDBox>
