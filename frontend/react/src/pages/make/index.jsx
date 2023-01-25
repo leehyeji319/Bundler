@@ -19,7 +19,6 @@ import MakeGeneral from "pages/make/form/makeGeneral";
 import MakeLink from "pages/make/form/makeLink";
 
 function SelectedCategory({ selected }) {
-  console.log(selected);
   switch (selected) {
     case "general":
       return <MakeGeneral />;
