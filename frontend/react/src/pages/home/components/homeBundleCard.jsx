@@ -42,7 +42,7 @@ function HomeBundleCard({ bundleTitle, bundleAuthor, cardList }) {
       {/* <Modal open={open} onClose={handleClose}> */}
       {cardList.map((card) => (
         <HomeCard
-          key={card.cardId}
+          key="{card}"
           image={card.cardImage}
           category={card.category}
           id={card.id}
@@ -97,7 +97,7 @@ function HomeBundleCard({ bundleTitle, bundleAuthor, cardList }) {
         {cardOpen === true &&
           cardList.map((card) => (
             <HomeCard
-              key={card.cardId}
+              key="{card}"
               image={card.cardImage}
               category={card.category}
               id={card.id}

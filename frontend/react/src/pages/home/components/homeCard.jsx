@@ -114,7 +114,7 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
               <ul>
                 {commentList.map((comment) => (
                   <li>
-                    <MDTypography variant="body2" textTransform="capitalize">
+                    <MDTypography variant="body2" textTransform="capitalize" key="{comment}">
                       {comment.name} : {comment.reply}
                     </MDTypography>
                   </li>
