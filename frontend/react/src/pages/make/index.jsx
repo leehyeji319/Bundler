@@ -14,7 +14,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { FormControl, FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
 
 // 작성 Form
-import MakeQuiz from "pages/make/form/makeQuiz";
+import MakeProblem from "pages/make/form/makeProblem";
 import MakeGeneral from "pages/make/form/makeGeneral";
 import MakeLink from "pages/make/form/makeLink";
 
@@ -26,11 +26,11 @@ function SelectedCategory({ selected }) {
     case "link":
       return <MakeLink />;
     default:
-      return <MakeQuiz />;
+      return <MakeProblem />;
   }
 }
 
-// Typechecking props for the SimpleBlogCard
+// Typechecking props for the SelectedCategory
 SelectedCategory.propTypes = {
   selected: PropTypes.string.isRequired,
 };
