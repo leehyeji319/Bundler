@@ -4,6 +4,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // import template
 import SignTemplate from "./template/signTemplate";
+// import App from "./template/App";
 
 function AuthLogin() {
   return (
