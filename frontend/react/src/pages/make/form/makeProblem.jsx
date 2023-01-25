@@ -10,9 +10,7 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
 // BundleForm Template
-function BundleForm({ selected }) {
-  console.log(selected);
-  console.log("들어감?");
+function BundleForm({ selected, handleChange }) {
   return (
     <Box mt={3}>
       {selected === true && (
@@ -32,6 +30,7 @@ function BundleForm({ selected }) {
             InputLabelProps={{
               shrink: true,
             }}
+            onChange={handleChange}
           />
         </Box>
       )}
@@ -42,6 +41,7 @@ function BundleForm({ selected }) {
 // Typechecking props for the SelectedCategory
 BundleForm.propTypes = {
   selected: PropTypes.bool.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 
 function MakeProblem() {
@@ -59,6 +59,7 @@ function MakeProblem() {
     bundleTitle: "",
   });
 
+  // bundleToggle 버튼!!
   const [bundleToggle, setBundleToggle] = useState(false);
 
   // Input Catd Data Changed
@@ -71,6 +72,7 @@ function MakeProblem() {
   const onHandleAxios = async () => {
     console.log(values.feedTitle);
     console.log(values.feedContent);
+    console.log(values.bundleTitle);
     console.log(bundleToggle);
 
     // Axios Post
@@ -170,7 +172,7 @@ function MakeProblem() {
           <Switch checked={bundleToggle} onChange={() => setBundleToggle(!bundleToggle)} />
         </MDBox>
       </Box>
-      <BundleForm selected={bundleToggle} />
+      <BundleForm selected={bundleToggle} handleChange={handleChange} />
       <Box>
         <Button type="button" onClick={handleSubmit} variant="contained" sx={{ m: 3 }} size="large">
           추가
