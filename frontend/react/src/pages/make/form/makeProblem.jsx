@@ -58,25 +58,33 @@ function MakeProblem() {
       component="form"
       sx={{
         "& .MuiTextField-root": { ml: 3, mt: 3, width: "70vw" },
+        mt: 6,
       }}
       noValidate
       autoComplete="off"
     >
-      <Typography component="h1" variant="h5">
+      <Typography component="h1" variant="h3">
         문제 만들기
       </Typography>
-      <TextField
-        multiline
-        rows={1}
-        defaultValue=""
-        required
-        autoFocus
-        id="problem-title"
-        type="text"
-        name="feedTitle"
-        label="제목"
-        onChange={handleChange}
-      />
+      <Box sx={{ mt: 6, display: "flex" }}>
+        <Typography variant="h6">
+          <Box sx={{ textAlign: "center", mt: 3 }}>제목</Box>
+        </Typography>
+        <TextField
+          multiline
+          rows={1}
+          required
+          autoFocus
+          id="problem-title"
+          type="text"
+          name="feedTitle"
+          label="Required"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+        />
+      </Box>
       <TextField
         multiline
         rows={5}
