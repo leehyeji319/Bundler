@@ -45,7 +45,7 @@ BundleForm.propTypes = {
 };
 
 function MakeProblem() {
-  // Card Form Data
+  // (Data 1) Card Input Data
   const [values, setValues] = useState({
     userId: "testID",
     feedType: "Card",
@@ -59,20 +59,30 @@ function MakeProblem() {
     bundleTitle: "",
   });
 
-  // bundleToggle 버튼!!
+  // (Data 3) bundleToggle 버튼!!
   const [bundleToggle, setBundleToggle] = useState(false);
 
-  // Input Catd Data Changed
+  // (Data 1 - Func) Catd Input Data Changed
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
   };
 
-  // handleSubmit의 조건이 충족 된다면 axios 함수 실행
+  // (Func 1) handleAdd
+  const handleAdd = (e) => {
+    e.preventDefault();
+    console.log(values);
+  };
+
+  // (Func 2) handleDelete
+  const handleDelete = (e) => {
+    e.preventDefault();
+
+    console.log("handleDelete 함수 실행");
+  };
+
+  // (Func 3-2) handleCreate 조건이 충족 된다면 axios 함수 실행
   const onHandleAxios = async () => {
-    console.log(values.feedTitle);
-    console.log(values.feedContent);
-    console.log(values.bundleTitle);
     console.log(bundleToggle);
 
     // Axios Post
@@ -86,8 +96,8 @@ function MakeProblem() {
     //   });
   };
 
-  // 생성 버튼 클릭 시
-  const handleSubmit = (e) => {
+  // (Func 3-1) 생성 버튼 클릭 시
+  const handleCreate = (e) => {
     e.preventDefault();
 
     // submit 시, input value 초기화
@@ -174,13 +184,13 @@ function MakeProblem() {
       </Box>
       <BundleForm selected={bundleToggle} handleChange={handleChange} />
       <Box>
-        <Button type="button" onClick={handleSubmit} variant="contained" sx={{ m: 3 }} size="large">
+        <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleAdd}>
           추가
         </Button>
-        <Button type="button" variant="contained" sx={{ m: 3 }} size="large">
+        <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleDelete}>
           삭제
         </Button>
-        <Button type="button" variant="contained" sx={{ m: 3 }} size="large">
+        <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleCreate}>
           생성
         </Button>
       </Box>
