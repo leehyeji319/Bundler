@@ -2,6 +2,7 @@ package com.ssafy.bundler.domain;
 
 import static jakarta.persistence.FetchType.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,21 +22,23 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
-public class Category {
+@Entity
+@Table(name = "CATEGORIES")
+public class Category implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	private Long id;
+	@Column(name = "category_id")
+	private Long categoryId;
 
-	private String name;
+	@Column(name = "category_name")
+	private String categoryName;
 
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "parent_id")
+	@JoinColumn(name = "category_parent_id", referencedColumnName = "category_id")
 	private Category parent;
-
+	
 	@OneToMany(mappedBy = "parent") //셀프의 연관관계를 건거라고 생각하면 된다.
 	private List<Category> child = new ArrayList<>();
 
@@ -45,9 +49,9 @@ public class Category {
 	}
 
 	@Builder
-	public Category(String name, Category parent, List<Category> child) {
-		this.name = name;
+	public Category(String categoryName, Category parent) {
+		this.categoryName = categoryName;
 		this.parent = parent;
-		this.child = child;
 	}
+
 }
