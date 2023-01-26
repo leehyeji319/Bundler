@@ -1,8 +1,13 @@
 // import { DataThresholding } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button, Box, TextField, Typography } from "@mui/material";
 import Switch from "@mui/material/Switch";
+
+// import react-redux && action
+import { useSelector, useDispatch } from "react-redux";
+import cardAdd from "store/actions/pageMake";
+
 // import axios from "axios";
 
 // Material Dashboard 2 React components
@@ -45,7 +50,15 @@ BundleForm.propTypes = {
 };
 
 function MakeProblem() {
-  // (Data 1) Card Input Data
+  // (Data 1) Store Data
+  const dispatch = useDispatch(); // state와 function을 보내는 함수
+
+  const { testValue, cardList } = useSelector((state) => ({
+    testValue: state.make.testValue,
+    cardList: state.make.cardList,
+  })); // state 값 가져오기
+
+  // (Data 2) Local Data - Card Input Data
   const [values, setValues] = useState({
     userId: "testID",
     feedType: "Card",
@@ -71,14 +84,15 @@ function MakeProblem() {
   // (Func 1) handleAdd
   const handleAdd = (e) => {
     e.preventDefault();
-    console.log(values);
+    console.log("handleAdd 함수 실행");
+    dispatch(cardAdd(values));
   };
 
   // (Func 2) handleDelete
   const handleDelete = (e) => {
     e.preventDefault();
-
     console.log("handleDelete 함수 실행");
+    dispatch({ type: "SUB" });
   };
 
   // (Func 3-2) handleCreate 조건이 충족 된다면 axios 함수 실행
@@ -109,6 +123,15 @@ function MakeProblem() {
     }
   };
 
+  // (Func 4) useEffect
+  useEffect(() => {
+    console.log("Component가 화면에 나타남 === mount");
+    return () => {
+      console.log("Component가 화면에 사라짐 === unmount");
+    };
+  }, []);
+
+  // retrun 문
   return (
     <Box
       component="form"
@@ -120,7 +143,7 @@ function MakeProblem() {
       autoComplete="off"
     >
       <Typography component="h1" variant="h3">
-        문제 만들기
+        문제 만들기 // Test Value : {testValue} / {cardList}
       </Typography>
       <Box sx={{ mt: 2, display: "flex" }}>
         <Typography variant="h6">

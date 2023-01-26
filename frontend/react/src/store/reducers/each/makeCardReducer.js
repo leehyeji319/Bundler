@@ -1,26 +1,34 @@
-const initSate = {
-  value: 0,
+const initialState = {
+  cardList: [],
+  testValue: 0,
 };
 
-export default function makeCardReducer(state = initSate, action) {
+function makeCardReducer(state = initialState, action) {
   switch (action.type) {
-    case "add": {
+    case "CARD_ADD": {
       return {
         ...state,
-        value: state.value + 1,
+        cardList: [...state.cardList, ...action.payload],
       };
     }
-    case "sub": {
+    case "CARD_SUB": {
       return {
         ...state,
-        value: state.value - 1,
+        testValue: state.testValue - 1,
       };
     }
-    case "init": {
+    case "CARD_INIT": {
       return {
         ...state,
-        value: (state.value = 0),
+        testValue: 0,
+      };
+    }
+    default: {
+      return {
+        state,
       };
     }
   }
 }
+
+export default makeCardReducer;
