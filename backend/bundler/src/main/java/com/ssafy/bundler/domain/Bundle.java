@@ -1,26 +1,34 @@
 package com.ssafy.bundler.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Entity
+@Setter
 @NoArgsConstructor
-public class Bundle {
+@Entity
+@Table(name = "BUNDLES")
+@DiscriminatorValue(value = "BUNDLE")
+@PrimaryKeyJoinColumn(name = "bundle_id")
+@SuperBuilder(toBuilder = true)
+public class Bundle extends Feed implements Serializable {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "bundle_id")
+	@Column(name = "bundle_id", insertable = false, updatable = false)
 	private Long bundleId;
 
 	@Column(name = "bundle_thumbnail")
@@ -32,15 +40,22 @@ public class Bundle {
 	@Column(name = "bundle_is_public")
 	private boolean isBundlePublic;
 
-	@OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
-	private List<CardBundle> cardBundleList = new ArrayList<>();
+	@Builder.Default
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "bundle_id")
+	private List<CardBundle> cardList = new ArrayList<>();
 
-	@Builder
-	public Bundle(String bundleThumbnail, String bundleThumbnailText, boolean isBundlePublic,
-		List<CardBundle> cardBundleList) {
+	public void addCardBundle(final CardBundle cardBundle) {
+		cardList.add(cardBundle);
+	}
+
+	//번들 수정
+	public void updateBundle(String feedTitle, String feedContent, String bundleThumbnail,
+		String bundleThumbnailText, boolean isBundlePublic) {
+		super.update(feedTitle, feedContent);
 		this.bundleThumbnail = bundleThumbnail;
 		this.bundleThumbnailText = bundleThumbnailText;
 		this.isBundlePublic = isBundlePublic;
-		this.cardBundleList = cardBundleList;
 	}
+
 }

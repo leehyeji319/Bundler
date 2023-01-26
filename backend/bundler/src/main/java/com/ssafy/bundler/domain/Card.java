@@ -1,64 +1,63 @@
 package com.ssafy.bundler.domain;
 
-import static jakarta.persistence.CascadeType.*;
+import java.io.Serializable;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.annotations.NaturalId;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import lombok.Builder;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Entity
+@Setter
 @NoArgsConstructor
-public class Card {
+@Entity
+@Table(name = "CARDS")
+@SuperBuilder(toBuilder = true)
+@DiscriminatorValue(value = "CARD")
+@PrimaryKeyJoinColumn(name = "card_id")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "card_type", discriminatorType = DiscriminatorType.STRING)
+public class Card extends Feed implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "card_id")
+	@Column(name = "card_id", insertable = false, updatable = false)
 	private Long cardId;
 
-	private int scrapCnt;
+	@Column(name = "card_scrap_cnt")
+	private int cardScrapCnt;
 
-	private String description;
+	@Column(name = "card_description")
+	private String cardDescription;
 
-	private String commentary;
+	@Column(name = "card_commentary")
+	private String cardCommentary;
 
+	@Column(name = "card_type")
 	@Enumerated(EnumType.STRING)
-	@NaturalId
 	private CardType cardType;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "link_id")
-	private Link link;
+	//피드 업데이트 - 카테고리는 제외 (추후 추가)
 
-	@OneToMany(cascade = ALL)
-	@JoinColumn(name = "user_card_id")
-	private List<UserCardHit> userCardHitList = new ArrayList<>();
+	public void updateCard(String feedTitle, String feedContent, String cardDescription, String cardCommentary) {
+		// this.setFeedTitle(feedTitle);
+		// this.setFeedContent(feedContent);
+		super.update(feedTitle, feedContent);
+		this.cardDescription = cardDescription;
+		this.cardCommentary = cardCommentary;
+	}
 
-	@Builder
-	public Card(int scrapCnt, String description, String commentary,
-		CardType cardType, Link link, List<UserCardHit> userCardHitList) {
-		this.scrapCnt = scrapCnt;
-		this.description = description;
-		this.commentary = commentary;
-		this.cardType = cardType;
-		this.link = link;
-		this.userCardHitList = userCardHitList;
+	//==== 비즈니스 로직 ====//
+	public void addCardScrapCnt() {
+		this.cardScrapCnt++;
 	}
 }
