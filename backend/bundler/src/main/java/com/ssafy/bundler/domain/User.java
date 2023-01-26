@@ -2,9 +2,11 @@ package com.ssafy.bundler.domain;
 
 import static jakarta.persistence.CascadeType.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,16 +14,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
-public class User extends BaseEntity {
+@Entity
+@Table(name = "USERS")
+@SuperBuilder(toBuilder = true)
+public class User extends BaseEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //Identity로 하면 디비엔진에 따라 오토 인크리먼트가 안먹는다.
@@ -37,40 +43,32 @@ public class User extends BaseEntity {
 	@Column(name = "user_nickname", unique = true)
 	private String userNickname;
 
-	@Column(name = "user_profile_image")
-	private String userProfileImage;
 	@Column(name = "user_introduction")
 	private String userIntroduction;
+
+	@Column(name = "user_profile_image")
+	private String userProfileImage;
 
 	@Column(name = "is_deleted")
 	private boolean isDeleted;
 
+	//////////////////////////////////////
+
+	@Builder.Default
 	@OneToMany(cascade = ALL)
-	@JoinColumn(name = "feed_like_id")
+	@JoinColumn(name = "user_id")
 	private List<FeedLike> feedUserLikeList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "writer", cascade = ALL)
+	@Builder.Default
+	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
 	private List<Feed> feedList = new ArrayList<>();
 
+	@Builder.Default
 	@OneToMany(mappedBy = "followTo", cascade = ALL)
 	private List<Follow> followToList = new ArrayList<>();
 
+	@Builder.Default
 	@OneToMany(mappedBy = "followFrom", cascade = ALL)
 	private List<Follow> followFromList = new ArrayList<>();
 
-	@Builder
-	public User(String userEmail, String userPassword, String userNickname, String userProfileImage,
-		String userIntroduction, boolean isDeleted, List<FeedLike> feedUserLikeList, List<Feed> feedList,
-		List<Follow> followToList, List<Follow> followFromList) {
-		this.userEmail = userEmail;
-		this.userPassword = userPassword;
-		this.userNickname = userNickname;
-		this.userProfileImage = userProfileImage;
-		this.userIntroduction = userIntroduction;
-		this.isDeleted = isDeleted;
-		this.feedUserLikeList = feedUserLikeList;
-		this.feedList = feedList;
-		this.followToList = followToList;
-		this.followFromList = followFromList;
-	}
 }

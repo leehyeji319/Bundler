@@ -1,9 +1,18 @@
 package com.ssafy.bundler.domain;
 
+import static jakarta.persistence.FetchType.*;
+
+import java.io.Serializable;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,24 +20,27 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
 @NoArgsConstructor
-public class FeedLike {
+@Entity
+@Table(name = "FEED_LIKE")
+public class FeedLike implements Serializable {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "feed_like_id")
 	private Long feedLikeId;
 
-	@Column(name = "feed_id")
-	private Long feedId;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = LAZY)
+	@JoinColumn(name = "feed_id")
+	private Feed feed;
 
 	@Column(name = "user_id")
 	private Long userId;
 
 	@Builder
-	public FeedLike(Long feedId, Long userId) {
-		this.feedId = feedId;
+	public FeedLike(Feed feed, Long userId) {
+		this.feed = feed;
 		this.userId = userId;
 	}
+
 }
