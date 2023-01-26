@@ -1,33 +1,29 @@
 const initialState = {
-  cardList: [],
   testValue: 0,
 };
 
 function makeCardReducer(state = initialState, action) {
   switch (action.type) {
-    case "CARD_ADD": {
+    case "ADD": {
       return {
         ...state,
-        cardList: [...state.cardList, ...action.payload],
+        testValue: state.testValue + 1,
       };
     }
-    case "CARD_SUB": {
+    case "SUB": {
       return {
         ...state,
         testValue: state.testValue - 1,
       };
     }
-    case "CARD_INIT": {
+    case "RESET": {
       return {
         ...state,
         testValue: 0,
       };
     }
-    default: {
-      return {
-        state,
-      };
-    }
+    default:
+      return state;
   }
 }
 

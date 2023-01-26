@@ -6,7 +6,6 @@ import Switch from "@mui/material/Switch";
 
 // import react-redux && action
 import { useSelector, useDispatch } from "react-redux";
-import cardAdd from "store/actions/pageMake";
 
 // import axios from "axios";
 
@@ -53,11 +52,9 @@ function MakeProblem() {
   // (Data 1) Store Data
   const dispatch = useDispatch(); // state와 function을 보내는 함수
 
-  const { testValue, cardList } = useSelector((state) => ({
-    testValue: state.make.testValue,
-    cardList: state.make.cardList,
-  })); // state 값 가져오기
-
+  const { testValue } = useSelector((state) => state.testValue); // state 값 가져오기
+  // const cardList = useSelector((state) => state.makeCard.cardList); // state 값 가져오기
+  // console.log(cardList);
   // (Data 2) Local Data - Card Input Data
   const [values, setValues] = useState({
     userId: "testID",
@@ -85,13 +82,13 @@ function MakeProblem() {
   const handleAdd = (e) => {
     e.preventDefault();
     console.log("handleAdd 함수 실행");
-    dispatch(cardAdd(values));
+    dispatch({ type: "ADD" });
   };
 
   // (Func 2) handleDelete
   const handleDelete = (e) => {
     e.preventDefault();
-    console.log("handleDelete 함수 실행");
+    console.log(testValue);
     dispatch({ type: "SUB" });
   };
 
@@ -143,7 +140,7 @@ function MakeProblem() {
       autoComplete="off"
     >
       <Typography component="h1" variant="h3">
-        문제 만들기 // Test Value : {testValue} / {cardList}
+        문제 만들기 // Test Value : {testValue}
       </Typography>
       <Box sx={{ mt: 2, display: "flex" }}>
         <Typography variant="h6">

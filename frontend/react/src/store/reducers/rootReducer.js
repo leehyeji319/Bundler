@@ -6,7 +6,7 @@ import makeCardReducer from "store/reducers/each/makeCardReducer";
 
 const rootReducer = combineReducers({
   // State - makeCardReducer
-  make: makeCardReducer,
+  testValue: makeCardReducer,
 });
 
 export default rootReducer;
