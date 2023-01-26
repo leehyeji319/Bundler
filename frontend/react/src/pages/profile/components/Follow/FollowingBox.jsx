@@ -38,52 +38,52 @@ import bunny from "../../../../assets/images/bundler/bundlerRabbit.png"
 function FollowingBox({ profileImage, nickname, email, introduction, group }) {
 
   const friends = {
-    friend: [
+    nickname : "dellojoon",
+    friendMember: [
       {
         frId : "1",
         frNick : "다나카",
         frIntro : "모에모에 뀽",
-        frProfile : {imgdnk}, 
+        frProfile : imgdnk, 
       },
       {
         frId : "2",
         frNick : "정세권",
         frIntro : "최강 프론트엔드입니다",
-        frProfile : {bunny}, 
+        frProfile : bunny, 
       },
       {
         frId : "3",
         frNick : "김영식",
         frIntro : "프로젝트 마스터",
-        frProfile : {bunny}, 
+        frProfile : bunny, 
       },
       {
         frId : "4",
         frNick : "이혜지",
         frIntro : "백엔드의 신이 될꺼야",
-        frProfile : {imghj}, 
+        frProfile : imghj, 
       },
       {
         frId : "5",
         frNick : "안태윤",
         frIntro : "킹갓윤",
-        frProfile : {imgty}, 
+        frProfile : imgty, 
       },
       {
         frId : "6",
         frNick : "강효진",
         frIntro : "완벽주의 개발자",
-        frProfile : {imglion}, 
+        frProfile : imglion, 
       },
     ]
   }
 
   return (
-    {friends.friend.map((follow) => (
       <MDBox // 전체 팔로잉 박스
         sx={{
           height: "540px",
-          width: "430px",
+          width: "500px",
           backgroundColor: "#282535",
           border: "1px solid #ffffff",
           borderRadius: "20px",
@@ -114,6 +114,21 @@ function FollowingBox({ profileImage, nickname, email, introduction, group }) {
             margin: "10px 0 20px",
           }}>
         </MDBox>
+      <MDBox
+        sx ={{
+          marginLeft : "6%",
+          marginRight : "6%",
+        }}
+        style={{
+          flexDirection : "column",
+        }}>
+      {friends.friendMember.map((follow)=>(
+      <MDBox
+        sx={{
+          height : "60px",
+
+        }}
+        >
         <MDBox
           style={{
             flexDirection : "row",
@@ -164,108 +179,16 @@ function FollowingBox({ profileImage, nickname, email, introduction, group }) {
                 fontWeight : "bolder",
                 color : "#000000",
                 backgroundColor: "#81D8C3",
-              }}
-              >
+              }}>
               팔로잉
             </Button>
           </MDBox>
-        </MDBox>
       </MDBox>
-    ))}
-    // <MDBox // 전체 팔로잉 박스
-    //   sx={{
-    //     height: "540px",
-    //     width: "430px",
-    //     backgroundColor: "#282535",
-    //     border: "1px solid #ffffff",
-    //     borderRadius: "20px",
-    //   }}>
-    //   <MDBox // 글자 있는 박스
-    //     sx={{
-    //       width: "100%"
-    //     }}
-    //     style={{
-    //       justifyContent: "center",
-    //     }}
-    //     >
-    //     <MDTypography
-    //       sx={{
-    //         fontSize: "25px",
-    //         marginLeft : "10%",
-    //         marginTop : "5%",
-    //       }}>
-    //       {nickname}님의 팔로잉
-    //     </MDTypography>
-    //   </MDBox>
-    //   <MDBox // 흰 줄
-    //     style={{
-    //       width: "100%",
-    //       textAlign: "center",
-    //       borderBottom: "1px solid #aaa",
-    //       lineHeight: "0.1em",
-    //       margin: "10px 0 20px",
-    //     }}>
-    //   </MDBox>
-    //   <MDBox
-    //     style={{
-    //       flexDirection : "row",
-    //       // justifyContent: "space-between"
-    //     }}>
-    //     <MDAvatar 
-    //       src = {imglion}
-    //       sx={{
-    //         width: "46px",
-    //         height: "46px",
-    //         left: "35px",
-    //       }}
-    //       style={{
-    //         float: "left",
-    //       }}
-    //     />
-    //     <MDBox // 팔로우 이름, 자기소개
-    //       sx={{
-    //         marginLeft : "20%",
-    //       }}
-    //       style={{
-    //         flexDirection: "colummn",
-    //         float: "left",
-    //       }}>
-    //       <MDTypography
-    //         sx ={{
-    //           fontSize : "14px",
-    //         }}>
-    //         임성준
-    //       </MDTypography>
-    //       <MDTypography
-    //         sx ={{
-    //           fontSize : "14px",
-    //           color : "gray",
-    //         }}>
-    //         집념의 프론트엔드
-    //       </MDTypography>
-    //     </MDBox>
-    //     <MDBox>
-    //       <Button 
-    //         variant="contained" 
-    //         style={{ 
-    //           float : "right",
-    //         }}
-    //         sx={{
-    //           marginRight : "10px",
-    //           fontSize : "14px",
-    //           fontWeight : "bolder",
-    //           color : "#000000",
-    //           backgroundColor: "#81D8C3",
-    //         }}
-    //         >
-    //         팔로잉
-    //       </Button>
-    //     </MDBox>
-    //   </MDBox>
-    // </MDBox>
-    
-
-    )}
+    </MDBox>
+      ))}
+    </MDBox>
+    </MDBox>
+  )}
 
 FollowingBox.propTypes = {
   profileImage: PropTypes.string.isRequired,
