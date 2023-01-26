@@ -20,7 +20,7 @@ import Logo from "assets/images/bundler/loginlogo.png";
 
 // pages
 import GithubLogin from "./components/GithubLogin";
-import Overview from "../../../profile";
+import Profile from "../../../profile";
 
 class SignTemplate extends Component {
   // SignTemplate 컴포넌트가 실행될 때 constructor가 실행
@@ -76,13 +76,13 @@ class SignTemplate extends Component {
 
   render() {
     const { isLogin, accessToken } = this.state;
-
+    console.log(isLogin, accessToken);
     return (
       <div className="container">
         {/* isLogin 값의 여부로 보여주는 화면 결정 */}
         {isLogin ? (
-          // isLogin이 true일 때 accessToken을 가지고 Overview 컴포넌트 렌더링
-          <Overview accessToken={accessToken} />
+          // isLogin이 true일 때 accessToken을 가지고 Profile 컴포넌트 렌더링
+          <Profile accessToken={accessToken} />
         ) : (
           // isLogin이 false일 때 로그인 화면 렌더링
           <Card sx={{ minWidth: 500, maxWidth: 600 }}>

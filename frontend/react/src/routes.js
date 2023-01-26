@@ -26,7 +26,7 @@ import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
-import Profile from "layouts/profile";
+// import Profile from "layouts/profile";
 // import SignIn from "layouts/authentication/sign-in";
 // import SignUp from "layouts/authentication/sign-up";
 
@@ -35,6 +35,7 @@ import Home from "pages/home";
 import Search from "pages/searchall";
 import SearchId from "pages/searchid";
 import Make from "pages/make";
+import Profile from "pages/profile";
 import AuthLogin from "pages/auth/login";
 import SignUp from "pages/signup";
 
@@ -104,14 +105,6 @@ const routes = [
 
   {
     type: "collapse",
-    name: "홈",
-    key: "home",
-    icon: <Icon fontSize="small">home</Icon>,
-    route: "/home",
-    component: <Home />,
-  },
-  {
-    type: "collapse",
     name: "Tables",
     key: "tables",
     icon: <Icon fontSize="small">table_view</Icon>,
@@ -142,14 +135,6 @@ const routes = [
     route: "/notifications",
     component: <Notifications />,
   },
-  //   {
-  //     type: "collapse",
-  //     name: "Sign Up",
-  //     key: "sign-up",
-  //     icon: <Icon fontSize="small">assignment</Icon>,
-  //     route: "/authentication/sign-up",
-  //     component: <SignUp />,
-  //   },
 ];
 
 export default routes;
