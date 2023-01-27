@@ -1,16 +1,18 @@
 const initialState = {
   testValue: 0,
+  cardList: "",
 };
 
 function makeCardReducer(state = initialState, action) {
+  console.log(action.payload);
   switch (action.type) {
-    case "ADD": {
+    case "CARD_ADD": {
       return {
         ...state,
         testValue: state.testValue + 1,
       };
     }
-    case "SUB": {
+    case "CARD_SUB": {
       return {
         ...state,
         testValue: state.testValue - 1,
@@ -19,7 +21,7 @@ function makeCardReducer(state = initialState, action) {
     case "RESET": {
       return {
         ...state,
-        testValue: 0,
+        cardList: action.payload.userId,
       };
     }
     default:
@@ -28,3 +30,7 @@ function makeCardReducer(state = initialState, action) {
 }
 
 export default makeCardReducer;
+
+// default: {
+//   return { state };
+// }

@@ -52,7 +52,7 @@ function MakeProblem() {
   // (Data 1) Store Data
   const dispatch = useDispatch(); // state와 function을 보내는 함수
 
-  const { testValue } = useSelector((state) => state.testValue); // state 값 가져오기
+  const { testValue, cardList } = useSelector((state) => state.testValue); // state 값 가져오기
   // const cardList = useSelector((state) => state.makeCard.cardList); // state 값 가져오기
   // console.log(cardList);
   // (Data 2) Local Data - Card Input Data
@@ -82,14 +82,14 @@ function MakeProblem() {
   const handleAdd = (e) => {
     e.preventDefault();
     console.log("handleAdd 함수 실행");
-    dispatch({ type: "ADD" });
+    dispatch({ type: "CARD_ADD" });
   };
 
   // (Func 2) handleDelete
   const handleDelete = (e) => {
     e.preventDefault();
     console.log(testValue);
-    dispatch({ type: "SUB" });
+    dispatch({ type: "CARD_SUB" });
   };
 
   // (Func 3-2) handleCreate 조건이 충족 된다면 axios 함수 실행
@@ -110,6 +110,9 @@ function MakeProblem() {
   // (Func 3-1) 생성 버튼 클릭 시
   const handleCreate = (e) => {
     e.preventDefault();
+
+    dispatch({ type: "RESET", payload: values });
+    console.log(cardList);
 
     // submit 시, input value 초기화
     document.querySelector("#problem-title").value = "";
