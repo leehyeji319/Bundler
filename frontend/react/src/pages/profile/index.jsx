@@ -5,8 +5,10 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // eslint-disable-next-line
-      info: "",
+      name: "",
+      login: "",
+      html_url: "",
+      public_repos: "",
     };
   }
 
@@ -25,8 +27,10 @@ class Profile extends Component {
       headers: { authorization: `token ${this.props.accessToken}` },
     });
     this.setState({
-      // eslint-disable-next-line
-      info: getUserInfo.data.name,
+      name: getUserInfo.data.name,
+      login: getUserInfo.data.login,
+      html_url: getUserInfo.data.html_url,
+      public_repos: getUserInfo.data.public_repos,
     });
   }
 
@@ -35,10 +39,46 @@ class Profile extends Component {
     const { accessToken } = this.props;
 
     if (!accessToken) {
-      return <div style={{ color: "white" }}>로그인이 필요합니다</div>;
+      return (
+        <div style={{ color: "white" }}>
+          로그인이 필요합니다
+          {/* <button>login</button>; */}
+        </div>
+      );
     }
-    // eslint-disable-next-line
-    return <div style={{ color: "white" }}>로그인 성공</div>;
+    return (
+      <div style={{ color: "white" }}>
+        <div className="mypageContainer">
+          <h3>Mypage</h3>
+          <hr />
+          <div>
+            안녕하세요.{" "}
+            <span className="name" id="name">
+              {/* eslint-disable-next-line */}
+              {this.state.name}
+            </span>
+            님! GitHub 로그인이 완료되었습니다.
+          </div>
+          <div>
+            <div className="item">
+              나의 로그인 아이디:
+              {/* eslint-disable-next-line */}
+              <span id="login">{this.state.login}</span>
+            </div>
+            <div className="item">
+              나의 GitHub 주소:
+              {/* eslint-disable-next-line */}
+              <span id="html_url">{this.state.html_url}</span>
+            </div>
+            <div className="item">
+              나의 public 레포지토리 개수:
+              {/* eslint-disable-next-line */}
+              <span id="public_repos">{this.state.public_repos}</span>개
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 

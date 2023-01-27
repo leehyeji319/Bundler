@@ -76,7 +76,7 @@ class SignTemplate extends Component {
 
   render() {
     const { isLogin, accessToken } = this.state;
-    console.log(isLogin, accessToken);
+    // console.log(isLogin, accessToken);
     return (
       <div className="container">
         {/* isLogin 값의 여부로 보여주는 화면 결정 */}
