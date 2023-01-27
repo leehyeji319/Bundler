@@ -6,8 +6,10 @@ import Switch from "@mui/material/Switch";
 
 // import react-redux && action
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 
-// import axios from "axios";
+import { apiTest } from "apis/api/JavaControllerPart";
+import { getTest } from "redux/actions/makeCardAction";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -52,7 +54,7 @@ function MakeProblem() {
   // (Data 1) Store Data
   const dispatch = useDispatch(); // state와 function을 보내는 함수
 
-  const { testValue, cardList } = useSelector((state) => state.testValue); // state 값 가져오기
+  const { testValue, cardList, testData } = useSelector((state) => state.testValue); // state 값 가져오기
   // const cardList = useSelector((state) => state.makeCard.cardList); // state 값 가져오기
   // console.log(cardList);
   // (Data 2) Local Data - Card Input Data
@@ -111,8 +113,27 @@ function MakeProblem() {
   const handleCreate = (e) => {
     e.preventDefault();
 
+    // Test Code
     dispatch({ type: "RESET", payload: values });
-    console.log(cardList);
+    console.log(cardList, "카드리스트");
+    axios.get("https://jsonplaceholder.typicode.com/todos/1").then(({ data }) => {
+      console.log(data);
+      console.log("data~!!");
+    });
+
+    getTest().then((result) => {
+      dispatch(result);
+    });
+
+    console.log(testData);
+
+    apiTest(
+      ({ test }) => {
+        console.log(test);
+        console.log("axios module화");
+      },
+      (error) => console.log(error)
+    );
 
     // submit 시, input value 초기화
     document.querySelector("#problem-title").value = "";

@@ -1,6 +1,7 @@
 const initialState = {
   testValue: 0,
   cardList: "",
+  testData: {},
 };
 
 function makeCardReducer(state = initialState, action) {
@@ -22,6 +23,12 @@ function makeCardReducer(state = initialState, action) {
       return {
         ...state,
         cardList: action.payload.userId,
+      };
+    }
+    case "TEST_DATA": {
+      return {
+        ...state,
+        testData: { ...action.payload },
       };
     }
     default:

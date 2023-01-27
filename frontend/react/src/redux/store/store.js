@@ -2,7 +2,7 @@
 import { legacy_createStore as createStore } from "redux";
 
 // rootReducer Import
-import rootReducer from "store/reducers/rootReducer";
+import rootReducer from "redux/reducers/rootReducer";
 
 const store = createStore(rootReducer);
 
