@@ -109,7 +109,12 @@ function SignTemplate() {
       {/* eslint-disable-next-line */}
       {isLogin && accessToken ? (
         // eslint-disable-next-line
-        <GithubLoginRender accessToken={accessToken} />
+        <div>
+          <GithubLoginRender accessToken={accessToken} />
+          <button type="button" onClick={logout} className="loginButton">
+            Logout
+          </button>
+        </div>
       ) : isLogin ? (
         <>
           {/* eslint-disable-next-line */}
