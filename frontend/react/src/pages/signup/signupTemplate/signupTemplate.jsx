@@ -63,7 +63,7 @@ function SignUpTemplate() {
   return (
     <div className="container">
       <Card sx={{ minWidth: 500, maxWidth: 600 }}>
-        <div className="container2">
+        <div className="container">
           <div className="greenbox">
             <div className="welcome">
               <img className="rabbit" src={bundlerRabbit} alt="signupimg" width={125} />

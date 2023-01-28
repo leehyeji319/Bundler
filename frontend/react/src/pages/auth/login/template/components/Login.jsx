@@ -22,13 +22,13 @@ function Login() {
       // axios 요청이 성공한다면 200과 함께 프로필 화면을 보여줌
       .then((result) => {
         if (result.status === 200) {
-          window.open("/profile", "_self");
+          window.open("/auth/login", "_self");
         }
       });
   };
 
   return (
-    <div className="loginContainer">
+    <div>
       <div className="inputGroup">
         {/* 이메일을 받기 위한 input */}
         <label className="inputLabel" htmlFor="emailLogin">

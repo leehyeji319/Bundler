@@ -31,9 +31,6 @@ function GithubLoginRender(props) {
     getGitHubUserInfo();
   }, []);
 
-  // eslint-disable-next-line
-  // const { accessToken } = this.props;
-
   if (!accessToken) {
     return (
       <div style={{ color: "white" }}>
