@@ -2,6 +2,7 @@ package com.ssafy.bundler.domain;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,36 +12,37 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Entity
-@Table(name = "FOLLOWS")
-public class Follow extends BaseEntity implements Serializable {
+@Table(name = "FEED_CATEGORY")
+public class FeedCategory implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "follow_id")
-	private Long followId;
+	@Column(name = "feed_category_id")
+	private Long feedCategoryId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "follow_to_id")
-	private User followTo;
+	@Column(name = "feed_id")
+	private Long feedId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "follow_from_id")
-	private User followFrom;
+	// @Column(name = "category_id")
+	// private Long categoryId;
 
-	// @Builder
-	// public Follow(User followTo, User followFrom) {
-	// 	this.followTo = followTo;
-	// 	this.followFrom = followFrom;
-	// }
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private Category category;
+
+	@Builder
+	public FeedCategory(Long feedId, Category category) {
+		this.feedId = feedId;
+		this.category = category;
+	}
 
 }

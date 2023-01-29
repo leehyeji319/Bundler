@@ -1,27 +1,42 @@
 package com.ssafy.bundler.domain;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import static jakarta.persistence.FetchType.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.FetchType.LAZY;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-public class Category {
+@Table(name = "CATEGORIES")
+public class Category implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	private Long id;
+	@Column(name = "category_id")
+	private Long categoryId;
 
-	private String name;
+	@Column(name = "category_name")
+	private String categoryName;
 
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "parent_id")
+	@JoinColumn(name = "category_parent_id", referencedColumnName = "category_id")
 	private Category parent;
 
 	@OneToMany(mappedBy = "parent") //셀프의 연관관계를 건거라고 생각하면 된다.
@@ -32,4 +47,11 @@ public class Category {
 		this.child.add(child);
 		child.setParent(this);
 	}
+
+	@Builder
+	public Category(String categoryName, Category parent) {
+		this.categoryName = categoryName;
+		this.parent = parent;
+	}
+
 }
