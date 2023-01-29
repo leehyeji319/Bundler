@@ -19,9 +19,9 @@ const api = apiInstance();
 const mock = apiMock();
 
 // Method 주소만 정의 -> 예시
-const apiTest = async (success, fail) => {
-  console.log("apiTest 호출");
-  await mock.get().then(success).catch(fail);
+const apiTest = async () => {
+  const response = await mock.get(`/1`);
+  return response;
 };
 
 const apiGet = async (success, fail) => {

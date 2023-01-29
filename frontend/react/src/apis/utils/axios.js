@@ -5,10 +5,14 @@
 // import axios
 import axios from "axios";
 
+// 요청 주소
+const BUNDLER_URL = "http://localhost:8080";
+const TEST_URL = "https://jsonplaceholder.typicode.com/todos";
+
 // basic Instance
 const apiInstance = () => {
   const instance = axios.create({
-    baseURL: process.env.BASE_URL,
+    baseURL: BUNDLER_URL,
     headers: {
       "Content-Type": "application/json;charset=utf-8",
     },
@@ -18,9 +22,8 @@ const apiInstance = () => {
 
 // Test
 const apiMock = () => {
-  console.log("apiMock");
   const instance = axios.create({
-    baseURL: process.env.TEST_URL,
+    baseURL: TEST_URL,
   });
   return instance;
 };
