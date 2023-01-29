@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 // [Import - Redux-action] redux-action 함수
-import { getTest } from "redux/actions/makeCardAction";
+import { actAddCard } from "redux/actions/makeCardAction";
 
 // BundleForm Template
 function BundleForm({ selected, handleChange }) {
@@ -53,7 +53,7 @@ function MakeProblem() {
   // (Data 1) Store Data
   const dispatch = useDispatch(); // state와 function을 보내는 함수
 
-  const { testValue, testData } = useSelector((state) => state.testValue); // state 값 가져오기
+  const { cardList } = useSelector((state) => state.makeReducer); // state 값 가져오기
   // const cardList = useSelector((state) => state.makeCard.cardList); // state 값 가져오기
   // console.log(cardList);
   // (Data 2) Local Data - Card Input Data
@@ -70,8 +70,9 @@ function MakeProblem() {
     bundleTitle: "",
   });
 
-  // (Data 3) bundleToggle 버튼!!
+  // (Data 3) Local - useState 버튼!!
   const [bundleToggle, setBundleToggle] = useState(false);
+  const [cardNo, setCardNo] = useState(1);
 
   // (Data 1 - Func) Catd Input Data Changed
   const handleChange = (event) => {
@@ -82,14 +83,16 @@ function MakeProblem() {
   // (Func 1) handleAdd
   const handleAdd = (e) => {
     e.preventDefault();
-    dispatch({ type: "CARD_ADD" });
+    actAddCard(cardNo).then((result) => {
+      dispatch(result);
+    });
+    setCardNo(cardNo + 1);
   };
 
   // (Func 2) handleDelete
-  const handleDelete = (e) => {
-    e.preventDefault();
-    dispatch({ type: "CARD_SUB" });
-    console.log(testData);
+  const handleDelete = (event, deleteNo) => {
+    event.preventDefault();
+    console.log("delete No: ", deleteNo);
   };
 
   // (Func 3-2) handleCreate 조건이 충족 된다면 axios 함수 실행
@@ -111,7 +114,7 @@ function MakeProblem() {
     e.preventDefault();
 
     // action 함수 호출 && reducer로 dispatch && store state 확인
-    getTest().then((result) => {
+    actAddCard().then((result) => {
       dispatch(result);
     });
 
@@ -120,8 +123,14 @@ function MakeProblem() {
 
     // 해당 조건이 충족 한다면
     if (true) {
-      onHandleAxios();
+      onHandleAxios(cardList);
     }
+  };
+
+  const handleConfirm = (e) => {
+    e.preventDefault();
+
+    console.log(cardList);
   };
 
   // (Func 4) useEffect
@@ -144,7 +153,7 @@ function MakeProblem() {
       autoComplete="off"
     >
       <Typography component="h1" variant="h3">
-        문제 만들기 // Test Value : {testValue}
+        현재 카드 리스트 :
       </Typography>
       <Box sx={{ mt: 2, display: "flex" }}>
         <Typography variant="h6">
@@ -211,11 +220,26 @@ function MakeProblem() {
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleAdd}>
           추가
         </Button>
-        <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleDelete}>
+        <Button
+          type="button"
+          variant="contained"
+          sx={{ m: 3 }}
+          size="large"
+          onClick={(event) => handleDelete(event, 2)}
+        >
           삭제
         </Button>
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleCreate}>
           생성
+        </Button>
+        <Button
+          type="button"
+          variant="contained"
+          sx={{ m: 3 }}
+          size="large"
+          onClick={handleConfirm}
+        >
+          Test console 확인
         </Button>
       </Box>
     </Box>

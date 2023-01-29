@@ -1,36 +1,31 @@
 // 1. Reducer의 초기 state 지정
 const initialState = {
-  testValue: 0,
-  cardList: "",
-  testData: [],
+  isBundle: false,
+  bundleTitle: null,
+  cardNo: 1,
+  cardList: [],
 };
 
 // 2. Type에 따른 state 변화 설정 && state가 변화할 때 수행되는 함수
 const makeCardReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "CARD_ADD": {
+    case "ADD_CARD": {
       return {
+        // spread 연산자를 이용하여 기존 객체를 불러옴
         ...state,
-        testValue: state.testValue + 1,
+        cardList: [...state.cardList, { ...action.payload }],
       };
     }
-    case "CARD_SUB": {
+    case "DELETE_CARD": {
       return {
         ...state,
-        testValue: state.testValue - 1,
+        cardList: state.cardList.filter(state.cardList[0].value === action.payload),
       };
     }
     case "RESET": {
       return {
         ...state,
-        cardList: action.payload.userId,
-      };
-    }
-    case "TEST_DATA": {
-      return {
-        // spread 연산자를 이용하여 기존 객체를 불러옴
-        ...state,
-        testData: [...state.testData, { ...action.payload }],
+        cardList: [],
       };
     }
     default:

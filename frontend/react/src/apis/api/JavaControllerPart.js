@@ -20,7 +20,7 @@ const api = apiInstance();
 const mock = apiMock();
 
 // Method 주소만 정의 -> 예시
-const apiTest = async () => {
+const apiGetCard = async () => {
   try {
     const response = await mock.get(`/1`);
     return response;
@@ -47,7 +47,7 @@ const apiAuth = async (success, fail) => {
 };
 
 // export 함수
-export { apiGet, apiPost, apiDelete, apiAuth, apiTest };
+export { apiGet, apiPost, apiDelete, apiAuth, apiGetCard };
 
 // const getPost = async (selectChannel) => {
 //   try {
