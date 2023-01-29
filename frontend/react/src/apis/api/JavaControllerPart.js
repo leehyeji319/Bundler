@@ -13,6 +13,7 @@
   axios.getUri([config])
 */
 
+// [Import] api instance
 import { apiInstance, apiMock } from "apis/utils/axios";
 
 const api = apiInstance();
@@ -20,8 +21,12 @@ const mock = apiMock();
 
 // Method 주소만 정의 -> 예시
 const apiTest = async () => {
-  const response = await mock.get(`/1`);
-  return response;
+  try {
+    const response = await mock.get(`/1`);
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
 const apiGet = async (success, fail) => {

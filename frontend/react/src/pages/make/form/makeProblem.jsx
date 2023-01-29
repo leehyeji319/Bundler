@@ -89,12 +89,12 @@ function MakeProblem() {
   const handleDelete = (e) => {
     e.preventDefault();
     dispatch({ type: "CARD_SUB" });
+    console.log(testData);
   };
 
   // (Func 3-2) handleCreate 조건이 충족 된다면 axios 함수 실행
   const onHandleAxios = async () => {
     console.log(bundleToggle);
-
     // Axios Post
     // await axios
     //   .post('/api/v1/cards', postData)
@@ -113,7 +113,6 @@ function MakeProblem() {
     // action 함수 호출 && reducer로 dispatch && store state 확인
     getTest().then((result) => {
       dispatch(result);
-      console.log(testData);
     });
 
     // submit 시, input value 초기화

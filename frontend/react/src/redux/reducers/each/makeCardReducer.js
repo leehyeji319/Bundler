@@ -27,12 +27,10 @@ const makeCardReducer = (state = initialState, action) => {
       };
     }
     case "TEST_DATA": {
-      // const no = state.testData.length;
-
       return {
         // spread 연산자를 이용하여 기존 객체를 불러옴
         ...state,
-        testData: [...state.testData, { 1: action.payload }],
+        testData: [...state.testData, { ...action.payload }],
       };
     }
     default:
@@ -41,6 +39,9 @@ const makeCardReducer = (state = initialState, action) => {
 };
 
 export default makeCardReducer;
+
+// testData: [...state.testData, { ...action.payload }],
+// testDataL state.testDate.concat(action.payload),
 
 // default: {
 //   return { state };
