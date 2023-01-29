@@ -2,7 +2,7 @@
 const initialState = {
   testValue: 0,
   cardList: "",
-  testData: {},
+  testData: [],
 };
 
 // 2. Type에 따른 state 변화 설정 && state가 변화할 때 수행되는 함수
@@ -27,9 +27,12 @@ const makeCardReducer = (state = initialState, action) => {
       };
     }
     case "TEST_DATA": {
+      // const no = state.testData.length;
+
       return {
+        // spread 연산자를 이용하여 기존 객체를 불러옴
         ...state,
-        testData: { ...action.payload },
+        testData: [...state.testData, { 1: action.payload }],
       };
     }
     default:
