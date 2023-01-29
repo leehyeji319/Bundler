@@ -12,12 +12,16 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.ssafy.bundler.config.jwt.JwtAuthenticationFilter;
 import com.ssafy.bundler.config.jwt.JwtAuthorizationFilter;
+import com.ssafy.bundler.config.oauth.PrincipalOauth2UserService;
 import com.ssafy.bundler.repository.UserRepository;
 
 // https://github.com/spring-projects/spring-security/issues/10822 참고
 @Configuration
 @EnableWebSecurity // 시큐리티 활성화 -> 기본 스프링 필터체인에 등록
 public class SecurityConfig {
+
+	@Autowired
+	private PrincipalOauth2UserService principalOauth2UserService;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -36,10 +40,10 @@ public class SecurityConfig {
 			.apply(new MyCustomDsl()) // 커스텀 필터 등록
 			.and()
 			// .authorizeHttpRequests(authroize ->
-			// 		authroize
-			// 			.requestMatchers("/api/v1/auth/**").hasRole("ROLE_USER")
-			// 			.requestMatchers("/api/v1/auth/manager/**").hasRole("ROLE_MANAGER")
-			// 			.requestMatchers("/api/v1/auth/admin/**").hasRole("ROLE_ADMIN")
+			// 	authroize
+			// 		.requestMatchers("/api/v1/auth/**").hasRole("ROLE_USER")
+			// 		.requestMatchers("/api/v1/auth/manager/**").hasRole("ROLE_MANAGER")
+			// 		.requestMatchers("/api/v1/auth/admin/**").hasRole("ROLE_ADMIN")
 			// )
 			.authorizeRequests(authroize -> //deprecated
 				authroize.requestMatchers("/api/v1/auth/user/**")
@@ -50,6 +54,11 @@ public class SecurityConfig {
 					.access("hasRole('ROLE_ADMIN')")
 					.anyRequest().permitAll()
 			)
+			// .and()
+			// .oauth2Login()
+			// .loginPage("/login")
+			// .userInfoEndpoint()
+			// .userService(principalOauth2UserService)
 			.build();
 	}
 

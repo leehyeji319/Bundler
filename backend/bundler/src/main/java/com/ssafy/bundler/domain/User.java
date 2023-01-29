@@ -46,18 +46,28 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "user_nickname", unique = true, nullable = false)
 	private String userNickname;
 
-	@Column(name = "user_introduction")
+	@Column(name = "user_introduction", nullable = false)
 	private String userIntroduction;
 
 	@Column(name = "user_profile_image", nullable = true)
 	private String userProfileImage;
 
-	@Column(name = "is_deleted")
+	@Column(name = "is_deleted", nullable = false)
 	@ColumnDefault(value = "0")
 	private boolean isDeleted;
 
-	@Column(name = "user_role")
+	@Column(name = "user_role", nullable = false)
 	private String userRole;
+
+	// OAuth를 위해 구성한 추가 필드 2개
+	@Column(name = "provider", nullable = true)
+	private String provider;
+
+	@Column(name = "provider_id", nullable = true)
+	private String providerId;
+
+	@Column(name = "provider_email", nullable = true)
+	private String providerEmail;
 
 	public List<String> getRoleList() {
 		if (this.userRole.length() > 0) {
