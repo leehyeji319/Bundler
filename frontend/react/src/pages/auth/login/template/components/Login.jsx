@@ -4,20 +4,22 @@ import axios from "axios";
 // @mui material components
 import { Button } from "@mui/material/";
 
+axios.defaults.headers["Access-Control-Allow-Origin"] = "*";
+
 // 로그인 함수를 실행해서
 function Login() {
   // setEmail 함수로 email 대응 하는 값을 변경할 수 있게 useState 생성
-  const [email, setEmail] = useState("");
+  const [username, setEmail] = useState("");
   // setPassword 함수로 password 대응 하는 값을 변경할 수 있게 useState 생성
   const [password, setPassword] = useState("");
   // login 함수를 실행하면
   const login = () => {
     // 아래와 같은 조건으로 axios 보냄
     axios({
-      url: "http://localhost:8123/login",
+      url: "http://localhost:8087/login",
       method: "POST",
       withCredentials: true,
-      data: { email, password },
+      data: { username, password },
     })
       // axios 요청이 성공한다면 200과 함께 프로필 화면을 보여줌
       .then((result) => {
@@ -38,7 +40,7 @@ function Login() {
             placeholder="email"
             className="inputValue"
             onChange={(e) => setEmail(e.target.value)}
-            value={email}
+            value={username}
           />
         </label>
       </div>
