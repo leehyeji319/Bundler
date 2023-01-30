@@ -1,4 +1,4 @@
-package com.ssafy.bundler.dto.feed.reqeust;
+package com.ssafy.bundler.dto.card.reqeust;
 
 import java.util.List;
 

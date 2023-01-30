@@ -1,4 +1,4 @@
-package com.ssafy.bundler.dto.feed.reqeust;
+package com.ssafy.bundler.dto.card.reqeust;
 
 import com.ssafy.bundler.domain.Card;
 import com.ssafy.bundler.domain.CardType;
@@ -24,8 +24,8 @@ public class CardSaveRequestDto {
 	private String feedContent;
 
 	@NotEmpty
-	private Long categoryFirstId;
-	private Long categorySecondId;
+	private Long categoryId;
+	// private Long categorySecondId;
 
 	@NotEmpty
 	private String cardType;
@@ -34,8 +34,6 @@ public class CardSaveRequestDto {
 	private String cardCommentary;
 
 	private Long feedId;
-
-	//ㅅㅂ 카테고리 이해가 안감
 
 	public Card toEntity(User writer) {
 		return Card.builder()
