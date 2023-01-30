@@ -33,17 +33,18 @@ public class FeedCategory implements Serializable {
 	@Column(name = "feed_id")
 	private Long feedId;
 
-	@Column(name = "category_id")
-	private Long categoryId;
+	@Column(name = "target_category_id")
+	private Long targetCategoryId;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = LAZY)
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	@Builder
-	public FeedCategory(Long feedId, Long categoryId) {
+	@Builder(toBuilder = true)
+	public FeedCategory(Long feedCategoryId, Long feedId, Long targetCategoryId) {
+		this.feedCategoryId = feedCategoryId;
 		this.feedId = feedId;
-		this.categoryId = categoryId;
+		this.targetCategoryId = targetCategoryId;
 	}
 
 }
