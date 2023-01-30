@@ -6,4 +6,6 @@ import com.ssafy.bundler.domain.FeedCategory;
 
 public interface FeedCategoryRepository extends JpaRepository<FeedCategory, Long> {
 
+	FeedCategory findByFeedId(Long feedId);
+
 }
