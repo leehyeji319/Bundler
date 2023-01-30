@@ -53,7 +53,7 @@ function MakeProblem() {
   // (Data 1) Store Data
   const dispatch = useDispatch(); // state와 function을 보내는 함수
 
-  const { cardList } = useSelector((state) => state.makeReducer); // state 값 가져오기
+  const { cardList, cardNo } = useSelector((state) => state.makeReducer); // state 값 가져오기
   // const cardList = useSelector((state) => state.makeCard.cardList); // state 값 가져오기
   // console.log(cardList);
   // (Data 2) Local Data - Card Input Data
@@ -64,6 +64,7 @@ function MakeProblem() {
     feedContent: "",
     categoryFirst: "",
     categorySecond: "",
+    cardno: 1,
     cardType: "card_general",
     cardDescription: "",
     cardCommentary: "",
@@ -72,7 +73,6 @@ function MakeProblem() {
 
   // (Data 3) Local - useState 버튼!!
   const [bundleToggle, setBundleToggle] = useState(false);
-  const [cardNo, setCardNo] = useState(1);
 
   // (Data 1 - Func) Catd Input Data Changed
   const handleChange = (event) => {
@@ -83,11 +83,22 @@ function MakeProblem() {
   // (Func 1) handleAdd
   const handleAdd = (e) => {
     e.preventDefault();
-    actAddCard(cardNo).then((result) => {
-      dispatch(result);
-    });
-    setCardNo(cardNo + 1);
+    setValues((state) => ({ ...state, cardno: cardNo }));
+    const result = actAddCard(values);
+    dispatch(result);
+    // actAddCard(values).then((result) => {
+    //   console.log(values);
+    //   dispatch(result);
+    // });
   };
+
+  // const handleAdd = (e) => {
+  //   e.preventDefault();
+  //   actAddCard(values).then((result) => {
+  //     console.log(values);
+  //     dispatch(result);
+  //   });
+  // };
 
   // (Func 2) handleDelete
   const handleDelete = (event, deleteNo) => {

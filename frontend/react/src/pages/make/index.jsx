@@ -13,10 +13,14 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 // Mui-Material components
 import { FormControl, FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
 
+// [Import - React-Redux]
+// import { useSelector } from "react-redux";
+
 // 작성 Form
 import MakeProblem from "pages/make/form/makeProblem";
 import MakeGeneral from "pages/make/form/makeGeneral";
 import MakeLink from "pages/make/form/makeLink";
+import MakeCardList from "pages/make/form/makeCardList";
 
 function SelectedCategory({ selected }) {
   switch (selected) {
@@ -35,6 +39,7 @@ SelectedCategory.propTypes = {
 };
 
 function Make() {
+  // const { editCardType } = useSelector((state) => state.makeReducer);
   const [value, setValue] = React.useState("quiz");
 
   const handleChangeCategory = (event) => {
@@ -60,6 +65,7 @@ function Make() {
         </RadioGroup>
       </FormControl>
       <SelectedCategory selected={value} />
+      <MakeCardList />
     </DashboardLayout>
   );
 }

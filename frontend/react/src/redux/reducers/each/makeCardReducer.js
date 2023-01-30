@@ -2,7 +2,8 @@
 const initialState = {
   isBundle: false,
   bundleTitle: null,
-  cardNo: 1,
+  editCardType: "quiz",
+  cardNo: 2,
   cardList: [],
 };
 
@@ -14,6 +15,7 @@ const makeCardReducer = (state = initialState, action) => {
         // spread 연산자를 이용하여 기존 객체를 불러옴
         ...state,
         cardList: [...state.cardList, { ...action.payload }],
+        cardNo: state.cardNo + 1,
       };
     }
     case "DELETE_CARD": {
