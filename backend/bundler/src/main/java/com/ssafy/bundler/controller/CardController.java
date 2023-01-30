@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.bundler.domain.CardType;
-import com.ssafy.bundler.dto.feed.reqeust.CardListSaveRequestDto;
-import com.ssafy.bundler.dto.feed.reqeust.CardSaveRequestDto;
-import com.ssafy.bundler.dto.feed.reqeust.CardUpdateRequestDto;
+import com.ssafy.bundler.dto.card.reqeust.CardListSaveRequestDto;
+import com.ssafy.bundler.dto.card.reqeust.CardSaveRequestDto;
+import com.ssafy.bundler.dto.card.reqeust.CardUpdateRequestDto;
 import com.ssafy.bundler.service.CardService;
 
 import lombok.RequiredArgsConstructor;

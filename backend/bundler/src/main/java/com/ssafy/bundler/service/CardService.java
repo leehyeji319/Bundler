@@ -12,9 +12,9 @@ import com.ssafy.bundler.domain.CardType;
 import com.ssafy.bundler.domain.FeedCategory;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.bundle.BundleScrapRequestDto;
-import com.ssafy.bundler.dto.feed.reqeust.CardListSaveRequestDto;
-import com.ssafy.bundler.dto.feed.reqeust.CardSaveRequestDto;
-import com.ssafy.bundler.dto.feed.reqeust.CardUpdateRequestDto;
+import com.ssafy.bundler.dto.card.reqeust.CardListSaveRequestDto;
+import com.ssafy.bundler.dto.card.reqeust.CardSaveRequestDto;
+import com.ssafy.bundler.dto.card.reqeust.CardUpdateRequestDto;
 import com.ssafy.bundler.repository.CardBundleRepository;
 import com.ssafy.bundler.repository.CardRepository;
 import com.ssafy.bundler.repository.FeedCategoryRepository;
@@ -22,6 +22,7 @@ import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 카드 생성과 수정 삭제
@@ -33,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class CardService {
 
 	private final CardRepository cardRepository;
@@ -41,19 +43,16 @@ public class CardService {
 	private final FeedCategoryRepository feedCategoryRepository;
 	private final CardBundleRepository cardBundleRepository;
 
-	//카드 개별 조회
-
 	//문제, 일반 카드 생성
 	@Transactional
 	public Long saveCard(CardSaveRequestDto requestDto) {
-		User writerUser = userRepository.findById(requestDto.getUserId()).orElseThrow(() ->
+
+		User writerUser = userRepository.findByUserId(requestDto.getUserId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 유저가 존재하지 않습니다. userId= " + requestDto.getUserId()));
 		Long savedFeedId = cardRepository.save(requestDto.toEntity(writerUser)).getFeedId();
-		//카테고리 넣어주기
-		saveFeedCategory(savedFeedId, requestDto.getCategoryFirstId());
-		if (requestDto.getCategorySecondId() != null) {
-			saveFeedCategory(savedFeedId, requestDto.getCategorySecondId());
-		}
+		//카테고리 넣어주기 (대분류만 있으면 대분류의 id만, 중분류까지 있으면 중분류의 id 하나만 들어간다.)
+		saveFeedCategory(savedFeedId, requestDto.getCategoryId());
+
 		return savedFeedId;
 	}
 
@@ -109,11 +108,22 @@ public class CardService {
 	//수정 -> 링크카드와 일반카드일때 다름
 	@Transactional
 	public Long updateCard(Long feedId, CardUpdateRequestDto requestDto) {
-		Card findCard = cardRepository.findById(feedId).orElseThrow(() ->
+		Card findCard = cardRepository.findByCardId(feedId).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드를 찾을 수 없습니다. cardId(feedId)= " + feedId));
 
-		findCard.updateCard(requestDto.getFeedTitle(), requestDto.getFeedContent(), requestDto.getCardDescription(),
-			requestDto.getCardCommentary());
+		cardRepository.save(findCard.toBuilder().feedId(feedId)
+			.feedTitle(requestDto.getFeedTitle())
+			.feedContent(requestDto.getFeedContent())
+			.cardDescription(requestDto.getCardDescription())
+			.cardCommentary(requestDto.getCardCommentary())
+			.build());
+
+		FeedCategory findFeedCategory = feedCategoryRepository.findByFeedId(feedId);
+		feedCategoryRepository.save(findFeedCategory.toBuilder()
+			.feedCategoryId(findFeedCategory.getFeedCategoryId())
+			.feedId(feedId)
+			.targetCategoryId(requestDto.getCategoryId())
+			.build());
 
 		return feedId;
 	}
@@ -135,10 +145,11 @@ public class CardService {
 		feedCategoryRepository.save(
 			FeedCategory.builder()
 				.feedId(feedId)
-				.categoryId(categoryId)
+				.targetCategoryId(categoryId)
 				.build());
 	}
 
+	//===== Bundle =====//
 	//있던 번들에 카드를 스크랩 -> 여기 바꾸ㅓ야함
 	@Transactional
 	public void scrapCardWithExistBundle(BundleScrapRequestDto requestDto) {
