@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Entity
-@Table(name = "FOLLOWS")
+@Table(name = "FOLLOWS", uniqueConstraints = @UniqueConstraint(columnNames = {"follow_to_id", "follow_from_id"}))
 public class Follow extends BaseEntity implements Serializable {
 
 	@Id
