@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 // [Import - Redux-action] redux-action 함수
-import { actAddCard } from "redux/actions/makeCardAction";
+import { actAddCard, actEditCard } from "redux/actions/makeCardAction";
 
 // BundleForm Template
 function BundleForm({ selected, handleChange }) {
@@ -50,12 +50,10 @@ BundleForm.propTypes = {
 };
 
 function MakeProblem() {
+  // ------------ Data ----------------
   // (Data 1) Store Data
-  const dispatch = useDispatch(); // state와 function을 보내는 함수
+  const { cardList, cardNo, editCardNumber } = useSelector((state) => state.makeReducer); // state 값 가져오기
 
-  const { cardList, cardNo } = useSelector((state) => state.makeReducer); // state 값 가져오기
-  // const cardList = useSelector((state) => state.makeCard.cardList); // state 값 가져오기
-  // console.log(cardList);
   // (Data 2) Local Data - Card Input Data
   const [values, setValues] = useState({
     userId: "testID",
@@ -64,7 +62,7 @@ function MakeProblem() {
     feedContent: "",
     categoryFirst: "",
     categorySecond: "",
-    cardno: 1,
+    cardno: null,
     cardType: "card_general",
     cardDescription: "",
     cardCommentary: "",
@@ -73,6 +71,7 @@ function MakeProblem() {
 
   // (Data 3) Local - useState 버튼!!
   const [bundleToggle, setBundleToggle] = useState(false);
+  const [editCardIndex, setEditCardIndex] = useState(0);
 
   // (Data 1 - Func) Catd Input Data Changed
   const handleChange = (event) => {
@@ -80,79 +79,99 @@ function MakeProblem() {
     setValues({ ...values, [name]: value });
   };
 
+  // ------------ Function ----------------
+  const dispatch = useDispatch(); // state와 function을 보내는 함수
+
+  const initStateRender = () => {
+    const initStateList = ["feedTitle", "feedContent", "cardDescription"];
+    // component data - 값 초기화
+    initStateList.forEach((name) => setValues({ values, [name]: "" }));
+    // setValues({ ...values, feedContent: "" });
+    // setValues({ ...values, cardDescription: "" });
+    // setValues({ ...values, feedTitle: "" });
+
+    // render 값 초기환
+    document.querySelector("#problem-title").value = "";
+    document.querySelector("#problem-content").value = "";
+    document.querySelector("#problem-description").value = "";
+  };
+
   // (Func 1) handleAdd
   const handleAdd = (e) => {
     e.preventDefault();
-    setValues((state) => ({ ...state, cardno: cardNo }));
+
+    // store data - cardList에 card추가
     const result = actAddCard(values);
     dispatch(result);
-    // actAddCard(values).then((result) => {
-    //   console.log(values);
-    //   dispatch(result);
-    // });
+
+    // 값 초기화
+    initStateRender();
   };
 
-  // const handleAdd = (e) => {
-  //   e.preventDefault();
-  //   actAddCard(values).then((result) => {
-  //     console.log(values);
-  //     dispatch(result);
-  //   });
-  // };
+  // (Func 2) handleEdit - 카드리스트 안의 카드 수정
+  const handleEdit = (event) => {
+    event.preventDefault();
 
-  // (Func 2) handleDelete
+    const result = actEditCard(editCardIndex, values);
+    dispatch(result);
+
+    // 값 초기화
+    initStateRender();
+  };
+
+  // (Func 3) handleDelete
   const handleDelete = (event, deleteNo) => {
     event.preventDefault();
     console.log("delete No: ", deleteNo);
   };
 
-  // (Func 3-2) handleCreate 조건이 충족 된다면 axios 함수 실행
-  const onHandleAxios = async () => {
-    console.log(bundleToggle);
-    // Axios Post
-    // await axios
-    //   .post('/api/v1/cards', postData)
-    //   .then(function(response) {
-    //     console.log("success");
-    //   })
-    //   .catch((err) => {
-    //     console.log("error");
-    //   });
-  };
-
-  // (Func 3-1) 생성 버튼 클릭 시
+  // (Func 4) 생성 버튼 클릭 시
   const handleCreate = (e) => {
     e.preventDefault();
 
-    // action 함수 호출 && reducer로 dispatch && store state 확인
-    actAddCard().then((result) => {
-      dispatch(result);
-    });
-
-    // submit 시, input value 초기화
-    // document.querySelector("#problem-title").value = "";
-
-    // 해당 조건이 충족 한다면
-    if (true) {
-      onHandleAxios(cardList);
-    }
-  };
-
-  const handleConfirm = (e) => {
-    e.preventDefault();
-
+    console.log(values);
     console.log(cardList);
+
+    // action 함수 호출 && reducer로 dispatch && store state 확인
+    // actAddCard().then((result) => {
+    //   dispatch(result);
+    // });
   };
 
   // (Func 4) useEffect
   useEffect(() => {
-    console.log("Component가 화면에 나타남 === mount");
-    return () => {
-      console.log("Component가 화면에 사라짐 === unmount");
-    };
-  }, []);
+    // Component가 화면에 나타남 === mount"
+    // cardno update
+    setValues({ ...values, cardno: cardNo });
 
-  // retrun 문
+    // editCardNo가 변화하게 된다면
+    // cardList에서 수정할 card 정보 불러오기
+    if (editCardNumber !== -1) {
+      const selectedTitle = cardList[editCardNumber].feedTitle;
+      const selectedContent = cardList[editCardNumber].feedContent;
+      const selectedDescription = cardList[editCardNumber].cardDescription;
+      // component data - 값 업데이트
+      setValues({ ...values, feedTitle: selectedTitle });
+      setValues({ ...values, feedContent: selectedContent });
+      setValues({ ...values, cardDescription: selectedDescription });
+      console.log(values);
+
+      // render 값 업데이트
+      document.querySelector("#problem-title").value = selectedTitle;
+      document.querySelector("#problem-content").value = selectedContent;
+      document.querySelector("#problem-description").value = selectedDescription;
+
+      // 수정할 card번호 다시 초기화
+      setEditCardIndex(editCardNumber);
+      dispatch({ type: "INIT_CARD_NO" });
+    }
+
+    // Component가 화면에 사라짐 === unmount
+    // return () => {
+    // };
+  }, [cardNo, editCardNumber]);
+
+  // ------------ Return ----------------
   return (
     <Box
       component="form"
@@ -164,7 +183,7 @@ function MakeProblem() {
       autoComplete="off"
     >
       <Typography component="h1" variant="h3">
-        현재 카드 리스트 :
+        현재 카드 리스트
       </Typography>
       <Box sx={{ mt: 2, display: "flex" }}>
         <Typography variant="h6">
@@ -231,6 +250,9 @@ function MakeProblem() {
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleAdd}>
           추가
         </Button>
+        <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleEdit}>
+          수정
+        </Button>
         <Button
           type="button"
           variant="contained"
@@ -242,15 +264,6 @@ function MakeProblem() {
         </Button>
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleCreate}>
           생성
-        </Button>
-        <Button
-          type="button"
-          variant="contained"
-          sx={{ m: 3 }}
-          size="large"
-          onClick={handleConfirm}
-        >
-          Test console 확인
         </Button>
       </Box>
     </Box>
