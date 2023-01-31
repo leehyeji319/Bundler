@@ -12,8 +12,8 @@ import Card from "@mui/material/Card";
 import { useState } from "react";
 // import Divider from "@mui/material/Divider";
 // import Icon from "@mui/material/Icon";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MobileScreenShareIcon from '@mui/icons-material/MobileScreenShare';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -21,70 +21,73 @@ import MDTypography from "components/MDTypography";
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 import HomeCardModal from "./ThumnailCardModal";
 
-
-function BundleThumbnail({ bundleId, cardType, bundleTitle, bundleLike, bundlePrivate, bundleImage, bundleThumtext  }) {
+function BundleThumbnail({
+  bundleId,
+  cardType,
+  bundleTitle,
+  bundleLike,
+  bundlePrivate,
+  bundleImage,
+  bundleThumtext,
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
 
   return (
     <Card>
       <MDBox p={3}>
-        <MDTypography 
-          display="inline"
-          variant="h3" 
-          textTransform="capitalize" 
-          fontWeight="bold"
-          >
+        <MDTypography display="inline" variant="h3" textTransform="capitalize" fontWeight="bold">
           {cardType}
         </MDTypography>
         <MDTypography variant="body2" component="p" color="text">
           {bundleTitle}
         </MDTypography>
         <MDBox mt={2} mb={3}>
-          <MDTypography>
-            {bundleId}
-          </MDTypography>
+          <MDTypography>{bundleId}</MDTypography>
           <MDBox>
             <MDBox>
               <FavoriteIcon
                 sx={{
                   width: "19px",
-                  height : "20px",
+                  height: "20px",
                 }}
-                color = "primary"
+                color="primary"
                 style={{
                   float: "left",
                 }}
               />
               <MDTypography
                 sx={{
-                  fontSize : "15px",  
+                  fontSize: "15px",
                 }}
                 style={{
                   float: "left",
-                }}>
+                }}
+              >
                 {bundleLike}
               </MDTypography>
             </MDBox>
             <MDBox
               sx={{
-                marginLeft : "10%",
-              }}>
-              <MobileScreenShareIcon 
+                marginLeft: "10%",
+              }}
+            >
+              <MobileScreenShareIcon
                 sx={{
                   width: "19px",
-                  height : "20px",
+                  height: "20px",
                 }}
-                color = "white"
+                color="white"
                 style={{
                   float: "left",
                 }}
               />
               <MDTypography
                 sx={{
-                  fontSize : "15px",  
-                }}>
-                {bundlePrivate }
+                  fontSize: "15px",
+                }}
+              >
+                {bundlePrivate}
               </MDTypography>
             </MDBox>
           </MDBox>
@@ -100,11 +103,9 @@ BundleThumbnail.propTypes = {
   cardType: PropTypes.string.isRequired,
   bundleTitle: PropTypes.string.isRequired,
   bundleLike: PropTypes.number.isRequired,
-  bundlePrivate : PropTypes.oneOf(["public", "private"]),
-  bundleImage : PropTypes.string.isRequired,
-  bundleThumtext : PropTypes.string.isRequired,
+  bundlePrivate: PropTypes.oneOf(["public", "private"]),
+  bundleImage: PropTypes.string.isRequired,
+  bundleThumtext: PropTypes.string.isRequired,
 };
 
-
 export default BundleThumbnail;
-

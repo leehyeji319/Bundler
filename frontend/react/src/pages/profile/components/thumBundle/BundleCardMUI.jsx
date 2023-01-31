@@ -12,9 +12,9 @@ import Card from "@mui/material/Card";
 import { useState } from "react";
 // import Divider from "@mui/material/Divider";
 // import Icon from "@mui/material/Icon";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MobileScreenShareIcon from '@mui/icons-material/MobileScreenShare';
-import SettingsIcon from '@mui/icons-material/Settings';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -22,8 +22,15 @@ import MDTypography from "components/MDTypography";
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 import HomeCardModal from "./ThumnailCardModal";
 
-
-function BundleThumbnail3 ({ bundleId, cardType, bundleTitle, bundleLike, bundlePrivate, bundleImage, bundleThumtext  }) {
+function BundleThumbnail3({
+  bundleId,
+  cardType,
+  bundleTitle,
+  bundleLike,
+  bundlePrivate,
+  bundleImage,
+  bundleThumtext,
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
 
@@ -115,16 +122,14 @@ function BundleThumbnail3 ({ bundleId, cardType, bundleTitle, bundleLike, bundle
 }
 
 // 썸네일 카드의 프롭타입 설정
-BundleThumbnail3  .propTypes = {
+BundleThumbnail3.propTypes = {
   bundleId: PropTypes.number.isRequired,
   cardType: PropTypes.string.isRequired,
   bundleTitle: PropTypes.string.isRequired,
   bundleLike: PropTypes.number.isRequired,
-  bundlePrivate : PropTypes.oneOf(["public", "private"]),
-  bundleImage : PropTypes.string.isRequired,
-  bundleThumtext : PropTypes.string.isRequired,
+  bundlePrivate: PropTypes.oneOf(["public", "private"]),
+  bundleImage: PropTypes.string.isRequired,
+  bundleThumtext: PropTypes.string.isRequired,
 };
 
-
-export default BundleThumbnail3 ;
-
+export default BundleThumbnail3;

@@ -1,18 +1,16 @@
-/*
- 기본 홈 Page 구성  
- */
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-function SearchAll() {
+// import template
+import SignUpTemplate from "pages/signup/signupTemplate/signupTemplate";
+
+function SignUp() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div>search all</div>
+      <SignUpTemplate />
     </DashboardLayout>
   );
 }
 
-export default SearchAll;
+export default SignUp;
