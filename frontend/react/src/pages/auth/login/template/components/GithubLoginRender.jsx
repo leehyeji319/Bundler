@@ -15,7 +15,7 @@ function GithubLoginRender(props) {
     axios({
       url: "https://api.github.com/user",
       method: "GET",
-      // withCredentials: true,
+      withCredentials: true,
       headers: { Authorization: `Token ${accessToken}` },
     })
       .then((result) => {
