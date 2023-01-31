@@ -1,5 +1,9 @@
 package com.ssafy.bundler.config;
 
+import static org.springframework.security.config.Customizer.*;
+
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.ssafy.bundler.config.jwt.JwtAuthenticationFilter;
 import com.ssafy.bundler.config.jwt.JwtAuthorizationFilter;
@@ -26,13 +33,14 @@ public class SecurityConfig {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private CorsConfig corsConfig;
+	// @Autowired
+	// private CorsConfig corsConfig;
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		return http
-			.csrf().disable()
+		return http.csrf(csrf -> csrf.disable())
+			.cors(withDefaults())
+			
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.formLogin().disable()
@@ -67,10 +75,20 @@ public class SecurityConfig {
 		public void configure(HttpSecurity http) throws Exception {
 			AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
 			http
-				.addFilter(corsConfig.corsFilter())
+				// .addFilter(corsConfig.corsFilter())
 				.addFilter(new JwtAuthenticationFilter(authenticationManager))
 				.addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
 		}
+	}
+
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("https://localhost:3000"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 
 }
