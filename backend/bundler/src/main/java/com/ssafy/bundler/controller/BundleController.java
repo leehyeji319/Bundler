@@ -27,7 +27,7 @@ public class BundleController {
 	//번들을 생성 (빈번들,카드+번들)
 	@PostMapping
 	public ResponseEntity<?> saveBundle(@RequestBody BundleSaveRequestDto requestDto) {
-		if (requestDto.getCardListSaveRequestDto() == null) {
+		if (requestDto.getCardSaveRequestDtoList() == null) {
 			bundleService.saveBundle(requestDto);
 		} else {
 			bundleService.saveBundleWithCards(requestDto);

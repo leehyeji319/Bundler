@@ -53,7 +53,7 @@ public class BundleService {
 	@Transactional
 	public void saveBundleWithCards(BundleSaveRequestDto requestDto) {
 		Long savedBundleId = saveBundle(requestDto);
-		List<Long> savedCardsIdList = cardService.saveCardListwithBundle(requestDto.getCardListSaveRequestDto());
+		List<Long> savedCardsIdList = cardService.saveCardListwithBundle(requestDto.getCardSaveRequestDtoList());
 
 		for (Long savedCardId : savedCardsIdList) {
 			saveCardBundle(savedBundleId, savedCardId);
@@ -66,6 +66,10 @@ public class BundleService {
 		//일단 번들을 찾아서 피드의 정보를 가져와서 새번들을 만들어
 		Bundle bundle = bundleRepository.findById(requestDto.getBundleId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 번들의 Id가 존재하지 않습니다. bundleId(feedId)= " + requestDto.getBundleId()));
+
+		if (bundle.getWriter().getUserId().equals(requestDto.getUserId())) {
+			throw new IllegalArgumentException("이미 사용자에게 존재하는 번들입니다.");
+		}
 
 		//기본 정보를 복사한 빈 번들 생성
 		BundleSaveRequestDto bundleSaveRequestDto = BundleSaveRequestDto.builder()
@@ -86,7 +90,6 @@ public class BundleService {
 		for (CardBundle forScrapTargetCardBundle : allByBundleIdForScarpCard) {
 			Long forScrapTargetCardId = forScrapTargetCardBundle.getCardId();
 			saveCardBundle(saveBundleId, forScrapTargetCardId);
-			//scrapCnt++
 			Card card = getCard(forScrapTargetCardId);
 			card.addCardScrapCnt();
 		}
@@ -114,11 +117,18 @@ public class BundleService {
 	//번들 찐 정보 수정
 	@Transactional
 	public Long updateBundleInfo(Long feedId, BundleUpdateRequestDto requestDto) {
-		Bundle bundle = bundleRepository.findById(feedId).orElseThrow(() ->
+		Bundle findBundle = bundleRepository.findById(feedId).orElseThrow(() ->
 			new IllegalArgumentException("해당 번들의 id가 존재하지 않습니다 bundleId(feedId)= " + feedId));
-		bundle.updateBundle(requestDto.getFeedTitle(), requestDto.getFeedContent(),
-			requestDto.getBundleThumbnail(), requestDto.getBundleThumbnailText(), requestDto.isBundlePublic());
 
+		bundleRepository.save(findBundle.toBuilder().feedId(feedId)
+			.feedTitle(requestDto.getFeedTitle())
+			.feedContent(requestDto.getFeedContent())
+			.bundleThumbnail(requestDto.getBundleThumbnail())
+			.bundleThumbnailText(requestDto.getBundleThumbnailText())
+			.isBundlePublic(requestDto.isBundlePublic())
+			.build()
+		);
+		
 		return feedId;
 	}
 
@@ -143,7 +153,7 @@ public class BundleService {
 
 	//cardId로 Card객체 가져오기
 	public Card getCard(Long cardId) {
-		return cardRepository.findById(cardId).orElseThrow(() ->
+		return cardRepository.findByCardId(cardId).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드의 id가 존재하지 않습니다. cardId(feedId)= " + cardId));
 	}
 }
