@@ -2,15 +2,17 @@
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-function Profile() {
+// import template
+import SignTemplate from "./template/signTemplate";
+// import App from "./template/App";
+
+function AuthLogin() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div>
-        <h1>Profile</h1>
-      </div>
+      <SignTemplate />
     </DashboardLayout>
   );
 }
 
-export default Profile;
+export default AuthLogin;
