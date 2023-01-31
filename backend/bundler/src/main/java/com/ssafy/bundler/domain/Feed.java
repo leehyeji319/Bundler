@@ -20,7 +20,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -68,12 +67,12 @@ public class Feed extends BaseEntity implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User writer;
 
-	@Builder.Default
+	// @Builder.Default
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "feed_id")
 	private List<Comment> commentList;
 
-	@Builder.Default
+	// @Builder.Default
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "feed_id")
 	private List<FeedCategory> feedCategoryList;
@@ -85,12 +84,6 @@ public class Feed extends BaseEntity implements Serializable {
 	private boolean isFeedLiked;
 
 	//=== 비즈니스 로직 ===//
-
-	//수정
-	public void update(String feedTitle, String feedContent) {
-		this.feedTitle = feedTitle;
-		this.feedContent = feedContent;
-	}
 
 	//피드 삭제 isDeleted
 	public void deleteFeed() {

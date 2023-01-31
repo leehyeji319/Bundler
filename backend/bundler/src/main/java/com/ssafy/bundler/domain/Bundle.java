@@ -37,7 +37,7 @@ public class Bundle extends Feed implements Serializable {
 	@Column(name = "bundle_thumbnail_text")
 	private String bundleThumbnailText;
 
-	@Column(name = "bundle_is_public")
+	@Column(name = "is_bundle_public")
 	private boolean isBundlePublic;
 
 	@Builder.Default
@@ -47,15 +47,6 @@ public class Bundle extends Feed implements Serializable {
 
 	public void addCardBundle(final CardBundle cardBundle) {
 		cardList.add(cardBundle);
-	}
-
-	//번들 수정
-	public void updateBundle(String feedTitle, String feedContent, String bundleThumbnail,
-		String bundleThumbnailText, boolean isBundlePublic) {
-		super.update(feedTitle, feedContent);
-		this.bundleThumbnail = bundleThumbnail;
-		this.bundleThumbnailText = bundleThumbnailText;
-		this.isBundlePublic = isBundlePublic;
 	}
 
 }

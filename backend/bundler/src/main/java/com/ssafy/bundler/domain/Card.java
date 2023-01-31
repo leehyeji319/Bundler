@@ -45,19 +45,10 @@ public class Card extends Feed implements Serializable {
 	@Column(name = "card_type")
 	@Enumerated(EnumType.STRING)
 	private CardType cardType;
-
-	//피드 업데이트 - 카테고리는 제외 (추후 추가)
-
-	public void updateCard(String feedTitle, String feedContent, String cardDescription, String cardCommentary) {
-		// this.setFeedTitle(feedTitle);
-		// this.setFeedContent(feedContent);
-		super.update(feedTitle, feedContent);
-		this.cardDescription = cardDescription;
-		this.cardCommentary = cardCommentary;
-	}
-
+	
 	//==== 비즈니스 로직 ====//
 	public void addCardScrapCnt() {
 		this.cardScrapCnt++;
 	}
+
 }
