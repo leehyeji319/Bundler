@@ -128,7 +128,7 @@ public class BundleService {
 			.isBundlePublic(requestDto.isBundlePublic())
 			.build()
 		);
-		
+
 		return feedId;
 	}
 
@@ -141,6 +141,12 @@ public class BundleService {
 		findBundle.deleteFeed();
 
 		return feedId;
+	}
+
+	//번들에 있는 카드 스크랩 취소
+	@Transactional
+	public void scrapCancelCardInBundle(Long bundleId, Long cardId) {
+		cardBundleRepository.deleteCardBundleByBundleIdWithCardId(bundleId, cardId);
 	}
 
 	//유저를 생성할때 기본 번들 생성 메서드 (유저 서비스에서 호출)

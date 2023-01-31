@@ -1,6 +1,7 @@
 package com.ssafy.bundler.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -46,5 +47,13 @@ public class ScrapController {
 		cardService.scrapCardWithExistBundle(requestDto);
 
 		return ResponseEntity.ok("기존의 번들에 카드 스크랩 성공.");
+	}
+
+	//번들에 존재하는 카드 목록중 하나를 삭제할 때
+	@DeleteMapping("/scrap/bundles/cards/{bundleId}/{cardId}")
+	public ResponseEntity<?> scrapCancelCardInBundle(@PathVariable Long bundleId, @PathVariable Long cardId) {
+		bundleService.scrapCancelCardInBundle(bundleId, cardId);
+
+		return ResponseEntity.ok("번들에서 카드 스크랩 취소");
 	}
 }
