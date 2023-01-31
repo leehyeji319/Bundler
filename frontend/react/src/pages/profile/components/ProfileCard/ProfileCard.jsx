@@ -14,7 +14,7 @@ import PropTypes from "prop-types";
 // import Card from "@mui/material/Card";
 // import MuiLink from "@mui/material/Link";
 // import Button from "@mui/material/Button";
-// import Modal from "@mui/material/Modal";
+import Modal from "@mui/material/Modal";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -31,13 +31,33 @@ import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import GroupsIcon from '@mui/icons-material/Groups';
+import SettingsIcon from '@mui/icons-material/Settings';
+
+
+import { useState } from "react";
+import FollowingBox from "pages/profile/components/Follow/FollowingBox";
+import FollowerBox from "../Follow/FollowerBox";
+import ProfileSetBox from "../SettingModal/ProfileSetting";
 
 function ProfileCard({ profileImage, nickname, email, introduction, group }) {
+
+const [open, setOpen] = useState(false);
+const handleOpen = () => setOpen(true);
+const handleClose = () => setOpen(false);
+
+const [open2, setOpen2] = useState(false);
+const FollowerOpen = () => setOpen2(true);
+const FollowerClose = () => setOpen2(false);
+
+const [open3, setOpen3] = useState(false);
+const ProfileSetOpen = () => setOpen3(true);
+const ProfileSetClose = () => setOpen3(false);
+
 
   return (
     <MDBox
     sx={{
-      width: 491,
+      width: 500,
       height: 279,
       backgroundColor: "#1C1A25",
       marginTop: "30px",
@@ -47,10 +67,25 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
     }}
     style={{
       justifyContent:"flex-start"
-    }}>
+    }}
+    >
+    <Modal open={open} onClose={handleClose}>
+      <FollowingBox
+        nickname="임성준"
+      />
+    </Modal>
+    <Modal open={open2} onClose={FollowerClose}>
+      <FollowerBox
+        nickname="임성준"
+      />
+    </Modal>
+    <Modal open={open3} onClose={ProfileSetClose}>
+      <ProfileSetBox
+      />
+    </Modal>
     <MDBox // 이미지와 이름, 이메일, 소속 담을 박스
       sx={{
-        width: "400px",
+        width: "450px",
         height: "110px",
         marginTop: "20px"
       }}
@@ -87,17 +122,34 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
         </MDTypography>
         <MDBox>
           <AlternateEmailIcon sx = {{color : 'gray'}}/>
-          <MDTypography variant="h7" fontWeight="medium" color="white" sx = {{marginLeft :'10px'}}>
+          <MDTypography variant="h7" fontWeight="medium" color="white" sx = {{marginLeft :'10px', fontSize : "17px",}}>
             {email}
           </MDTypography>
         </MDBox>
         <MDBox sx={{alignItems : "left"}}>
           <LocationCityIcon sx = {{color : 'gray'}}/>
-          <MDTypography variant="h7" fontWeight="medium" color="white" sx = {{marginLeft :'10px'}}>
+          <MDTypography variant="h7" fontWeight="medium" color="white" sx = {{marginLeft :'10px', fontSize : "17px",}}>
             {group}
           </MDTypography>
         </MDBox>
       </MDBox> 
+      <MDBox // 프로필 설정 아이콘 담을 박스
+        style = {{
+        marginLeft : "50px",
+        float : "right",
+      }}>
+        <SettingsIcon // 프로필 설정 아이콘
+        sx={{
+          color:'gray',
+          width : '30px',
+          height:'30px',
+        }}
+        onClick={ProfileSetOpen}
+        // style = {{
+        //   float : "right",
+        // }}
+        />
+      </MDBox>
     </MDBox>
     <MDBox // 프로필 소개 담을 박스 
       sx={{
@@ -135,6 +187,7 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
       }}
       >
         <MDBox // 팔로잉 버튼
+        onClick={handleOpen}
         sx={{
           backgroundColor : '#282535',
           width : '166px',
@@ -183,6 +236,7 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
           </MDBox>
         </MDBox>
         <MDBox // 팔로워 버튼
+        onClick={FollowerOpen}
         sx={{
           backgroundColor : '#282535',
           width : '166px',

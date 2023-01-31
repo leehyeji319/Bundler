@@ -5,11 +5,16 @@ import MDTypography from "components/MDTypography";
 
 import imgchart from "../../../../assets/images/Chart.png";
 
+import { ResponsivePie } from '@nivo/pie'
+import piedata3 from "./piedata3.json"
+
 
 // Images
 
 
 function MyStat() {
+
+  const piedata = piedata3
 
   const StatusList = 
   [
@@ -138,12 +143,19 @@ function MyStat() {
       sx={{
         backgroundColor : "#282535",
         width : "100%",
+        height : "5000px",
       }}>
-      <MDBox>
+      <MDBox // 역량통계 전체
+        sx= {{
+          width : "100%",
+          height : "100%",
+          // backgroundColor : "#282535",
+        }}>
         <MDBox // 역량 통계 - 제목 및 설명
           sx = {{
             marginLeft : "20px",
             marginTop : "30px",
+            // backgroundColor : "#282535",
           }}
           style = {{
             flexDirection : "row",
@@ -152,31 +164,174 @@ function MyStat() {
           <MDTypography
             sx={{
               fontSize : "35px",
+              float : "left",
             }}>
             역량 통계
           </MDTypography>
           <MDTypography
             sx = {{
               fontSize : "20px",
+              marginLeft : "15px",
+              marginTop : "15px",
+              float : "left",
+              Color : "gray",
             }}>
             내가 작성한 카드 기준
           </MDTypography>
         </MDBox>
         <MDBox>
-          <MDBox>
+          {/* <MDBox>
             <img src={imgchart} alt="chartImg" style={{ float : "left" }}/>
-          </MDBox>
-          <MDBox 
+          </MDBox> */}
+        <MDBox style = {{ 
+          width : "40%",
+          height : "auto",
+          backgroundColor : "#282535"}}>
+        <MDBox style={{ width: 'auto', height: '400px', margin: '0 auto' }}>
+          <ResponsivePie
+            data={piedata}
+            margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+            innerRadius={0.5}
+            padAngle={0.7}
+            cornerRadius={3}
+            activeOuterRadiusOffset={8}
+            borderWidth={1}
+            borderColor={{
+                from: 'color',
+                modifiers: [
+                    [
+                        'darker',
+                        0.2
+                    ]
+                ]
+            }}
+            arcLinkLabelsSkipAngle={10}
+            arcLinkLabelsTextColor="#FFFFFF"
+            arcLinkLabelsThickness={2}
+            arcLinkLabelsColor={{ from: 'color' }}
+            arcLabelsSkipAngle={10}
+            arcLabelsTextColor={{
+                from: 'color',
+                modifiers: [
+                    [
+                        'darker',
+                        2
+                    ]
+                ]
+            }}
+            defs={[
+                {
+                    id: 'dots',
+                    type: 'patternDots',
+                    background: 'inherit',
+                    color: 'rgba(255, 255, 255, 0.3)',
+                    size: 4,
+                    padding: 1,
+                    stagger: true
+                },
+                {
+                    id: 'lines',
+                    type: 'patternLines',
+                    background: 'inherit',
+                    color: 'rgba(255, 255, 255, 0.3)',
+                    rotation: -45,
+                    lineWidth: 6,
+                    spacing: 10
+                }
+            ]}
+            fill={[
+                {
+                    match: {
+                        id: 'ruby'
+                    },
+                    id: 'dots'
+                },
+                {
+                    match: {
+                        id: 'c'
+                    },
+                    id: 'dots'
+                },
+                {
+                    match: {
+                        id: 'go'
+                    },
+                    id: 'dots'
+                },
+                {
+                    match: {
+                        id: 'python'
+                    },
+                    id: 'dots'
+                },
+                {
+                    match: {
+                        id: 'scala'
+                    },
+                    id: 'lines'
+                },
+                {
+                    match: {
+                        id: 'lisp'
+                    },
+                    id: 'lines'
+                },
+                {
+                    match: {
+                        id: 'elixir'
+                    },
+                    id: 'lines'
+                },
+                {
+                    match: {
+                        id: 'javascript'
+                    },
+                    id: 'lines'
+                }
+            ]}
+            legends={[
+                {
+                    anchor: 'bottom',
+                    direction: 'row',
+                    justify: false,
+                    translateX: 0,
+                    translateY: 56,
+                    itemsSpacing: 0,
+                    itemWidth: 100,
+                    itemHeight: 18,
+                    itemTextColor: '#999',
+                    itemDirection: 'left-to-right',
+                    itemOpacity: 1,
+                    symbolSize: 18,
+                    symbolShape: 'circle',
+                    effects: [
+                        {
+                            on: 'hover',
+                            style: {
+                                itemTextColor: '#000'
+                            }
+                        }
+                    ]
+                }
+            ]}
+        />
+        </MDBox>
+
+      </MDBox>
+          <MDBox  
             sx = {{
               float : "left",
-            }}>
+              backgroundColor : "#282535",
+              width : "50%"
+            }}
+            >
             <MDBox>
               {/* <Grid container spacing={3}>
                 <Grid item xs={12} md={6} lg={3}> */}
                   {StatusList.map((category)=>(
                     <MDBox
                       sx={{
-                        width : "400px",
+                        width : "320px",
                         height : "200px",
                         backgroundColor : "#1F1D2B",
                         marginTop : "10px",
@@ -241,8 +396,44 @@ function MyStat() {
           </MDBox>
         </MDBox>
       </MDBox>
+      <MDBox // 흰 줄
+        style={{
+          width: "100%",
+          textAlign: "center",
+          borderBottom: "1px solid #aaa",
+          lineHeight: "0.1em",
+          margin: "10px 0 20px",
+        }}>
+      </MDBox>
       <MDBox>
-
+        <MDBox // 활동 통계 - 제목 및 설명
+          sx = {{
+            marginLeft : "20px",
+            marginTop : "30px",
+            backgroundColor : "#282535",
+          }}
+          style = {{
+            flexDirection : "row",
+          }}
+          >
+          <MDTypography
+            sx={{
+              fontSize : "35px",
+              float : "left",
+            }}>
+            활동 통계
+          </MDTypography>
+          <MDTypography
+            sx = {{
+              fontSize : "20px",
+              marginLeft : "15px",
+              marginTop : "15px",
+              float : "left",
+              Color : "gray",
+            }}>
+            번들러에서의 활동
+          </MDTypography>
+        </MDBox>
       </MDBox>
       <MDBox>
 

@@ -31,11 +31,12 @@ import imgty from "../../../../assets/images/Profile/안태윤.png"
 import imghj from "../../../../assets/images/Profile/이혜지.jpg"
 import imglion from "../../../../assets/images/Profile/라이언.png"
 import imgdnk from "../../../../assets/images/Profile/다나카.jpeg"
+import imgppap from "../../../../assets/images/Profile/PPAP.jpg"
 import bunny from "../../../../assets/images/bundler/bundlerRabbit.png"
 
 // Icon
 
-function FollowingBox({ profileImage, nickname, email, introduction, group }) {
+function FollowerBox({ profileImage, nickname, email, introduction, group }) {
 
   const friends = {
     nickname : "dellojoon",
@@ -76,6 +77,12 @@ function FollowingBox({ profileImage, nickname, email, introduction, group }) {
         frIntro : "완벽주의 개발자",
         frProfile : imglion, 
       },
+      {
+        frId : "7",
+        frNick : "PPAP",
+        frIntro : "펜파인애플 애플펜 이것은 팔로워",
+        frProfile : imgppap, 
+      },
     ]
   }
 
@@ -106,7 +113,7 @@ function FollowingBox({ profileImage, nickname, email, introduction, group }) {
               marginLeft : "10%",
               marginTop : "5%",
             }}>
-            {nickname}님의 팔로잉
+            {nickname}님의 팔로워
           </MDTypography>
         </MDBox>
         <MDBox // 흰 줄
@@ -184,7 +191,7 @@ function FollowingBox({ profileImage, nickname, email, introduction, group }) {
                 color : "#000000",
                 backgroundColor: "#81D8C3",
               }}>
-              팔로잉
+              팔로워
             </Button>
           </MDBox>
       </MDBox>
@@ -194,7 +201,7 @@ function FollowingBox({ profileImage, nickname, email, introduction, group }) {
     </MDBox>
   )}
 
-FollowingBox.propTypes = {
+FollowerBox.propTypes = {
   profileImage: PropTypes.string.isRequired,
   nickname : PropTypes.string.isRequired,
   email : PropTypes.string.isRequired,
@@ -203,4 +210,4 @@ FollowingBox.propTypes = {
 };
 
 
-export default FollowingBox;
+export default FollowerBox;

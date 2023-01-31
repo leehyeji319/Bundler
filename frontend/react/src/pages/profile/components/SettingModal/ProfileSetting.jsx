@@ -15,6 +15,7 @@ import PropTypes from "prop-types";
 // import MuiLink from "@mui/material/Link";
 import Button from "@mui/material/Button";
 // import Modal from "@mui/material/Modal";
+import { useState } from "react";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -46,6 +47,10 @@ function ProfileSetBox({ userId, profileImage, nickname, email, introduction, gr
         backgroundColor: "#282535",
         border: "1px solid #ffffff",
         borderRadius: "20px",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
       }}>
       <MDBox // 글자 있는 박스
           sx={{
@@ -175,7 +180,8 @@ function ProfileSetBox({ userId, profileImage, nickname, email, introduction, gr
             marginTop : "20px"
           }}
           >
-          <Button 
+          <Button // 취소 버튼
+            // onClick={ProfileSetClose}
             variant="contained" 
             style={{ 
               float : "right",
