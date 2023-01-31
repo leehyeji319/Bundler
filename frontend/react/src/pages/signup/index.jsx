@@ -1,16 +1,16 @@
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-function Profile() {
+// import template
+import SignUpTemplate from "pages/signup/signupTemplate/signupTemplate";
+
+function SignUp() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div>
-        <h1>Profile</h1>
-      </div>
+      <SignUpTemplate />
     </DashboardLayout>
   );
 }
 
-export default Profile;
+export default SignUp;
