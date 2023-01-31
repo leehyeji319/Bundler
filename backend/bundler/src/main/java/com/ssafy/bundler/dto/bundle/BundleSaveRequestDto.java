@@ -1,8 +1,10 @@
 package com.ssafy.bundler.dto.bundle;
 
+import java.util.List;
+
 import com.ssafy.bundler.domain.Bundle;
 import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.dto.feed.reqeust.CardListSaveRequestDto;
+import com.ssafy.bundler.dto.card.reqeust.CardSaveRequestDto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
@@ -13,7 +15,7 @@ public class BundleSaveRequestDto {
 
 	@NotEmpty
 	private Long userId;
-	private CardListSaveRequestDto cardListSaveRequestDto;
+	// private CardListSaveRequestDto cardListSaveRequestDto;
 	private String bundleThumbnail;
 	private String bundleThumbnailText;
 
@@ -21,6 +23,8 @@ public class BundleSaveRequestDto {
 	private String feedTitle;
 	@NotEmpty
 	private String feedContent;
+
+	private List<CardSaveRequestDto> cardSaveRequestDtoList;
 
 	@Builder
 	public BundleSaveRequestDto(Long userId, String bundleThumbnail, String bundleThumbnailText,

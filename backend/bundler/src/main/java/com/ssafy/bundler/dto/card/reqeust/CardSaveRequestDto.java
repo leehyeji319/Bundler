@@ -36,7 +36,7 @@ public class CardSaveRequestDto {
 	private Long feedId;
 
 	public Card toEntity(User writer) {
-		return Card.builder()
+		Card build = Card.builder()
 			.writer(writer)
 			.feedTitle(this.feedTitle)
 			.feedContent(this.feedContent)
@@ -44,5 +44,10 @@ public class CardSaveRequestDto {
 			.cardDescription(this.cardDescription)
 			.cardCommentary(this.cardCommentary)
 			.build();
+
+		System.out.println(build);
+		System.out.println(build.getFeedTitle());
+		return build;
 	}
+
 }

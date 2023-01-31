@@ -84,14 +84,14 @@ public class CardService {
 	}
 
 	@Transactional
-	public List<Long> saveCardListwithBundle(CardListSaveRequestDto requestDto) {
+	public List<Long> saveCardListwithBundle(List<CardSaveRequestDto> requestDto) {
 
 		List<Long> savedCardList = new ArrayList<Long>();
 
-		int size = requestDto.getCardSaveRequestDtoList().size();
+		int size = requestDto.size();
 
 		for (int i = 0; i < size; i++) {
-			CardSaveRequestDto cardSaveRequestDto = requestDto.getCardSaveRequestDtoList().get(i);
+			CardSaveRequestDto cardSaveRequestDto = requestDto.get(i);
 			String cardType = cardSaveRequestDto.getCardType();
 			if (CardType.CARD_PROBLEM.toString().equals(cardType)) {
 				savedCardList.add(saveCard(cardSaveRequestDto));
@@ -150,7 +150,6 @@ public class CardService {
 	}
 
 	//===== Bundle =====//
-	//있던 번들에 카드를 스크랩 -> 여기 바꾸ㅓ야함
 	@Transactional
 	public void scrapCardWithExistBundle(BundleScrapRequestDto requestDto) {
 		//카드의 scrapCnt + 1
@@ -158,9 +157,9 @@ public class CardService {
 			new IllegalArgumentException("해당 카드의 id를 찾을 수 없습니다. cardId(feedId)= " + requestDto.getCardId()));
 		card.addCardScrapCnt();
 
-		//CardBundle에 넣어주기
+		//CardBundle에 넣어주기 -> 이미 번들에 존재하는 카드면 넣으면 안됨
+		validateIsDuplicatedCardInBundle(requestDto.getBundleId(), requestDto.getCardId());
 		saveCardBundle(requestDto.getBundleId(), requestDto.getCardId());
-
 	}
 
 	//CardBundle 객체 생성
@@ -170,5 +169,13 @@ public class CardService {
 			.bundleId(bundleId)
 			.cardId(cardId)
 			.build());
+	}
+
+	//검증로직
+	private void validateIsDuplicatedCardInBundle(Long bundleId, Long cardId) {
+		if (cardBundleRepository.findCardBundleByBundleIdWithCardId(bundleId, cardId) != null) {
+			throw new IllegalArgumentException("이미 해당 번들에 존재하는 카드입니다.");
+		}
+		;
 	}
 }
