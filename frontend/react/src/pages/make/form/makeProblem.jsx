@@ -6,48 +6,13 @@ import MDTypography from "components/MDTypography";
 
 // [Import - React Basic] react && props && mui
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import MakeBundle from "pages/make/form/makeBundle";
 
 // [Import - React-Redux]
 import { useSelector, useDispatch } from "react-redux";
 
 // [Import - Redux-action] redux-action 함수
 import { actAddCard, actEditCard, actDeleteCard } from "redux/actions/makeCardAction";
-
-// BundleForm Template
-function BundleForm({ selected, handleChange }) {
-  return (
-    <Box mt={3}>
-      {selected === true && (
-        <Box sx={{ display: "flex" }}>
-          <Typography variant="h6">
-            <Box sx={{ textAlign: "center", mt: 3 }}>번들 제목</Box>
-          </Typography>
-          <TextField
-            multiline
-            rows={1}
-            required
-            autoFocus
-            id="bundle-title"
-            type="text"
-            name="bundleTitle"
-            label="Required"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={handleChange}
-          />
-        </Box>
-      )}
-    </Box>
-  );
-}
-
-// Typechecking props for the SelectedCategory
-BundleForm.propTypes = {
-  selected: PropTypes.bool.isRequired,
-  handleChange: PropTypes.func.isRequired,
-};
 
 function MakeProblem() {
   // ------------ Data ----------------
@@ -57,21 +22,37 @@ function MakeProblem() {
   // (Data 2) Local Data - Card Input Data
   const [values, setValues] = useState({
     userId: "testID",
-    feedType: "Card",
     feedTitle: "",
     feedContent: "",
-    categoryFirst: "",
-    categorySecond: "",
-    cardno: null,
-    cardType: "card_general",
+    categoryId: 1,
+    cardType: "card_problem",
     cardDescription: "",
     cardCommentary: "",
-    bundleTitle: "",
+    cardno: null,
   });
 
   // (Data 3) Local - useState 버튼!!
   const [bundleToggle, setBundleToggle] = useState(false); // 번들 토글 버튼
-  const [editCardIndex, setEditCardIndex] = useState(0); // 선택된 카드 인덱스 저장
+  const [editCardIndex, setEditCardIndex] = useState(-1); // 선택된 카드 인덱스 저장
+  const [valid, setValid] = useState({
+    isFeedTitle: false,
+    idFeedContent: false,
+    isCardCommentary: false,
+  });
+
+  const [bundleForm, setBundleForm] = useState({
+    userId: "testId",
+    bundleThumbnail: "",
+    bundleThumbnailText: "",
+    feedTitle: "",
+    feedContent: "",
+  });
+
+  const handleBundleChange = (data) => {
+    console.log(data.value);
+    const { name, value } = data;
+    setBundleForm({ ...bundleForm, [name]: value });
+  };
 
   // (Data 1 - Func) Catd Input Data Changed
   const handleChange = (event) => {
@@ -82,22 +63,30 @@ function MakeProblem() {
   // ------------ Function ----------------
   const dispatch = useDispatch(); // state와 function을 보내는 함수
 
+  // validation check 함수
+  const checkValid = () => {
+    const feedTitle = document.querySelector("#problem-title").value;
+    // const feedContent = document.querySelector("#problem-content").value;
+    // const cardCommentary = document.querySelector("#problem-cardCommentary").value;
+    // const cardDescription = document.querySelector("#problem-description").value;
+    console.log(feedTitle);
+    console.log(feedTitle.length);
+    if (feedTitle.length === 0) setValid({ ...valid, isFeedTitle: true });
+  };
+  // state 초기화
   const initStateRender = () => {
-    // const initStateList = ["feedTitle", "feedContent", "cardDescription"];
-    // component data - 값 초기화
-    // initStateList.forEach((name) => setValues({ ...values, [name]: "" }));
     setValues({
       ...values,
-      feedContent: "",
-      cardDescription: "",
       feedTitle: "",
+      feedContent: "",
+      cardCommentary: "",
+      cardDescription: "",
     });
-    // setValues({ ...values, cardDescription: "" });
-    // setValues({ ...values, feedTitle: "" });
 
     // render 값 초기환
     document.querySelector("#problem-title").value = "";
     document.querySelector("#problem-content").value = "";
+    document.querySelector("#problem-cardCommentary").value = "";
     document.querySelector("#problem-description").value = "";
   };
 
@@ -105,13 +94,9 @@ function MakeProblem() {
   const handleAdd = (e) => {
     e.preventDefault();
 
-    // store data - cardList에 card추가
-    // setValues({ ...values, cardno: cardNo }, () => {
-    //   console.log(values);
-    // });
+    checkValid();
+
     setValues({ ...values, cardno: cardNo });
-    console.log("cardId : ", values.cardno);
-    console.log("cardNo : ", cardNo);
     const result = actAddCard(values);
     dispatch(result);
 
@@ -123,22 +108,29 @@ function MakeProblem() {
   const handleEdit = (event) => {
     event.preventDefault();
 
-    const result = actEditCard(editCardIndex, values);
-    dispatch(result);
+    // 카드가 선택 되었을때만 동작
+    if (editCardIndex !== -1) {
+      const result = actEditCard(editCardIndex, values);
+      dispatch(result);
 
-    // 값 초기화
-    initStateRender();
+      // 값 초기화
+      initStateRender();
+      setEditCardIndex(-1);
+    }
   };
 
   // (Func 3) handleDelete - 카드리스트 안의 카드 삭제
   const handleDelete = (event) => {
     event.preventDefault();
 
-    const result = actDeleteCard(editCardIndex);
-    dispatch(result);
+    // 카드가 선택 되었을때만 동작
+    if (editCardIndex !== -1) {
+      const result = actDeleteCard(editCardIndex);
+      dispatch(result);
 
-    // 값 초기화
-    initStateRender();
+      // 값 초기화
+      initStateRender();
+    }
   };
 
   // (Func 4) 생성 버튼 클릭 시
@@ -146,13 +138,14 @@ function MakeProblem() {
     e.preventDefault();
 
     console.log(cardList);
+    console.log(bundleForm);
 
-    if (cardList.length === 0) {
-      alert("카드 리스트가 비어있습니다");
-    } else {
-      // axios POST 전달
-      dispatch({ type: "CARD_STORE_RESET" });
-    }
+    // if (cardList.length === 0) {
+    //   alert("카드 리스트가 비어있습니다");
+    // } else {
+    //   // axios POST 전달
+    //   dispatch({ type: "CARD_STORE_RESET" });
+    // }
   };
 
   // (Func Hooks) useEffect
@@ -167,18 +160,21 @@ function MakeProblem() {
     if (editCardNumber !== -1) {
       const selectedTitle = cardList[editCardNumber].feedTitle;
       const selectedContent = cardList[editCardNumber].feedContent;
+      const selectedCardCommentary = cardList[editCardNumber].cardCommentary;
       const selectedDescription = cardList[editCardNumber].cardDescription;
       // component data - 값 업데이트
       setValues({
         ...values,
         feedContent: selectedTitle,
         cardDescription: selectedContent,
+        cardCommentary: selectedCardCommentary,
         feedTitle: selectedDescription,
       });
 
       // render 값 업데이트
       document.querySelector("#problem-title").value = selectedTitle;
       document.querySelector("#problem-content").value = selectedContent;
+      document.querySelector("#problem-cardCommentary").value = selectedCardCommentary;
       document.querySelector("#problem-description").value = selectedDescription;
 
       // 수정할 card번호 다시 초기화
@@ -210,6 +206,8 @@ function MakeProblem() {
           <Box sx={{ textAlign: "center", mt: 3 }}>제목</Box>
         </Typography>
         <TextField
+          {...(valid.isFeedTitle ? { error: true } : {})}
+          helperText="필수 입력 입니다"
           multiline
           rows={1}
           required
@@ -230,11 +228,28 @@ function MakeProblem() {
         </Typography>
         <TextField
           multiline
-          rows={5}
+          rows={4}
           required
           id="problem-content"
           type="text"
           name="feedContent"
+          label="Required"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+        />
+      </Box>
+      <Box sx={{ display: "flex" }}>
+        <Typography variant="h6">
+          <Box sx={{ textAlign: "center", mt: 3 }}>설명</Box>
+        </Typography>
+        <TextField
+          multiline
+          rows={4}
+          id="problem-cardCommentary"
+          type="text"
+          name="cardCommentary"
           label="Required"
           InputLabelProps={{
             shrink: true,
@@ -265,17 +280,33 @@ function MakeProblem() {
           <Switch checked={bundleToggle} onChange={() => setBundleToggle(!bundleToggle)} />
         </MDBox>
       </Box>
-      <BundleForm selected={bundleToggle} handleChange={handleChange} />
+      <MakeBundle selected={bundleToggle} handleBundle={handleBundleChange} />
       <Box>
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleAdd}>
           추가
         </Button>
-        <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleEdit}>
-          수정
-        </Button>
-        <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleDelete}>
-          삭제
-        </Button>
+        {cardList.length !== 0 && (
+          <>
+            <Button
+              type="button"
+              variant="contained"
+              sx={{ m: 3 }}
+              size="large"
+              onClick={handleEdit}
+            >
+              수정
+            </Button>
+            <Button
+              type="button"
+              variant="contained"
+              sx={{ m: 3 }}
+              size="large"
+              onClick={handleDelete}
+            >
+              삭제
+            </Button>
+          </>
+        )}
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleCreate}>
           생성
         </Button>

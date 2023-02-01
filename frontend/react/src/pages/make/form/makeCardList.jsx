@@ -14,7 +14,7 @@ function MakeCardList() {
 
   // Data - local
   const columnList = [
-    { Header: "아이디", accessor: "userId", width: "5%" },
+    { Header: "아이디", accessor: "userId", width: "10%" },
     { Header: "제목", accessor: "feedTitle" },
     { Header: "유형", accessor: "cardType", width: "20%" },
   ];

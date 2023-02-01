@@ -48,7 +48,7 @@ const makeCardReducer = (state = initialState, action) => {
         cardList: state.cardList.filter((_, index) => index !== deleteCardIndex),
       };
     }
-    case "RESET": {
+    case "CARD_STORE_RESET": {
       return {
         ...state,
         isBundle: false,
