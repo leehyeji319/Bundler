@@ -40,17 +40,22 @@ const makeCardReducer = (state = initialState, action) => {
       };
     }
     case "DELETE_CARD": {
-      const deleteCardNo = action.payload;
+      const deleteCardIndex = action.payload;
       return {
         // spread 연산자를 이용하여 기존 객체를 불러옴
         ...state,
         // cardList: state.cardList.filter((card) => card.cardno !== deleteCardNo),
-        cardList: state.cardList.splice(deleteCardNo, 1),
+        cardList: state.cardList.filter((_, index) => index !== deleteCardIndex),
       };
     }
     case "RESET": {
       return {
         ...state,
+        isBundle: false,
+        bundleTitle: null,
+        editCardType: "quiz",
+        editCardNumber: -1,
+        cardNo: 1,
         cardList: [],
       };
     }

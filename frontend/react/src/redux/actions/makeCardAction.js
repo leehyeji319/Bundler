@@ -19,7 +19,7 @@ const actEditCard = (editCardIndex, editCard) => ({
   },
 });
 
-const actDeleteCard = async (cardNo) => ({
+const actDeleteCard = (cardNo) => ({
   type: "DELETE_CARD",
   payload: cardNo,
 });

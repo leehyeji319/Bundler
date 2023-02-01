@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 // [Import - Redux-action] redux-action 함수
-import { actAddCard, actEditCard } from "redux/actions/makeCardAction";
+import { actAddCard, actEditCard, actDeleteCard } from "redux/actions/makeCardAction";
 
 // BundleForm Template
 function BundleForm({ selected, handleChange }) {
@@ -70,8 +70,8 @@ function MakeProblem() {
   });
 
   // (Data 3) Local - useState 버튼!!
-  const [bundleToggle, setBundleToggle] = useState(false);
-  const [editCardIndex, setEditCardIndex] = useState(0);
+  const [bundleToggle, setBundleToggle] = useState(false); // 번들 토글 버튼
+  const [editCardIndex, setEditCardIndex] = useState(0); // 선택된 카드 인덱스 저장
 
   // (Data 1 - Func) Catd Input Data Changed
   const handleChange = (event) => {
@@ -83,10 +83,15 @@ function MakeProblem() {
   const dispatch = useDispatch(); // state와 function을 보내는 함수
 
   const initStateRender = () => {
-    const initStateList = ["feedTitle", "feedContent", "cardDescription"];
+    // const initStateList = ["feedTitle", "feedContent", "cardDescription"];
     // component data - 값 초기화
-    initStateList.forEach((name) => setValues({ values, [name]: "" }));
-    // setValues({ ...values, feedContent: "" });
+    // initStateList.forEach((name) => setValues({ ...values, [name]: "" }));
+    setValues({
+      ...values,
+      feedContent: "",
+      cardDescription: "",
+      feedTitle: "",
+    });
     // setValues({ ...values, cardDescription: "" });
     // setValues({ ...values, feedTitle: "" });
 
@@ -119,10 +124,15 @@ function MakeProblem() {
     initStateRender();
   };
 
-  // (Func 3) handleDelete
-  const handleDelete = (event, deleteNo) => {
+  // (Func 3) handleDelete - 카드리스트 안의 카드 삭제
+  const handleDelete = (event) => {
     event.preventDefault();
-    console.log("delete No: ", deleteNo);
+
+    const result = actDeleteCard(editCardIndex);
+    dispatch(result);
+
+    // 값 초기화
+    initStateRender();
   };
 
   // (Func 4) 생성 버튼 클릭 시
@@ -132,10 +142,12 @@ function MakeProblem() {
     console.log(values);
     console.log(cardList);
 
-    // action 함수 호출 && reducer로 dispatch && store state 확인
-    // actAddCard().then((result) => {
-    //   dispatch(result);
-    // });
+    if (cardList.length === 0) {
+      alert("카드 리스트가 비어있습니다");
+    } else {
+      // axios POST 전달
+      dispatch({ type: "CARD_STORE_RESET" });
+    }
   };
 
   // (Func 4) useEffect
@@ -151,10 +163,12 @@ function MakeProblem() {
       const selectedContent = cardList[editCardNumber].feedContent;
       const selectedDescription = cardList[editCardNumber].cardDescription;
       // component data - 값 업데이트
-      setValues({ ...values, feedTitle: selectedTitle });
-      setValues({ ...values, feedContent: selectedContent });
-      setValues({ ...values, cardDescription: selectedDescription });
-      console.log(values);
+      setValues({
+        ...values,
+        feedContent: selectedTitle,
+        cardDescription: selectedContent,
+        feedTitle: selectedDescription,
+      });
 
       // render 값 업데이트
       document.querySelector("#problem-title").value = selectedTitle;
@@ -253,13 +267,7 @@ function MakeProblem() {
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleEdit}>
           수정
         </Button>
-        <Button
-          type="button"
-          variant="contained"
-          sx={{ m: 3 }}
-          size="large"
-          onClick={(event) => handleDelete(event, 2)}
-        >
+        <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleDelete}>
           삭제
         </Button>
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleCreate}>
