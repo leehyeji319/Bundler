@@ -38,6 +38,7 @@ import { useState } from "react";
 import FollowingBox from "pages/profile/components/Follow/FollowingBox";
 import FollowerBox from "../Follow/FollowerBox";
 import ProfileSetBox from "../SettingModal/ProfileSetting";
+import MDButton from "components/MDButton";
 
 function ProfileCard({ profileImage, nickname, email, introduction, group }) {
 
@@ -186,7 +187,7 @@ const ProfileSetClose = () => setOpen3(false);
         marginLeft : "15%",
       }}
       >
-        <MDBox // 팔로잉 버튼
+        <MDButton // 팔로잉 버튼
         onClick={handleOpen}
         sx={{
           backgroundColor : '#282535',
@@ -234,8 +235,8 @@ const ProfileSetClose = () => setOpen3(false);
               373
             </MDTypography>
           </MDBox>
-        </MDBox>
-        <MDBox // 팔로워 버튼
+        </MDButton>
+        <MDButton // 팔로워 버튼
         onClick={FollowerOpen}
         sx={{
           backgroundColor : '#282535',
@@ -283,8 +284,8 @@ const ProfileSetClose = () => setOpen3(false);
               }}>
               359
             </MDTypography>
-            </MDBox>
-        </MDBox>
+          </MDBox>
+        </MDButton>
       </MDBox>
     </MDBox>
   </MDBox>

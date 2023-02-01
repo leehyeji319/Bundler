@@ -9,6 +9,8 @@ import { ResponsivePie } from '@nivo/pie'
 import piedata3 from "./piedata3.json"
 
 
+
+
 // Images
 
 

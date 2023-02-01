@@ -22,9 +22,25 @@ import CardImg from "assets/images/bundler/bundlerRabbit.png";
 import HomeCardModal from "./ThumnailCardModal";
 
 
-function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap }) {
+function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap, CategoryId }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
+
+  const CategoryName = (CategoryId) => {
+    switch (CategoryId) {
+      case "1":
+        return "프론트엔드";
+      case "2":
+        return "백엔드";
+      case "3":
+        return "알고리즘";
+      case "7":
+        return "리액트";
+      default:
+        return "카테고리 미정";
+    } 
+  }
+
   // const handleClose = () => setOpen(false);
 
   // const bundle = {
@@ -64,7 +80,13 @@ function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap })
 
 
   return (
-    <Card>
+    <Card
+      sx={{
+        // display: "flex",
+        marginBottom: "20px",
+        height: "350px"
+      }}
+    >
       {/* <HomeCardModal
         key={card.cardId}
         image={card.cardImage}
@@ -90,37 +112,68 @@ function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap })
           { cmtId: 2, name: "정둘권", reply: "댓글 2" },
         ]}
       />
-      <MDBox p={3}>
-        <MDTypography 
-          display="inline"
-          variant="h3" 
-          textTransform="capitalize" 
-          fontWeight="bold"
-          >
-          {cardType}
-        </MDTypography>
-        <MDTypography variant="body2" component="p" color="text">
-          {cardTitle}
-        </MDTypography>
-        <MDBox mt={2} mb={3}>
-          <MDTypography>
-            {cardId}
+      <MDBox 
+        p={3}
+      >
+        <MDBox 
+          sx={{
+            width: "100%",
+          }}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          mb={3}
+        >
+          <MDTypography
+            display="inline"
+            variant="h3"
+            textTransform="capitalize"
+            fontWeight="bold"
+            >
+            {cardType}
           </MDTypography>
-          <MDBox>
-            <MDBox>
+          <MDTypography
+            sx={{
+              color: "#00EBA4",
+              fontSize: "30px"
+            }}>
+            {CategoryName(CategoryId)}
+          </MDTypography>
+        </MDBox>
+        <MDTypography 
+          variant="body2"
+          component="p" 
+          color="white"
+          fontSize="25px"
+          mb={3}
+        >
+          {cardTitle.slice(0,40)}
+        </MDTypography>
+        <MDBox mt={2}>
+          <MDBox
+            display="flex"
+            // justifyContent="space-between"
+            // alignItems="center"
+          >
+            <MDBox // 카드 좋아요(아이콘+좋아요 수)가 담길 박스
+              sx={{
+                marginLeft: "10px",
+              }}
+            >
               <FavoriteIcon
                 sx={{
-                  width: "19px",
-                  height : "20px",
+                  width: "25px",
+                  height: "25px",
                 }}
-                color = "primary"
+                color="primary"
                 style={{
                   float: "left",
                 }}
               />
               <MDTypography
                 sx={{
-                  fontSize : "15px",  
+                  marginLeft: "8px",
+                  fontSize: "15px",  
                 }}
                 style={{
                   float: "left",
@@ -130,21 +183,24 @@ function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap })
             </MDBox>
             <MDBox
               sx={{
-                marginLeft : "10%",
-              }}>
+                marginLeft: "10px",
+              }}
+            >
               <MobileScreenShareIcon 
                 sx={{
-                  width: "19px",
-                  height : "20px",
+                  width: "25px",
+                  height : "25px",
                 }}
-                color = "white"
+                color="white"
                 style={{
                   float: "left",
                 }}
               />
               <MDTypography
                 sx={{
-                  fontSize : "15px",  
+                  marginLeft: "8px",
+                  fontSize: "15px",
+                  float: "left"
                 }}>
                 {cardScrap}
               </MDTypography>
@@ -163,6 +219,7 @@ CardThumbnailCard.propTypes = {
   cardTitle: PropTypes.string.isRequired,
   cardLike: PropTypes.number.isRequired,
   cardScrap: PropTypes.number.isRequired,
+  CategoryId: PropTypes.number.isRequired,
 //   action: PropTypes.shape({
 //     type: PropTypes.oneOf(["external", "internal"]).isRequired,
 //     route: PropTypes.string.isRequired,

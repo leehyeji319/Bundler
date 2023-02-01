@@ -1,9 +1,15 @@
 /*
- 기본 홈 Page 구성  
- */
+기본 홈 Page 구성  
+*/
+// // Mui-Material components
+// import { FormControl, FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button"
+import PropTypes from "prop-types";
+
+// [Import - React Basic] react && props && mui
+import React, { useState, useEffect } from "react";
 
 import MDBox from "components/MDBox";
 // import MDAvatar from "components/MDAvatar";
@@ -14,25 +20,55 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import ProfileCard from "./components/ProfileCard/ProfileCard";
-import CardThumbnailCard from "./components/thumCard/ThumnailCard";
+// import CardThumbnailCard from "./components/thumCard/ThumnailCard";
 
-import BundleThumbnail2 from 'pages/profile/components/thumBundle/BundleCard';
+// import BundleThumbnail2 from 'pages/profile/components/thumBundle/BundleCard';
 
 // Images
-import trendimg from "../../assets/images/trend.jpg"
-import itimg from "../../assets/images/ai-icons.jpeg"
-import bundlerRabbit from "../../assets/images/bundler_rabbit_6.png"
+// import trendimg from "../../assets/images/trend.jpg"
+// import itimg from "../../assets/images/ai-icons.jpeg"
+// import bundlerRabbit from "../../assets/images/bundler_rabbit_6.png"
 import Catimage from "../../assets/images/cat.jpg";
+
+// 각 탭 form들을 import 
+import BundleListTab from "./Form/BundleListForm";
+import CardListTab from "./Form/CardListForm";
+// import StatTab from "./Form/StatForm";
+import NOStatTab from "./Form/NoStatTab";
+
 
 // import { ResponsiveCalendar } from '@nivo/calendar'
 
 // import strickdata2 from "../searchall/strickdata.json"
 
+function SelectedTab({ selected }) {
+  switch (selected) {
+    case "bundleTab":
+      return <BundleListTab />;
+    case "statTab":
+      return <NOStatTab />;
+    default:
+      return <CardListTab />;
+  }
+}
+
+SelectedTab.propTypes = {
+  selected: PropTypes.string.isRequired,
+};
+
 function Profile() {
 
   // const data1  = strickdata2
 
-  const thisyear = "2023"
+  // const thisyear = "2023"
+  const [tabvalue, setTabValue] = React.useState("cardTab");
+
+  const handleChangeTab = (tabevent) => {
+    setTabValue(tabevent.target.value);
+  };
+
+
+  // console.log(tabevent.target);
 
   return (
     <DashboardLayout>
@@ -115,74 +151,37 @@ function Profile() {
         <MDBox py={3} sx={{ marginTop : "30px"}}>
           <Grid container style={{ justifyContent :"space-around" }}>
             <Grid item>
-              <Button variant ="outlined" sx={{ fontSize : "20px"}}>내가 작성한 카드</Button>
-              <Button variant ="outlined" sx={{ marginLeft : '30px', fontSize : "20px" }}>번들 리스트</Button>
-              <Button variant ="outlined" sx={{ marginLeft : '30px', fontSize : "20px" }}>통계</Button>
+              <Button
+                value="cardTab" 
+                variant="outlined" 
+                onClick={handleChangeTab}
+                sx={{ fontSize : "20px", backgroundColor : "#81D8C3", color : "#000000",}}>
+                내가 작성한 카드
+              </Button>
+              <Button
+                value="bundleTab"
+                variant="outlined"
+                onClick={handleChangeTab}
+                sx={{ marginLeft : '30px', fontSize : "20px" , backgroundColor : "#81D8C3", color : "#000000",}}>
+                번들 리스트
+              </Button>
+              <Button
+                value="statTab"
+                variant="outlined"
+                onClick={handleChangeTab}
+                sx={{ marginLeft : '30px', fontSize : "20px" , backgroundColor : "#81D8C3", color : "#000000",}}>
+                통계
+              </Button>
             </Grid>
           </Grid>
           <MDBox // 카드 및 번들을 렌더링
-          sx={{
-            backgroundColor : "#282535",
-            marginTop : "5%",
-            borderRadius : "40px",
-          }}>
-            <MDBox
-            sx = {{
-              marginLeft : "3%",
-              marginTop : "7%",
-              marginRight : "3%",
-            }}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={6} lg={3}>
-                  {/* <SimpleBlogCard
-                  image="http://t1.gstatic.com/licensed-image?q=tbn:ANd9GcRRv9ICxXjK-LVFv-lKRId6gB45BFoNCLsZ4dk7bZpYGblPLPG-9aYss0Z0wt2PmWDb"
-                  title="첫번째 글"
-                  description="나는 첫번째글이당"
-                  action={{
-                    type: "external",
-                    route: "/",
-                    color: "secondary",
-                  }}
-                  /> */}
-                  {/* <CardThumbnailCard
-                    cardId="3"
-                    cardType="카드 > 문제"
-                    cardTitle="Q. Java Garbage Collector에 대한 설명으로 틀린 것은?"
-                    cardLike="183"
-                    cardScrap="22"
-                    // action={{
-                    //   type: "external",
-                    //   route: "/",
-                    //   color: "secondary",
-                    // }}
-                    /> */}
-                  <BundleThumbnail2 
-                    bundleImage={bundlerRabbit}
-                    bundleTitle="스크랩한 내 카드 (기본 번들)"
-                    bundleThumtext = "스크랩한 내 카드"
-                    bundleLike = "0"
-                    bundlePrivate = "public"
-                    bundleDefault = "default"
-                  />
-                  <BundleThumbnail2 
-                    bundleImage={trendimg}
-                    bundleTitle="2023년 IT 트렌드"
-                    bundleThumtext = "이것이 트렌드"
-                    bundleLike = "425"
-                    bundlePrivate = "public"
-                    bundleDefault = "non"
-                  />
-                  <BundleThumbnail2 
-                    bundleImage={itimg}
-                    bundleTitle="나만 볼꺼야 번들"
-                    bundleThumtext = "리액트 마스터"
-                    bundleLike = "0"
-                    bundlePrivate = "private"
-                    bundleDefault = "non"
-                  />
-                </Grid>
-              </Grid>
-            </MDBox>
+            sx={{
+              backgroundColor : "#282535",
+              marginTop : "5%",
+              borderRadius : "40px",
+            }}
+          >
+            <SelectedTab selected={tabvalue} />
           </MDBox>
         </MDBox>
       </MDBox>
