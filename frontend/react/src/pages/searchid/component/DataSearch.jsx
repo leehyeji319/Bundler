@@ -1,34 +1,34 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import axios from "axios";
 
 function DataSearch() {
   const [SearchItem, setSearchItem] = useState("");
-
-  // useEffect(() => {
-  //   // eslint-disable-next-line
-  //   searchHandler();
-  // }, []);
-
+  // searchId를 실행시켜 회원검색 진행
+  const searchId = () => {
+    axios({
+      url: "http://localhost:8123/searchId",
+      method: "get",
+      params: { SearchItem },
+      withCredentials: true,
+    }).then((result) => {
+      if (result.data) {
+        console.log(result.data.userInfo);
+      }
+    });
+  };
+  // input 창에 입력값이 있을 때 onchange로 실해되는 함수
   const searchHandler = (e) => {
     e.preventDefault();
+    console.log("s", e.target.value);
+    // SearchItem값을 e.target.value로 바꿔줌
     setSearchItem(e.target.value);
-    // 아래와 같은 조건으로 axios 보냄
-    axios({
-      url: "http://localhost:8123/search",
-      method: "get",
-      withCredentials: true,
-      data: {
-        SearchItem,
-      },
-    })
-      // axios 요청이 성공한다면 200과 함께 로그인 화면을 보여줌
-      .then((result) => {
-        if (result.data) {
-          console.log(result);
-          console.log("Success");
-        }
-      });
   };
+  // SearchItem 값이 변경이 생길 때 실행되는 함수
+  useEffect(() => {
+    // console.log(SearchItem);
+    // searchId를 실행시켜 회원검색 진행
+    searchId();
+  }, [SearchItem]);
 
   return (
     <div>
@@ -38,7 +38,6 @@ function DataSearch() {
           style={{
             width: 200,
           }}
-          value={SearchItem}
           onChange={searchHandler}
         />
       </div>
