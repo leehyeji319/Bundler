@@ -106,6 +106,12 @@ function MakeProblem() {
     e.preventDefault();
 
     // store data - cardList에 card추가
+    // setValues({ ...values, cardno: cardNo }, () => {
+    //   console.log(values);
+    // });
+    setValues({ ...values, cardno: cardNo });
+    console.log("cardId : ", values.cardno);
+    console.log("cardNo : ", cardNo);
     const result = actAddCard(values);
     dispatch(result);
 
@@ -139,7 +145,6 @@ function MakeProblem() {
   const handleCreate = (e) => {
     e.preventDefault();
 
-    console.log(values);
     console.log(cardList);
 
     if (cardList.length === 0) {
@@ -150,12 +155,13 @@ function MakeProblem() {
     }
   };
 
-  // (Func 4) useEffect
+  // (Func Hooks) useEffect
+  useEffect(() => {
+    setValues({ ...values, cardno: cardNo });
+  }, [cardNo]);
+
   useEffect(() => {
     // Component가 화면에 나타남 === mount"
-    // cardno update
-    setValues({ ...values, cardno: cardNo });
-
     // editCardNo가 변화하게 된다면
     // cardList에서 수정할 card 정보 불러오기
     if (editCardNumber !== -1) {
@@ -183,7 +189,7 @@ function MakeProblem() {
     // Component가 화면에 사라짐 === unmount
     // return () => {
     // };
-  }, [cardNo, editCardNumber]);
+  }, [editCardNumber]);
 
   // ------------ Return ----------------
   return (
