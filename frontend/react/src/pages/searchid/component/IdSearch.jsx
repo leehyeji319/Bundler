@@ -1,6 +1,8 @@
 import { React, useState, useEffect } from "react";
 import axios from "axios";
 import defaultimg from "assets/images/bundler/bundler_rabbit_2.png";
+import inputimg from "assets/images/bundler/input.png";
+
 import { Userbox } from "./userbox";
 
 function IdSearch() {
@@ -37,30 +39,77 @@ function IdSearch() {
 
   return (
     <div>
-      <input
-        placeholder="search"
+      <div
         style={{
-          width: 200,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-        onChange={searchHandler}
-      />
+      >
+        <input
+          placeholder="search"
+          style={{
+            backgroundImage: { inputimg },
+            backgroundColor: "rgba(0, 0, 0, 0.2)",
+            padding: "16px",
+            paddingLeft: "30px",
+            borderRadius: "15px",
+            border: "0px",
+            display: "block",
+            margin: "15px",
+            width: "70%",
+            color: "white",
+            fontSize: "18px",
+          }}
+          onChange={searchHandler}
+        />
+      </div>
       {resultId.map((item, i) => (
-        // eslint-disable-next-line
-        <div key={i}>
+        <div
+          // eslint-disable-next-line
+          key={i}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Userbox>
-            {item.thumbnailUrl ? (
-              <img src={item.thumbnailUrl} alt="" />
-            ) : (
-              // <p>asdasd</p>
-              <img
-                src={defaultimg}
-                alt=""
-                style={{
-                  width: "100px",
-                }}
-              />
-            )}
-            <div>
+            <div
+              style={{
+                paddingTop: "15px",
+                paddingBottom: "15px",
+                width: "5rem",
+                backgroundColor: "white",
+                borderRadius: "100px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {item.thumbnailUrl ? (
+                <img
+                  src={item.thumbnailUrl}
+                  alt=""
+                  style={{
+                    width: "80%",
+                  }}
+                />
+              ) : (
+                <img
+                  src={defaultimg}
+                  alt=""
+                  style={{
+                    width: "80%",
+                  }}
+                />
+              )}
+            </div>
+            <div
+              style={{
+                paddingLeft: "20px",
+              }}
+            >
               <h3>{item.username}</h3>
               <p>{item.email}</p>
             </div>
