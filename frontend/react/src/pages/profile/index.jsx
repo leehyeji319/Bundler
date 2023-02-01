@@ -33,8 +33,7 @@ import Catimage from "../../assets/images/cat.jpg";
 // 각 탭 form들을 import 
 import BundleListTab from "./Form/BundleListForm";
 import CardListTab from "./Form/CardListForm";
-// import StatTab from "./Form/StatForm";
-import NOStatTab from "./Form/NoStatTab";
+import StatTab from "./Form/StatForm";
 
 
 // import { ResponsiveCalendar } from '@nivo/calendar'
@@ -46,7 +45,7 @@ function SelectedTab({ selected }) {
     case "bundleTab":
       return <BundleListTab />;
     case "statTab":
-      return <NOStatTab />;
+      return <StatTab />;
     default:
       return <CardListTab />;
   }
