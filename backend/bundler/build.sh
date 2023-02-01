@@ -1,4 +1,4 @@
-MAGE_NAME="bundler-backend-dev"
+IMAGE_NAME="bundler-backend-dev"
 CONTAINER_ID="$(docker container ls |grep ${IMAGE_NAME}|awk '{print $1}')"
 IMAGE_ID="$(docker images -q ${IMAGE_NAME})"
 EMPTY_STR=""
