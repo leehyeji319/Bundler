@@ -1,18 +1,14 @@
-/*
- 기본 홈 Page 구성  
- */
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
+import CardSearch from "./component/CardSearch";
 
-function SearchAll() {
+function SearchCard() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div>search all</div>
+      <CardSearch />
     </DashboardLayout>
   );
 }
 
-export default SearchAll;
+export default SearchCard;
