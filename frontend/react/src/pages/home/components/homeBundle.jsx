@@ -1,3 +1,6 @@
+// react
+import { useState } from "react";
+
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
@@ -10,65 +13,44 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import HomeCard from "pages/home/components/homeCard";
 
+// Import custom
+import ModalCardList from "pages/home/components/modalCardList";
+
 // Card Image
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
-// Hooks
-import { useState } from "react";
-
 function HomeBundle({ bundleTitle, bundleAuthor, cardList }) {
-  const [cardOpen, setCardOpen] = useState(false);
-  const handleCardOpen = () => setCardOpen(true);
-  const handleCardClose = () => setCardOpen(false);
-
-  function Cards() {
-    return cardList.map((card) => (
-      <HomeCard
-        key={card.cardId}
-        image={card.cardImage}
-        category={card.category}
-        id={card.id}
-        title={card.title}
-        description={card.description}
-        solution={card.solution}
-        answer={card.answer}
-        commentList={card.commentList}
-      />
-    ));
-  }
+  const [cardListModal, setCardListModal] = useState(false);
+  const handleCardListOpen = () => setCardListModal(true);
+  const handleCardClose = () => setCardListModal(false);
 
   return (
-    <Card sx={{ ml: 10, mb: 3, maxWidth: 800 }}>
-      <MDBox p={3} mx={3}>
-        <MDBox>
-          <MDBox
-            component="img"
-            src={CardImg}
-            alt={CardImg}
-            borderRadius="lg"
-            shadow="md"
-            width="10%"
-            height="10%"
-            position="relative"
-            display="inline-block"
-            zIndex={1}
-          />
-          <MDBox display="inline-block" mx={2}>
-            <MDTypography variant="h3" textTransform="capitalize" fontWeight="bold">
-              {bundleTitle}
-            </MDTypography>
-            <MDTypography variant="overline" mt={1}>
-              {bundleAuthor}
-            </MDTypography>
+    <Card sx={{ ml: 2, mb: 3, maxWidth: 800 }}>
+      <ModalCardList open={cardListModal} cardList={cardList} handleCardClose={handleCardClose} />
+      <MDBox mx={3}>
+        <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
+          <MDBox display="flex" sx={{ alignItems: "center" }}>
+            <MDBox
+              component="img"
+              src={CardImg}
+              alt={CardImg}
+              borderRadius="lg"
+              shadow="md"
+              width="25%"
+              height="80%"
+              zIndex={1}
+            />
+            <MDBox mx={2} width="70%">
+              <MDTypography variant="h4" textTransform="capitalize" fontWeight="bold">
+                {bundleTitle}
+              </MDTypography>
+              <MDTypography variant="overline" mt={1}>
+                {bundleAuthor}
+              </MDTypography>
+            </MDBox>
           </MDBox>
         </MDBox>
-        <Button onClick={handleCardOpen}>카드 슬래쉬~~</Button>
-        {cardOpen === true && (
-          <div>
-            <Cards />
-            <Button onClick={handleCardClose}>카드 Close</Button>
-          </div>
-        )}
+        <Button onClick={handleCardListOpen}>번들 상세보기</Button>
       </MDBox>
     </Card>
   );

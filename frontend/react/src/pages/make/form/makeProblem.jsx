@@ -32,14 +32,15 @@ function MakeProblem() {
   });
 
   // (Data 3) Local - useState 버튼!!
-  const [bundleToggle, setBundleToggle] = useState(false); // 번들 토글 버튼
+  // Card Data
   const [editCardIndex, setEditCardIndex] = useState(-1); // 선택된 카드 인덱스 저장
   const [valid, setValid] = useState({
     isFeedTitle: false,
-    idFeedContent: false,
+    isFeedContent: false,
     isCardCommentary: false,
   });
-
+  // Bundle Data
+  const [bundleToggle, setBundleToggle] = useState(false); // 번들 토글 버튼
   const [bundleForm, setBundleForm] = useState({
     userId: "testId",
     bundleThumbnail: "",
@@ -58,21 +59,23 @@ function MakeProblem() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
+
+    // valid
+    const feedTitle = document.querySelector("#problem-title").value;
+    const feedContent = document.querySelector("#problem-content").value;
+    if (feedTitle.length === 0 && feedContent.length !== 0)
+      setValid({ ...valid, isFeedTitle: true, isFeedContent: false });
+    if (feedTitle.length !== 0 && feedContent.length === 0)
+      setValid({ ...valid, isFeedTitle: false, isFeedContent: true });
+    if (feedTitle.length === 0 && feedContent.length === 0)
+      setValid({ ...valid, isFeedTitle: true, isFeedContent: true });
+    if (feedTitle.length !== 0 && feedContent.length !== 0)
+      setValid({ ...valid, isFeedTitle: false, isFeedContent: false });
   };
 
   // ------------ Function ----------------
   const dispatch = useDispatch(); // state와 function을 보내는 함수
 
-  // validation check 함수
-  const checkValid = () => {
-    const feedTitle = document.querySelector("#problem-title").value;
-    // const feedContent = document.querySelector("#problem-content").value;
-    // const cardCommentary = document.querySelector("#problem-cardCommentary").value;
-    // const cardDescription = document.querySelector("#problem-description").value;
-    console.log(feedTitle);
-    console.log(feedTitle.length);
-    if (feedTitle.length === 0) setValid({ ...valid, isFeedTitle: true });
-  };
   // state 초기화
   const initStateRender = () => {
     setValues({
@@ -94,14 +97,19 @@ function MakeProblem() {
   const handleAdd = (e) => {
     e.preventDefault();
 
-    checkValid();
+    // validation check
+    const feedTitle = document.querySelector("#problem-title").value;
+    const feedContent = document.querySelector("#problem-content").value;
+    if (feedTitle.length === 0 || feedContent === 0) {
+      alert("필수 입력 필요");
+    } else {
+      setValues({ ...values, cardno: cardNo });
+      const result = actAddCard(values);
+      dispatch(result);
 
-    setValues({ ...values, cardno: cardNo });
-    const result = actAddCard(values);
-    dispatch(result);
-
-    // 값 초기화
-    initStateRender();
+      // 값 초기화
+      initStateRender();
+    }
   };
 
   // (Func 2) handleEdit - 카드리스트 안의 카드 수정
@@ -139,6 +147,18 @@ function MakeProblem() {
 
     console.log(cardList);
     console.log(bundleForm);
+
+    if (
+      bundleToggle &&
+      (bundleForm.bundleThumbnail.length === 0 || bundleForm.bundleThumbnailText.length === 0)
+    ) {
+      alert("bundle 내용 없음");
+    } else if (!bundleToggle && cardList.length === 0) {
+      alert("bundle 생성만 하실 경우 bundle 제목과 내용을 입력해 주세요");
+    } else {
+      alert("정상 생성");
+      dispatch({ type: "CARD_STORE_RESET" });
+    }
 
     // if (cardList.length === 0) {
     //   alert("카드 리스트가 비어있습니다");
@@ -207,7 +227,7 @@ function MakeProblem() {
         </Typography>
         <TextField
           {...(valid.isFeedTitle ? { error: true } : {})}
-          helperText="필수 입력 입니다"
+          helperText="필수 입력란"
           multiline
           rows={1}
           required
@@ -227,6 +247,8 @@ function MakeProblem() {
           <Box sx={{ textAlign: "center", mt: 3 }}>내용</Box>
         </Typography>
         <TextField
+          {...(valid.isFeedContent ? { error: true } : {})}
+          helperText="필수 입력란"
           multiline
           rows={4}
           required
@@ -242,15 +264,17 @@ function MakeProblem() {
       </Box>
       <Box sx={{ display: "flex" }}>
         <Typography variant="h6">
-          <Box sx={{ textAlign: "center", mt: 3 }}>설명</Box>
+          <Box sx={{ textAlign: "center", mt: 3 }}>해답</Box>
         </Typography>
         <TextField
+          // {...(valid.isCardCommentary ? { error: true } : {})}
+          // helperText="필수 입력란"
           multiline
           rows={4}
           id="problem-cardCommentary"
           type="text"
           name="cardCommentary"
-          label="Required"
+          label="Optional"
           InputLabelProps={{
             shrink: true,
           }}

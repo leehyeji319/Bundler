@@ -16,7 +16,11 @@ function MakeBundle({ selected, handleBundle }) {
         <div>
           <Box sx={{ display: "flex" }}>
             <Typography variant="h6">
-              <Box sx={{ textAlign: "center", mt: 3 }}>번들 제목</Box>
+              <Box sx={{ textAlign: "center", mt: 3 }}>
+                번들
+                <br />
+                제목
+              </Box>
             </Typography>
             <TextField
               multiline
@@ -35,7 +39,11 @@ function MakeBundle({ selected, handleBundle }) {
           </Box>
           <Box sx={{ display: "flex" }}>
             <Typography variant="h6">
-              <Box sx={{ textAlign: "center", mt: 3 }}>번들 내용</Box>
+              <Box sx={{ textAlign: "center", mt: 3 }}>
+                번들
+                <br />
+                내용
+              </Box>
             </Typography>
             <TextField
               multiline
