@@ -28,9 +28,11 @@ const MyResponsivePie = ({ data /* see data tab */ }) => (
         ]
     }}
     arcLinkLabelsSkipAngle={10}
-    arcLinkLabelsTextColor="#333333"
-    arcLinkLabelsThickness={2}
+    arcLinkLabelsTextColor="#ffffff"
+    arcLinkLabelsThickness={4}
     arcLinkLabelsColor={{ from: 'color' }}
+    arcLinkLabel="value"
+    arcLabel="id"
     arcLabelsSkipAngle={10}
     arcLabelsTextColor={{
         from: 'color',
@@ -122,6 +124,7 @@ const MyResponsivePie = ({ data /* see data tab */ }) => (
                 itemWidth: 100,
                 itemHeight: 18,
                 itemTextColor: '#999',
+                // itemTextColor: "#000000",
                 itemDirection: 'left-to-right',
                 itemOpacity: 1,
                 symbolSize: 18,

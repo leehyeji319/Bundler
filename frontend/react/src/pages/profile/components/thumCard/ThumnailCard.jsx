@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 
 // @mui material components
 import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
 // import Modal from "@mui/material/Modal";
 import { useState } from "react";
 // import Divider from "@mui/material/Divider";
@@ -17,6 +18,7 @@ import MobileScreenShareIcon from '@mui/icons-material/MobileScreenShare';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
+import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 import HomeCardModal from "./ThumnailCardModal";
@@ -84,7 +86,7 @@ function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap, C
       sx={{
         // display: "flex",
         marginBottom: "20px",
-        height: "350px"
+        height: "auto",
       }}
     >
       {/* <HomeCardModal
@@ -149,63 +151,81 @@ function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap, C
         >
           {cardTitle.slice(0,40)}
         </MDTypography>
-        <MDBox mt={2}>
-          <MDBox
-            display="flex"
-            // justifyContent="space-between"
-            // alignItems="center"
-          >
-            <MDBox // 카드 좋아요(아이콘+좋아요 수)가 담길 박스
-              sx={{
-                marginLeft: "10px",
-              }}
-            >
-              <FavoriteIcon
+        <MDBox
+          sx={{
+            marginTop: "30px",
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item xs={6} md={4}>
+              <MDBox // 카드 좋아요(아이콘+좋아요 수)가 담길 박스
                 sx={{
-                  width: "25px",
-                  height: "25px",
+                  marginLeft: "10px",
                 }}
-                color="primary"
-                style={{
-                  float: "left",
-                }}
-              />
-              <MDTypography
+              >
+                <FavoriteIcon
+                  sx={{
+                    width: "25px",
+                    height: "25px",
+                  }}
+                  color="primary"
+                  style={{
+                    float: "left",
+                  }}
+                />
+                <MDTypography
+                  sx={{
+                    marginLeft: "8px",
+                    fontSize: "15px",  
+                  }}
+                  style={{
+                    float: "left",
+                  }}>
+                  {cardLike}
+                </MDTypography>
+              </MDBox>
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <MDBox // 카드 스크랩(아이콘 + 스크랩 수)가 담길 박스
                 sx={{
-                  marginLeft: "8px",
-                  fontSize: "15px",  
+                  marginLeft: "10px",
                 }}
-                style={{
-                  float: "left",
-                }}>
-                {cardLike}
-              </MDTypography>
-            </MDBox>
-            <MDBox
-              sx={{
-                marginLeft: "10px",
-              }}
-            >
-              <MobileScreenShareIcon 
-                sx={{
-                  width: "25px",
-                  height : "25px",
-                }}
-                color="white"
-                style={{
-                  float: "left",
-                }}
-              />
-              <MDTypography
-                sx={{
-                  marginLeft: "8px",
-                  fontSize: "15px",
-                  float: "left"
-                }}>
-                {cardScrap}
-              </MDTypography>
-            </MDBox>
-          </MDBox>
+              >
+                <MobileScreenShareIcon 
+                  sx={{
+                    width: "25px",
+                    height : "25px",
+                  }}
+                  color="white"
+                  style={{
+                    float: "left",
+                  }}
+                />
+                <MDTypography
+                  sx={{
+                    marginLeft: "8px",
+                    fontSize: "15px",
+                    float: "left"
+                  }}>
+                  {cardScrap}
+                </MDTypography>
+              </MDBox>
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <MDBox // 카드 썸네일 하단 - 상세보기 버튼
+              >
+                <MDButton
+                  variant="outlined"
+                  size="small"
+                  style={{
+                    // marginLeft: "40px",
+                    }}
+                  >
+                  상세 보기
+                </MDButton>
+              </MDBox>
+            </Grid>
+          </Grid>
         </MDBox>
       </MDBox>
     </Card>
