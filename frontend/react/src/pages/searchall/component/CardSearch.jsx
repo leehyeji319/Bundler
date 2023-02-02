@@ -178,13 +178,7 @@ function CardSearch() {
           검색하기
         </button>
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div>
         {/* 피드타입 */}
         <select onChange={feedTypeDropbox}>
           {FeedType.map((el) => (
