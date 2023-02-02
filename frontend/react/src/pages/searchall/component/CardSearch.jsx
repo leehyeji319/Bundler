@@ -95,6 +95,7 @@ function CardSearch() {
     setCategoryId(CategoryIdBig.filter((el) => el.value === value)[0].id);
     setcategoryId2(CategoryIdBig.filter((el) => el.value === value)[0].id);
   };
+
   // 중분류 1
   const categoryIdSmall1Dropbox = (e) => {
     const { value } = e.target;
