@@ -20,6 +20,12 @@ Coded by www.creative-tim.com
  */
 
 const colors = {
+  bundlerBg: {
+    main: "",
+  },
+  bundler: {
+    main: "",
+  },
   background: {
     default: "#f0f2f5",
   },
