@@ -18,9 +18,9 @@ const CategoryIdBig = [
   { id: null, value: "모두검색" },
   { id: "1", value: "알고리즘" },
   { id: "2", value: "CS" },
-  { id: "4", value: "직무" },
-  { id: "5", value: "언어" },
-  { id: "3", value: "기타" },
+  { id: "3", value: "직무" },
+  { id: "4", value: "언어" },
+  { id: "5", value: "기타" },
 ];
 
 const CategoryIdSmall1 = [
@@ -42,30 +42,30 @@ const CategoryIdSmall2 = [
   { id: "17", value: "기타" },
 ];
 const CategoryIdSmall3 = [
-  { id: "4", value: "대분류 모두검색" },
-  { id: "22", value: "면접" },
-  { id: "23", value: "백엔드" },
-  { id: "24", value: "프론트엔드" },
-  { id: "25", value: "인프라" },
-  { id: "26", value: "데이터베이스 엔지니어" },
-  { id: "27", value: "기타" },
+  { id: "3", value: "대분류 모두검색" },
+  { id: "18", value: "면접" },
+  { id: "19", value: "백엔드" },
+  { id: "20", value: "프론트엔드" },
+  { id: "21", value: "인프라" },
+  { id: "22", value: "데이터베이스 엔지니어" },
+  { id: "23", value: "기타" },
 ];
 const CategoryIdSmall4 = [
-  { id: "5", value: "대분류 모두검색" },
-  { id: "28", value: "C / C++" },
-  { id: "29", value: "JAVA" },
-  { id: "30", value: "Python" },
-  { id: "31", value: "Kotlin" },
-  { id: "32", value: "JS / HTML / CSS" },
-  { id: "33", value: "SQL" },
-  { id: "34", value: "기타" },
+  { id: "4", value: "대분류 모두검색" },
+  { id: "24", value: "C / C++" },
+  { id: "25", value: "JAVA" },
+  { id: "26", value: "Python" },
+  { id: "27", value: "Kotlin" },
+  { id: "28", value: "JS / HTML / CSS" },
+  { id: "29", value: "SQL" },
+  { id: "30", value: "기타" },
 ];
 const CategoryIdSmall5 = [
-  { id: "3", value: "대분류 모두검색" },
-  { id: "18", value: "기업분석" },
-  { id: "19", value: "IT기사 / 트렌드" },
-  { id: "21", value: "자격증" },
-  { id: "20", value: "기타" },
+  { id: "5", value: "대분류 모두검색" },
+  { id: "31", value: "기업분석" },
+  { id: "32", value: "IT기사 / 트렌드" },
+  { id: "33", value: "자격증" },
+  { id: "34", value: "기타" },
 ];
 
 function CardSearch() {
@@ -248,11 +248,25 @@ function CardSearch() {
                 </div>
               </>
             ) : // eslint-disable-next-line
+            categoryId2 === "3" ? (
+              <>
+                {/* 카테고리 중3 */}
+                <select onChange={categoryIdSmall3Dropbox}>
+                  {CategoryIdSmall3.map((el) => (
+                    <option key={el.id}>{el.value}</option>
+                  ))}
+                </select>
+                {/* 카테고리별 저장값3 */}
+                <div>
+                  <p>{categoryId}</p>
+                </div>
+              </>
+            ) : // eslint-disable-next-line
             categoryId2 === "4" ? (
               <>
                 {/* 카테고리 중4 */}
-                <select onChange={categoryIdSmall3Dropbox}>
-                  {CategoryIdSmall3.map((el) => (
+                <select onChange={categoryIdSmall4Dropbox}>
+                  {CategoryIdSmall4.map((el) => (
                     <option key={el.id}>{el.value}</option>
                   ))}
                 </select>
@@ -261,29 +275,15 @@ function CardSearch() {
                   <p>{categoryId}</p>
                 </div>
               </>
-            ) : // eslint-disable-next-line
-            categoryId2 === "5" ? (
+            ) : categoryId2 === "5" ? (
               <>
                 {/* 카테고리 중5 */}
-                <select onChange={categoryIdSmall4Dropbox}>
-                  {CategoryIdSmall4.map((el) => (
-                    <option key={el.id}>{el.value}</option>
-                  ))}
-                </select>
-                {/* 카테고리별 저장값5 */}
-                <div>
-                  <p>{categoryId}</p>
-                </div>
-              </>
-            ) : categoryId2 === "3" ? (
-              <>
-                {/* 카테고리 중3 */}
                 <select onChange={categoryIdSmall5Dropbox}>
                   {CategoryIdSmall5.map((el) => (
                     <option key={el.id}>{el.value}</option>
                   ))}
                 </select>
-                {/* 카테고리별 저장값3 */}
+                {/* 카테고리별 저장값5 */}
                 <div>
                   <p>{categoryId}</p>
                 </div>
