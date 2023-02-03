@@ -9,11 +9,11 @@ import PropTypes from "prop-types";
 // @mui material components
 import Card from "@mui/material/Card";
 // import Modal from "@mui/material/Modal";
-import { useState } from "react";
+// import { useState } from "react";
 // import Divider from "@mui/material/Divider";
 // import Icon from "@mui/material/Icon";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MobileScreenShareIcon from '@mui/icons-material/MobileScreenShare';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -21,10 +21,9 @@ import MDTypography from "components/MDTypography";
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 import HomeCardModal from "./ThumnailCardModal";
 
-
 function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap }) {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  // const [setOpen] = useState(false);
+  // const handleOpen = () => setOpen(true);
   // const handleClose = () => setOpen(false);
 
   // const bundle = {
@@ -62,7 +61,6 @@ function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap })
   //   ],
   // };
 
-
   return (
     <Card>
       {/* <HomeCardModal
@@ -78,7 +76,7 @@ function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap })
       /> */}
       <HomeCardModal
         key="1"
-        image= {CardImg}
+        image={CardImg}
         category="문제1 > 알고리즘"
         id="dellojoon7@gmail.com"
         title="제목인데 json 형식 test 중"
@@ -91,61 +89,57 @@ function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap })
         ]}
       />
       <MDBox p={3}>
-        <MDTypography 
-          display="inline"
-          variant="h3" 
-          textTransform="capitalize" 
-          fontWeight="bold"
-          >
+        <MDTypography display="inline" variant="h3" textTransform="capitalize" fontWeight="bold">
           {cardType}
         </MDTypography>
         <MDTypography variant="body2" component="p" color="text">
           {cardTitle}
         </MDTypography>
         <MDBox mt={2} mb={3}>
-          <MDTypography>
-            {cardId}
-          </MDTypography>
+          <MDTypography>{cardId}</MDTypography>
           <MDBox>
             <MDBox>
               <FavoriteIcon
                 sx={{
                   width: "19px",
-                  height : "20px",
+                  height: "20px",
                 }}
-                color = "primary"
+                color="primary"
                 style={{
                   float: "left",
                 }}
               />
               <MDTypography
                 sx={{
-                  fontSize : "15px",  
+                  fontSize: "15px",
                 }}
                 style={{
                   float: "left",
-                }}>
+                }}
+              >
                 {cardLike}
               </MDTypography>
             </MDBox>
             <MDBox
               sx={{
-                marginLeft : "10%",
-              }}>
-              <MobileScreenShareIcon 
+                marginLeft: "10%",
+              }}
+            >
+              <MobileScreenShareIcon
                 sx={{
                   width: "19px",
-                  height : "20px",
+                  height: "20px",
                 }}
-                color = "white"
+                color="white"
                 style={{
                   float: "left",
                 }}
               />
               <MDTypography
                 sx={{
-                  fontSize : "15px",  
-                }}>
+                  fontSize: "15px",
+                }}
+              >
                 {cardScrap}
               </MDTypography>
             </MDBox>
@@ -163,25 +157,22 @@ CardThumbnailCard.propTypes = {
   cardTitle: PropTypes.string.isRequired,
   cardLike: PropTypes.number.isRequired,
   cardScrap: PropTypes.number.isRequired,
-//   action: PropTypes.shape({
-//     type: PropTypes.oneOf(["external", "internal"]).isRequired,
-//     route: PropTypes.string.isRequired,
-//     color: PropTypes.oneOf([
-//       "primary",
-//       "secondary",
-//       "info",
-//       "success",
-//       "warning",
-//       "error",
-//       "dark",
-//       "light",
-//       "default",
-//     ]),
-//     label: PropTypes.string.isRequired,
-//   }).isRequired,
+  //   action: PropTypes.shape({
+  //     type: PropTypes.oneOf(["external", "internal"]).isRequired,
+  //     route: PropTypes.string.isRequired,
+  //     color: PropTypes.oneOf([
+  //       "primary",
+  //       "secondary",
+  //       "info",
+  //       "success",
+  //       "warning",
+  //       "error",
+  //       "dark",
+  //       "light",
+  //       "default",
+  //     ]),
+  //     label: PropTypes.string.isRequired,
+  //   }).isRequired,
 };
 
-
-
 export default CardThumbnailCard;
-
