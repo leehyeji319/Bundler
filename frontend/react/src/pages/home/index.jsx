@@ -13,7 +13,7 @@ import Footer from "examples/Footer";
 
 // Card Image
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
-// import HomeInput from "pages/home/components/homeInput";
+import HomeInfiniteScroll from "pages/home/components/homeInfiniteScroll";
 
 function Home() {
   // dummy Data Test용
@@ -114,6 +114,7 @@ function Home() {
           </div>
         );
       })}
+      <HomeInfiniteScroll />
       <Footer />
     </HomeLayout>
   );

@@ -12,6 +12,7 @@ axios.defaults.withCredentials = true; // 쿠키 데이터를 전송받기 위�
 // 요청 주소
 const BUNDLER_URL = "http://localhost:8080";
 const AUTH_URL = "https://i8a810.p.ssafy.io";
+const TEST_URL = "https://jsonplaceholder.typicode.com";
 
 // basic Instance
 const apiInstance = () => {
@@ -34,6 +35,17 @@ const apiLogin = () => {
   return instance;
 };
 
+// Home TEST URL by 정세권
+const apiFeedInstance = () => {
+  const instance = axios.create({
+    baseURL: TEST_URL,
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+  });
+  return instance;
+};
+
 // Auth Token apiInstance 추가 생성하면 될듯
 
 // 기본 Url로 하는 이유는 토큰을 isntance 만드는 시점에 가져오기 때문에
@@ -52,4 +64,4 @@ const apiLogin = () => {
 //   })
 // }
 
-export { apiInstance, apiLogin };
+export { apiInstance, apiLogin, apiFeedInstance };
