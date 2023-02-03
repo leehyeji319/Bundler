@@ -34,7 +34,9 @@ import Home from "pages/home";
 import Search from "pages/searchall";
 import SearchId from "pages/searchid";
 import Make from "pages/make";
-import Profile from "layouts/profile";
+import Profile from "pages/profile";
+import AuthLogin from "pages/auth/login";
+import SignUp from "pages/signup";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -80,69 +82,22 @@ const routes = [
     route: "/profile",
     component: <Profile />,
   },
-  // {
-  //   type: "divider",
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "dashboard",
-  //   key: "dashboard",
-  //   icon: (
-  //     <Icon color="" fontSize="small">
-  //       home
-  //     </Icon>
-  //   ),
-  //   route: "/dashboard",
-  //   component: <Dashboard />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Tables",
-  //   key: "tables",
-  //   icon: <Icon fontSize="small">table_view</Icon>,
-  //   route: "/tables",
-  //   component: <Tables />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Billing",
-  //   key: "billing",
-  //   icon: <Icon fontSize="small">receipt_long</Icon>,
-  //   route: "/billing",
-  //   component: <Billing />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "RTL",
-  //   key: "rtl",
-  //   icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-  //   route: "/rtl",
-  //   component: <RTL />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Notifications",
-  //   key: "notifications",
-  //   icon: <Icon fontSize="small">notifications</Icon>,
-  //   route: "/notifications",
-  //   component: <Notifications />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Sign In",
-  //   key: "sign-in",
-  //   icon: <Icon fontSize="small">login</Icon>,
-  //   route: "/authentication/sign-in",
-  //   component: <SignIn />,
-  // },
-  // {
-  //   type: "collapse",
-  //   name: "Sign Up",
-  //   key: "sign-up",
-  //   icon: <Icon fontSize="small">assignment</Icon>,
-  //   route: "/authentication/sign-up",
-  //   component: <SignUp />,
-  // },
+  {
+    type: "collapse",
+    name: "로그인",
+    key: "login",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/auth/login/",
+    component: <AuthLogin />,
+  },
+  {
+    type: "collapse",
+    name: "회원가입",
+    key: "signup",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/signup/",
+    component: <SignUp />,
+  },
 ];
 
 export default routes;

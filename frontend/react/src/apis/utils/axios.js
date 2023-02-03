@@ -5,9 +5,13 @@
 // import axios
 import axios from "axios";
 
+// 전역 설정
+// axios.defaults.headers["Access-Control-Allow-Origin"] = "*";
+axios.defaults.withCredentials = true; // 쿠키 데이터를 전송받기 위해
+
 // 요청 주소
 const BUNDLER_URL = "http://localhost:8080";
-const TEST_URL = "https://jsonplaceholder.typicode.com/todos";
+const AUTH_URL = "https://i8a810.p.ssafy.io";
 
 // basic Instance
 const apiInstance = () => {
@@ -20,10 +24,12 @@ const apiInstance = () => {
   return instance;
 };
 
-// Test
-const apiMock = () => {
+// Auth
+const apiLogin = () => {
+  // 아래와 같은 조건으로 axios 보냄
+  console.log("apiLogin/axios.js");
   const instance = axios.create({
-    baseURL: TEST_URL,
+    baseURL: AUTH_URL,
   });
   return instance;
 };
@@ -46,4 +52,4 @@ const apiMock = () => {
 //   })
 // }
 
-export { apiInstance, apiMock };
+export { apiInstance, apiLogin };
