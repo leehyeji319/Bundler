@@ -22,25 +22,29 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "FEED_LIKE")
-public class FeedLike implements Serializable {
+@Table(name = "FEED_CATEGORY")
+public class FeedCategory implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "feed_like_id")
-	private Long feedLikeId;
+	@Column(name = "feed_category_id")
+	private Long feedCategoryId;
+
+	@Column(name = "feed_id")
+	private Long feedId;
+
+	@Column(name = "target_category_id")
+	private Long targetCategoryId;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = LAZY)
-	@JoinColumn(name = "feed_id")
-	private Feed feed;
+	@JoinColumn(name = "category_id")
+	private Category category;
 
-	@Column(name = "user_id")
-	private Long userId;
-
-	@Builder
-	public FeedLike(Feed feed, Long userId) {
-		this.feed = feed;
-		this.userId = userId;
+	@Builder(toBuilder = true)
+	public FeedCategory(Long feedCategoryId, Long feedId, Long targetCategoryId) {
+		this.feedCategoryId = feedCategoryId;
+		this.feedId = feedId;
+		this.targetCategoryId = targetCategoryId;
 	}
 
 }
