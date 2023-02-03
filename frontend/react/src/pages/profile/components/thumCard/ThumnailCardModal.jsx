@@ -45,83 +45,83 @@ function HomeCardModal({ image, category, id, title, description, solution, answ
   };
 
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
-  <Modal open={open} onClose={handleClose}>
-    <Card sx={style}>
-      <MDBox p={3} bgColor="#152744">
-        <MDBox>
-          <MDBox
-            component="img"
-            src={image}
-            alt={image}
-            borderRadius="lg"
-            shadow="md"
-            width="10%"
-            height="10%"
-            position="relative"
-            display="inline-block"
-            zIndex={1}
-          />
-          <MDBox display="inline-block" mx={2}>
-            <MDTypography variant="h3" textTransform="capitalize" fontWeight="bold">
-              {category}
-            </MDTypography>
-            <MDTypography variant="overline" mt={1}>
-              {id}
+    <Modal open={open} onClose={handleClose}>
+      <Card sx={style}>
+        <MDBox p={3} bgColor="#152744">
+          <MDBox>
+            <MDBox
+              component="img"
+              src={image}
+              alt={image}
+              borderRadius="lg"
+              shadow="md"
+              width="10%"
+              height="10%"
+              position="relative"
+              display="inline-block"
+              zIndex={1}
+            />
+            <MDBox display="inline-block" mx={2}>
+              <MDTypography variant="h3" textTransform="capitalize" fontWeight="bold">
+                {category}
+              </MDTypography>
+              <MDTypography variant="overline" mt={1}>
+                {id}
+              </MDTypography>
+            </MDBox>
+          </MDBox>
+          <MDBox mt={2} mb={3}>
+            <MDTypography
+              display="inline"
+              variant="h6"
+              textTransform="capitalize"
+              fontWeight="bold"
+            >
+              {title}
             </MDTypography>
           </MDBox>
+          <MDBox mt={2} mb={3}>
+            <MDTypography variant="body2" component="p" color="text">
+              {description}
+            </MDTypography>
+          </MDBox>
+          <MDBox mt={2} mb={3}>
+            <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
+              해설
+            </MDTypography>
+            <MDTypography variant="body2" component="p" color="text">
+              {solution}
+            </MDTypography>
+          </MDBox>
+          <MDBox mt={2} mb={3}>
+            <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
+              내가 쓴 답
+            </MDTypography>
+            <MDTypography variant="body2" component="p" color="text">
+              {answer}
+            </MDTypography>
+          </MDBox>
+          <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
+            <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
+              댓글란
+            </MDTypography>
+            <ul>
+              {commentList.map((comment) => (
+                <li>
+                  <MDTypography variant="body2" textTransform="capitalize">
+                    {comment.name} : {comment.reply}
+                  </MDTypography>
+                </li>
+              ))}
+            </ul>
+          </Box>
         </MDBox>
-        <MDBox mt={2} mb={3}>
-          <MDTypography
-            display="inline"
-            variant="h6"
-            textTransform="capitalize"
-            fontWeight="bold"
-          >
-            {title}
-          </MDTypography>
-        </MDBox>
-        <MDBox mt={2} mb={3}>
-          <MDTypography variant="body2" component="p" color="text">
-            {description}
-          </MDTypography>
-        </MDBox>
-        <MDBox mt={2} mb={3}>
-          <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-            해설
-          </MDTypography>
-          <MDTypography variant="body2" component="p" color="text">
-            {solution}
-          </MDTypography>
-        </MDBox>
-        <MDBox mt={2} mb={3}>
-          <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-            내가 쓴 답
-          </MDTypography>
-          <MDTypography variant="body2" component="p" color="text">
-            {answer}
-          </MDTypography>
-        </MDBox>
-        <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
-          <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-            댓글란
-          </MDTypography>
-          <ul>
-            {commentList.map((comment) => (
-              <li>
-                <MDTypography variant="body2" textTransform="capitalize">
-                  {comment.name} : {comment.reply}
-                </MDTypography>
-              </li>
-            ))}
-          </ul>
-        </Box>
-      </MDBox>
-    </Card>
-  </Modal>
+      </Card>
+    </Modal>
   );
 }
 

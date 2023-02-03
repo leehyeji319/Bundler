@@ -3,7 +3,7 @@
  */
 // @mui material components
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button"
+import Button from "@mui/material/Button";
 
 import MDBox from "components/MDBox";
 // import MDAvatar from "components/MDAvatar";
@@ -14,14 +14,14 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import ProfileCard from "./components/ProfileCard/ProfileCard";
-import CardThumbnailCard from "./components/thumCard/ThumnailCard";
+// import CardThumbnailCard from "./components/thumCard/ThumnailCard";
 
-import BundleThumbnail2 from 'pages/profile/components/thumBundle/BundleCard';
+import BundleThumbnail2 from "./components/thumBundle/BundleCard";
 
 // Images
-import trendimg from "../../assets/images/trend.jpg"
-import itimg from "../../assets/images/ai-icons.jpeg"
-import bundlerRabbit from "../../assets/images/bundler_rabbit_6.png"
+import trendimg from "../../assets/images/trend.jpg";
+import itimg from "../../assets/images/ai-icons.jpeg";
+import bundlerRabbit from "../../assets/images/bundler_rabbit_6.png";
 import Catimage from "../../assets/images/cat.jpg";
 
 // import { ResponsiveCalendar } from '@nivo/calendar'
@@ -29,10 +29,9 @@ import Catimage from "../../assets/images/cat.jpg";
 // import strickdata2 from "../searchall/strickdata.json"
 
 function Profile() {
-
   // const data1  = strickdata2
 
-  const thisyear = "2023"
+  // const thisyear = "2023";
 
   return (
     <DashboardLayout>
@@ -42,25 +41,23 @@ function Profile() {
           프로필
         </MDTypography>
       </MDBox>
-      <MDBox 
-      position="relative" 
-      mb={5}>
-        <MDBox 
-        sx={{
-            width : "1700px",
-            height : "400px",
-            flexDirection : "row",
+      <MDBox position="relative" mb={5}>
+        <MDBox
+          sx={{
+            width: "1700px",
+            height: "400px",
+            flexDirection: "row",
             // justifyContent : "spaceBetween"
-          }}>
-
+          }}
+        >
           <ProfileCard
             profileImage={Catimage}
             nickname="dellojoon2"
             email="dellojoon7@gmail.com"
             introduction="많은 분들의 니즈를 충족시키는 프론트엔드 개발자가 되고 싶습니다."
             group="싸피 8기"
-            sx = {{
-              float : "left",
+            sx={{
+              float: "left",
             }}
           />
           {/* <MDBox
@@ -111,27 +108,35 @@ function Profile() {
           </MDBox>
 
         </MDBox> */}
-      </MDBox>
-        <MDBox py={3} sx={{ marginTop : "30px"}}>
-          <Grid container style={{ justifyContent :"space-around" }}>
+        </MDBox>
+        <MDBox py={3} sx={{ marginTop: "30px" }}>
+          <Grid container style={{ justifyContent: "space-around" }}>
             <Grid item>
-              <Button variant ="outlined" sx={{ fontSize : "20px"}}>내가 작성한 카드</Button>
-              <Button variant ="outlined" sx={{ marginLeft : '30px', fontSize : "20px" }}>번들 리스트</Button>
-              <Button variant ="outlined" sx={{ marginLeft : '30px', fontSize : "20px" }}>통계</Button>
+              <Button variant="outlined" sx={{ fontSize: "20px" }}>
+                내가 작성한 카드
+              </Button>
+              <Button variant="outlined" sx={{ marginLeft: "30px", fontSize: "20px" }}>
+                번들 리스트
+              </Button>
+              <Button variant="outlined" sx={{ marginLeft: "30px", fontSize: "20px" }}>
+                통계
+              </Button>
             </Grid>
           </Grid>
           <MDBox // 카드 및 번들을 렌더링
-          sx={{
-            backgroundColor : "#282535",
-            marginTop : "5%",
-            borderRadius : "40px",
-          }}>
+            sx={{
+              backgroundColor: "#282535",
+              marginTop: "5%",
+              borderRadius: "40px",
+            }}
+          >
             <MDBox
-            sx = {{
-              marginLeft : "3%",
-              marginTop : "7%",
-              marginRight : "3%",
-            }}>
+              sx={{
+                marginLeft: "3%",
+                marginTop: "7%",
+                marginRight: "3%",
+              }}
+            >
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6} lg={3}>
                   {/* <SimpleBlogCard
@@ -156,29 +161,29 @@ function Profile() {
                     //   color: "secondary",
                     // }}
                     /> */}
-                  <BundleThumbnail2 
+                  <BundleThumbnail2
                     bundleImage={bundlerRabbit}
                     bundleTitle="스크랩한 내 카드 (기본 번들)"
-                    bundleThumtext = "스크랩한 내 카드"
-                    bundleLike = "0"
-                    bundlePrivate = "public"
-                    bundleDefault = "default"
+                    bundleThumtext="스크랩한 내 카드"
+                    bundleLike="0"
+                    bundlePrivate="public"
+                    bundleDefault="default"
                   />
-                  <BundleThumbnail2 
+                  <BundleThumbnail2
                     bundleImage={trendimg}
                     bundleTitle="2023년 IT 트렌드"
-                    bundleThumtext = "이것이 트렌드"
-                    bundleLike = "425"
-                    bundlePrivate = "public"
-                    bundleDefault = "non"
+                    bundleThumtext="이것이 트렌드"
+                    bundleLike="425"
+                    bundlePrivate="public"
+                    bundleDefault="non"
                   />
-                  <BundleThumbnail2 
+                  <BundleThumbnail2
                     bundleImage={itimg}
                     bundleTitle="나만 볼꺼야 번들"
-                    bundleThumtext = "리액트 마스터"
-                    bundleLike = "0"
-                    bundlePrivate = "private"
-                    bundleDefault = "non"
+                    bundleThumtext="리액트 마스터"
+                    bundleLike="0"
+                    bundlePrivate="private"
+                    bundleDefault="non"
                   />
                 </Grid>
               </Grid>
