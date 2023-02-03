@@ -12,11 +12,10 @@ import Card from "@mui/material/Card";
 import { useState } from "react";
 // import Divider from "@mui/material/Divider";
 // import Icon from "@mui/material/Icon";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import MobileScreenShareIcon from '@mui/icons-material/MobileScreenShare';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LockIcon from '@mui/icons-material/Lock';
-
+import FavoriteIcon from "@mui/icons-material/Favorite";
+// import MobileScreenShareIcon from '@mui/icons-material/MobileScreenShare';
+import SettingsIcon from "@mui/icons-material/Settings";
+import LockIcon from "@mui/icons-material/Lock";
 
 import CardMedia from "@mui/material/CardMedia";
 
@@ -30,7 +29,15 @@ import BundleSetBox from "../SettingModal/BundleSetting";
 // import CardImg from "assets/images/bundler/bundlerRabbit.png";
 // import HomeCardModal from "./ThumnailCardModal";
 
-function BundleThumbnail2({ bundleId, bundleTitle, bundleLike, bundlePrivate, bundleImage, bundleThumtext, bundleDefault  }) {
+function BundleThumbnail2({
+  bundleId,
+  bundleTitle,
+  bundleLike,
+  bundlePrivate,
+  bundleImage,
+  bundleThumtext,
+  bundleDefault,
+}) {
   // const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
   const [open4, setOpen4] = useState(false);
@@ -78,29 +85,35 @@ function BundleThumbnail2({ bundleId, bundleTitle, bundleLike, bundlePrivate, bu
             boxShadow: ({ boxShadows: { md } }) => md,
             objectFit: "cover",
             objectPosition: "center",
-            opacity : "50%",
-            width : "400px",
-            height : "220px",
+            opacity: "50%",
+            width: "400px",
+            height: "220px",
           }}
         />
         <MDTypography // 번들 썸네일 텍스트
-          position = "absolute"
+          position="absolute"
           sx={{
-            top : "40%",
-            left : "50%",
-            width : "100%",
+            top: "40%",
+            left: "50%",
+            width: "100%",
             transform: "translate(-50%, -50%)",
-            fontSize : "40px",
-            textAlign : "center",
-          }}>
+            fontSize: "40px",
+            textAlign: "center",
+          }}
+        >
           {bundleThumtext}
         </MDTypography>
       </MDBox>
       <MDBox mt={1} mx={0.5} mb={1.5}>
-        <MDBox mb={1}>
-        </MDBox>
+        <MDBox mb={1} />
         <MDBox mb={3} lineHeight={0}>
-          <MDTypography variant="button" fontWeight="medium" color="white" fontSize="20px" sx={{ marginLeft : "10px", }}>
+          <MDTypography
+            variant="button"
+            fontWeight="medium"
+            color="white"
+            fontSize="20px"
+            sx={{ marginLeft: "10px" }}
+          >
             {bundleTitle}
           </MDTypography>
         </MDBox>
@@ -108,106 +121,108 @@ function BundleThumbnail2({ bundleId, bundleTitle, bundleLike, bundlePrivate, bu
         >
           <Grid container spacing={0.5}>
             <Grid item xs={12} md={6}>
-          <MDBox // 썸네일 번들 하단 묶음 - 좋아요(default) + 잠금
-            sx={{
-              display: "flex",
-              justifyContent: "spaceBetween",
-            }}
-          >
-          {(bundleDefault) === "non" ? (
-            <MDBox // 썸네일 번들 하단 - 1. 좋아요와 좋아요 숫자
-              sx ={{
-                marginLeft: "10px",
-              }}
-              >
-              <FavoriteIcon
+              <MDBox // 썸네일 번들 하단 묶음 - 좋아요(default) + 잠금
                 sx={{
-                  width: "25px",
-                  height: "25px",
+                  display: "flex",
+                  justifyContent: "spaceBetween",
                 }}
-                color="primary"
-                style={{
-                  float: "left",
-                }}
-              />
-              <MDTypography
-                sx={{
-                  marginLeft: "8px",
-                  fontSize: "15px",  
-                }}
-                style={{
-                  float: "left",
-                }}>
-                {bundleLike}
-              </MDTypography>
-            </MDBox>
-            ) : (
-              <MDBox 
-              sx={{
-                marginLeft : "10px",
-              }}>
-                <MDTypography>
-                  Default
-                </MDTypography>
-              </MDBox>
-            )}    
-            <MDBox // 썸네일 번들 하단 - 2. 잠금 표시
-            sx={{
-              float: "left",
-              marginLeft: "10px",
-            }}>
-              {(bundlePrivate) === "private" ? (
-                <MDBox>
-                  <LockIcon
-                  sx={{
-                    width: "25px",
-                    height: "25px",
-                  }}
-                  color="secondary"
-                /> 
-              </MDBox> ) : (
-                <MDBox></MDBox>
-              )
-            }
-            </MDBox>
-          </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <MDBox // 썸네일 번들 하단 묶음 - 상세보기 + 설정
-              sx={{
-                display: "flex",
-                justifyContent: "spaceBetween",
-              }}
-            >
-              <MDBox // 썸네일 번들 하단  - 3. 상세보기 버튼
               >
-                <MDButton
-                  variant="outlined"
-                  size="small"
-                  style={{
-                    // marginLeft: "40px",
+                {bundleDefault === "non" ? (
+                  <MDBox // 썸네일 번들 하단 - 1. 좋아요와 좋아요 숫자
+                    sx={{
+                      marginLeft: "10px",
                     }}
                   >
-                  상세 보기
-                </MDButton>
+                    <FavoriteIcon
+                      sx={{
+                        width: "25px",
+                        height: "25px",
+                      }}
+                      color="primary"
+                      style={{
+                        float: "left",
+                      }}
+                    />
+                    <MDTypography
+                      sx={{
+                        marginLeft: "8px",
+                        fontSize: "15px",
+                      }}
+                      style={{
+                        float: "left",
+                      }}
+                    >
+                      {bundleLike}
+                    </MDTypography>
+                  </MDBox>
+                ) : (
+                  <MDBox
+                    sx={{
+                      marginLeft: "10px",
+                    }}
+                  >
+                    <MDTypography>Default</MDTypography>
+                  </MDBox>
+                )}
+                <MDBox // 썸네일 번들 하단 - 2. 잠금 표시
+                  sx={{
+                    float: "left",
+                    marginLeft: "10px",
+                  }}
+                >
+                  {bundlePrivate === "private" ? (
+                    <MDBox>
+                      <LockIcon
+                        sx={{
+                          width: "25px",
+                          height: "25px",
+                        }}
+                        color="secondary"
+                      />
+                    </MDBox>
+                  ) : (
+                    <MDBox />
+                  )}
+                </MDBox>
               </MDBox>
-              <MDBox // 썸네일 번들 하단 - 4. 썸네일 설정 버튼
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <MDBox // 썸네일 번들 하단 묶음 - 상세보기 + 설정
                 sx={{
-                  marginLeft: "20px",
+                  display: "flex",
+                  justifyContent: "spaceBetween",
                 }}
               >
-                <SettingsIcon
+                <MDBox // 썸네일 번들 하단  - 3. 상세보기 버튼
+                >
+                  <MDButton
+                    variant="outlined"
+                    size="small"
+                    style={
+                      {
+                        // marginLeft: "40px",
+                      }
+                    }
+                  >
+                    상세 보기
+                  </MDButton>
+                </MDBox>
+                <MDBox // 썸네일 번들 하단 - 4. 썸네일 설정 버튼
                   sx={{
-                    width: "25px",
-                    height: "25px",
+                    marginLeft: "20px",
                   }}
-                  color="secondary"
-                  onClick={BundleSetOpen}
-                /> 
+                >
+                  <SettingsIcon
+                    sx={{
+                      width: "25px",
+                      height: "25px",
+                    }}
+                    color="secondary"
+                    onClick={BundleSetOpen}
+                  />
+                </MDBox>
               </MDBox>
-            </MDBox>
-          </Grid>
-
+            </Grid>
           </Grid>
         </MDBox>
       </MDBox>
@@ -220,12 +235,12 @@ BundleThumbnail2.propTypes = {
   bundleId: PropTypes.number.isRequired,
   bundleTitle: PropTypes.string.isRequired,
   bundleLike: PropTypes.number.isRequired,
-  bundlePrivate : PropTypes.oneOf(["public", "private"]),
-  bundleDefault : PropTypes.oneOf(["non", "default"]),
-  bundleImage : PropTypes.string.isRequired,
-  bundleThumtext : PropTypes.string.isRequired,
+  bundlePrivate: PropTypes.string.isRequired,
+  bundleDefault: PropTypes.string.isRequired,
+  // bundlePrivate: PropTypes.oneOf(["public", "private"]),
+  // bundleDefault: PropTypes.oneOf(["non", "default"]),
+  bundleImage: PropTypes.string.isRequired,
+  bundleThumtext: PropTypes.string.isRequired,
 };
 
-
 export default BundleThumbnail2;
-

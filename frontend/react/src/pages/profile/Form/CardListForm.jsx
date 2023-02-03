@@ -1,12 +1,11 @@
 // [Import - Design]
-import { Button, Box, TextField, Typography } from "@mui/material";
 // import Switch from "@mui/material/Switch";
 import MDBox from "components/MDBox";
 // import MDTypography from "components/MDTypography";
 import Grid from "@mui/material/Grid";
 
 // [Import - React Basic] react && props && mui
-import React, { useState, useEffect } from "react";
+import React from "react";
 // import PropTypes from "prop-types";
 
 // [Import - React-Redux]
@@ -36,9 +35,9 @@ function CardListTab() {
             cardLike="183"
             cardScrap="22"
             CategoryId="7"
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          />
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
           <CardThumbnailCard
             cardId="5"
             cardType="카드 > 일반"
@@ -46,9 +45,9 @@ function CardListTab() {
             cardLike="426"
             cardScrap="91"
             CategoryId="3"
-            />
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          />
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
           <CardThumbnailCard
             cardId="7"
             cardType="카드 > 링크"
@@ -56,7 +55,7 @@ function CardListTab() {
             cardLike="31"
             cardScrap="8"
             CategoryId="1"
-            />
+          />
         </Grid>
       </Grid>
     </MDBox>

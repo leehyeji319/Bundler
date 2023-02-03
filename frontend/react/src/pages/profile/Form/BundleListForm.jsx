@@ -1,12 +1,11 @@
 // [Import - Design]
-import { Button, Box, TextField, Typography } from "@mui/material";
 // import Switch from "@mui/material/Switch";
 import MDBox from "components/MDBox";
 import Grid from "@mui/material/Grid";
 // import MDTypography from "components/MDTypography";
 
 // [Import - React Basic] react && props && mui
-import React, { useState, useEffect } from "react";
+import React from "react";
 // import PropTypes from "prop-types";
 
 // [Import - React-Redux]
@@ -18,8 +17,8 @@ import React, { useState, useEffect } from "react";
 import trendimg from "assets/images/trend.jpg";
 import itimg from "assets/images/ai-icons.jpeg";
 import bundlerRabbit from "assets/images/bundler_rabbit_6.png";
-import ryan from 'assets/images/kakaoRyan.jpg';
-import robotimg from "assets/images/robot.jpg"
+import ryan from "assets/images/kakaoRyan.jpg";
+import robotimg from "assets/images/robot.jpg";
 
 import BundleThumbnail2 from "../components/thumBundle/BundleCard";
 
@@ -35,7 +34,7 @@ function BundleListTab() {
     >
       <Grid container spacing={3}>
         <Grid item xs={12} md={6} lg={3}>
-          <BundleThumbnail2 
+          <BundleThumbnail2
             bundleId={1}
             bundleImage={bundlerRabbit}
             bundleTitle="스크랩한 내 카드 (기본 번들)"
@@ -46,7 +45,7 @@ function BundleListTab() {
           />
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
-          <BundleThumbnail2 
+          <BundleThumbnail2
             bundleId={2}
             bundleImage={trendimg}
             bundleTitle="2023년 IT 트렌드"
@@ -68,7 +67,7 @@ function BundleListTab() {
           />
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
-          <BundleThumbnail2 
+          <BundleThumbnail2
             bundleId={4}
             bundleImage={robotimg}
             bundleTitle="알고리즘 마스터가 되기 위한 번들"
@@ -79,7 +78,7 @@ function BundleListTab() {
           />
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
-          <BundleThumbnail2 
+          <BundleThumbnail2
             bundleId={5}
             bundleImage={ryan}
             bundleTitle="카카오 개발자가 되기 위해 한땀한땀 모은 번들"
