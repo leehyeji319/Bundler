@@ -37,6 +37,7 @@ import imgdnk from "../../../../assets/images/Profile/다나카.jpeg";
 
 // Icon
 
+// function ProfileSetBox({ userId, profileImage, nickname, email, introduction, group }) {
 function ProfileSetBox() {
   return (
     <MDBox // 전체 외부 설정페이지 박스

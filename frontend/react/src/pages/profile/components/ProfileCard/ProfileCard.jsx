@@ -20,7 +20,7 @@ import Modal from "@mui/material/Modal";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
-// import MDButton from "components/MDButton";
+import MDButton from "components/MDButton";
 
 // Modal
 // import { useState } from "react";
@@ -191,7 +191,7 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
             marginLeft: "15%",
           }}
         >
-          <MDBox // 팔로잉 버튼
+          <MDButton // 팔로잉 버튼
             onClick={handleOpen}
             sx={{
               backgroundColor: "#282535",
@@ -243,8 +243,8 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
                 373
               </MDTypography>
             </MDBox>
-          </MDBox>
-          <MDBox // 팔로워 버튼
+          </MDButton>
+          <MDButton // 팔로워 버튼
             onClick={FollowerOpen}
             sx={{
               backgroundColor: "#282535",
@@ -297,7 +297,7 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
                 359
               </MDTypography>
             </MDBox>
-          </MDBox>
+          </MDButton>
         </MDBox>
       </MDBox>
     </MDBox>
