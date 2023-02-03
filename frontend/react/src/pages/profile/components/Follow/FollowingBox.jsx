@@ -34,7 +34,7 @@ import imgdnk from "../../../../assets/images/Profile/다나카.jpeg";
 import bunny from "../../../../assets/images/bundler/bundlerRabbit.png";
 
 // Icon
-
+// function FollowingBox({ profileImage, nickname, email, introduction, group }) {
 function FollowingBox({ nickname }) {
   const friends = {
     nickname: "dellojoon",

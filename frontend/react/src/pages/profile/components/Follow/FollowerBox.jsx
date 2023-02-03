@@ -35,7 +35,7 @@ import imgppap from "../../../../assets/images/Profile/PPAP.jpg";
 import bunny from "../../../../assets/images/bundler/bundlerRabbit.png";
 
 // Icon
-
+// function FollowerBox({ profileImage, nickname, email, introduction, group }) {
 function FollowerBox({ nickname }) {
   const friends = {
     nickname: "dellojoon",
@@ -117,7 +117,7 @@ function FollowerBox({ nickname }) {
           {nickname}님의 팔로워
         </MDTypography>
       </MDBox>
-      <MDBox
+      <MDBox // 흰 줄
         style={{
           width: "100%",
           textAlign: "center",
