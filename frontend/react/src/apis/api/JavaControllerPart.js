@@ -14,20 +14,9 @@
 */
 
 // [Import] api instance
-import { apiInstance, apiMock } from "apis/utils/axios";
+import { apiInstance } from "apis/utils/axios";
 
 const api = apiInstance();
-const mock = apiMock();
-
-// Method 주소만 정의 -> 예시
-const apiGetCard = async () => {
-  try {
-    const response = await mock.get(`/1`);
-    return response;
-  } catch (error) {
-    return error;
-  }
-};
 
 const apiGet = async (success, fail) => {
   await api.get(`/주소`).then(success).catch(fail);
@@ -47,13 +36,4 @@ const apiAuth = async (success, fail) => {
 };
 
 // export 함수
-export { apiGet, apiPost, apiDelete, apiAuth, apiGetCard };
-
-// const getPost = async (selectChannel) => {
-//   try {
-//     const { data } = await apiInstance.get("!~~~~");
-//     return data;
-//   } catch (eroor) {
-//     console.log(error);
-//   }
-// };
+export { apiGet, apiPost, apiDelete, apiAuth };

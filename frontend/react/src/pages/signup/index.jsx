@@ -1,14 +1,16 @@
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import CardSearch from "./component/CardSearch";
 
-function SearchCard() {
+// import template
+import SignUpTemplate from "pages/signup/signupTemplate/signupTemplate";
+
+function SignUp() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <CardSearch />
+      <SignUpTemplate />
     </DashboardLayout>
   );
 }
 
-export default SearchCard;
+export default SignUp;
