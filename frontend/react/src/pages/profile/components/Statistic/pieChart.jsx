@@ -9,6 +9,8 @@ import { ResponsivePie } from "@nivo/pie";
 // no chart will be rendered.
 // website examples showcase many properties,
 // you'll often use just a few of them.
+
+// eslint-disable-next-line
 const MyResponsivePie = ({ data /* see data tab */ }) => (
   <ResponsivePie
     data={data}
