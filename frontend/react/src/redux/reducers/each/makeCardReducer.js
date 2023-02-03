@@ -3,7 +3,8 @@ const initialState = {
   isBundle: false,
   bundleTitle: null,
   editCardType: "quiz",
-  cardNo: 2,
+  editCardNumber: -1,
+  cardNo: 1,
   cardList: [],
 };
 
@@ -18,15 +19,43 @@ const makeCardReducer = (state = initialState, action) => {
         cardNo: state.cardNo + 1,
       };
     }
-    case "DELETE_CARD": {
+    case "INIT_CARD_NO": {
       return {
         ...state,
-        cardList: state.cardList.filter(state.cardList[0].value === action.payload),
+        editCardNumber: -1,
       };
     }
-    case "RESET": {
+    case "EDIT_CARD_NO": {
       return {
         ...state,
+        editCardNumber: action.payload,
+      };
+    }
+    case "EDIT_CARD": {
+      const editCardNo = action.payload.editNumber;
+      const editCard = action.payload.card;
+      return {
+        ...state,
+        cardList: [...state.cardList.filter((_, index) => index !== editCardNo), editCard],
+      };
+    }
+    case "DELETE_CARD": {
+      const deleteCardIndex = action.payload;
+      return {
+        // spread 연산자를 이용하여 기존 객체를 불러옴
+        ...state,
+        // cardList: state.cardList.filter((card) => card.cardno !== deleteCardNo),
+        cardList: state.cardList.filter((_, index) => index !== deleteCardIndex),
+      };
+    }
+    case "CARD_STORE_RESET": {
+      return {
+        ...state,
+        isBundle: false,
+        bundleTitle: null,
+        editCardType: "quiz",
+        editCardNumber: -1,
+        cardNo: 1,
         cardList: [],
       };
     }
