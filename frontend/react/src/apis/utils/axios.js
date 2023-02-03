@@ -11,7 +11,7 @@ axios.defaults.withCredentials = true; // 쿠키 데이터를 전송받기 위�
 
 // 요청 주소
 const BUNDLER_URL = "http://localhost:8080";
-const AUTH_URL = "http://localhost:8123";
+const AUTH_URL = "https://i8a810.p.ssafy.io";
 
 // basic Instance
 const apiInstance = () => {
