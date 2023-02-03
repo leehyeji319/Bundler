@@ -55,7 +55,7 @@ function Make() {
           row
           aria-labelledby="card-category-radio-buttons"
           name="row-radio-buttons-group"
-          defaultChecked="quiz"
+          // defaultChecked="quiz"
           value={value}
           onChange={handleChangeCategory}
         >
