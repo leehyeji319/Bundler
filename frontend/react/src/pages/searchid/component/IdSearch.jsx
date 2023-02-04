@@ -17,12 +17,25 @@ function IdSearch() {
       withCredentials: true,
     }).then((result) => {
       if (result.data) {
-        // const resultId = result.data.userInfo;
+        console.log(result);
+        console.log(result.data.userInfo);
         setResultId(result.data.userInfo);
       }
     });
   };
-
+  const goProfile = (userId) => {
+    console.log(userId);
+    axios({
+      url: `http://localhost:8123/api/v1/users/${userId}`,
+      method: "get",
+      withCredentials: true,
+    }).then((result) => {
+      if (result.data) {
+        console.log(result.data);
+        window.open("/profile", "_self");
+      }
+    });
+  };
   // input 창에 입력값이 있을 때 onchange로 실해되는 함수
   const searchHandler = (e) => {
     e.preventDefault();
@@ -74,7 +87,7 @@ function IdSearch() {
             alignItems: "center",
           }}
         >
-          <Userbox>
+          <Userbox onClick={() => goProfile(item.id)}>
             <div
               style={{
                 paddingTop: "15px",

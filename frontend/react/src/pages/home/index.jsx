@@ -13,11 +13,7 @@ import Footer from "examples/Footer";
 
 // Card Image
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
-<<<<<<< HEAD
 // import HomeInput from "pages/home/components/homeInput";
-=======
-import HomeInput from "pages/home/components/homeInput";
->>>>>>> 38e658dcfcdcd02e03f8e9244dc7c4155732bfb3
 
 function Home() {
   // dummy Data Test용
