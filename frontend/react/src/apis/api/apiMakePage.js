@@ -22,7 +22,7 @@ const mock = apiMock();
 // Method 주소만 정의 -> 예시
 const apiGetCard = async () => {
   try {
-    const response = await mock.get(`/1`);
+    const response = await mock.get(`/comments`);
     return response;
   } catch (error) {
     return error;

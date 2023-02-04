@@ -28,7 +28,6 @@ const apiInstance = () => {
 // Auth
 const apiLogin = () => {
   // 아래와 같은 조건으로 axios 보냄
-  console.log("apiLogin/axios.js");
   const instance = axios.create({
     baseURL: AUTH_URL,
   });
@@ -39,9 +38,9 @@ const apiLogin = () => {
 const apiFeedInstance = () => {
   const instance = axios.create({
     baseURL: TEST_URL,
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
+    // headers: {
+    //   "Content-Type": "application/json;charset=utf-8",
+    // },
   });
   return instance;
 };

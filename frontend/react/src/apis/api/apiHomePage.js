@@ -18,8 +18,13 @@ import { apiFeedInstance } from "apis/utils/axios";
 
 const api = apiFeedInstance();
 
-const apiGetFeed = async (success, fail) => {
-  await api.get(`/comments`).then(success).catch(fail);
+const apiGetFeed = async () => {
+  try {
+    const response = await api.get(`/comments`);
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
 const apiPost = async (params, success, fail) => {
