@@ -50,6 +50,7 @@ public class CardSummaryResponseDto {
 	public CardSummaryResponseDto(Card card) {
 		this.cardId = card.getFeedId();
 		this.cardType = card.getCardType().toString();
+		this.createdAt = card.getCreatedAt();
 		this.isDeleted = card.isDeleted();
 		this.userId = card.getWriter().getUserId();
 		this.userProfileImage = card.getWriter().getUserProfileImage();

@@ -6,6 +6,13 @@ import java.util.List;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 번들 조회시 사용되는 dto
+ *
+ * @author 이혜지
+ * @version 1.0
+ */
+
 @Data
 @RequiredArgsConstructor
 public class BundleResponseDto {
@@ -26,7 +33,6 @@ public class BundleResponseDto {
 	private String bundleThumbnailText;
 
 	List<CardBundleQueryDto> cardBundleQueryDtoList;
-	List<CardBundleQueryDto> cardBundleQuerySampleDtoList;
 
 	public BundleResponseDto(Long bundleId, LocalDateTime createdAt, Long bundleWriterId,
 		String bundleWriterProfileImage, String bundleWriterNickname, String feedTitle, String feedContent,

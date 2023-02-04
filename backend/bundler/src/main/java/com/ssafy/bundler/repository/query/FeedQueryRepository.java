@@ -12,6 +12,17 @@ import com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 
+/**
+ *packageName    : com.ssafy.bundler.repository.query
+ * fileName       : FeedQueryRepository
+ * author         : modsiw
+ * date           : 2023/02/04
+ * description    : 번들 조회시에 쓰이는 쿼리 레포지토리
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/02/04        modsiw       최초 생성
+ */
 @Repository
 @RequiredArgsConstructor
 public class FeedQueryRepository {
@@ -23,7 +34,8 @@ public class FeedQueryRepository {
 		List<BundleResponseDto> result = findBundles();
 
 		Map<Long, List<CardBundleQueryDto>> cardBundleMap = findCardBundleMap(toBundleIds(result));
-		result.forEach(b -> b.setCardBundleQuerySampleDtoList(cardBundleMap.get(b.getBundleId())));
+
+		result.forEach(b -> b.setCardBundleQueryDtoList(cardBundleMap.get(b.getBundleId())));
 
 		return result;
 	}
@@ -46,7 +58,7 @@ public class FeedQueryRepository {
 
 	public Map<Long, List<CardBundleQueryDto>> findCardBundleMap(List<Long> bundleIds) {
 
-		List<CardBundleQueryDto> bundleIds1 = em.createQuery(
+		List<CardBundleQueryDto> cardbundle = em.createQuery(
 				"select new com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto"
 					+ "(cb.bundle.bundleId, c.cardId, c.createdAt, c.cardType, c.writer.userId,"
 					+ " c.writer.userProfileImage, c.writer.userNickname, c.feedTitle, c.feedContent,"
@@ -59,8 +71,8 @@ public class FeedQueryRepository {
 			.setParameter("bundleIds", bundleIds)
 			.getResultList();
 
-		System.out.println(bundleIds1.size());
-		return bundleIds1.stream()
+		// System.out.println(bundleIds1.size());
+		return cardbundle.stream()
 			.collect(Collectors.groupingBy(CardBundleQueryDto::getBundleId));
 	}
 

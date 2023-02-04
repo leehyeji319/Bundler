@@ -8,6 +8,13 @@ import com.ssafy.bundler.domain.CardType;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 번들조회시 함께 조회되는 카드 리스트 dto
+ *
+ * @author 이혜지
+ * @version 1.0
+ */
+
 @Data
 @RequiredArgsConstructor
 public class CardBundleQueryDto {

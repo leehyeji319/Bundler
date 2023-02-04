@@ -1,5 +1,6 @@
 package com.ssafy.bundler.dto.card.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ssafy.bundler.domain.Card;
@@ -8,6 +9,18 @@ import com.ssafy.bundler.dto.comment.CommentResponseDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+/**
+ *packageName    : com.ssafy.bundler.dto.card.response
+ * fileName       : CardResponseDto
+ * author         : modsiw
+ * date           : 2023/02/04
+ * description    : 카드 개별 조회
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/02/04        modsiw       최초 생성
+ * 2023/02/04		 modsiw		  생성일 추가
+ */
 @Data
 @RequiredArgsConstructor
 public class CardResponseDto {
@@ -15,7 +28,7 @@ public class CardResponseDto {
 	private Long cardId;
 	private String feedType;
 
-	// private LocalDateTime createdAt;
+	private LocalDateTime createdAt;
 	private String cardType;
 
 	private boolean isDeleted;
@@ -53,6 +66,7 @@ public class CardResponseDto {
 	public CardResponseDto(Card card) {
 		this.cardId = card.getFeedId();
 		this.cardType = card.getCardType().toString();
+		this.createdAt = card.getCreatedAt();
 		this.isDeleted = card.isDeleted();
 		this.userId = card.getWriter().getUserId();
 		this.userProfileImage = card.getWriter().getUserProfileImage();

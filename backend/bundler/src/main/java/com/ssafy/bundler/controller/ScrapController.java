@@ -16,6 +16,13 @@ import com.ssafy.bundler.service.CardService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 번들 스크랩, 카드 스크랩, 카드 스크랩시 번들 함께 생성 컨트롤러
+ *
+ * @author 이혜지
+ * @version 1.0
+ */
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
