@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.bundler.dto.bundle.BundleSaveRequestDto;
-import com.ssafy.bundler.dto.bundle.BundleScrapRequestDto;
+import com.ssafy.bundler.dto.bundle.request.BundleSaveRequestDto;
+import com.ssafy.bundler.dto.bundle.request.BundleScrapRequestDto;
 import com.ssafy.bundler.service.BundleService;
 import com.ssafy.bundler.service.CardService;
 

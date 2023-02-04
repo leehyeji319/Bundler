@@ -9,15 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.bundler.domain.Card;
 import com.ssafy.bundler.domain.CardBundle;
 import com.ssafy.bundler.domain.CardType;
-import com.ssafy.bundler.domain.FeedCategory;
+import com.ssafy.bundler.domain.Category;
 import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.dto.bundle.BundleScrapRequestDto;
+import com.ssafy.bundler.dto.bundle.request.BundleScrapRequestDto;
 import com.ssafy.bundler.dto.card.reqeust.CardListSaveRequestDto;
 import com.ssafy.bundler.dto.card.reqeust.CardSaveRequestDto;
 import com.ssafy.bundler.dto.card.reqeust.CardUpdateRequestDto;
 import com.ssafy.bundler.repository.CardBundleRepository;
 import com.ssafy.bundler.repository.CardRepository;
-import com.ssafy.bundler.repository.FeedCategoryRepository;
+import com.ssafy.bundler.repository.CategoryRepository;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.UserRepository;
 
@@ -40,7 +40,7 @@ public class CardService {
 	private final CardRepository cardRepository;
 	private final FeedRepository feedRepository;
 	private final UserRepository userRepository;
-	private final FeedCategoryRepository feedCategoryRepository;
+	private final CategoryRepository categoryRepository;
 	private final CardBundleRepository cardBundleRepository;
 
 	//문제, 일반 카드 생성
@@ -49,9 +49,11 @@ public class CardService {
 
 		User writerUser = userRepository.findByUserId(requestDto.getUserId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 유저가 존재하지 않습니다. userId= " + requestDto.getUserId()));
-		Long savedFeedId = cardRepository.save(requestDto.toEntity(writerUser)).getFeedId();
-		//카테고리 넣어주기 (대분류만 있으면 대분류의 id만, 중분류까지 있으면 중분류의 id 하나만 들어간다.)
-		saveFeedCategory(savedFeedId, requestDto.getCategoryId());
+
+		Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(() ->
+			new IllegalArgumentException("해당 카테고리 아이디가 존재하지 않습니다. categoryId= " + requestDto.getCategory()));
+
+		Long savedFeedId = cardRepository.save(requestDto.toEntity(writerUser, category)).getFeedId();
 
 		return savedFeedId;
 	}
@@ -108,7 +110,7 @@ public class CardService {
 	//수정 -> 링크카드와 일반카드일때 다름
 	@Transactional
 	public Long updateCard(Long feedId, CardUpdateRequestDto requestDto) {
-		Card findCard = cardRepository.findByCardId(feedId).orElseThrow(() ->
+		Card findCard = cardRepository.findById(feedId).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드를 찾을 수 없습니다. cardId(feedId)= " + feedId));
 
 		cardRepository.save(findCard.toBuilder().feedId(feedId)
@@ -116,13 +118,7 @@ public class CardService {
 			.feedContent(requestDto.getFeedContent())
 			.cardDescription(requestDto.getCardDescription())
 			.cardCommentary(requestDto.getCardCommentary())
-			.build());
-
-		FeedCategory findFeedCategory = feedCategoryRepository.findByFeedId(feedId);
-		feedCategoryRepository.save(findFeedCategory.toBuilder()
-			.feedCategoryId(findFeedCategory.getFeedCategoryId())
-			.feedId(feedId)
-			.targetCategoryId(requestDto.getCategoryId())
+			.category(categoryRepository.findById(requestDto.getCategoryId()).get())
 			.build());
 
 		return feedId;
@@ -137,16 +133,6 @@ public class CardService {
 		findCard.deleteFeed();
 
 		return feedId;
-	}
-
-	//FeedCategory 객체 생성
-	@Transactional
-	public void saveFeedCategory(Long feedId, Long categoryId) {
-		feedCategoryRepository.save(
-			FeedCategory.builder()
-				.feedId(feedId)
-				.targetCategoryId(categoryId)
-				.build());
 	}
 
 	//===== Bundle =====//
@@ -176,6 +162,6 @@ public class CardService {
 		if (cardBundleRepository.findCardBundleByBundleIdWithCardId(bundleId, cardId) != null) {
 			throw new IllegalArgumentException("이미 해당 번들에 존재하는 카드입니다.");
 		}
-		;
 	}
+
 }

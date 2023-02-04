@@ -1,11 +1,13 @@
 package com.ssafy.bundler.repository.query;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-import com.ssafy.bundler.dto.feed.FeedCardResponseDto;
-import com.ssafy.bundler.dto.feed.FeedCommentResponseDto;
+import com.ssafy.bundler.dto.bundle.response.BundleResponseDto;
+import com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -16,54 +18,50 @@ public class FeedQueryRepository {
 
 	private final EntityManager em;
 
-	// ====== 메인 전체 조회 ====== //
+	public List<BundleResponseDto> findAllByDto_optimization() {
 
-	// ====== 카드 전체 조회 ====== //
-	public List<FeedCardResponseDto> findFeedCardQueryDtos() {
-		List<FeedCardResponseDto> result = findCards();
+		List<BundleResponseDto> result = findBundles();
 
-		result.forEach(c -> {
-			List<FeedCommentResponseDto> feedComments = findFeedComment(c.getFeedId());
-			c.setFeedCommentList(feedComments);
-		});
+		Map<Long, List<CardBundleQueryDto>> cardBundleMap = findCardBundleMap(toBundleIds(result));
+		result.forEach(b -> b.setCardBundleQuerySampleDtoList(cardBundleMap.get(b.getBundleId())));
 
 		return result;
 	}
 
-	//isDeleted 추가해야함
-	public List<FeedCardResponseDto> findCards() {
+	private List<Long> toBundleIds(List<BundleResponseDto> result) {
+		return result.stream()
+			.map(b -> b.getBundleId())
+			.collect(Collectors.toList());
+	}
+
+	private List<BundleResponseDto> findBundles() {
 		return em.createQuery(
-				"select new com.ssafy.bundler.dto.feed.FeedCardResponseDto"
-					+ "(c.feedId, c.createdAt, c.writer.userId, c.writer.userNickname,"
-					+ " ca.categoryId, ca.categoryName, c.feedTitle, c.feedContent,"
-					+ " c.cardType, c.cardDescription, c.cardCommentary, c.feedLikeCnt,"
-					+ " c.cardScrapCnt, c.feedCommentCnt)"
-					+ " from Card c"
-					+ " left join c.feedCategoryList fc"
-					+ " left join fc.category ca", FeedCardResponseDto.class)
+				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
+					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
+					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText)"
+					+ " from Bundle b"
+					+ " join b.writer w", BundleResponseDto.class)
 			.getResultList();
 	}
 
-	public List<FeedCommentResponseDto> findFeedComment(Long feedId) {
-		return em.createQuery(
-				"select new com.ssafy.bundler.dto.feed.FeedCommentResponseDto"
-					+ "(c.commentId, c.feedId, c.writer.userId, c.writer.userNickname, "
-					+ "c.writer.userProfileImage, c.commentContent, c.createdAt)"
-					+ " from Comment c"
-					+ " where c.feedId = :feedId", FeedCommentResponseDto.class)
-			.setParameter("feedId", feedId)
+	public Map<Long, List<CardBundleQueryDto>> findCardBundleMap(List<Long> bundleIds) {
+
+		List<CardBundleQueryDto> bundleIds1 = em.createQuery(
+				"select new com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto"
+					+ "(cb.bundle.bundleId, c.cardId, c.createdAt, c.cardType, c.writer.userId,"
+					+ " c.writer.userProfileImage, c.writer.userNickname, c.feedTitle, c.feedContent,"
+					+ " c.category.parent.categoryId, c.category.parent.categoryName,"
+					+ " c.category.categoryId, c.category.categoryName,"
+					+ " c.cardScrapCnt, c.feedLikeCnt, c.feedCommentCnt)"
+					+ " from CardBundle cb"
+					+ " join cb.card c"
+					+ " where cb.bundle.bundleId in :bundleIds", CardBundleQueryDto.class)
+			.setParameter("bundleIds", bundleIds)
 			.getResultList();
+
+		System.out.println(bundleIds1.size());
+		return bundleIds1.stream()
+			.collect(Collectors.groupingBy(CardBundleQueryDto::getBundleId));
 	}
 
-	// ===== 번들 전체 조회 ======= //
-
-	// ==== 카드 번들 전체조회 + 검색어 ==== //
-
-	// ==== 카드 전체조회 + 검색어 ==== //
-
-	// ==== 번들 전체조회 + 검색어 ==== //
-
-	// ==== 카드에서 유형 검색 ==== //
-
-	// ==== 사용자 카드 + 피드 전체 검색 (isbundlepublic) ====//
 }

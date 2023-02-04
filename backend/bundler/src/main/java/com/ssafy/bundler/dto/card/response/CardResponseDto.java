@@ -1,15 +1,18 @@
-package com.ssafy.bundler.dto.feed;
+package com.ssafy.bundler.dto.card.response;
+
+import java.util.List;
 
 import com.ssafy.bundler.domain.Card;
+import com.ssafy.bundler.dto.comment.CommentResponseDto;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class FeedResponseDto {
+public class CardResponseDto {
 
-	private Long feedId;
+	private Long cardId;
 	private String feedType;
 
 	// private LocalDateTime createdAt;
@@ -45,17 +48,25 @@ public class FeedResponseDto {
 	private int feedLikeCnt;
 	private int feedCommentCnt;
 
-	public FeedResponseDto(Card card) {
-		this.feedId = card.getFeedId();
+	private List<CommentResponseDto> commentResponseDtoList;
+
+	public CardResponseDto(Card card) {
+		this.cardId = card.getFeedId();
 		this.cardType = card.getCardType().toString();
 		this.isDeleted = card.isDeleted();
 		this.userId = card.getWriter().getUserId();
 		this.userProfileImage = card.getWriter().getUserProfileImage();
 		this.userNickname = card.getWriter().getUserNickname();
-		this.firstCategoryId = card.getCategory().getParent().getCategoryId();
-		this.firstCategoryName = card.getCategory().getParent().getCategoryName();
-		this.secondCategoryId = card.getCategory().getCategoryId();
-		this.secondCategoryName = card.getCategory().getCategoryName();
+		if (card.getCategory().getParent() == null) {
+			this.firstCategoryId = card.getCategory().getCategoryId();
+			this.firstCategoryName = card.getCategory().getCategoryName();
+		} else if (card.getCategory().getParent() != null) {
+			this.firstCategoryId = card.getCategory().getParent().getCategoryId();
+			this.firstCategoryName = card.getCategory().getParent().getCategoryName();
+			this.secondCategoryId = card.getCategory().getCategoryId();
+			this.secondCategoryName = card.getCategory().getCategoryName();
+
+		}
 		this.feedTitle = card.getFeedTitle();
 		this.feedContent = card.getFeedContent();
 		this.cardDescription = card.getCardDescription();

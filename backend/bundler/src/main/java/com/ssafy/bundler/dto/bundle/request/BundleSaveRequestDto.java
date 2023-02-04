@@ -1,4 +1,4 @@
-package com.ssafy.bundler.dto.bundle;
+package com.ssafy.bundler.dto.bundle.request;
 
 import java.util.List;
 
