@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-// 관리할 slice를 import
+// 관리할 slice를 tokenReducer로 import
 import tokenReducer from "./Auth";
 
 // Auth.jsx에 선언된 reducer를 사용하기 위해 configureStore 선언
