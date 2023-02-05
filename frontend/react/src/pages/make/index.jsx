@@ -17,6 +17,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MDTypography from "components/MDTypography";
 import MDBox from "components/MDBox";
+import MDSnackbar from "components/MDSnackbar";
 
 // Mui-Material components
 import {
@@ -63,7 +64,8 @@ function Make() {
     userId: "testID",
     feedTitle: "",
     feedContent: "",
-    categoryId: -1,
+    categoryOne: 1,
+    categoryTwo: "",
     cardType: "card_problem",
     cardDescription: "",
     cardCommentary: "",
@@ -87,6 +89,11 @@ function Make() {
   //   isFeedContent: false,
   //   isCardCommentary: false,
   // });
+  const [valid, setValid] = useState({
+    isValid: false,
+    comment: "",
+    state: "",
+  });
 
   // ==================== Function ==============================
   const dispatch = useDispatch();
@@ -125,34 +132,26 @@ function Make() {
 
   // (1) 유형 선택 - 선택 결과를 저장하는 함수
   const handleChangeForm = (event) => {
+    event.preventDefault();
     setForm(event.target.value);
   };
 
   // (2) category 선택 함수
+  const handleCategory = (event, first, second) => {
+    event.preventDefault();
+    setValues({ ...values, categoryOne: first, categoryTwo: second });
+  };
 
   // (3) form value 저장 함수
   const handleChangeValues = (event, name, value) => {
     event.preventDefault();
     setValues({ ...values, [name]: value });
-
-    // valid - problem : setValid 값을 다시 child 에게 내려줘야 한다.. 고민좀 해보자 이부분은
-    // const feedTitle = document.querySelector("#problem-title").value;
-    // const feedContent = document.querySelector("#problem-content").value;
-    // if (feedTitle.length === 0 && feedContent.length !== 0)
-    //   setValid({ ...valid, isFeedTitle: true, isFeedContent: false });
-    // if (feedTitle.length !== 0 && feedContent.length === 0)
-    //   setValid({ ...valid, isFeedTitle: false, isFeedContent: true });
-    // if (feedTitle.length === 0 && feedContent.length === 0)
-    //   setValid({ ...valid, isFeedTitle: true, isFeedContent: true });
-    // if (feedTitle.length !== 0 && feedContent.length !== 0)
-    //   setValid({ ...valid, isFeedTitle: false, isFeedContent: false });
   };
 
   // (4) bundle form 함수
   const handleBundleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
-    console.log(name, value);
     setBundleForm({ ...bundleForm, [name]: value });
   };
 
@@ -165,7 +164,7 @@ function Make() {
     const feedTitle = document.querySelector("#problem-title").value;
     const feedContent = document.querySelector("#problem-content").value;
     if (feedTitle.length === 0 || feedContent.length === 0) {
-      alert("필수 입력 필요");
+      setValid({ isValid: true, comment: "카드 입력 값을 확인해 주세요", state: "error" });
     } else {
       setValues({ ...values, cardno: cardNo });
       const result = actAddCard(values);
@@ -202,6 +201,7 @@ function Make() {
 
       // 값 초기화
       initProblemForm();
+      setEditCardIndex(-1);
     }
   };
 
@@ -209,18 +209,19 @@ function Make() {
   const handleValuesCreate = (e) => {
     e.preventDefault();
 
-    console.log(cardList);
-    console.log(bundleForm);
-
     if (
       bundleToggle &&
       (bundleForm.bundleThumbnail.length === 0 || bundleForm.bundleThumbnailText.length === 0)
     ) {
-      alert("bundle 내용 없음");
+      setValid({ isValid: true, comment: "번들 필수 입력 값을 확인해 주세요", state: "error" });
     } else if (!bundleToggle && cardList.length === 0) {
-      alert("bundle 생성만 하실 경우 bundle 제목과 내용을 입력해 주세요");
+      setValid({
+        isValid: true,
+        comment: "번들만 생성할 경우 필수 입력 값을 확인해 주세요",
+        state: "error",
+      });
     } else {
-      alert("정상 생성");
+      setValid({ isValid: true, comment: "생성 되었습니다", state: "info" });
       dispatch({ type: "CARD_STORE_RESET" }); // card List 리셋
       initProblemForm(); // 카드 Form 리셋
       initBundleForm(); // 번들 Form 리셋
@@ -233,7 +234,6 @@ function Make() {
   }, [cardNo]);
 
   useEffect(() => {
-    // Component가 화면에 나타남 === mount"
     // editCardNo가 변화하게 된다면
     // cardList에서 수정할 card 정보 불러오기
     if (editCardNumber !== -1) {
@@ -260,15 +260,19 @@ function Make() {
       setEditCardIndex(editCardNumber);
       dispatch({ type: "INIT_CARD_NO" });
     }
-
-    // Component가 화면에 사라짐 === unmount
-    // return () => {
-    // };
   }, [editCardNumber]);
+
+  // test useEffect
+  const testConsoleBtn = () => {
+    console.log(values);
+  };
 
   // ==================== Return ==============================
   return (
     <DashboardLayout>
+      <button type="button" onClick={testConsoleBtn}>
+        테스트용
+      </button>
       <DashboardNavbar />
       <FormControl>
         <FormLabel id="card-category-select">
@@ -287,7 +291,7 @@ function Make() {
           <FormControlLabel value="link" control={<Radio />} label="링크" />
         </RadioGroup>
       </FormControl>
-      <MakeCategory />
+      <MakeCategory handleCategory={handleCategory} />
       {form === "problem" && <MakeProblem handleChangeValues={handleChangeValues} />}
       {form === "general" && <MakeGeneral />}
       {form === "link" && <MakeLink />}
@@ -305,6 +309,15 @@ function Make() {
         handleValuesCreate={handleValuesCreate}
       />
       <MakeCardList />
+      <MDSnackbar
+        color={valid.state}
+        icon="notifications"
+        title="알람"
+        content={valid.comment}
+        // dateTime="11 mins ago"
+        open={valid.isValid}
+        close={() => setValid({ valid: false, comment: "", state: "" })}
+      />
     </DashboardLayout>
   );
 }
