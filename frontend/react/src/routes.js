@@ -88,7 +88,7 @@ const routes = [
     name: "로그인",
     key: "login",
     icon: <Icon fontSize="small">login</Icon>,
-    route: "/login/",
+    route: "/login",
     component: <AuthLogin />,
   },
   {

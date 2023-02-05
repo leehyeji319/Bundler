@@ -6,7 +6,8 @@ import { useState, useEffect, useMemo } from "react";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-
+import Home from "pages/home";
+import AuthLogin from "pages/login";
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -158,6 +159,8 @@ function App() {
         <Routes>
           {getRoutes(routes)}
           <Route path="*" element={<Navigate to="/home" />} />
+          <Route exact path="/home" element={<Home />} />
+          <Route exact path="/login" element={<AuthLogin />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
@@ -181,7 +184,10 @@ function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
+        <Route exact path="/home" element={<Home />} />
+        <Route exact path="/login" element={<AuthLogin />} />
         <Route path="*" element={<Navigate to="/home" />} />
+        {/* <Route path="/logout" element={<Logout />} /> */}
       </Routes>
     </ThemeProvider>
   );
