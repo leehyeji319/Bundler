@@ -3,6 +3,7 @@ package com.ssafy.bundler.dto.card.reqeust;
 import com.ssafy.bundler.domain.Card;
 import com.ssafy.bundler.domain.CardType;
 import com.ssafy.bundler.domain.Category;
+import com.ssafy.bundler.domain.FeedType;
 import com.ssafy.bundler.domain.User;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -40,6 +41,7 @@ public class CardSaveRequestDto {
 
 	public Card toEntity(User writer, Category category) {
 		return Card.builder()
+			.feedType(FeedType.valueOf(this.feedType))
 			.writer(writer)
 			.feedTitle(this.feedTitle)
 			.feedContent(this.feedContent)

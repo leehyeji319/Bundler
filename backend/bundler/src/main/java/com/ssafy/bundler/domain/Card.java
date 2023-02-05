@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "CARDS")
 @SuperBuilder(toBuilder = true)
-@DiscriminatorValue(value = "CARD")
+@DiscriminatorValue(value = FeedType.Values.CARD)
 @PrimaryKeyJoinColumn(name = "card_id")
 @Inheritance(strategy = InheritanceType.JOINED)
 //엔티티를 저장할 때 구분 컬럼에 입력할 값을 지정한다. 만약 카드 엔티티를 지정하면 구분 컬럼인 DTYPE
@@ -60,4 +61,12 @@ public class Card extends Feed implements Serializable {
 		this.cardScrapCnt++;
 	}
 
+	// @Transient
+	// @Column(name = "feed_type", insertable = false, updatable = false)
+	// protected String feedType;
+
+	@Transient
+	@Column(name = "feed_type")
+	@Enumerated(EnumType.STRING)
+	private FeedType feedType;
 }

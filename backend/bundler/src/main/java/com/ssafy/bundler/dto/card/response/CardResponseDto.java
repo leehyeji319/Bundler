@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ssafy.bundler.domain.Card;
+import com.ssafy.bundler.domain.FeedType;
 import com.ssafy.bundler.dto.comment.CommentResponseDto;
 
 import lombok.Data;
@@ -26,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class CardResponseDto {
 
 	private Long cardId;
-	private String feedType;
+	private String feedType = FeedType.CARD.toString();
 
 	private LocalDateTime createdAt;
 	private String cardType;
@@ -47,15 +48,15 @@ public class CardResponseDto {
 	private String cardDescription;
 	private String cardCommentary;
 
-	private Long linkId;
-	private String linkUrl;
-	private String linkImage;
-	private String linkTitle;
-	private String linkDescription;
-
-	private String bundleThumbnail;
-	private String bundleThumbnailText;
-	private boolean isBundlePublic;
+	// private Long linkId;
+	// private String linkUrl;
+	// private String linkImage;
+	// private String linkTitle;
+	// private String linkDescription;
+	//
+	// private String bundleThumbnail;
+	// private String bundleThumbnailText;
+	// private boolean isBundlePublic;
 
 	private int cardScrapCnt;
 	private int feedLikeCnt;
@@ -65,6 +66,7 @@ public class CardResponseDto {
 
 	public CardResponseDto(Card card) {
 		this.cardId = card.getFeedId();
+		// this.feedType = card.getFeedType().toString();
 		this.cardType = card.getCardType().toString();
 		this.createdAt = card.getCreatedAt();
 		this.isDeleted = card.isDeleted();

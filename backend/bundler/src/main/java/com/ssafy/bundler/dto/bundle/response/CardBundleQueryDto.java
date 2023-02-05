@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ssafy.bundler.domain.CardType;
+import com.ssafy.bundler.domain.FeedType;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class CardBundleQueryDto {
 	@JsonIgnore
 	private Long bundleId;
 	private Long cardId;
+
+	private String feedType = FeedType.CARD.toString();
 
 	private LocalDateTime createdAt;
 	private CardType cardType;
@@ -63,4 +66,5 @@ public class CardBundleQueryDto {
 		this.feedLikeCnt = feedLikeCnt;
 		this.feedCommentCnt = feedCommentCnt;
 	}
+
 }

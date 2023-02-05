@@ -3,6 +3,7 @@ package com.ssafy.bundler.dto.card.response;
 import java.time.LocalDateTime;
 
 import com.ssafy.bundler.domain.Card;
+import com.ssafy.bundler.domain.FeedType;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class CardSummaryResponseDto {
 
 	private Long cardId;
-	private String feedType;
+	private String feedType = FeedType.CARD.toString();
 
 	private LocalDateTime createdAt;
 	private String cardType;
@@ -38,10 +39,6 @@ public class CardSummaryResponseDto {
 	private String linkImage;
 	private String linkTitle;
 	private String linkDescription;
-
-	private String bundleThumbnail;
-	private String bundleThumbnailText;
-	private boolean isBundlePublic;
 
 	private int cardScrapCnt;
 	private int feedLikeCnt;

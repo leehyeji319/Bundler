@@ -3,6 +3,8 @@ package com.ssafy.bundler.dto.bundle.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.ssafy.bundler.domain.FeedType;
+
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class BundleResponseDto {
 
 	private Long bundleId;
-	// private String feedType;
+	private String feedType = FeedType.BUNDLE.toString();
 
 	private LocalDateTime createdAt;
 
