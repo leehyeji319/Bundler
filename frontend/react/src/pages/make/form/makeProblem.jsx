@@ -6,13 +6,16 @@ import MDTypography from "components/MDTypography";
 
 // [Import - React Basic] react && props && mui
 import React, { useState, useEffect } from "react";
-import MakeBundle from "pages/make/form/makeBundle";
 
 // [Import - React-Redux]
 import { useSelector, useDispatch } from "react-redux";
 
 // [Import - Redux-action] redux-action 함수
 import { actAddCard, actEditCard, actDeleteCard } from "redux/actions/makeCardAction";
+
+// Import - Custom
+import MakeBundle from "pages/make/form/makeBundle";
+import MakeBundleImageUpload from "pages/make/form/makeBundleImageUpload";
 
 function MakeProblem() {
   // ------------ Data ----------------
@@ -304,6 +307,7 @@ function MakeProblem() {
           <Switch checked={bundleToggle} onChange={() => setBundleToggle(!bundleToggle)} />
         </MDBox>
       </Box>
+      <MakeBundleImageUpload />
       <MakeBundle selected={bundleToggle} handleBundle={handleBundleChange} />
       <Box>
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleAdd}>

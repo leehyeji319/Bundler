@@ -1,0 +1,81 @@
+// Improt - React
+import React from "react";
+import ImageUploading from "react-images-uploading";
+
+// Improt - Design
+import MDBox from "components/MDBox";
+import { Box, Button, Typography } from "@mui/material";
+
+function MakeBundleImageUpload() {
+  const [images, setImages] = React.useState([]);
+  const maxNumber = 1;
+
+  const onChange = (imageList, addUpdateIndex) => {
+    // data for submit
+    const formData = new FormData();
+    formData.append("file", imageList);
+    console.log(formData);
+
+    console.log(imageList, addUpdateIndex);
+    setImages(imageList);
+  };
+
+  return (
+    <div className="App">
+      <ImageUploading
+        multiple
+        value={images}
+        onChange={onChange}
+        maxNumber={maxNumber}
+        dataURLKey="data_url"
+      >
+        {({
+          imageList,
+          onImageUpload,
+          // onImageRemoveAll,
+          onImageUpdate,
+          onImageRemove,
+          isDragging,
+          dragProps,
+        }) => (
+          // write your building UI
+          <Box className="upload-image-wrapper" sx={{ display: "flex" }}>
+            <Button
+              type="button"
+              style={isDragging ? { color: "red" } : undefined}
+              onClick={onImageUpload}
+              {...dragProps}
+            >
+              <Typography variant="h6">
+                <Box sx={{ textAlign: "center", mt: 3 }}>
+                  이미지
+                  <br />
+                  업로드
+                </Box>
+              </Typography>
+            </Button>
+            {/* &nbsp;
+            <button type="button" onClick={onImageRemoveAll}>
+              Remove all images
+            </button> */}
+            {imageList.map((image, index) => (
+              <MDBox key={image.toString()} className="image-item">
+                <img src={image.data_url} alt="" width="100" />
+                <Box className="image-item__btn-wrapper">
+                  <Button type="button" onClick={() => onImageUpdate(index)}>
+                    수정
+                  </Button>
+                  <Button type="button" onClick={() => onImageRemove(index)}>
+                    제거
+                  </Button>
+                </Box>
+              </MDBox>
+            ))}
+          </Box>
+        )}
+      </ImageUploading>
+    </div>
+  );
+}
+
+export default MakeBundleImageUpload;
