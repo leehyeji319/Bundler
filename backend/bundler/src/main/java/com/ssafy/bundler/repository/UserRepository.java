@@ -1,14 +1,17 @@
 package com.ssafy.bundler.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.ssafy.bundler.domain.User;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	Optional<User> findByUserNickname(String userNickname);
-	Optional<User> findByProviderAndProviderId(String provider, String providerId);
+	User findByUserNickname(String userNickname);
+
+	// Optional<User> findByProviderAndProviderId(String provider, String providerId);
+
+	User findByUserId(String userId);
 
 }
