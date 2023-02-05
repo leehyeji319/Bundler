@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/02/04        modsiw       최초 생성
+ * 2023/02/05		 modsiw		  번들 개별 조회 생성
  */
 @Repository
 @RequiredArgsConstructor
@@ -29,7 +30,8 @@ public class FeedQueryRepository {
 
 	private final EntityManager em;
 
-	public List<BundleResponseDto> findAllByDto_optimization() {
+	//번들 리스트
+	public List<BundleResponseDto> findAllBundleByDto_optimization() {
 
 		List<BundleResponseDto> result = findBundles();
 
@@ -38,6 +40,19 @@ public class FeedQueryRepository {
 		result.forEach(b -> b.setCardBundleQueryDtoList(cardBundleMap.get(b.getBundleId())));
 
 		return result;
+	}
+
+	//번들 한개
+	public BundleResponseDto findBundleByDto_optimization(Long bundleId) {
+
+		BundleResponseDto result = findBundle(bundleId);
+
+		Map<Long, List<CardBundleQueryDto>> cardBundleMap = findCardBundleMap(bundleId);
+
+		result.setCardBundleQueryDtoList(cardBundleMap.get(bundleId));
+
+		return result;
+
 	}
 
 	private List<Long> toBundleIds(List<BundleResponseDto> result) {
@@ -56,6 +71,19 @@ public class FeedQueryRepository {
 			.getResultList();
 	}
 
+	private BundleResponseDto findBundle(Long bundleId) {
+		return em.createQuery(
+				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
+					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
+					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText)"
+					+ " from Bundle b"
+					+ " join b.writer w"
+					+ " where b.bundleId = :bundleId", BundleResponseDto.class)
+			.setParameter("bundleId", bundleId)
+			.getSingleResult();
+	}
+
+	//카드 번들 엔티티에서 번들 아이디들로 관련 카드들 가져오기
 	public Map<Long, List<CardBundleQueryDto>> findCardBundleMap(List<Long> bundleIds) {
 
 		List<CardBundleQueryDto> cardbundle = em.createQuery(
@@ -69,6 +97,26 @@ public class FeedQueryRepository {
 					+ " join cb.card c"
 					+ " where cb.bundle.bundleId in :bundleIds", CardBundleQueryDto.class)
 			.setParameter("bundleIds", bundleIds)
+			.getResultList();
+
+		return cardbundle.stream()
+			.collect(Collectors.groupingBy(CardBundleQueryDto::getBundleId));
+	}
+
+	//카드번들 엔티티에서 번들 아이디 하나로 카드들 찾기
+	public Map<Long, List<CardBundleQueryDto>> findCardBundleMap(Long bundleId) {
+
+		List<CardBundleQueryDto> cardbundle = em.createQuery(
+				"select new com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto"
+					+ "(cb.bundle.bundleId, c.cardId, c.createdAt, c.cardType, c.writer.userId,"
+					+ " c.writer.userProfileImage, c.writer.userNickname, c.feedTitle, c.feedContent,"
+					+ " c.category.parent.categoryId, c.category.parent.categoryName,"
+					+ " c.category.categoryId, c.category.categoryName,"
+					+ " c.cardScrapCnt, c.feedLikeCnt, c.feedCommentCnt)"
+					+ " from CardBundle cb"
+					+ " join cb.card c"
+					+ " where cb.bundle.bundleId = :bundleId", CardBundleQueryDto.class)
+			.setParameter("bundleId", bundleId)
 			.getResultList();
 
 		// System.out.println(bundleIds1.size());

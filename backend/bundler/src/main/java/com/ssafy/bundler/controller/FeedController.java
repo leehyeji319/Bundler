@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/02/04        modsiw       최초 생성
+ * 2023/02/05		 modsiw		  번들 개별 조회 추가
  */
 
 @RestController
@@ -56,13 +57,13 @@ public class FeedController {
 	//번들 리스트
 	@GetMapping("/v5/feeds/bundles")
 	public List<BundleResponseDto> getBundleList() {
-		return feedQueryRepository.findAllByDto_optimization();
+		return feedQueryRepository.findAllBundleByDto_optimization();
 	}
 
 	//번들 개별
-	@GetMapping("/v5/feeds/bundles/{bundleId}")
-	public BundleResponseDto getBundle() {
-		return null;
+	@GetMapping("/v5/feeds/bundles/{feedId}")
+	public BundleResponseDto getBundle(@PathVariable Long feedId) {
+		return feedQueryRepository.findBundleByDto_optimization(feedId);
 	}
 
 	//전체 조회

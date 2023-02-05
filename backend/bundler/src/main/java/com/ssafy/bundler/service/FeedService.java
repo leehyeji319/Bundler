@@ -83,7 +83,7 @@ public class FeedService {
 
 	public List<Object> test() {
 		List<CardSummaryResponseDto> cardSummanryList = findCardSummanryList();
-		List<BundleResponseDto> allByDto_optimization = feedQueryRepository.findAllByDto_optimization();
+		List<BundleResponseDto> allByDto_optimization = feedQueryRepository.findAllBundleByDto_optimization();
 
 		List<Object> objects = new ArrayList<>();
 
