@@ -3,45 +3,48 @@
  */
 
 // React import
-import * as React from "react";
-import PropTypes from "prop-types";
+import React, { useState } from "react";
+// import PropTypes from "prop-types";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 // Mui-Material components
-import { FormControl, FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
+import {
+  Typography,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  RadioGroup,
+  Radio,
+} from "@mui/material";
 
 // [Import - React-Redux]
 // import { useSelector } from "react-redux";
 
-// 작성 Form
+// Import - custom
+import MakeCategory from "pages/make/form/makeCategory";
 import MakeProblem from "pages/make/form/makeProblem";
 import MakeGeneral from "pages/make/form/makeGeneral";
 import MakeLink from "pages/make/form/makeLink";
 import MakeCardList from "pages/make/form/makeCardList";
 
-function SelectedCategory({ selected }) {
-  switch (selected) {
-    case "general":
-      return <MakeGeneral />;
-    case "link":
-      return <MakeLink />;
-    default:
-      return <MakeProblem />;
-  }
-}
-
 // Typechecking props for the SelectedCategory
-SelectedCategory.propTypes = {
-  selected: PropTypes.string.isRequired,
-};
+// SelectedCategory.propTypes = {
+//   selected: PropTypes.string.isRequired,
+// };
 
 function Make() {
-  // const { editCardType } = useSelector((state) => state.makeReducer);
-  const [value, setValue] = React.useState("quiz");
+  // ===================== Data =================================
+  // Data - global
 
+  // Data - local
+  // category 어떤 값은 선택햇는지 저장하는 state 값
+  const [value, setValue] = useState("quiz");
+
+  // ==================== Function ==============================
+  // category 선택 결과를 저장하는 함수
   const handleChangeCategory = (event) => {
     setValue(event.target.value);
   };
@@ -50,7 +53,9 @@ function Make() {
     <DashboardLayout>
       <DashboardNavbar />
       <FormControl>
-        <FormLabel id="card-category-select">카드 유형 선택</FormLabel>
+        <FormLabel id="card-category-select">
+          <Typography variant="h6">유형 선택</Typography>
+        </FormLabel>
         <RadioGroup
           row
           aria-labelledby="card-category-radio-buttons"
@@ -64,7 +69,10 @@ function Make() {
           <FormControlLabel value="link" control={<Radio />} label="링크" />
         </RadioGroup>
       </FormControl>
-      <SelectedCategory selected={value} />
+      <MakeCategory />
+      {value === "quiz" && <MakeProblem />}
+      {value === "general" && <MakeGeneral />}
+      {value === "link" && <MakeLink />}
       <MakeCardList />
     </DashboardLayout>
   );

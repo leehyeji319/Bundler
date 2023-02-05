@@ -61,7 +61,7 @@ function MakeBundleImageUpload() {
             {imageList.map((image, index) => (
               <MDBox key={image.toString()} className="image-item">
                 <img src={image.data_url} alt="" width="100" />
-                <Box className="image-item__btn-wrapper">
+                <Box className="image-item-btn-wrapper">
                   <Button type="button" onClick={() => onImageUpdate(index)}>
                     수정
                   </Button>

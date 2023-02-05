@@ -221,16 +221,13 @@ function MakeProblem() {
       noValidate
       autoComplete="off"
     >
-      <Typography component="h1" variant="h3">
-        현재 카드 리스트
-      </Typography>
       <Box sx={{ mt: 2, display: "flex" }}>
         <Typography variant="h6">
           <Box sx={{ textAlign: "center", mt: 3 }}>제목</Box>
         </Typography>
         <TextField
           {...(valid.isFeedTitle ? { error: true } : {})}
-          helperText="필수 입력란"
+          // helperText="필수 입력란"
           multiline
           rows={1}
           required
@@ -251,7 +248,7 @@ function MakeProblem() {
         </Typography>
         <TextField
           {...(valid.isFeedContent ? { error: true } : {})}
-          helperText="필수 입력란"
+          // helperText="필수 입력란"
           multiline
           rows={4}
           required

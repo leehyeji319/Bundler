@@ -1,9 +1,10 @@
 // Import React
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 // @mui material components
-import { Card, Modal, Box } from "@mui/material";
+import { Card, Modal, Box, TextField } from "@mui/material";
+import Switch from "@mui/material/Switch";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -21,9 +22,18 @@ function ModalDetail({
   title,
   description,
   solution,
-  answer,
   commentList,
 }) {
+  // 토글 버튼
+  const [solutionToggle, setSolutionToggle] = useState(false);
+  const [mySolutionToggle, setMySolutionToggle] = useState(false);
+  const [mySolution, setMySolution] = useState("");
+
+  const handleMyAnswerChange = (e) => {
+    e.preventDefault();
+    setMySolution(e.target.value);
+  };
+
   const handleCloseModal = (e) => {
     e.preventDefault();
     handleClose();
@@ -31,7 +41,7 @@ function ModalDetail({
 
   const style = {
     position: "absolute",
-    top: "40%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "75%",
@@ -83,20 +93,49 @@ function ModalDetail({
               </MDTypography>
             </MDBox>
             <MDBox mt={2} mb={3}>
-              <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-                해설
-              </MDTypography>
-              <MDTypography variant="body2" component="p" color="text">
-                {solution}
-              </MDTypography>
+              <MDBox display="flex" alignItems="center" mt={3} lineHeight={1}>
+                <MDTypography variant="h6">해설</MDTypography>
+                <Switch
+                  checked={solutionToggle}
+                  onChange={() => setSolutionToggle(!solutionToggle)}
+                />
+              </MDBox>
+              {solutionToggle === true && (
+                <MDTypography variant="body2" component="p" color="text">
+                  {solution}
+                </MDTypography>
+              )}
             </MDBox>
             <MDBox mt={2} mb={3}>
-              <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-                내가 쓴 답
-              </MDTypography>
-              <MDTypography variant="body2" component="p" color="text">
-                {answer}
-              </MDTypography>
+              <MDBox display="flex" alignItems="center" mt={3} mb={3} lineHeight={1}>
+                <MDTypography variant="h6">
+                  답변
+                  <br />
+                  쓰기
+                </MDTypography>
+                <Switch
+                  checked={mySolutionToggle}
+                  onChange={() => setMySolutionToggle(!mySolutionToggle)}
+                />
+              </MDBox>
+              {mySolutionToggle === true && (
+                <Box sx={{ display: "flex" }}>
+                  <TextField
+                    value={mySolution}
+                    fullWidth
+                    multiline
+                    rows={3}
+                    id="my-answer"
+                    type="text"
+                    name="myAnswerText"
+                    label="Optional"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    onChange={handleMyAnswerChange}
+                  />
+                </Box>
+              )}
             </MDBox>
             <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
               <HomeInput />
@@ -127,7 +166,6 @@ ModalDetail.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   solution: PropTypes.string.isRequired,
-  answer: PropTypes.string.isRequired,
   commentList: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
