@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.bundler.domain.Comment;
-import com.ssafy.bundler.domain.User;
+import com.ssafy.bundler.domain.Feed;
 import com.ssafy.bundler.dto.comment.CommentRequestCreateDto;
 import com.ssafy.bundler.dto.comment.CommentRequestUpdateDto;
 import com.ssafy.bundler.repository.CommentRepository;
@@ -20,41 +20,34 @@ public class CommentService {
 
 	public Comment save(CommentRequestCreateDto commentDto){
 
-		if(feedRepository.findById(commentDto.getTargetFeedId()).isPresent()){
-			Comment comment = new Comment().builder()
-				.feedId(commentDto.getTargetFeedId())
-				.commentContent(commentDto.getContent())
-				.writer(new User().builder().userId(1L).build())
-				.build();
+		Feed targetFeed = feedRepository.findById(commentDto.getTargetFeedId()).orElseThrow(
+			() -> new IllegalArgumentException("잘못된 피드 아이디 입니다. id=" + commentDto.getTargetFeedId())
+		);
 
-			return commentRepository.save(comment);
-		}else{
-			return null;
-		}
+		Comment comment = Comment.builder()
+			.feedId(targetFeed.getFeedId())
+			.commentContent(commentDto.getContent())
+			.build();
+
+		return commentRepository.save(comment);
+
 
 	}
 	@Transactional
 	public Comment update(Long commentId, CommentRequestUpdateDto commentDto){
-		Comment comment;
-		if(commentRepository.findById(commentId).isPresent()){
+		Comment comment = commentRepository.findById(commentId).orElseThrow(
+			() -> new IllegalArgumentException("댓글을 찾을 수 없습니다. id=" +commentId)
+		);
+		comment.updateContent(commentDto.getContent());
+		return comment;
 
-			comment = commentRepository.findById(commentId).get();
-			comment.updateContent(commentDto.getContent());
-			return comment;
-		}else{
-			return null;
-		}
 	}
 	@Transactional
 	public boolean delete(long commentId) {
-		Comment comment;
-		if(commentRepository.findById(commentId).isPresent()){
-			comment = commentRepository.findById(commentId).get();
-			commentRepository.delete(comment);
-			return true;
-		}else{
-
-			return false;
-		}
+		Comment comment = commentRepository.findById(commentId).orElseThrow(
+			() -> new IllegalArgumentException("댓글을 찾을 수 없습니다. id=" +commentId)
+		);
+		commentRepository.delete(comment);
+		return true;
 	}
 }
