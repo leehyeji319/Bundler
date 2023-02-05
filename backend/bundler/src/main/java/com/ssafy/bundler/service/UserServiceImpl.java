@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.AuthResponseDto;
 import com.ssafy.bundler.dto.SignupRequestDto;
+import com.ssafy.bundler.dto.UserUpdateRequestDto;
 import com.ssafy.bundler.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,27 @@ public class UserServiceImpl implements UserService {
 			.userNickname(userEntity.getUserNickname())
 			.build();
 	}
+
+	@Override
+	public void updateUser(UserUpdateRequestDto user) {
+		User u = userRepository.findByUserId(user.getUserId());
+
+		userRepository.save(u.toBuilder()
+			.userIntroduction(user.getUserIntroduction())
+			.userProfileImage(user.getUserProfileImageUrl())
+			.userNickname(user.getUserNickname())
+			.build()
+		);
+	}
+
+	@Override
+	public void deleteUser(Long userId) {
+		userRepository.deleteById(userId);
+	}
+
+	// @Override
+	// public User getUserByUserId(Long userId) {
+	// 	return null;
+	// }
 
 }
