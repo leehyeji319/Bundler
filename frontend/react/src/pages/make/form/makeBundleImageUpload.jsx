@@ -1,5 +1,5 @@
 // Improt - React
-import React from "react";
+import React, { useState } from "react";
 import ImageUploading from "react-images-uploading";
 
 // Improt - Design
@@ -7,7 +7,7 @@ import MDBox from "components/MDBox";
 import { Box, Button, Typography } from "@mui/material";
 
 function MakeBundleImageUpload() {
-  const [images, setImages] = React.useState([]);
+  const [images, setImages] = useState([]);
   const maxNumber = 1;
 
   const onChange = (imageList, addUpdateIndex) => {

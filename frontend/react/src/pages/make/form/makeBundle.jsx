@@ -1,8 +1,12 @@
-// [Import - Design]
+// Import - react
+import React from "react";
+import PropTypes from "prop-types";
+
+// Import - design @mui/material
 import { Box, TextField, Typography } from "@mui/material";
 
-// [Import - React Basic] react && props && mui
-import PropTypes from "prop-types";
+// Imort - custom
+import MakeBundleImageUpload from "pages/make/form/makeBundleImageUpload";
 
 function MakeBundle({ selected, handleBundle }) {
   // 부모로 데이터 넘기기
@@ -11,9 +15,17 @@ function MakeBundle({ selected, handleBundle }) {
   };
 
   return (
-    <Box mt={3}>
+    <Box
+      component="form"
+      sx={{
+        "& .MuiTextField-root": { ml: 3, mt: 3, width: "70vw" },
+        mt: 3,
+      }}
+      noValidate
+      autoComplete="off"
+    >
       {selected === true && (
-        <div>
+        <>
           <Box sx={{ display: "flex" }}>
             <Typography variant="h6">
               <Box sx={{ textAlign: "center", mt: 3 }}>
@@ -59,7 +71,8 @@ function MakeBundle({ selected, handleBundle }) {
               onChange={handleBundleChange}
             />
           </Box>
-        </div>
+          <MakeBundleImageUpload />
+        </>
       )}
     </Box>
   );
