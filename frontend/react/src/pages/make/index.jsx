@@ -11,7 +11,6 @@
 
 // React import
 import React, { useState, useEffect } from "react";
-// import PropTypes from "prop-types";
 
 // Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
@@ -64,18 +63,18 @@ function Make() {
     userId: "testID",
     feedTitle: "",
     feedContent: "",
-    categoryId: 1,
+    categoryId: -1,
     cardType: "card_problem",
     cardDescription: "",
     cardCommentary: "",
-    cardno: null,
+    cardno: 1,
   });
   const [editCardIndex, setEditCardIndex] = useState(-1); // 선택된 카드 인덱스 저장
 
   // (4) Bundle Form && Toggle
   const [bundleToggle, setBundleToggle] = useState(false); // 번들 토글 버튼
   const [bundleForm, setBundleForm] = useState({
-    userId: "testId",
+    userId: "testID",
     bundleThumbnail: "",
     bundleThumbnailText: "",
     feedTitle: "",
@@ -83,17 +82,17 @@ function Make() {
   });
 
   // (*) Validation
-  const [valid, setValid] = useState({
-    isFeedTitle: false,
-    isFeedContent: false,
-    isCardCommentary: false,
-  });
+  // const [valid, setValid] = useState({
+  //   isFeedTitle: false,
+  //   isFeedContent: false,
+  //   isCardCommentary: false,
+  // });
 
   // ==================== Function ==============================
   const dispatch = useDispatch();
 
-  // state 초기화
-  const initStateRender = () => {
+  // state 초기화 - problem
+  const initProblemForm = () => {
     setValues({
       ...values,
       feedTitle: "",
@@ -102,12 +101,28 @@ function Make() {
       cardDescription: "",
     });
 
-    // render 값 초기환
+    // render - problem 값 초기환
     document.querySelector("#problem-title").value = "";
     document.querySelector("#problem-content").value = "";
     document.querySelector("#problem-cardCommentary").value = "";
     document.querySelector("#problem-description").value = "";
   };
+
+  // state 초기화 - bundle
+  const initBundleForm = () => {
+    setBundleForm({
+      ...bundleForm,
+      bundleThumbnail: "",
+      bundleThumbnailText: "",
+      feedTitle: "",
+      feedContent: "",
+    });
+
+    // render - problem 값 초기환
+    document.querySelector("#bundle-bundleThumbnail").value = "";
+    document.querySelector("#bundle-bundleThumbnailText").value = "";
+  };
+
   // (1) 유형 선택 - 선택 결과를 저장하는 함수
   const handleChangeForm = (event) => {
     setForm(event.target.value);
@@ -118,27 +133,26 @@ function Make() {
   // (3) form value 저장 함수
   const handleChangeValues = (event, name, value) => {
     event.preventDefault();
-    // const { name, value } = event.target;
-    // console.log(name, value);
     setValues({ ...values, [name]: value });
 
-    // valid
-    const feedTitle = document.querySelector("#problem-title").value;
-    const feedContent = document.querySelector("#problem-content").value;
-    if (feedTitle.length === 0 && feedContent.length !== 0)
-      setValid({ ...valid, isFeedTitle: true, isFeedContent: false });
-    if (feedTitle.length !== 0 && feedContent.length === 0)
-      setValid({ ...valid, isFeedTitle: false, isFeedContent: true });
-    if (feedTitle.length === 0 && feedContent.length === 0)
-      setValid({ ...valid, isFeedTitle: true, isFeedContent: true });
-    if (feedTitle.length !== 0 && feedContent.length !== 0)
-      setValid({ ...valid, isFeedTitle: false, isFeedContent: false });
+    // valid - problem : setValid 값을 다시 child 에게 내려줘야 한다.. 고민좀 해보자 이부분은
+    // const feedTitle = document.querySelector("#problem-title").value;
+    // const feedContent = document.querySelector("#problem-content").value;
+    // if (feedTitle.length === 0 && feedContent.length !== 0)
+    //   setValid({ ...valid, isFeedTitle: true, isFeedContent: false });
+    // if (feedTitle.length !== 0 && feedContent.length === 0)
+    //   setValid({ ...valid, isFeedTitle: false, isFeedContent: true });
+    // if (feedTitle.length === 0 && feedContent.length === 0)
+    //   setValid({ ...valid, isFeedTitle: true, isFeedContent: true });
+    // if (feedTitle.length !== 0 && feedContent.length !== 0)
+    //   setValid({ ...valid, isFeedTitle: false, isFeedContent: false });
   };
 
   // (4) bundle form 함수
-  const handleBundleChange = (data) => {
-    console.log(data.value);
-    const { name, value } = data;
+  const handleBundleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    console.log(name, value);
     setBundleForm({ ...bundleForm, [name]: value });
   };
 
@@ -158,7 +172,7 @@ function Make() {
       dispatch(result);
 
       // 값 초기화
-      initStateRender();
+      initProblemForm();
     }
   };
 
@@ -172,7 +186,7 @@ function Make() {
       dispatch(result);
 
       // 값 초기화
-      initStateRender();
+      initProblemForm();
       setEditCardIndex(-1);
     }
   };
@@ -187,7 +201,7 @@ function Make() {
       dispatch(result);
 
       // 값 초기화
-      initStateRender();
+      initProblemForm();
     }
   };
 
@@ -207,7 +221,9 @@ function Make() {
       alert("bundle 생성만 하실 경우 bundle 제목과 내용을 입력해 주세요");
     } else {
       alert("정상 생성");
-      dispatch({ type: "CARD_STORE_RESET" });
+      dispatch({ type: "CARD_STORE_RESET" }); // card List 리셋
+      initProblemForm(); // 카드 Form 리셋
+      initBundleForm(); // 번들 Form 리셋
     }
   };
 

@@ -11,7 +11,8 @@ import MakeBundleImageUpload from "pages/make/form/makeBundleImageUpload";
 function MakeBundle({ selected, handleBundle }) {
   // 부모로 데이터 넘기기
   const handleBundleChange = (event) => {
-    handleBundle(event.target);
+    event.preventDefault();
+    handleBundle(event);
   };
 
   return (
