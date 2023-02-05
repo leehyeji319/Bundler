@@ -59,6 +59,12 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "user_role")
 	private String userRole;
 
+	@Column(name = "following_cnt")
+	private int followingCnt;
+
+	@Column(name = "follower_cnt")
+	private int followerCnt;
+
 	public List<String> getRoleList() {
 		if (this.userRole.length() > 0) {
 			return Arrays.asList(this.userRole.split(","));
@@ -78,12 +84,12 @@ public class User extends BaseEntity implements Serializable {
 	@Builder.Default
 	private List<Feed> feedList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "followTo", cascade = ALL)
-	@Builder.Default
-	private List<Follow> followToList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "followFrom", cascade = ALL)
-	@Builder.Default
-	private List<Follow> followFromList = new ArrayList<>();
+	// @OneToMany(mappedBy = "followTo", cascade = ALL)
+	// @Builder.Default
+	// private List<Follow> followToList = new ArrayList<>();
+	//
+	// @OneToMany(mappedBy = "followFrom", cascade = ALL)
+	// @Builder.Default
+	// private List<Follow> followFromList = new ArrayList<>();
 
 }

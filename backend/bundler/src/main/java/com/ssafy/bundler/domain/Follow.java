@@ -30,13 +30,29 @@ public class Follow extends BaseEntity implements Serializable {
 	@Column(name = "follow_id")
 	private Long followId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "follow_to_id")
-	private User followTo;
+	@Column(name = "follow_from_id")
+	Long followFromId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "follow_from_id")
+	@JoinColumn(name = "follow_from_id", insertable = false, updatable = false)
 	private User followFrom;
+
+	// @OneToMany(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "follow_from_id", insertable = false, updatable = false)
+	// @Builder.Default
+	// private List<User> followingList = new ArrayList<>();
+
+	@Column(name = "follow_to_id")
+	Long followToId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "follow_to_id", insertable = false, updatable = false)
+	private User followTo;
+
+	// @OneToMany(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "follow_to_id", insertable = false, updatable = false)
+	// @Builder.Default
+	// private List<User> followerList = new ArrayList<>();
 
 	// @Builder
 	// public Follow(User followTo, User followFrom) {
