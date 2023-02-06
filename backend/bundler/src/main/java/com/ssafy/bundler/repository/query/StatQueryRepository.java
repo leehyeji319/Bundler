@@ -37,4 +37,11 @@ public interface StatQueryRepository extends JpaRepository<Feed,Long> {
 		+ "WHERE f.user_id=?1 "
 		+ "GROUP BY f.user_id",nativeQuery = true)
 	StatTotalCountDto findLikeTotalCountByUser(Long userId);
+
+	@Query(value = "SELECT SUM(c.card_scrap_cnt) AS count "
+		+ "FROM cards c "
+		+ "LEFT JOIN feeds f ON f.feed_id = c.card_id "
+		+ "WHERE f.user_id=?1 "
+		+ "GROUP BY f.user_id;",nativeQuery = true)
+	StatTotalCountDto findScrapCntTotalByUserId(Long userId);
 }

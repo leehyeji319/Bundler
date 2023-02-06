@@ -102,4 +102,12 @@ public class StatService {
 		StatTotalCountDto totalLike = statQueryRepository.findLikeTotalCountByUser(user.getUserId());
 		return totalLike == null ? 0 : totalLike.getCount();
 	}
+	@Transactional
+	public Integer getTotalCardScrappedCount(Long userId){
+		User user = userRepository.findById(userId).orElseThrow(
+			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
+		);
+		StatTotalCountDto totalScrap = statQueryRepository.findScrapCntTotalByUserId(user.getUserId());
+		return totalScrap == null ? 0 : totalScrap.getCount();
+	}
 }

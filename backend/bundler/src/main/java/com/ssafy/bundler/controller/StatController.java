@@ -19,12 +19,13 @@ public class StatController {
 		StatCategoryDto[] statsTest= statService.getCategoryStat(userId);
 		String registerDate = statService.getRegisterDate(userId);
 		int totalFeedLikeCnt = statService.getTotalFeedLike(userId);
+		int totalCardScrapCnt = statService.getTotalCardScrappedCount(userId);
 
 		StatResponseDto responseDto = StatResponseDto.builder()
 			.statCategory(statsTest)
 			.registerDate(registerDate)
 			.totalFeedLikeCnt(totalFeedLikeCnt)
-			.totalCardScrapCnt(12)
+			.totalCardScrapCnt(totalCardScrapCnt)
 			.mutualFollows(35)
 			.continuousCardMakeCnt(33)
 			.mostMakeCategory("알고리즘")

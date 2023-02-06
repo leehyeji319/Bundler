@@ -42,6 +42,17 @@ class StatServiceTest {
 		// //then
 		//
 		// assertThat(totalCount).isEqualTo(3);
+	}
 
+	@Test
+	void getTotalCardScrappedCount() {
+		// //given
+		// Long userId = 1L;
+		//
+		// //when
+		// int totalCount = statService.getTotalCardScrappedCount(userId);
+		// //then
+		//
+		// assertThat(totalCount).isEqualTo(9);
 	}
 }
