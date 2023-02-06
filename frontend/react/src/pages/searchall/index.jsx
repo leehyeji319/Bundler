@@ -10,7 +10,9 @@ function SearchAll() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div>search all</div>
+      <div>
+        <h1>검색 custom 공간</h1>
+      </div>
     </DashboardLayout>
   );
 }

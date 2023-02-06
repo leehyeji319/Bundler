@@ -81,7 +81,6 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           sx={{ textDecoration: "none" }}
         >
           <SidenavCollapse
-            key={key}
             name={name}
             icon={icon}
             active={key === collapseName}
