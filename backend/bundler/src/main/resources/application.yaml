@@ -1,0 +1,58 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: utf-8
+      enabled: true
+
+spring:
+  datasource:
+
+    #mariadb용
+    #    driver-class-name: org.mariadb.jdbc.Driver
+    #    url: jdbc:mariadb://localhost:3306/bundler?useUnicode=true&characterEncoding=utf-8
+    #    username: root
+    #    password: ssafy
+
+    #mysql용
+    url: jdbc:mysql://i8A810.p.ssafy.io:3333/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: ssafyA810
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  output.ansi.enabled: always
+  jpa:
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update  # create, update, none
+    #      naming:
+    #        strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect:
+        default_schema:
+          format-sql: true
+    defer-datasource-initialization: true
+
+
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: Asia/Seoul
+
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+#  logging:
+#    level:resources
+#      web: debug
+
+#logging:
+#  level:
+#    p6spy: info
