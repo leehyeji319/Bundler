@@ -48,13 +48,16 @@ public class UserController {
 	//회원 정보 삭제
 	@DeleteMapping("/{userId}")
 	public ResponseEntity deleteUser(Authentication authentication, @PathVariable Long userId) {
+		
 		PrincipalDetails principal = (PrincipalDetails)authentication.getPrincipal();
 
 		if (principal.getUser().getUserId().equals(userId)) {
+			System.out.println("성공");
 			userService.deleteUser(userId);
 		}
 
 		return ResponseEntity.ok().build();
+
 	}
 
 	//fromUserId가 toUserId를 팔로잉
