@@ -6,153 +6,208 @@ import MDTypography from "components/MDTypography";
 
 // [Import - React Basic] react && props && mui
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import MakeBundle from "pages/make/form/makeBundle";
 
 // [Import - React-Redux]
 import { useSelector, useDispatch } from "react-redux";
 
 // [Import - Redux-action] redux-action 함수
-import { actAddCard } from "redux/actions/makeCardAction";
-
-// BundleForm Template
-function BundleForm({ selected, handleChange }) {
-  return (
-    <Box mt={3}>
-      {selected === true && (
-        <Box sx={{ display: "flex" }}>
-          <Typography variant="h6">
-            <Box sx={{ textAlign: "center", mt: 3 }}>번들 제목</Box>
-          </Typography>
-          <TextField
-            multiline
-            rows={1}
-            required
-            autoFocus
-            id="bundle-title"
-            type="text"
-            name="bundleTitle"
-            label="Required"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={handleChange}
-          />
-        </Box>
-      )}
-    </Box>
-  );
-}
-
-// Typechecking props for the SelectedCategory
-BundleForm.propTypes = {
-  selected: PropTypes.bool.isRequired,
-  handleChange: PropTypes.func.isRequired,
-};
+import { actAddCard, actEditCard, actDeleteCard } from "redux/actions/makeCardAction";
 
 function MakeProblem() {
+  // ------------ Data ----------------
   // (Data 1) Store Data
-  const dispatch = useDispatch(); // state와 function을 보내는 함수
+  const { cardList, cardNo, editCardNumber } = useSelector((state) => state.makeReducer); // state 값 가져오기
 
-  const { cardList, cardNo } = useSelector((state) => state.makeReducer); // state 값 가져오기
-  // const cardList = useSelector((state) => state.makeCard.cardList); // state 값 가져오기
-  // console.log(cardList);
   // (Data 2) Local Data - Card Input Data
   const [values, setValues] = useState({
     userId: "testID",
-    feedType: "Card",
     feedTitle: "",
     feedContent: "",
-    categoryFirst: "",
-    categorySecond: "",
-    cardno: 1,
-    cardType: "card_general",
+    categoryId: 1,
+    cardType: "card_problem",
     cardDescription: "",
     cardCommentary: "",
-    bundleTitle: "",
+    cardno: null,
   });
 
   // (Data 3) Local - useState 버튼!!
-  const [bundleToggle, setBundleToggle] = useState(false);
+  // Card Data
+  const [editCardIndex, setEditCardIndex] = useState(-1); // 선택된 카드 인덱스 저장
+  const [valid, setValid] = useState({
+    isFeedTitle: false,
+    isFeedContent: false,
+    isCardCommentary: false,
+  });
+  // Bundle Data
+  const [bundleToggle, setBundleToggle] = useState(false); // 번들 토글 버튼
+  const [bundleForm, setBundleForm] = useState({
+    userId: "testId",
+    bundleThumbnail: "",
+    bundleThumbnailText: "",
+    feedTitle: "",
+    feedContent: "",
+  });
+
+  const handleBundleChange = (data) => {
+    console.log(data.value);
+    const { name, value } = data;
+    setBundleForm({ ...bundleForm, [name]: value });
+  };
 
   // (Data 1 - Func) Catd Input Data Changed
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
+
+    // valid
+    const feedTitle = document.querySelector("#problem-title").value;
+    const feedContent = document.querySelector("#problem-content").value;
+    if (feedTitle.length === 0 && feedContent.length !== 0)
+      setValid({ ...valid, isFeedTitle: true, isFeedContent: false });
+    if (feedTitle.length !== 0 && feedContent.length === 0)
+      setValid({ ...valid, isFeedTitle: false, isFeedContent: true });
+    if (feedTitle.length === 0 && feedContent.length === 0)
+      setValid({ ...valid, isFeedTitle: true, isFeedContent: true });
+    if (feedTitle.length !== 0 && feedContent.length !== 0)
+      setValid({ ...valid, isFeedTitle: false, isFeedContent: false });
+  };
+
+  // ------------ Function ----------------
+  const dispatch = useDispatch(); // state와 function을 보내는 함수
+
+  // state 초기화
+  const initStateRender = () => {
+    setValues({
+      ...values,
+      feedTitle: "",
+      feedContent: "",
+      cardCommentary: "",
+      cardDescription: "",
+    });
+
+    // render 값 초기환
+    document.querySelector("#problem-title").value = "";
+    document.querySelector("#problem-content").value = "";
+    document.querySelector("#problem-cardCommentary").value = "";
+    document.querySelector("#problem-description").value = "";
   };
 
   // (Func 1) handleAdd
   const handleAdd = (e) => {
     e.preventDefault();
-    setValues((state) => ({ ...state, cardno: cardNo }));
-    const result = actAddCard(values);
-    dispatch(result);
-    // actAddCard(values).then((result) => {
-    //   console.log(values);
-    //   dispatch(result);
-    // });
-  };
 
-  // const handleAdd = (e) => {
-  //   e.preventDefault();
-  //   actAddCard(values).then((result) => {
-  //     console.log(values);
-  //     dispatch(result);
-  //   });
-  // };
-
-  // (Func 2) handleDelete
-  const handleDelete = (event, deleteNo) => {
-    event.preventDefault();
-    console.log("delete No: ", deleteNo);
-  };
-
-  // (Func 3-2) handleCreate 조건이 충족 된다면 axios 함수 실행
-  const onHandleAxios = async () => {
-    console.log(bundleToggle);
-    // Axios Post
-    // await axios
-    //   .post('/api/v1/cards', postData)
-    //   .then(function(response) {
-    //     console.log("success");
-    //   })
-    //   .catch((err) => {
-    //     console.log("error");
-    //   });
-  };
-
-  // (Func 3-1) 생성 버튼 클릭 시
-  const handleCreate = (e) => {
-    e.preventDefault();
-
-    // action 함수 호출 && reducer로 dispatch && store state 확인
-    actAddCard().then((result) => {
+    // validation check
+    const feedTitle = document.querySelector("#problem-title").value;
+    const feedContent = document.querySelector("#problem-content").value;
+    if (feedTitle.length === 0 || feedContent === 0) {
+      alert("필수 입력 필요");
+    } else {
+      setValues({ ...values, cardno: cardNo });
+      const result = actAddCard(values);
       dispatch(result);
-    });
 
-    // submit 시, input value 초기화
-    // document.querySelector("#problem-title").value = "";
-
-    // 해당 조건이 충족 한다면
-    if (true) {
-      onHandleAxios(cardList);
+      // 값 초기화
+      initStateRender();
     }
   };
 
-  const handleConfirm = (e) => {
+  // (Func 2) handleEdit - 카드리스트 안의 카드 수정
+  const handleEdit = (event) => {
+    event.preventDefault();
+
+    // 카드가 선택 되었을때만 동작
+    if (editCardIndex !== -1) {
+      const result = actEditCard(editCardIndex, values);
+      dispatch(result);
+
+      // 값 초기화
+      initStateRender();
+      setEditCardIndex(-1);
+    }
+  };
+
+  // (Func 3) handleDelete - 카드리스트 안의 카드 삭제
+  const handleDelete = (event) => {
+    event.preventDefault();
+
+    // 카드가 선택 되었을때만 동작
+    if (editCardIndex !== -1) {
+      const result = actDeleteCard(editCardIndex);
+      dispatch(result);
+
+      // 값 초기화
+      initStateRender();
+    }
+  };
+
+  // (Func 4) 생성 버튼 클릭 시
+  const handleCreate = (e) => {
     e.preventDefault();
 
     console.log(cardList);
+    console.log(bundleForm);
+
+    if (
+      bundleToggle &&
+      (bundleForm.bundleThumbnail.length === 0 || bundleForm.bundleThumbnailText.length === 0)
+    ) {
+      alert("bundle 내용 없음");
+    } else if (!bundleToggle && cardList.length === 0) {
+      alert("bundle 생성만 하실 경우 bundle 제목과 내용을 입력해 주세요");
+    } else {
+      alert("정상 생성");
+      dispatch({ type: "CARD_STORE_RESET" });
+    }
+
+    // if (cardList.length === 0) {
+    //   alert("카드 리스트가 비어있습니다");
+    // } else {
+    //   // axios POST 전달
+    //   dispatch({ type: "CARD_STORE_RESET" });
+    // }
   };
 
-  // (Func 4) useEffect
+  // (Func Hooks) useEffect
   useEffect(() => {
-    console.log("Component가 화면에 나타남 === mount");
-    return () => {
-      console.log("Component가 화면에 사라짐 === unmount");
-    };
-  }, []);
+    setValues({ ...values, cardno: cardNo });
+  }, [cardNo]);
 
-  // retrun 문
+  useEffect(() => {
+    // Component가 화면에 나타남 === mount"
+    // editCardNo가 변화하게 된다면
+    // cardList에서 수정할 card 정보 불러오기
+    if (editCardNumber !== -1) {
+      const selectedTitle = cardList[editCardNumber].feedTitle;
+      const selectedContent = cardList[editCardNumber].feedContent;
+      const selectedCardCommentary = cardList[editCardNumber].cardCommentary;
+      const selectedDescription = cardList[editCardNumber].cardDescription;
+      // component data - 값 업데이트
+      setValues({
+        ...values,
+        feedContent: selectedTitle,
+        cardDescription: selectedContent,
+        cardCommentary: selectedCardCommentary,
+        feedTitle: selectedDescription,
+      });
+
+      // render 값 업데이트
+      document.querySelector("#problem-title").value = selectedTitle;
+      document.querySelector("#problem-content").value = selectedContent;
+      document.querySelector("#problem-cardCommentary").value = selectedCardCommentary;
+      document.querySelector("#problem-description").value = selectedDescription;
+
+      // 수정할 card번호 다시 초기화
+      setEditCardIndex(editCardNumber);
+      dispatch({ type: "INIT_CARD_NO" });
+    }
+
+    // Component가 화면에 사라짐 === unmount
+    // return () => {
+    // };
+  }, [editCardNumber]);
+
+  // ------------ Return ----------------
   return (
     <Box
       component="form"
@@ -164,13 +219,15 @@ function MakeProblem() {
       autoComplete="off"
     >
       <Typography component="h1" variant="h3">
-        현재 카드 리스트 :
+        현재 카드 리스트
       </Typography>
       <Box sx={{ mt: 2, display: "flex" }}>
         <Typography variant="h6">
           <Box sx={{ textAlign: "center", mt: 3 }}>제목</Box>
         </Typography>
         <TextField
+          {...(valid.isFeedTitle ? { error: true } : {})}
+          helperText="필수 입력란"
           multiline
           rows={1}
           required
@@ -190,13 +247,34 @@ function MakeProblem() {
           <Box sx={{ textAlign: "center", mt: 3 }}>내용</Box>
         </Typography>
         <TextField
+          {...(valid.isFeedContent ? { error: true } : {})}
+          helperText="필수 입력란"
           multiline
-          rows={5}
+          rows={4}
           required
           id="problem-content"
           type="text"
           name="feedContent"
           label="Required"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+        />
+      </Box>
+      <Box sx={{ display: "flex" }}>
+        <Typography variant="h6">
+          <Box sx={{ textAlign: "center", mt: 3 }}>해답</Box>
+        </Typography>
+        <TextField
+          // {...(valid.isCardCommentary ? { error: true } : {})}
+          // helperText="필수 입력란"
+          multiline
+          rows={4}
+          id="problem-cardCommentary"
+          type="text"
+          name="cardCommentary"
+          label="Optional"
           InputLabelProps={{
             shrink: true,
           }}
@@ -226,31 +304,35 @@ function MakeProblem() {
           <Switch checked={bundleToggle} onChange={() => setBundleToggle(!bundleToggle)} />
         </MDBox>
       </Box>
-      <BundleForm selected={bundleToggle} handleChange={handleChange} />
+      <MakeBundle selected={bundleToggle} handleBundle={handleBundleChange} />
       <Box>
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleAdd}>
           추가
         </Button>
-        <Button
-          type="button"
-          variant="contained"
-          sx={{ m: 3 }}
-          size="large"
-          onClick={(event) => handleDelete(event, 2)}
-        >
-          삭제
-        </Button>
+        {cardList.length !== 0 && (
+          <>
+            <Button
+              type="button"
+              variant="contained"
+              sx={{ m: 3 }}
+              size="large"
+              onClick={handleEdit}
+            >
+              수정
+            </Button>
+            <Button
+              type="button"
+              variant="contained"
+              sx={{ m: 3 }}
+              size="large"
+              onClick={handleDelete}
+            >
+              삭제
+            </Button>
+          </>
+        )}
         <Button type="button" variant="contained" sx={{ m: 3 }} size="large" onClick={handleCreate}>
           생성
-        </Button>
-        <Button
-          type="button"
-          variant="contained"
-          sx={{ m: 3 }}
-          size="large"
-          onClick={handleConfirm}
-        >
-          Test console 확인
         </Button>
       </Box>
     </Box>
