@@ -1,8 +1,9 @@
-package com.ssafy.bundler.dto.bundle;
+package com.ssafy.bundler.dto.bundle.request;
 
 import java.util.List;
 
 import com.ssafy.bundler.domain.Bundle;
+import com.ssafy.bundler.domain.FeedType;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.card.reqeust.CardSaveRequestDto;
 
@@ -16,6 +17,9 @@ public class BundleSaveRequestDto {
 	@NotEmpty
 	private Long userId;
 	// private CardListSaveRequestDto cardListSaveRequestDto;
+
+	private String feedType;
+
 	private String bundleThumbnail;
 	private String bundleThumbnailText;
 
@@ -39,6 +43,7 @@ public class BundleSaveRequestDto {
 	public Bundle toEntity(User writer) {
 		return Bundle.builder()
 			.writer(writer)
+			.feedType(FeedType.valueOf(this.feedType))
 			.feedTitle(this.feedTitle)
 			.feedContent(this.feedContent)
 			.bundleThumbnail(this.bundleThumbnail)

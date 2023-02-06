@@ -2,6 +2,8 @@ package com.ssafy.bundler.dto.card.reqeust;
 
 import com.ssafy.bundler.domain.Card;
 import com.ssafy.bundler.domain.CardType;
+import com.ssafy.bundler.domain.Category;
+import com.ssafy.bundler.domain.FeedType;
 import com.ssafy.bundler.domain.User;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -35,19 +37,20 @@ public class CardSaveRequestDto {
 
 	private Long feedId;
 
-	public Card toEntity(User writer) {
-		Card build = Card.builder()
+	private Category category;
+
+	public Card toEntity(User writer, Category category) {
+		return Card.builder()
+			.feedType(FeedType.valueOf(this.feedType))
 			.writer(writer)
 			.feedTitle(this.feedTitle)
 			.feedContent(this.feedContent)
 			.cardType(CardType.valueOf(this.cardType))
 			.cardDescription(this.cardDescription)
 			.cardCommentary(this.cardCommentary)
+			.category(category)
 			.build();
 
-		System.out.println(build);
-		System.out.println(build.getFeedTitle());
-		return build;
 	}
 
 }
