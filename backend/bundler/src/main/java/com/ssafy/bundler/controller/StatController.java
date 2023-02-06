@@ -20,16 +20,17 @@ public class StatController {
 		String registerDate = statService.getRegisterDate(userId);
 		int totalFeedLikeCnt = statService.getTotalFeedLike(userId);
 		int totalCardScrapCnt = statService.getTotalCardScrappedCount(userId);
+		String[] maxCategories = statService.getMaxCategories(userId);
 
 		StatResponseDto responseDto = StatResponseDto.builder()
 			.statCategory(statsTest)
 			.registerDate(registerDate)
 			.totalFeedLikeCnt(totalFeedLikeCnt)
 			.totalCardScrapCnt(totalCardScrapCnt)
+			.mostMakeCategory(maxCategories[0])
+			.mostMakeSubCategory(maxCategories[1])
 			.mutualFollows(35)
 			.continuousCardMakeCnt(33)
-			.mostMakeCategory("알고리즘")
-			.mostMakeSubCategory("dfs")
 			.feedLikeRankingFollowing(21)
 			.cardScrapRankingFollowing(11)
 			.feedLikeRankingTotal(23)

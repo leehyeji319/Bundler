@@ -55,4 +55,17 @@ class StatServiceTest {
 		//
 		// assertThat(totalCount).isEqualTo(9);
 	}
+
+	@Test
+	void getMaxCategories() {
+		// //given
+		// Long userId = 1L;
+		//
+		// //when
+		// String[] names = statService.getMaxCategories(userId);
+		// System.out.println(names);
+		// //then
+		//
+		// assertThat(names.length).isEqualTo(2);
+	}
 }

@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.bundler.domain.Category;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.stat.StatCategoryCountDto;
 import com.ssafy.bundler.dto.stat.StatCategoryDto;
+import com.ssafy.bundler.dto.stat.StatMostMakeCategoryDto;
 import com.ssafy.bundler.dto.stat.StatTotalCountDto;
+import com.ssafy.bundler.repository.CategoryRepository;
 import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.repository.query.StatQueryRepository;
 
@@ -22,6 +25,8 @@ public class StatService {
 	UserRepository userRepository;
 	@Autowired
 	StatQueryRepository statQueryRepository;
+	@Autowired
+	CategoryRepository categoryRepository;
 	@Transactional
 	public StatCategoryDto[] getCategoryStat(Long userId){
 		User user = userRepository.findById(userId).orElseThrow(
@@ -110,4 +115,32 @@ public class StatService {
 		StatTotalCountDto totalScrap = statQueryRepository.findScrapCntTotalByUserId(user.getUserId());
 		return totalScrap == null ? 0 : totalScrap.getCount();
 	}
+	@Transactional
+	public String[] getMaxCategories(Long userId){
+
+		User user = userRepository.findById(userId).orElseThrow(
+			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
+		);
+		Category[] categories = new Category[2];
+
+		StatMostMakeCategoryDto categoryDto = statQueryRepository.findMostMakeCategory(user.getUserId());
+		if(categoryDto!=null){
+			Category category = categoryRepository.findById(categoryDto.getCategoryId()).orElseThrow(
+				()->new IllegalArgumentException("카테고리 조회중 오류가 발생햇습니다.")
+			);
+			categories[0] = category;
+
+
+			categoryDto = statQueryRepository.findMostMakeSubCategory(user.getUserId());
+			category = categoryRepository.findById(categoryDto.getCategoryId()).orElseThrow(
+				()->new IllegalArgumentException("카테고리 조회중 오류가 발생햇습니다.")
+			);
+
+			categories[1] = category;
+
+			return new String[]{categories[0].getCategoryName(),categories[1].getCategoryName()};
+		}
+		return new String[2];
+	}
+
 }

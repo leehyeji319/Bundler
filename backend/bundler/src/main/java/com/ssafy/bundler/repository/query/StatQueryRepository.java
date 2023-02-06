@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.ssafy.bundler.domain.Feed;
 import com.ssafy.bundler.dto.stat.StatCategoryCountDto;
+import com.ssafy.bundler.dto.stat.StatMostMakeCategoryDto;
 import com.ssafy.bundler.dto.stat.StatTotalCountDto;
 
 public interface StatQueryRepository extends JpaRepository<Feed,Long> {
@@ -44,4 +45,27 @@ public interface StatQueryRepository extends JpaRepository<Feed,Long> {
 		+ "WHERE f.user_id=?1 "
 		+ "GROUP BY f.user_id;",nativeQuery = true)
 	StatTotalCountDto findScrapCntTotalByUserId(Long userId);
+
+	@Query(value = "SELECT COUNT(f.feed_id) AS count, c.category_id as categoryId, c.category_name as categoryName "
+		+ ", IF(c.category_parent_id IS NULL, c.category_id, c.category_parent_id) AS categoryParentId "
+		+ "FROM categories c "
+		+ "LEFT OUTER JOIN categories pc ON c.category_parent_id = pc.category_id "
+		+ "LEFT OUTER JOIN feed_category fc ON fc.category_id = c.category_id "
+		+ "LEFT OUTER JOIN "
+		+ "( SELECT * FROM feeds WHERE user_id=?1) f "
+		+ "ON f.feed_id = fc.feed_id "
+		+ "GROUP BY categoryParentId HAVING COUNT > 0 "
+		+ "ORDER BY COUNT DESC "
+		+ "LIMIT 1",nativeQuery = true)
+	StatMostMakeCategoryDto findMostMakeCategory(Long userId);
+@Query(value ="SELECT COUNT(f.feed_id) AS count , c.category_id as categoryId, c.category_name as categoryName, c.category_parent_id "
+	+ "FROM categories c "
+	+ "LEFT OUTER JOIN feed_category fc ON fc.category_id = c.category_id "
+	+ "LEFT OUTER JOIN (SELECT * FROM feeds WHERE user_id=?1) f ON f.feed_id = fc.feed_id "
+	+ "WHERE c.category_parent_id IS NOT NULL  "
+	+ "GROUP BY c.category_id "
+	+ "HAVING count > 0 "
+	+ "ORDER BY count DESC "
+	+ "LIMIT 1",nativeQuery = true)
+	StatMostMakeCategoryDto findMostMakeSubCategory(Long userId);
 }
