@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
  * fileName       : CardResponseDto
  * author         : modsiw
  * date           : 2023/02/04
- * description    : 카드 개별 조회
+ * description    : 카드 개별 조회 (댓글 리스트도 보임)
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
