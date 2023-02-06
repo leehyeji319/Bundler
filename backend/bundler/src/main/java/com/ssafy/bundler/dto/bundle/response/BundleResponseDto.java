@@ -39,6 +39,9 @@ public class BundleResponseDto {
 	private int feedLikeCnt;
 	private int feedCommentCnt;
 
+	//번들이 디폴트 번들인지
+	private boolean isBundleDefault;
+
 	//번들의 댓글들
 	List<CommentResponseDto> bundleCommentResponseList;
 
@@ -47,7 +50,8 @@ public class BundleResponseDto {
 
 	public BundleResponseDto(Long bundleId, LocalDateTime createdAt, Long bundleWriterId,
 		String bundleWriterProfileImage, String bundleWriterNickname, String feedTitle, String feedContent,
-		String bundleThumbnail, String bundleThumbnailText, int feedLikeCnt, int feedCommentCnt) {
+		String bundleThumbnail, String bundleThumbnailText, int feedLikeCnt, int feedCommentCnt,
+		boolean isBundleDefault) {
 		this.bundleId = bundleId;
 		this.createdAt = createdAt;
 		this.bundleWriterId = bundleWriterId;
@@ -59,5 +63,6 @@ public class BundleResponseDto {
 		this.bundleThumbnailText = bundleThumbnailText;
 		this.feedLikeCnt = feedLikeCnt;
 		this.feedCommentCnt = feedCommentCnt;
+		this.isBundleDefault = isBundleDefault;
 	}
 }

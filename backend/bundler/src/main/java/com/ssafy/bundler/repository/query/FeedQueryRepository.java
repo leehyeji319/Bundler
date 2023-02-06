@@ -61,6 +61,7 @@ public class FeedQueryRepository {
 
 	}
 
+	//번들 하나에 있는 코멘트들 찾기
 	public List<CommentResponseDto> findBundleComment(Long bundleId) {
 		List<Comment> commentList = commentRepository.findAllByFeedId(bundleId);
 
@@ -69,37 +70,44 @@ public class FeedQueryRepository {
 			.collect(Collectors.toList());
 	}
 
+	//번들 여러개 리스트 아이디들만 뽑아오기
 	private List<Long> toBundleIds(List<BundleResponseDto> result) {
 		return result.stream()
 			.map(b -> b.getBundleId())
 			.collect(Collectors.toList());
 	}
 
+	//번들 여러개 찾기
 	private List<BundleResponseDto> findBundles() {
 		return em.createQuery(
 				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
 					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
 					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText,"
-					+ " b.feedLikeCnt, b.feedCommentCnt)"
+					+ " b.feedLikeCnt, b.feedCommentCnt, b.isBundleDefault)"
 					+ " from Bundle b"
-					+ " join b.writer w", BundleResponseDto.class)
+					+ " join b.writer w"
+					+ " where b.isBundlePrivate = :isBundlePrivate", BundleResponseDto.class)
+			.setParameter("isBundlePrivate", 0)
 			.getResultList();
 	}
 
+	//번들 하나만 찾기
 	private BundleResponseDto findBundle(Long bundleId) {
 		return em.createQuery(
 				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
 					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
 					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText,"
-					+ " b.feedLikeCnt, b.feedCommentCnt)"
+					+ " b.feedLikeCnt, b.feedCommentCnt, b.isBundleDefault)"
 					+ " from Bundle b"
 					+ " join b.writer w"
-					+ " where b.bundleId = :bundleId", BundleResponseDto.class)
+					+ " where b.bundleId = :bundleId"
+					+ " and b.isBundlePrivate = :isBundlePrivate", BundleResponseDto.class)
 			.setParameter("bundleId", bundleId)
+			.setParameter("isBundlePrivate", 0)
 			.getSingleResult();
 	}
 
-	//카드 번들 엔티티에서 번들 아이디들로 관련 카드들 가져오기
+	//카드 번들 엔티티에서 번들 아이디 여러개로 관련 카드들 가져오기
 	public Map<Long, List<CardBundleQueryDto>> findCardBundleMap(List<Long> bundleIds) {
 
 		List<CardBundleQueryDto> cardbundle = em.createQuery(
@@ -111,8 +119,10 @@ public class FeedQueryRepository {
 					+ " c.cardScrapCnt, c.feedLikeCnt, c.feedCommentCnt)"
 					+ " from CardBundle cb"
 					+ " join cb.card c"
-					+ " where cb.bundle.bundleId in :bundleIds", CardBundleQueryDto.class)
+					+ " where cb.bundle.bundleId in :bundleIds"
+					+ " and cb.bundle.isBundlePrivate = :isBundlePrivate", CardBundleQueryDto.class)
 			.setParameter("bundleIds", bundleIds)
+			.setParameter("isBundlePrivate", 0)
 			.getResultList();
 
 		return cardbundle.stream()
@@ -131,11 +141,12 @@ public class FeedQueryRepository {
 					+ " c.cardScrapCnt, c.feedLikeCnt, c.feedCommentCnt)"
 					+ " from CardBundle cb"
 					+ " join cb.card c"
-					+ " where cb.bundle.bundleId = :bundleId", CardBundleQueryDto.class)
+					+ " where cb.bundle.bundleId = :bundleId"
+					+ " and cb.bundle.isBundlePrivate = :isBundlePrivate", CardBundleQueryDto.class)
 			.setParameter("bundleId", bundleId)
+			.setParameter("isBundlePrivate", 0)
 			.getResultList();
 
-		// System.out.println(bundleIds1.size());
 		return cardbundle.stream()
 			.collect(Collectors.groupingBy(CardBundleQueryDto::getBundleId));
 	}
