@@ -1,7 +1,4 @@
-// import { useEffect } from "react";
-// import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import { getCookieToken, removeCookieToken } from "redux/store/Cookie";
 import { DELETE_TOKEN } from "redux/store/Auth";
@@ -14,7 +11,6 @@ function SignOut() {
   console.log("5555555555555");
 
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
 
   // Cookie에 저장된 Refresh Token 정보를 받아 온다
   const refreshToken = getCookieToken();
@@ -29,16 +25,11 @@ function SignOut() {
       dispatch(DELETE_TOKEN());
       // Cookie에 저장된 Refresh Token 정보를 삭제
       removeCookieToken();
-      // return navigate("/");
-      console.log(accessToken);
-    }
-    console.log(2333333333333333);
-  };
 
-  // 해당 컴포넌트가 요청된 후 한 번만 실행되면 되기 때문에 useEffect 훅을 사용
-  // useEffect(() => {
-  //   logout();
-  // }, []);
+      console.log(accessToken);
+      window.open("/login", "_self");
+    }
+  };
 
   return (
     <div>

@@ -35,4 +35,20 @@ const logoutUser = async (refreshtoken) => {
   });
   return response;
 };
-export { loginUser, logoutUser };
+
+const requestToken = async (refreshtoken) => {
+  const response = await axios({
+    url: "http://localhost:8123/requestToken",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    withCredentials: true,
+    data: {
+      refreshtoken,
+    },
+  });
+  return response;
+};
+
+export { loginUser, logoutUser, requestToken };

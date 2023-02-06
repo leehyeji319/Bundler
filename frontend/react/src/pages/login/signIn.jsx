@@ -12,7 +12,6 @@ import { SET_TOKEN } from "redux/store/Auth";
 import { Button } from "@mui/material/";
 
 function SignIn() {
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // useForm 사용을 위한 선언
@@ -32,21 +31,14 @@ function SignIn() {
     // 백으로부터 받은 응답
     const response = await loginUser({ userid, password });
     console.log(response, 11111111111);
-    // if (response.status) {
-    // 쿠키에 Refresh Token, store에 Access Token 저장
-    setRefreshToken(response.data.refresh_token);
-    dispatch(SET_TOKEN(response.data.access_token));
-    // const state22 = useSelector((state) => state.makeReducer);
-    // console.log(state22);
-    // const { accessToken } = useSelector((state) => {
-    //   return { accessToken: state.authToken.authenticated };
-    // });
-    // console.log(accessToken);
-
-    // navigate("/");
-    // } else {
-    //   console.log(response.json);
-    // }
+    if (response.status === 200) {
+      // 쿠키에 Refresh Token, store에 Access Token 저장
+      setRefreshToken(response.data.refresh_token);
+      dispatch(SET_TOKEN(response.data.access_token));
+      // window.open("/make", "_self");
+    } else {
+      alert("로그인정보가 다릅니다");
+    }
   };
 
   return (
