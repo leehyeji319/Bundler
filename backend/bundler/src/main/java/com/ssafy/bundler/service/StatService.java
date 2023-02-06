@@ -13,25 +13,25 @@ import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.stat.StatCategoryCountDto;
 import com.ssafy.bundler.dto.stat.StatCategoryDto;
 import com.ssafy.bundler.dto.stat.StatTotalCountDto;
-import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.UserRepository;
+import com.ssafy.bundler.repository.query.StatQueryRepository;
 
 @Service
 public class StatService {
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
-	FeedRepository feedRepository;
+	StatQueryRepository statQueryRepository;
 	@Transactional
 	public StatCategoryDto[] getCategoryStat(Long userId){
 		User user = userRepository.findById(userId).orElseThrow(
 			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
 		);
-		List<StatCategoryCountDto> res = feedRepository.findFeedJoinCategory(user.getUserId());
+		List<StatCategoryCountDto> res = statQueryRepository.findFeedJoinCategory(user.getUserId());
 
 		Map<Long,StatCategoryDto> preResult = new HashMap<>();
 
-		StatTotalCountDto cnt = feedRepository.findCountByUser(user.getUserId());
+		StatTotalCountDto cnt = statQueryRepository.findCountByUser(user.getUserId());
 		if(cnt.getCount() == 0L) return null;
 		for (StatCategoryCountDto re : res) {
 			Long categoryParentId = re.getCategoryParentId();
