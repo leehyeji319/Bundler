@@ -1,18 +1,21 @@
-package com.ssafy.bundler.dto.feed;
+package com.ssafy.bundler.dto.card.response;
+
+import java.time.LocalDateTime;
 
 import com.ssafy.bundler.domain.Card;
+import com.ssafy.bundler.domain.FeedType;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class FeedResponseDto {
+public class CardSummaryResponseDto {
 
-	private Long feedId;
-	private String feedType;
+	private Long cardId;
+	private String feedType = FeedType.CARD.toString();
 
-	// private LocalDateTime createdAt;
+	private LocalDateTime createdAt;
 	private String cardType;
 
 	private boolean isDeleted;
@@ -37,37 +40,32 @@ public class FeedResponseDto {
 	private String linkTitle;
 	private String linkDescription;
 
-	private String bundleThumbnail;
-	private String bundleThumbnailText;
-	private boolean isBundlePublic;
-
 	private int cardScrapCnt;
 	private int feedLikeCnt;
 	private int feedCommentCnt;
 
-	public FeedResponseDto(Card card) {
-		this.feedId = card.getFeedId();
+	public CardSummaryResponseDto(Card card) {
+		this.cardId = card.getFeedId();
 		this.cardType = card.getCardType().toString();
+		this.createdAt = card.getCreatedAt();
 		this.isDeleted = card.isDeleted();
 		this.userId = card.getWriter().getUserId();
 		this.userProfileImage = card.getWriter().getUserProfileImage();
 		this.userNickname = card.getWriter().getUserNickname();
-		this.firstCategoryId = card.getCategory().getParent().getCategoryId();
-		this.firstCategoryName = card.getCategory().getParent().getCategoryName();
-		this.secondCategoryId = card.getCategory().getCategoryId();
-		this.secondCategoryName = card.getCategory().getCategoryName();
+		if (card.getCategory().getParent() == null) {
+			this.firstCategoryId = card.getCategory().getCategoryId();
+			this.firstCategoryName = card.getCategory().getCategoryName();
+		} else if (card.getCategory().getParent() != null) {
+			this.firstCategoryId = card.getCategory().getParent().getCategoryId();
+			this.firstCategoryName = card.getCategory().getParent().getCategoryName();
+			this.secondCategoryId = card.getCategory().getCategoryId();
+			this.secondCategoryName = card.getCategory().getCategoryName();
+
+		}
 		this.feedTitle = card.getFeedTitle();
 		this.feedContent = card.getFeedContent();
 		this.cardDescription = card.getCardDescription();
 		this.cardCommentary = card.getCardCommentary();
-		// this.linkId = linkId;
-		// this.linkUrl = linkUrl;
-		// this.linkImage = linkImage;
-		// this.linkTitle = linkTitle;
-		// this.linkDescription = linkDescription;
-		// this.bundleThumbnail = bundleThumbnail;
-		// this.bundleThumbnailText = bundleThumbnailText;
-		// this.isBundlePublic = isBundlePublic;
 		this.cardScrapCnt = card.getCardScrapCnt();
 		this.feedLikeCnt = card.getFeedLikeCnt();
 		this.feedCommentCnt = card.getFeedCommentCnt();

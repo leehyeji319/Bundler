@@ -9,9 +9,9 @@ import com.ssafy.bundler.domain.Bundle;
 import com.ssafy.bundler.domain.Card;
 import com.ssafy.bundler.domain.CardBundle;
 import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.dto.bundle.BundleSaveRequestDto;
-import com.ssafy.bundler.dto.bundle.BundleScrapRequestDto;
-import com.ssafy.bundler.dto.bundle.BundleUpdateRequestDto;
+import com.ssafy.bundler.dto.bundle.request.BundleSaveRequestDto;
+import com.ssafy.bundler.dto.bundle.request.BundleScrapRequestDto;
+import com.ssafy.bundler.dto.bundle.request.BundleUpdateRequestDto;
 import com.ssafy.bundler.repository.BundleRepository;
 import com.ssafy.bundler.repository.CardBundleRepository;
 import com.ssafy.bundler.repository.CardRepository;
@@ -159,7 +159,7 @@ public class BundleService {
 
 	//cardId로 Card객체 가져오기
 	public Card getCard(Long cardId) {
-		return cardRepository.findByCardId(cardId).orElseThrow(() ->
+		return cardRepository.findById(cardId).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드의 id가 존재하지 않습니다. cardId(feedId)= " + cardId));
 	}
 }

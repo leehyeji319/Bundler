@@ -10,6 +10,7 @@ public class BundlerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BundlerApplication.class, args);
+
 	}
 
 }

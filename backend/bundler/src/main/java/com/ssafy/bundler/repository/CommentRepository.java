@@ -10,4 +10,5 @@ import com.ssafy.bundler.domain.Comment;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 	List<Comment> findAllByOrderByCommentIdDesc();
+	List<Comment> findAllByFeedId(Long feedId);
 }

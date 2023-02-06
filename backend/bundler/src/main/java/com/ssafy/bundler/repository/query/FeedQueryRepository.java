@@ -1,69 +1,127 @@
 package com.ssafy.bundler.repository.query;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-import com.ssafy.bundler.dto.feed.FeedCardResponseDto;
-import com.ssafy.bundler.dto.feed.FeedCommentResponseDto;
+import com.ssafy.bundler.dto.bundle.response.BundleResponseDto;
+import com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 
+/**
+ *packageName    : com.ssafy.bundler.repository.query
+ * fileName       : FeedQueryRepository
+ * author         : modsiw
+ * date           : 2023/02/04
+ * description    : 번들 조회시에 쓰이는 쿼리 레포지토리
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/02/04        modsiw       최초 생성
+ * 2023/02/05		 modsiw		  번들 개별 조회 생성
+ */
 @Repository
 @RequiredArgsConstructor
 public class FeedQueryRepository {
 
 	private final EntityManager em;
 
-	// ====== 메인 전체 조회 ====== //
+	//번들 리스트
+	public List<BundleResponseDto> findAllBundleByDto_optimization() {
 
-	// ====== 카드 전체 조회 ====== //
-	public List<FeedCardResponseDto> findFeedCardQueryDtos() {
-		List<FeedCardResponseDto> result = findCards();
+		List<BundleResponseDto> result = findBundles();
 
-		result.forEach(c -> {
-			List<FeedCommentResponseDto> feedComments = findFeedComment(c.getFeedId());
-			c.setFeedCommentList(feedComments);
-		});
+		Map<Long, List<CardBundleQueryDto>> cardBundleMap = findCardBundleMap(toBundleIds(result));
+
+		result.forEach(b -> b.setCardBundleQueryDtoList(cardBundleMap.get(b.getBundleId())));
 
 		return result;
 	}
 
-	//isDeleted 추가해야함
-	public List<FeedCardResponseDto> findCards() {
+	//번들 한개
+	public BundleResponseDto findBundleByDto_optimization(Long bundleId) {
+
+		BundleResponseDto result = findBundle(bundleId);
+
+		Map<Long, List<CardBundleQueryDto>> cardBundleMap = findCardBundleMap(bundleId);
+
+		result.setCardBundleQueryDtoList(cardBundleMap.get(bundleId));
+
+		return result;
+
+	}
+
+	private List<Long> toBundleIds(List<BundleResponseDto> result) {
+		return result.stream()
+			.map(b -> b.getBundleId())
+			.collect(Collectors.toList());
+	}
+
+	private List<BundleResponseDto> findBundles() {
 		return em.createQuery(
-				"select new com.ssafy.bundler.dto.feed.FeedCardResponseDto"
-					+ "(c.feedId, c.createdAt, c.writer.userId, c.writer.userNickname,"
-					+ " ca.categoryId, ca.categoryName, c.feedTitle, c.feedContent,"
-					+ " c.cardType, c.cardDescription, c.cardCommentary, c.feedLikeCnt,"
-					+ " c.cardScrapCnt, c.feedCommentCnt)"
-					+ " from Card c"
-					+ " left join c.feedCategoryList fc"
-					+ " left join fc.category ca", FeedCardResponseDto.class)
+				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
+					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
+					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText)"
+					+ " from Bundle b"
+					+ " join b.writer w", BundleResponseDto.class)
 			.getResultList();
 	}
 
-	public List<FeedCommentResponseDto> findFeedComment(Long feedId) {
+	private BundleResponseDto findBundle(Long bundleId) {
 		return em.createQuery(
-				"select new com.ssafy.bundler.dto.feed.FeedCommentResponseDto"
-					+ "(c.commentId, c.feedId, c.writer.userId, c.writer.userNickname, "
-					+ "c.writer.userProfileImage, c.commentContent, c.createdAt)"
-					+ " from Comment c"
-					+ " where c.feedId = :feedId", FeedCommentResponseDto.class)
-			.setParameter("feedId", feedId)
-			.getResultList();
+				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
+					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
+					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText)"
+					+ " from Bundle b"
+					+ " join b.writer w"
+					+ " where b.bundleId = :bundleId", BundleResponseDto.class)
+			.setParameter("bundleId", bundleId)
+			.getSingleResult();
 	}
 
-	// ===== 번들 전체 조회 ======= //
+	//카드 번들 엔티티에서 번들 아이디들로 관련 카드들 가져오기
+	public Map<Long, List<CardBundleQueryDto>> findCardBundleMap(List<Long> bundleIds) {
 
-	// ==== 카드 번들 전체조회 + 검색어 ==== //
+		List<CardBundleQueryDto> cardbundle = em.createQuery(
+				"select new com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto"
+					+ "(cb.bundle.bundleId, c.cardId, c.createdAt, c.cardType, c.writer.userId,"
+					+ " c.writer.userProfileImage, c.writer.userNickname, c.feedTitle, c.feedContent,"
+					+ " c.category.parent.categoryId, c.category.parent.categoryName,"
+					+ " c.category.categoryId, c.category.categoryName,"
+					+ " c.cardScrapCnt, c.feedLikeCnt, c.feedCommentCnt)"
+					+ " from CardBundle cb"
+					+ " join cb.card c"
+					+ " where cb.bundle.bundleId in :bundleIds", CardBundleQueryDto.class)
+			.setParameter("bundleIds", bundleIds)
+			.getResultList();
 
-	// ==== 카드 전체조회 + 검색어 ==== //
+		return cardbundle.stream()
+			.collect(Collectors.groupingBy(CardBundleQueryDto::getBundleId));
+	}
 
-	// ==== 번들 전체조회 + 검색어 ==== //
+	//카드번들 엔티티에서 번들 아이디 하나로 카드들 찾기
+	public Map<Long, List<CardBundleQueryDto>> findCardBundleMap(Long bundleId) {
 
-	// ==== 카드에서 유형 검색 ==== //
+		List<CardBundleQueryDto> cardbundle = em.createQuery(
+				"select new com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto"
+					+ "(cb.bundle.bundleId, c.cardId, c.createdAt, c.cardType, c.writer.userId,"
+					+ " c.writer.userProfileImage, c.writer.userNickname, c.feedTitle, c.feedContent,"
+					+ " c.category.parent.categoryId, c.category.parent.categoryName,"
+					+ " c.category.categoryId, c.category.categoryName,"
+					+ " c.cardScrapCnt, c.feedLikeCnt, c.feedCommentCnt)"
+					+ " from CardBundle cb"
+					+ " join cb.card c"
+					+ " where cb.bundle.bundleId = :bundleId", CardBundleQueryDto.class)
+			.setParameter("bundleId", bundleId)
+			.getResultList();
 
-	// ==== 사용자 카드 + 피드 전체 검색 (isbundlepublic) ====//
+		// System.out.println(bundleIds1.size());
+		return cardbundle.stream()
+			.collect(Collectors.groupingBy(CardBundleQueryDto::getBundleId));
+	}
+
 }
