@@ -32,7 +32,7 @@ public class StatService {
 		Map<Long,StatCategoryDto> preResult = new HashMap<>();
 
 		StatTotalCountDto cnt = statQueryRepository.findCountByUser(user.getUserId());
-		if(cnt.getCount() == 0L) return null;
+		int totalCount = cnt == null ? 0:cnt.getCount();
 		for (StatCategoryCountDto re : res) {
 			Long categoryParentId = re.getCategoryParentId();
 			if (categoryParentId == null) {
@@ -71,7 +71,7 @@ public class StatService {
 			Long categoryId = re.getCategoryId();
 			StatCategoryDto stat = preResult.get(categoryId);
 			if (categoryParentId == null) {
-				double pProportion = Math.round(stat.getCategoryMakeCount() / (double)cnt.getCount() * 100);
+				double pProportion = Math.round(stat.getCategoryMakeCount() / (double)totalCount * 100);
 				stat.setProportion(pProportion);
 
 				for (StatCategoryDto cStat : stat.getSubCategories()
@@ -86,10 +86,20 @@ public class StatService {
 		return preResult.values().toArray(new StatCategoryDto[0]);
 	}
 	@Transactional
-	public String getActivityStat(Long userId){
+	public String getRegisterDate(Long userId){
 		User user = userRepository.findById(userId).orElseThrow(
 			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
 		);
 		return user.getCreatedAt().toLocalDate().toString();
+	}
+
+	@Transactional
+	public Integer getTotalFeedLike(Long userId){
+		User user = userRepository.findById(userId).orElseThrow(
+			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
+		);
+
+		StatTotalCountDto totalLike = statQueryRepository.findLikeTotalCountByUser(user.getUserId());
+		return totalLike == null ? 0 : totalLike.getCount();
 	}
 }

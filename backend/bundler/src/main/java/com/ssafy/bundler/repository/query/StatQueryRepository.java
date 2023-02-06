@@ -30,4 +30,11 @@ public interface StatQueryRepository extends JpaRepository<Feed,Long> {
 		,nativeQuery = true
 	)
 	StatTotalCountDto findCountByUser(Long userid);
+
+	@Query(value = "SELECT COUNT(*) AS count "
+		+ "FROM feed_like fl "
+		+ "LEFT JOIN feeds f ON fl.feed_id = f.feed_id "
+		+ "WHERE f.user_id=?1 "
+		+ "GROUP BY f.user_id",nativeQuery = true)
+	StatTotalCountDto findLikeTotalCountByUser(Long userId);
 }

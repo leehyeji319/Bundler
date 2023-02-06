@@ -20,16 +20,28 @@ class StatServiceTest {
 	@Test
 	void getActivityStatTest() {
 		//given
-		User user = User.builder().userEmail("test@email.com").userNickname("testNickname").
-			build();
+		User user = new User();
 		user = userRepository.save(user);
 
 		//when
-		String date = statService.getActivityStat(user.getUserId());
+		String date = statService.getRegisterDate(user.getUserId());
 
 		//then
 		assertThat(date).isEqualTo(user.getCreatedAt().toLocalDate().toString());
 		System.out.println(date);
+
+	}
+
+	@Test
+	void getTotalFeedLike() {
+		// //given
+		// Long userId = 1L;
+		//
+		// //when
+		// int totalCount = statService.getTotalFeedLike(userId);
+		// //then
+		//
+		// assertThat(totalCount).isEqualTo(3);
 
 	}
 }

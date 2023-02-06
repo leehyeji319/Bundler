@@ -17,15 +17,16 @@ public class StatController {
 	@GetMapping("/api/v1/users/{userId}/stats")
 	public ResponseEntity<?> getStat(@PathVariable Long userId){
 		StatCategoryDto[] statsTest= statService.getCategoryStat(userId);
-		String registerDate = statService.getActivityStat(userId);
+		String registerDate = statService.getRegisterDate(userId);
+		int totalFeedLikeCnt = statService.getTotalFeedLike(userId);
 
 		StatResponseDto responseDto = StatResponseDto.builder()
 			.statCategory(statsTest)
 			.registerDate(registerDate)
+			.totalFeedLikeCnt(totalFeedLikeCnt)
+			.totalCardScrapCnt(12)
 			.mutualFollows(35)
 			.continuousCardMakeCnt(33)
-			.totalFeedLikeCnt(391)
-			.totalCardScrapCnt(12)
 			.mostMakeCategory("알고리즘")
 			.mostMakeSubCategory("dfs")
 			.feedLikeRankingFollowing(21)
