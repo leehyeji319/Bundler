@@ -15,6 +15,7 @@ import com.ssafy.bundler.dto.comment.CommentCreateResponseDto;
 import com.ssafy.bundler.dto.comment.CommentRequestCreateDto;
 import com.ssafy.bundler.dto.comment.CommentRequestUpdateDto;
 import com.ssafy.bundler.service.CommentService;
+
 /**
  * 댓글 작성,수정,삭제 컨트롤러
  *
@@ -25,29 +26,33 @@ import com.ssafy.bundler.service.CommentService;
 public class CommentController {
 	@Autowired
 	CommentService commentService;
-	@PostMapping("/api/v1/comment")
-	public ResponseEntity<?> create(@RequestBody CommentRequestCreateDto commentDto){
-		Comment comment = commentService.save(commentDto);
-		if(comment == null){
-			return ResponseEntity.ok(new CommentCreateResponseDto(false,"댓글 등록에 실해했습니다.",null));
-		}
-		return ResponseEntity.ok(new CommentCreateResponseDto(true,"댓글이 성공적으로 등록됐습니다.",comment));
-	}
-	@PutMapping("/api/v1/comment/{comment_id}")
-	public ResponseEntity<Long> update(@PathVariable("comment_id") long commentId,@RequestBody CommentRequestUpdateDto commentDto){
 
-		Comment comment = commentService.update(commentId, commentDto);
-		if(comment == null){
-			return new ResponseEntity<>(0L,HttpStatus.BAD_REQUEST);
+	@PostMapping("/api/v1/comment")
+	public ResponseEntity<?> saveComment(@RequestBody CommentRequestCreateDto commentDto) {
+		Comment comment = commentService.saveComment(commentDto);
+		if (comment == null) {
+			return ResponseEntity.ok(new CommentCreateResponseDto(false, "댓글 등록에 실해했습니다.", null));
 		}
-		return new ResponseEntity<>(comment.getCommentId(),HttpStatus.OK);
+		return ResponseEntity.ok(new CommentCreateResponseDto(true, "댓글이 성공적으로 등록됐습니다.", comment));
 	}
-	@DeleteMapping("/api/v1/comment/{comment_id}")
-	public ResponseEntity<Long> delete(@PathVariable("comment_id") long commentId){
-		boolean result = commentService.delete(commentId);
-		if (!result ){
-			return new ResponseEntity<>(commentId,HttpStatus.BAD_REQUEST);
+
+	@PutMapping("/api/v1/comment/{comment_id}")
+	public ResponseEntity<Long> updateComment(@PathVariable("comment_id") long commentId,
+		@RequestBody CommentRequestUpdateDto commentDto) {
+
+		Comment comment = commentService.updateComment(commentId, commentDto);
+		if (comment == null) {
+			return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(commentId,HttpStatus.OK);
+		return new ResponseEntity<>(comment.getCommentId(), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/api/v1/comment/{comment_id}")
+	public ResponseEntity<Long> deleteComment(@PathVariable("comment_id") long commentId) {
+		boolean result = commentService.deleteComment(commentId);
+		if (!result) {
+			return new ResponseEntity<>(commentId, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(commentId, HttpStatus.OK);
 	}
 }
