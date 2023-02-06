@@ -18,7 +18,7 @@ public class CommentService {
 	@Autowired
 	FeedRepository feedRepository;
 
-	public Comment save(CommentRequestCreateDto commentDto){
+	public Comment saveComment(CommentRequestCreateDto commentDto) {
 
 		Feed targetFeed = feedRepository.findById(commentDto.getTargetFeedId()).orElseThrow(
 			() -> new IllegalArgumentException("잘못된 피드 아이디 입니다. id=" + commentDto.getTargetFeedId())
@@ -31,21 +31,22 @@ public class CommentService {
 
 		return commentRepository.save(comment);
 
-
 	}
+
 	@Transactional
-	public Comment update(Long commentId, CommentRequestUpdateDto commentDto){
+	public Comment updateComment(Long commentId, CommentRequestUpdateDto commentDto) {
 		Comment comment = commentRepository.findById(commentId).orElseThrow(
-			() -> new IllegalArgumentException("댓글을 찾을 수 없습니다. id=" +commentId)
+			() -> new IllegalArgumentException("댓글을 찾을 수 없습니다. id=" + commentId)
 		);
 		comment.updateContent(commentDto.getContent());
 		return comment;
 
 	}
+
 	@Transactional
-	public boolean delete(long commentId) {
+	public boolean deleteComment(long commentId) {
 		Comment comment = commentRepository.findById(commentId).orElseThrow(
-			() -> new IllegalArgumentException("댓글을 찾을 수 없습니다. id=" +commentId)
+			() -> new IllegalArgumentException("댓글을 찾을 수 없습니다. id=" + commentId)
 		);
 		commentRepository.delete(comment);
 		return true;

@@ -17,8 +17,6 @@ import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.query.FeedQueryRepository;
 import com.ssafy.bundler.service.FeedService;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -32,6 +30,7 @@ import lombok.RequiredArgsConstructor;
  * -----------------------------------------------------------
  * 2023/02/04        modsiw       최초 생성
  * 2023/02/05		 modsiw		  번들 개별 조회 추가
+ * 2023/02/-6		 modsiw		  사용자 아이디로 카드리스트 번들 리스트 생성
  */
 
 @RestController
@@ -44,45 +43,40 @@ public class FeedController {
 
 	//카드 리스트
 	@GetMapping("/v1/feeds/cards")
-	public List<CardSummaryResponseDto> getCardList() {
+	public List<CardSummaryResponseDto> getCards() {
 		return feedService.findCardSummanryList();
 	}
 
 	//카드 개별
-	@GetMapping("/v1/feeds/cards/{feedId}")
-	public CardResponseDto getCard(@PathVariable Long feedId) {
+	@GetMapping("/v1/feeds/cards/{feed_id}")
+	public CardResponseDto getCard(@PathVariable("feed_id") Long feedId) {
 		return feedService.findCard(feedId);
 	}
 
 	//번들 리스트
 	@GetMapping("/v5/feeds/bundles")
-	public List<BundleResponseDto> getBundleList() {
+	public List<BundleResponseDto> getBundles() {
 		return feedQueryRepository.findAllBundleByDto_optimization();
 	}
 
 	//번들 개별
-	@GetMapping("/v5/feeds/bundles/{feedId}")
-	public BundleResponseDto getBundle(@PathVariable Long feedId) {
+	@GetMapping("/v5/feeds/bundles/{feed_id}")
+	public BundleResponseDto getBundle(@PathVariable("feed_id") Long feedId) {
 		return feedQueryRepository.findBundleByDto_optimization(feedId);
 	}
 
 	//전체 조회
 	@GetMapping("/v1/feeds")
-	public ResponseEntity<List<Object>> test() {
-		List<Object> test = feedService.test();
+	public ResponseEntity<List<Object>> getFeedsV1() {
+		List<Object> test = feedService.getAllFeed();
 		return new ResponseEntity<>(test, HttpStatus.OK);
 	}
 
 	//전체 조회
 	@GetMapping("/test/feeds")
-	public ResponseEntity<List<Feed>> getAllFeeds() {
+	public ResponseEntity<List<Feed>> getFeeds() {
 		List<Feed> all = feedRepository.findAll();
 		return new ResponseEntity<List<Feed>>(all, HttpStatus.OK);
 	}
 
-	@Data
-	@AllArgsConstructor
-	static class Result<T> {
-		private T data;
-	}
 }

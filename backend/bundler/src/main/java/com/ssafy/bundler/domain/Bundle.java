@@ -40,8 +40,11 @@ public class Bundle extends Feed implements Serializable {
 	@Column(name = "bundle_thumbnail_text")
 	private String bundleThumbnailText;
 
-	@Column(name = "is_bundle_public")
-	private boolean isBundlePublic;
+	@Column(name = "is_bundle_private")
+	private boolean isBundlePrivate;
+
+	@Column(name = "is_bundle_default")
+	private boolean isBundleDefault;
 
 	@Builder.Default
 	@OneToMany(cascade = CascadeType.ALL)

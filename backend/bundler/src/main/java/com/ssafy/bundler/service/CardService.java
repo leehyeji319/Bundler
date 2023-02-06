@@ -25,12 +25,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 카드 생성과 수정 삭제
- *
- * @author 이혜지
- * @version 1.0
+ *packageName    : com.ssafy.bundler.service
+ * fileName       : CardService
+ * author         : modsiw
+ * date           : 2023/02/04
+ * description    :
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/02/06        modsiw       삭제 리팩토링
  */
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -124,13 +128,24 @@ public class CardService {
 		return feedId;
 	}
 
-	//삭제
+	//삭제 ver1 (isDeleted=true)
 	@Transactional
-	public Long deleteCard(Long feedId) {
+	public Long deleteCardV1(Long feedId) {
 		Card findCard = cardRepository.findById(feedId).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드를 찾을 수 없습니다. cardId(feedId)= " + feedId));
 
 		findCard.deleteFeed();
+
+		return feedId;
+	}
+
+	//카드 삭제 ver2 (entity delete)
+	@Transactional
+	public Long deleteCardV2(Long feedId) {
+		Card card = cardRepository.findById(feedId).orElseThrow(() -> new IllegalArgumentException(
+			"해당 카드를 찾을 수 없습니다. cardId= " + feedId));
+
+		cardRepository.delete(card);
 
 		return feedId;
 	}

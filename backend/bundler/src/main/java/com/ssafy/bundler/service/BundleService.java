@@ -78,6 +78,8 @@ public class BundleService {
 			.feedContent(bundle.getFeedContent())
 			.bundleThumbnail(bundle.getBundleThumbnail())
 			.bundleThumbnailText(bundle.getBundleThumbnailText())
+			.isBundleDefault(false)
+			.isBundlePrivate(false)
 			.build();
 
 		//그리고 이 생성된 번들에 스크랩하려던 번들에 있던 카드를 다 때려박기
@@ -125,20 +127,30 @@ public class BundleService {
 			.feedContent(requestDto.getFeedContent())
 			.bundleThumbnail(requestDto.getBundleThumbnail())
 			.bundleThumbnailText(requestDto.getBundleThumbnailText())
-			.isBundlePublic(requestDto.isBundlePublic())
+			.isBundlePrivate(requestDto.isBundlePrivate())
 			.build()
 		);
 
 		return feedId;
 	}
 
-	//번들 삭제
+	//번들 삭제 ver1
 	@Transactional
-	public Long deleteBundle(Long feedId) {
+	public Long deleteBundleV1(Long feedId) {
 		Bundle findBundle = bundleRepository.findById(feedId).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드를 찾을 수 없습니다. bundleId(feedId)= " + feedId));
 
 		findBundle.deleteFeed();
+
+		return feedId;
+	}
+
+	@Transactional
+	public Long deleteBundleV2(Long feedId) {
+		Bundle bundle = bundleRepository.findById(feedId).orElseThrow(() ->
+			new IllegalArgumentException("해당 번들을 찾을 수 없습니다. bundleId= " + feedId));
+
+		bundleRepository.delete(bundle);
 
 		return feedId;
 	}
@@ -151,9 +163,12 @@ public class BundleService {
 
 	//유저를 생성할때 기본 번들 생성 메서드 (유저 서비스에서 호출)
 	public void saveDefaultBundle(Long userId) {
-		saveBundle(BundleSaveRequestDto.builder()
-			.userId(userId)
+
+		bundleRepository.save(Bundle.builder()
+			.writer(userRepository.findById(userId).get())
 			.feedTitle("기본 번들")
+			.isBundlePrivate(true)
+			.isBundleDefault(true)
 			.build());
 	}
 
