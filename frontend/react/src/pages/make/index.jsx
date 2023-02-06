@@ -265,13 +265,14 @@ function Make() {
   // test useEffect
   const testConsoleBtn = () => {
     console.log(values);
+    console.log(cardList);
   };
 
   // ==================== Return ==============================
   return (
     <DashboardLayout>
       <button type="button" onClick={testConsoleBtn}>
-        테스트용
+        testConSole
       </button>
       <DashboardNavbar />
       <FormControl>
