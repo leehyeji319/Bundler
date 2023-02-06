@@ -11,6 +11,8 @@ import MDBox from "components/MDBox";
 // Import Custom
 import DataTable from "pages/home/DataTable";
 import ModalDetail from "pages/home/components/modalDetail";
+import HomeInput from "pages/home/components/homeInput";
+import HomeCommentList from "pages/home/components/homeCommentList";
 
 function ModalCardList({ open, handleCardClose, cardList }) {
   // Data - global
@@ -92,6 +94,10 @@ function ModalCardList({ open, handleCardClose, cardList }) {
               }}
               handleEdit={handleSelectedCard}
             />
+          </MDBox>
+          <MDBox p={3}>
+            <HomeInput />
+            <HomeCommentList commentList={cardList[0].commentList} />
           </MDBox>
         </Card>
       </Modal>

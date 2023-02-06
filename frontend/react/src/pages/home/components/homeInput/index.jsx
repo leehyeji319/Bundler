@@ -17,23 +17,23 @@ export default function HomeInput() {
   // setData : status "loading", "sent", "failure", "sent"
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(data.inputData);
     setData((current) => ({ ...current, status: "initial" }));
-    try {
-      setData({ inputData: "", status: "sent" });
-      // Replace timeout with real backend operation
-      // setTimeout(() => {
-      //   setData({ inputData: "", status: "initial" });
-      // }, 0);
-    } catch (error) {
-      setData((current) => ({ ...current, status: "initial" }));
-    }
+    console.log(data);
+    // try {
+    //   setData({ inputData: "", status: "sent" });
+    //   // Replace timeout with real backend operation
+    //   setTimeout(() => {
+    //     setData({ inputData: "", status: "initial" });
+    //   }, 0);
+    // } catch (error) {
+    //   setData((current) => ({ ...current, status: "initial" }));
+    // }
   };
 
   return (
     <form onSubmit={handleSubmit} id="demo">
       <FormControl sx={{ width: "100%", my: "10px" }}>
-        <MDTypography variant="body2" component="p" color="text">
+        <MDTypography variant="h6" component="p" color="text">
           댓글란
         </MDTypography>
         <Input

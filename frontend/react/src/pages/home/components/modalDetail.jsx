@@ -12,6 +12,7 @@ import MDTypography from "components/MDTypography";
 
 // Import Custom Component
 import HomeInput from "pages/home/components/homeInput";
+import HomeCommentList from "pages/home/components/homeCommentList";
 
 function ModalDetail({
   open,
@@ -139,15 +140,7 @@ function ModalDetail({
             </MDBox>
             <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
               <HomeInput />
-              <ul>
-                {commentList.map((comment) => (
-                  <li key={comment.Id}>
-                    <MDTypography variant="body2" textTransform="capitalize">
-                      {comment.name} : {comment.reply}
-                    </MDTypography>
-                  </li>
-                ))}
-              </ul>
+              <HomeCommentList commentList={commentList} />
             </Box>
           </MDBox>
         </Card>
