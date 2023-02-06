@@ -54,16 +54,24 @@ public class CardController {
 	}
 
 	//카드 정보 수정
-	@PutMapping("/{feedId}")
+	@PutMapping("/{feed_id}")
 	public ResponseEntity<?> updateCard(@PathVariable Long feedId, @RequestBody CardUpdateRequestDto requestDto) {
 		cardService.updateCard(feedId, requestDto);
 		return ResponseEntity.ok("카드 업데이트 완료");
 	}
 
-	//카드 삭제
-	@DeleteMapping("/{feedId}")
-	public ResponseEntity<?> deleteCard(@PathVariable Long feedId) {
-		cardService.deleteCard(feedId);
+	//카드 삭제 V1
+	@DeleteMapping("/v1/{feed_id}")
+	public ResponseEntity<?> deleteCardV1(@PathVariable Long feedId) {
+		cardService.deleteCardV1(feedId);
 		return ResponseEntity.ok("카드 삭제 완료.");
 	}
+
+	@DeleteMapping("/{feed_id")
+	public ResponseEntity<?> deleteCardV2(@PathVariable Long feedId) {
+		cardService.deleteCardV2(feedId);
+
+		return ResponseEntity.ok("카드 삭제 완료." + feedId);
+	}
+
 }

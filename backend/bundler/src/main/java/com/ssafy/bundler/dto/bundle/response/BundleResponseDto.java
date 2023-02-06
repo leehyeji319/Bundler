@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ssafy.bundler.domain.FeedType;
+import com.ssafy.bundler.dto.comment.CommentResponseDto;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +35,19 @@ public class BundleResponseDto {
 	private String bundleThumbnail;
 	private String bundleThumbnailText;
 
+	//댓글 수, 좋아요 수
+	private int feedLikeCnt;
+	private int feedCommentCnt;
+
+	//번들의 댓글들
+	List<CommentResponseDto> bundleCommentResponseList;
+
+	//번들에 담겨있는 카드의 리스트
 	List<CardBundleQueryDto> cardBundleQueryDtoList;
 
 	public BundleResponseDto(Long bundleId, LocalDateTime createdAt, Long bundleWriterId,
 		String bundleWriterProfileImage, String bundleWriterNickname, String feedTitle, String feedContent,
-		String bundleThumbnail, String bundleThumbnailText) {
+		String bundleThumbnail, String bundleThumbnailText, int feedLikeCnt, int feedCommentCnt) {
 		this.bundleId = bundleId;
 		this.createdAt = createdAt;
 		this.bundleWriterId = bundleWriterId;
@@ -48,6 +57,7 @@ public class BundleResponseDto {
 		this.feedContent = feedContent;
 		this.bundleThumbnail = bundleThumbnail;
 		this.bundleThumbnailText = bundleThumbnailText;
+		this.feedLikeCnt = feedLikeCnt;
+		this.feedCommentCnt = feedCommentCnt;
 	}
-
 }

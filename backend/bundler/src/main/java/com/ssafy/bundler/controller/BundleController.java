@@ -43,17 +43,27 @@ public class BundleController {
 		return ResponseEntity.ok("번들 생성 완료.");
 	}
 
-	@PutMapping("/{feedId}")
-	public ResponseEntity<?> updateBundle(@PathVariable Long feedId, @RequestBody BundleUpdateRequestDto requestDto) {
+	@PutMapping("/{feed_id}")
+	public ResponseEntity<?> updateBundle(@PathVariable("feed_id") Long feedId,
+		@RequestBody BundleUpdateRequestDto requestDto) {
 		bundleService.updateBundleInfo(feedId, requestDto);
 
 		return ResponseEntity.ok("번들 정보 수정 완료.");
 	}
 
-	@DeleteMapping("/{feedId}")
-	public ResponseEntity<?> deleteBundle(@PathVariable Long feedId) {
-		bundleService.deleteBundle(feedId);
+	// 번들 삭제 V1
+	@DeleteMapping("/v1/{feed_id}")
+	public ResponseEntity<?> deleteBundleV1(@PathVariable("feed_id") Long feedId) {
+		bundleService.deleteBundleV1(feedId);
 
 		return ResponseEntity.ok("번들 삭제 완료.");
+	}
+
+	//번들 삭제 V2
+	@DeleteMapping("/{feed_id")
+	public ResponseEntity<?> deleteBundleV2(@PathVariable("feed_id") Long feedId) {
+		bundleService.deleteBundleV2(feedId);
+
+		return ResponseEntity.ok("번들 삭제 완료." + feedId);
 	}
 }
