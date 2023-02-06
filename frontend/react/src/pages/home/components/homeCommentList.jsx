@@ -16,7 +16,13 @@ function HomeCommentList({ commentList }) {
     console.log("delete");
   };
   return (
-    <ul>
+    <ul
+      style={{
+        maxHeight: "200px",
+        overflow: "auto",
+        overflowX: "hidden",
+      }}
+    >
       {commentList.map((comment) => (
         <li key={comment.Id}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>

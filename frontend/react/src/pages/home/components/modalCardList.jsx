@@ -20,10 +20,9 @@ function ModalCardList({ open, handleCardClose, cardList }) {
 
   // Data - local
   const columnList = [
-    { Header: "아이디", accessor: "id", width: "10%" },
-    { Header: "제목", accessor: "title" },
-    { Header: "내용", accessor: "description" },
     { Header: "유형", accessor: "category", width: "20%" },
+    { Header: "제목", accessor: "title", width: "40%" },
+    { Header: "내용", accessor: "description" },
   ];
 
   // useState - card Detail Information
@@ -59,7 +58,7 @@ function ModalCardList({ open, handleCardClose, cardList }) {
   // custom style
   const style = {
     position: "absolute",
-    top: "40%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "65%",
@@ -93,6 +92,7 @@ function ModalCardList({ open, handleCardClose, cardList }) {
                 rows: cardList,
               }}
               handleEdit={handleSelectedCard}
+              canSearch
             />
           </MDBox>
           <MDBox p={3}>
