@@ -6,8 +6,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.bundler.domain.Comment;
 import com.ssafy.bundler.dto.bundle.response.BundleResponseDto;
 import com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto;
+import com.ssafy.bundler.dto.comment.CommentResponseDto;
+import com.ssafy.bundler.repository.CommentRepository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class FeedQueryRepository {
 
 	private final EntityManager em;
+	private final CommentRepository commentRepository;
 
 	//번들 리스트
 	public List<BundleResponseDto> findAllBundleByDto_optimization() {
@@ -48,11 +52,21 @@ public class FeedQueryRepository {
 		BundleResponseDto result = findBundle(bundleId);
 
 		Map<Long, List<CardBundleQueryDto>> cardBundleMap = findCardBundleMap(bundleId);
-
 		result.setCardBundleQueryDtoList(cardBundleMap.get(bundleId));
+
+		List<CommentResponseDto> bundleComment = findBundleComment(bundleId);
+		result.setBundleCommentResponseList(bundleComment);
 
 		return result;
 
+	}
+
+	public List<CommentResponseDto> findBundleComment(Long bundleId) {
+		List<Comment> commentList = commentRepository.findAllByFeedId(bundleId);
+
+		return commentList.stream()
+			.map(CommentResponseDto::new)
+			.collect(Collectors.toList());
 	}
 
 	private List<Long> toBundleIds(List<BundleResponseDto> result) {
@@ -65,7 +79,8 @@ public class FeedQueryRepository {
 		return em.createQuery(
 				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
 					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
-					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText)"
+					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText,"
+					+ " b.feedLikeCnt, b.feedCommentCnt)"
 					+ " from Bundle b"
 					+ " join b.writer w", BundleResponseDto.class)
 			.getResultList();
@@ -75,7 +90,8 @@ public class FeedQueryRepository {
 		return em.createQuery(
 				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
 					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
-					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText)"
+					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText,"
+					+ " b.feedLikeCnt, b.feedCommentCnt)"
 					+ " from Bundle b"
 					+ " join b.writer w"
 					+ " where b.bundleId = :bundleId", BundleResponseDto.class)
@@ -123,5 +139,4 @@ public class FeedQueryRepository {
 		return cardbundle.stream()
 			.collect(Collectors.groupingBy(CardBundleQueryDto::getBundleId));
 	}
-
 }

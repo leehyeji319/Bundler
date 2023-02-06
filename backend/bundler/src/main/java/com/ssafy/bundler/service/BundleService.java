@@ -132,13 +132,23 @@ public class BundleService {
 		return feedId;
 	}
 
-	//번들 삭제
+	//번들 삭제 ver1
 	@Transactional
-	public Long deleteBundle(Long feedId) {
+	public Long deleteBundleV1(Long feedId) {
 		Bundle findBundle = bundleRepository.findById(feedId).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드를 찾을 수 없습니다. bundleId(feedId)= " + feedId));
 
 		findBundle.deleteFeed();
+
+		return feedId;
+	}
+
+	@Transactional
+	public Long deleteBundleV2(Long feedId) {
+		Bundle bundle = bundleRepository.findById(feedId).orElseThrow(() ->
+			new IllegalArgumentException("해당 번들을 찾을 수 없습니다. bundleId= " + feedId));
+
+		bundleRepository.delete(bundle);
 
 		return feedId;
 	}

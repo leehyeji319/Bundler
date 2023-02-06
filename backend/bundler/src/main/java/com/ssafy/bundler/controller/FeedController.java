@@ -49,8 +49,8 @@ public class FeedController {
 	}
 
 	//카드 개별
-	@GetMapping("/v1/feeds/cards/{feedId}")
-	public CardResponseDto getCard(@PathVariable Long feedId) {
+	@GetMapping("/v1/feeds/cards/{feed_id}")
+	public CardResponseDto getCard(@PathVariable("feed_id") Long feedId) {
 		return feedService.findCard(feedId);
 	}
 
@@ -61,15 +61,15 @@ public class FeedController {
 	}
 
 	//번들 개별
-	@GetMapping("/v5/feeds/bundles/{feedId}")
-	public BundleResponseDto getBundle(@PathVariable Long feedId) {
+	@GetMapping("/v5/feeds/bundles/{feed_id}")
+	public BundleResponseDto getBundle(@PathVariable("feed_id") Long feedId) {
 		return feedQueryRepository.findBundleByDto_optimization(feedId);
 	}
 
 	//전체 조회
 	@GetMapping("/v1/feeds")
-	public ResponseEntity<List<Object>> test() {
-		List<Object> test = feedService.test();
+	public ResponseEntity<List<Object>> getAllFeed() {
+		List<Object> test = feedService.getAllFeed();
 		return new ResponseEntity<>(test, HttpStatus.OK);
 	}
 
@@ -79,6 +79,8 @@ public class FeedController {
 		List<Feed> all = feedRepository.findAll();
 		return new ResponseEntity<List<Feed>>(all, HttpStatus.OK);
 	}
+
+	// 사용자의 피드 조회
 
 	@Data
 	@AllArgsConstructor
