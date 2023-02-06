@@ -50,7 +50,7 @@ function MakeBundle({ selected, handleBundle }) {
               onChange={handleBundleChange}
             />
           </Box>
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex", mb: 5 }}>
             <Typography variant="h6">
               <Box sx={{ textAlign: "center", mt: 3 }}>
                 번들
