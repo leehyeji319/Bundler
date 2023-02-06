@@ -21,6 +21,7 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import { ResponsiveCalendar } from "@nivo/calendar";
 import ProfileCard from "./components/ProfileCard/ProfileCard";
+// import NewProfileCard2 from "./components/ProfileCard/NewProfileCard2";
 import strickdata from "./components/Statistic/stricktemp.json";
 // import CardThumbnailCard from "./components/thumCard/ThumnailCard";
 
@@ -73,11 +74,12 @@ function Profile() {
           프로필
         </MDTypography>
       </MDBox>
-      <MDBox position="relative" mb={5}>
+      <MDBox position="relative" mb={5} sx={{ width: "auto" }}>
         <MDBox // 프로필 카드 + 스트릭 (3개 버튼 상단)
+          sx={{ width: "auto" }}
         >
           <Grid container spacing={1}>
-            <Grid item md={12} lg={4}>
+            <Grid item xs={12} xl={6}>
               <ProfileCard
                 profileImage={Catimage}
                 nickname="dellojoon2"
@@ -89,7 +91,7 @@ function Profile() {
                 }}
               />
             </Grid>
-            <Grid item md={12} lg={8}>
+            <Grid item xs={12} xl={6}>
               <MDBox
                 style={{
                   width: "600px",
@@ -97,6 +99,7 @@ function Profile() {
                   backgroundColor: "#1C1A25",
                   marginTop: "30px",
                   marginLeft: "30px",
+                  marginRight: "30px",
                   border: "1px solid #ffffff",
                   borderRadius: "21px",
                   float: "left",

@@ -4,8 +4,8 @@
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Grid from "@mui/material/Grid";
-
-// [Import - React Basic] react && props && mui
+// import axios from "axios";
+// import PropTypes from "prop-types";
 // import React, { useState, useEffect } from "react";
 // import PropTypes from "prop-types";
 
@@ -15,7 +15,8 @@ import Grid from "@mui/material/Grid";
 // [Import - Redux-action] redux-action 함수
 // import { actAddCard } from "redux/actions/makeCardAction";
 
-import piedata3 from "pages/profile/components/Statistic/piedata3.json";
+// import ChartData from "pages/profile/components/Statistic/ChartData230206.json";
+
 import MyResponsivePie from "pages/profile/components/Statistic/pieChart";
 
 import ActivityStat from "../components/Statistic/ActivityStat";
@@ -24,129 +25,260 @@ import ActivityBadge from "../components/Statistic/ActivityBadge";
 import CompareStat from "../components/Statistic/CompareStat";
 
 // BundlelistTabForm Template
+// function StatTab(userId) {
 function StatTab() {
-  const piedata = piedata3;
-  const StatusList = [
+  const fullStatData = {
+    statCategory: [
+      {
+        proportion: 45.0,
+        categoryMakeCount: 5,
+        categoryName: "CS",
+        subCategories: [
+          {
+            proportion: 60.0,
+            categoryMakeCount: 3,
+            categoryName: "운영체제",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "컴퓨터구조",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "네트워크",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "자료구조",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "데이터베이스",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "수학",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "CS 기타",
+            subCategories: null,
+          },
+        ],
+      },
+      {
+        proportion: 38.0,
+        categoryMakeCount: 7,
+        categoryName: "알고리즘",
+        subCategories: [
+          {
+            proportion: 80.0,
+            categoryMakeCount: 4,
+            categoryName: "스택/큐/정렬",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "그래프 탐색(DFS/BFS/MST..)/트리/힙",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "탐욕/동적계획법/해시",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "완전탐색/이분탐색",
+            subCategories: null,
+          },
+          {
+            proportion: 0.0,
+            categoryMakeCount: 0,
+            categoryName: "알고리즘 기타",
+            subCategories: null,
+          },
+        ],
+      },
+      {
+        proportion: 22.0,
+        categoryMakeCount: 3,
+        categoryName: "언어",
+        subCategories: [
+          {
+            proportion: 60.0,
+            categoryMakeCount: 3,
+            categoryName: "파이썬",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "JS/HTML/CSS",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "JAVA",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "언어 기타",
+            subCategories: null,
+          },
+        ],
+      },
+      {
+        proportion: 62.0,
+        categoryMakeCount: 12,
+        categoryName: "정보",
+        subCategories: [
+          {
+            proportion: 60.0,
+            categoryMakeCount: 3,
+            categoryName: "기업 분석",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "IT기사/트렌드",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "자격증",
+            subCategories: null,
+          },
+          {
+            proportion: 20.0,
+            categoryMakeCount: 1,
+            categoryName: "정보 기타",
+            subCategories: null,
+          },
+        ],
+      },
+      {
+        proportion: 9.0,
+        categoryMakeCount: 1,
+        categoryName: "직무",
+        subCategories: [
+          {
+            proportion: 100.0,
+            categoryMakeCount: 8,
+            categoryName: "프론트엔드",
+            subCategories: null,
+          },
+          {
+            proportion: 100.0,
+            categoryMakeCount: 2,
+            categoryName: "백엔드",
+            subCategories: null,
+          },
+          {
+            proportion: 100.0,
+            categoryMakeCount: 9,
+            categoryName: "인프라",
+            subCategories: null,
+          },
+          {
+            proportion: 100.0,
+            categoryMakeCount: 1,
+            categoryName: "면접",
+            subCategories: null,
+          },
+          {
+            proportion: 100.0,
+            categoryMakeCount: 1,
+            categoryName: "기타 직무",
+            subCategories: null,
+          },
+        ],
+      },
+    ],
+    registerDate: "2025-01-10",
+    mutualFollows: 255,
+    continuousCardMakeCnt: 33,
+    totalFeedLikeCnt: 391,
+    totalCardScrapCnt: 55,
+    mostMakeCategory: "알고리즘",
+    mostMakeSubCategory: "그래프 탐색(DFS/BFS/MST..)/트리/힙",
+    feedLikeRankingFollowing: 21,
+    cardScrapRankingFollowing: 11,
+    feedLikeRankingTotal: 23,
+    cardScrapRankingTotal: 44,
+    cardMakeRankingTotal: 129,
+  };
+
+  // 통계탭 Axios 설정 (23.02.06)
+  // const [StatisticData, setStatisticData] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const StatResult = await axios({
+  //       url: `http://localhost:8080/api/v1/users/${userId}/stats`,
+  //       method: "get",
+  //       withCredentials: true,
+  //     });
+
+  //     setStatisticData(StatResult.data);
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  const fullstatCategory = fullStatData.statCategory;
+  const dataForPie = [
     {
-      categoryName: "알고리즘",
-      proportion: 29,
-      subCategories: [
-        {
-          categoryName: "DP",
-          proportion: 29,
-        },
-        {
-          categoryName: "완전탐색",
-          proportion: 22,
-        },
-        {
-          categoryName: "DFS",
-          proportion: 20,
-        },
-        {
-          categoryName: "트리",
-          proportion: 17,
-        },
-        {
-          categoryName: "위상정렬",
-          proportion: 12,
-        },
-      ],
+      id: fullstatCategory[0].categoryName,
+      label: fullstatCategory[0].categoryName,
+      value: fullstatCategory[0].categoryMakeCount,
+      color: "hsl(317, 70%, 50%)",
     },
     {
-      categoryName: "CS",
-      proportion: 22,
-      subCategories: [
-        {
-          categoryName: "네트워크",
-          proportion: 40,
-        },
-        {
-          categoryName: "운영체제",
-          proportion: 30,
-        },
-        {
-          categoryName: "자료구조",
-          proportion: 20,
-        },
-        {
-          categoryName: "데이터베이스",
-          proportion: 10,
-        },
-      ],
+      id: fullstatCategory[1].categoryName,
+      label: fullstatCategory[1].categoryName,
+      value: fullstatCategory[1].categoryMakeCount,
+      color: "hsl(27, 70%, 50%)",
     },
     {
-      categoryName: "언어",
-      proportion: 20,
-      subCategories: [
-        {
-          categoryName: "Python",
-          proportion: 40,
-        },
-        {
-          categoryName: "JAVA",
-          proportion: 30,
-        },
-        {
-          categoryName: "JavaScript",
-          proportion: 17,
-        },
-        {
-          categoryName: "C++",
-          proportion: 10,
-        },
-        {
-          categoryName: "Kotlin",
-          proportion: 3,
-        },
-      ],
+      id: fullstatCategory[2].categoryName,
+      label: fullstatCategory[2].categoryName,
+      value: fullstatCategory[2].categoryMakeCount,
+      color: "hsl(90, 70%, 50%)",
     },
     {
-      categoryName: "정보",
-      proportion: 17,
-      subCategories: [
-        {
-          categoryName: "기업분석",
-          proportion: 30,
-        },
-        {
-          categoryName: "트렌드",
-          proportion: 40,
-        },
-        {
-          categoryName: "정보",
-          proportion: 30,
-        },
-      ],
+      id: fullstatCategory[3].categoryName,
+      label: fullstatCategory[3].categoryName,
+      value: fullstatCategory[3].categoryMakeCount,
+      color: "hsl(173, 70%, 50%)",
     },
     {
-      categoryName: "직무",
-      proportion: 12,
-      subCategories: [
-        {
-          categoryName: "프론트엔드",
-          proportion: 80,
-        },
-        {
-          categoryName: "백엔드",
-          proportion: 11,
-        },
-        {
-          categoryName: "임베디드",
-          proportion: 0,
-        },
-        {
-          categoryName: "기타",
-          proportion: 1,
-        },
-        {
-          categoryName: "DB",
-          proportion: 5,
-        },
-      ],
+      id: fullstatCategory[4].categoryName,
+      label: fullstatCategory[4].categoryName,
+      value: fullstatCategory[4].categoryMakeCount,
+      color: "hsl(11, 70%, 50%)",
     },
   ];
-
   return (
     <MDBox // 전체 통계탭 박스
       sx={{
@@ -198,7 +330,7 @@ function StatTab() {
               <MDBox // 역량 통계 - 차트
               >
                 <MDBox style={{ width: "auto", height: "500px", margin: "0 auto" }}>
-                  <MyResponsivePie data={piedata} />
+                  <MyResponsivePie data={dataForPie} />
                 </MDBox>
               </MDBox>
             </Grid>
@@ -206,7 +338,7 @@ function StatTab() {
               <MDBox // 역량 통계 - 통계치
               >
                 <Grid container spacing={3}>
-                  {StatusList.map((category) => (
+                  {fullstatCategory.map((category) => (
                     <Grid item xs={12} md={6}>
                       <MDBox // 역량 통계 - 통계치 5개 개별
                         sx={{
@@ -247,7 +379,7 @@ function StatTab() {
                               float: "left",
                             }}
                           >
-                            ({category.proportion}%)
+                            ({category.proportion}%) 작성 카드 {category.categoryMakeCount}개
                           </MDTypography>
                         </MDBox>
                         <MDBox // 역량 통계 - 통계치 - 중분류 하위
@@ -265,7 +397,8 @@ function StatTab() {
                                 fontSize: "14px",
                               }}
                             >
-                              - {subcategory.categoryName} ({subcategory.proportion}%)
+                              - {subcategory.categoryName} ({subcategory.proportion}%) (
+                              {subcategory.categoryMakeCount}개)
                             </MDTypography>
                           ))}
                         </MDBox>
@@ -321,7 +454,15 @@ function StatTab() {
             <Grid item xs={12} md={6}>
               <MDBox // 활동 통계 - 수치
               >
-                <ActivityStat />
+                <ActivityStat
+                  registerDate={fullStatData.registerDate}
+                  mutualFollows={fullStatData.mutualFollows}
+                  continuousCardMakeCnt={fullStatData.continuousCardMakeCnt}
+                  totalFeedLikeCnt={fullStatData.totalFeedLikeCnt}
+                  totalCardScrapCnt={fullStatData.totalCardScrapCnt}
+                  mostMakeCategory={fullStatData.mostMakeCategory}
+                  mostMakeSubCategory={fullStatData.mostMakeSubCategory}
+                />
               </MDBox>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -373,12 +514,22 @@ function StatTab() {
         </MDBox>
         <MDBox // 비교 통계 - 내용
         >
-          <CompareStat />
+          <CompareStat
+            feedLikeRankingTotal={fullStatData.feedLikeRankingTotal}
+            feedLikeRankingFollowing={fullStatData.feedLikeRankingFollowing}
+            cardScrapRankingTotal={fullStatData.cardScrapRankingTotal}
+            cardScrapRankingFollowing={fullStatData.cardScrapRankingFollowing}
+            cardMakeRankingTotal={fullStatData.cardMakeRankingTotal}
+          />
         </MDBox>
       </MDBox>
     </MDBox>
   );
 }
+
+// StatTab.propTypes = {
+//   userId: PropTypes.number.isRequired,
+// };
 
 export default StatTab;
 
