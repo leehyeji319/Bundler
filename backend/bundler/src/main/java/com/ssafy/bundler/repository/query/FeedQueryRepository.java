@@ -83,7 +83,7 @@ public class FeedQueryRepository {
 				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
 					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
 					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText,"
-					+ " b.feedLikeCnt, b.feedCommentCnt, b.isBundleDefault)"
+					+ " b.feedLikeCnt, b.feedCommentCnt)"
 					+ " from Bundle b"
 					+ " join b.writer w"
 					+ " where b.isBundlePrivate = :isBundlePrivate", BundleResponseDto.class)
@@ -91,19 +91,17 @@ public class FeedQueryRepository {
 			.getResultList();
 	}
 
-	//번들 하나만 찾기
+	//번들 하나만 찾기 번들 id에 속한 카드들
 	private BundleResponseDto findBundle(Long bundleId) {
 		return em.createQuery(
 				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
 					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
 					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText,"
-					+ " b.feedLikeCnt, b.feedCommentCnt, b.isBundleDefault)"
+					+ " b.feedLikeCnt, b.feedCommentCnt)"
 					+ " from Bundle b"
 					+ " join b.writer w"
-					+ " where b.bundleId = :bundleId"
-					+ " and b.isBundlePrivate = :isBundlePrivate", BundleResponseDto.class)
+					+ " where b.bundleId = :bundleId", BundleResponseDto.class)
 			.setParameter("bundleId", bundleId)
-			.setParameter("isBundlePrivate", 0)
 			.getSingleResult();
 	}
 
@@ -119,10 +117,8 @@ public class FeedQueryRepository {
 					+ " c.cardScrapCnt, c.feedLikeCnt, c.feedCommentCnt)"
 					+ " from CardBundle cb"
 					+ " join cb.card c"
-					+ " where cb.bundle.bundleId in :bundleIds"
-					+ " and cb.bundle.isBundlePrivate = :isBundlePrivate", CardBundleQueryDto.class)
+					+ " where cb.bundle.bundleId in :bundleIds", CardBundleQueryDto.class)
 			.setParameter("bundleIds", bundleIds)
-			.setParameter("isBundlePrivate", 0)
 			.getResultList();
 
 		return cardbundle.stream()

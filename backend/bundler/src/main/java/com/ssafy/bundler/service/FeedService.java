@@ -20,6 +20,7 @@ import com.ssafy.bundler.repository.CommentRepository;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.LinkRepository;
 import com.ssafy.bundler.repository.query.FeedQueryRepository;
+import com.ssafy.bundler.repository.query.UserFeedQueryRepository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,7 @@ public class FeedService {
 	private final BundleRepository bundleRepository;
 	private final LinkRepository linkRepository;
 	private final FeedQueryRepository feedQueryRepository;
+	private final UserFeedQueryRepository userFeedQueryRepository;
 
 	private EntityManager em;
 
@@ -95,5 +97,24 @@ public class FeedService {
 		}
 
 		return objects;
+	}
+
+	public List<CardSummaryResponseDto> getAllCardsFindByUserId(Long userId) {
+
+		List<Card> all = cardRepository.findAllByUserId(userId);
+
+		List<CardSummaryResponseDto> collect = all.stream().map(
+				CardSummaryResponseDto::new)
+			.collect(Collectors.toList());
+
+		return collect;
+	}
+
+	public List<BundleResponseDto> getBundlesFindByUserIdContainIsBundlePrivate(Long userId) {
+		return userFeedQueryRepository.findBundlesByUserIdContainIsBundlePrivate(userId);
+	}
+
+	public List<BundleResponseDto> getBundlesFindByUserIdExceptIsBundlePrivate(Long userId) {
+		return userFeedQueryRepository.findBundlesByUserIdExceptIsBundlePrivate(userId);
 	}
 }
