@@ -28,16 +28,21 @@ public class BundleSaveRequestDto {
 	@NotEmpty
 	private String feedContent;
 
+	private boolean isBundlePrivate = false;
+	private boolean isBundleDefault = false;
+
 	private List<CardSaveRequestDto> cardSaveRequestDtoList;
 
 	@Builder
 	public BundleSaveRequestDto(Long userId, String bundleThumbnail, String bundleThumbnailText,
-		String feedTitle, String feedContent) {
+		String feedTitle, String feedContent, boolean isBundlePrivate, boolean isBundleDefault) {
 		this.userId = userId;
 		this.bundleThumbnail = bundleThumbnail;
 		this.bundleThumbnailText = bundleThumbnailText;
 		this.feedTitle = feedTitle;
 		this.feedContent = feedContent;
+		this.isBundlePrivate = isBundlePrivate;
+		this.isBundleDefault = isBundleDefault;
 	}
 
 	public Bundle toEntity(User writer) {
@@ -48,6 +53,8 @@ public class BundleSaveRequestDto {
 			.feedContent(this.feedContent)
 			.bundleThumbnail(this.bundleThumbnail)
 			.bundleThumbnailText(this.bundleThumbnailText)
+			.isBundlePrivate(this.isBundlePrivate)
+			.isBundleDefault(this.isBundleDefault)
 			.build();
 	}
 }
