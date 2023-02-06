@@ -1,5 +1,5 @@
 // import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
 import { HiLockClosed } from "react-icons/hi";
@@ -8,6 +8,8 @@ import { ErrorMessage } from "@hookform/error-message";
 import { loginUser } from "apis/api/Users";
 import { setRefreshToken } from "redux/store/Cookie";
 import { SET_TOKEN } from "redux/store/Auth";
+
+import { Button } from "@mui/material/";
 
 function SignIn() {
   // const navigate = useNavigate();
@@ -34,8 +36,8 @@ function SignIn() {
     // 쿠키에 Refresh Token, store에 Access Token 저장
     setRefreshToken(response.data.refresh_token);
     dispatch(SET_TOKEN(response.data.access_token));
-    const state22 = useSelector((state) => state.makeReducer);
-    console.log(state22);
+    // const state22 = useSelector((state) => state.makeReducer);
+    // console.log(state22);
     // const { accessToken } = useSelector((state) => {
     //   return { accessToken: state.authToken.authenticated };
     // });
@@ -50,16 +52,6 @@ function SignIn() {
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-            alt="Workflow"
-          />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onValid)}>
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">
@@ -99,9 +91,15 @@ function SignIn() {
             </div>
           </div>
           <div>
-            <button
+            <Button
+              sx={{
+                bgcolor: "#81D8CF",
+                color: "#000000",
+                fontSize: "midium",
+                fontWeight: "bold",
+              }}
+              fullWidth
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                 <HiLockClosed
@@ -109,8 +107,8 @@ function SignIn() {
                   aria-hidden="true"
                 />
               </span>
-              Sign in
-            </button>
+              로그인
+            </Button>
           </div>
         </form>
       </div>
