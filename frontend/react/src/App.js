@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 // import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -45,7 +45,15 @@ import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
 // import AuthLogin from "pages/login";
-// import PrivateRoute from "./PrivateRoute";
+
+import Home from "pages/home";
+import Search from "pages/searchall";
+import SearchId from "pages/searchid";
+import Make from "pages/make";
+import Profile from "pages/profile";
+import AuthLogin from "pages/login";
+import SignUp from "pages/signup";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -93,18 +101,18 @@ function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  const getRoutes = (allRoutes) =>
-    allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
+  // const getRoutes = (allRoutes) =>
+  //   allRoutes.map((route) => {
+  //     if (route.collapse) {
+  //       return getRoutes(route.collapse);
+  //     }
 
-      if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
-      }
+  //     if (route.route) {
+  //       return <Route exact path={route.route} element={route.component} key={route.key} />;
+  //     }
 
-      return null;
-    });
+  //     return null;
+  //   });
 
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
@@ -125,12 +133,18 @@ function App() {
       )}
       {/* {layout === "vr" && <Configurator />} */}
       <Routes>
-        {/* <Route element={<PrivateRoute />}> */}
-        {getRoutes(routes)}
-        <Route path="/" element={<Navigate to="/home" />} />
-        {/* </Route> */}
-
-        {/* <Route path="/login" element={<Navigate to="/login" />} /> */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/searchid" element={<SearchId />} />
+          <Route path="/make" element={<Make />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/signup" element={<SignUp />} />
+          {/* {getRoutes(routes)}
+          <Route path="/" element={<Navigate to="/home" />} /> */}
+        </Route>
+        <Route path="/login" element={<AuthLogin />} />
+        {/* <Route path="/login" element={<AuthLogin />} /> */}
       </Routes>
     </ThemeProvider>
   );

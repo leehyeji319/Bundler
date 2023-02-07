@@ -1,9 +1,9 @@
 //
 import { Outlet } from "react-router";
-import { useLocation } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import LoadingModal from "components/LoadingModal";
 //
-import AuthLogin from "pages/login";
+// import AuthLogin from "pages/login";
 import CheckToken from "./auth/CheckToken";
 // import LoadingModal from "../component/LoadingModal";
 
@@ -14,7 +14,7 @@ export default function PrivateRoute() {
   console.log(isAuth);
   if (isAuth === "Failed") {
     console.log("isAuth fffffffffffff");
-    return <AuthLogin />;
+    return <Navigate to="/login" />;
     // eslint-disable-next-line
   } else if (isAuth === "Loading") {
     return <LoadingModal />;
