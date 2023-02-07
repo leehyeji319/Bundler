@@ -14,9 +14,9 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Entity
-@SuperBuilder(toBuilder = true)
 @Table(name = "LINKS")
 @DiscriminatorValue(value = "CARD_LINK")
 @PrimaryKeyJoinColumn(name = "link_id")
