@@ -68,4 +68,15 @@ class StatServiceTest {
 		//
 		// assertThat(names.length).isEqualTo(2);
 	}
+
+	@Test
+	void getMutualFollowCount() {
+
+		// //given
+		// Long userId = 4L;
+		// //when
+		// int count= statService.getMutualFollowCount(userId);
+		// //then
+		// assertThat(count).isEqualTo(2);
+	}
 }

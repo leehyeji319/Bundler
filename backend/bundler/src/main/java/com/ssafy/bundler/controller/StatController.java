@@ -21,6 +21,7 @@ public class StatController {
 		int totalFeedLikeCnt = statService.getTotalFeedLike(userId);
 		int totalCardScrapCnt = statService.getTotalCardScrappedCount(userId);
 		String[] maxCategories = statService.getMaxCategories(userId);
+		int mutualFollows = statService.getMutualFollowCount(userId);
 
 		StatResponseDto responseDto = StatResponseDto.builder()
 			.statCategory(statsTest)
@@ -29,7 +30,7 @@ public class StatController {
 			.totalCardScrapCnt(totalCardScrapCnt)
 			.mostMakeCategory(maxCategories[0])
 			.mostMakeSubCategory(maxCategories[1])
-			.mutualFollows(35)
+			.mutualFollows(mutualFollows)
 			.continuousCardMakeCnt(33)
 			.feedLikeRankingFollowing(21)
 			.cardScrapRankingFollowing(11)
