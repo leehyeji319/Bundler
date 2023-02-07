@@ -87,7 +87,7 @@ public class FeedQueryRepository {
 					+ " from Bundle b"
 					+ " join b.writer w"
 					+ " where b.isBundlePrivate = :isBundlePrivate", BundleResponseDto.class)
-			.setParameter("isBundlePrivate", 0)
+			.setParameter("isBundlePrivate", false)
 			.getResultList();
 	}
 
@@ -127,6 +127,7 @@ public class FeedQueryRepository {
 
 	//카드번들 엔티티에서 번들 아이디 하나로 카드들 찾기
 	public Map<Long, List<CardBundleQueryDto>> findCardBundleMap(Long bundleId) {
+		System.out.println(bundleId);
 
 		List<CardBundleQueryDto> cardbundle = em.createQuery(
 				"select new com.ssafy.bundler.dto.bundle.response.CardBundleQueryDto"
@@ -137,11 +138,11 @@ public class FeedQueryRepository {
 					+ " c.cardScrapCnt, c.feedLikeCnt, c.feedCommentCnt)"
 					+ " from CardBundle cb"
 					+ " join cb.card c"
-					+ " where cb.bundle.bundleId = :bundleId"
-					+ " and cb.bundle.isBundlePrivate = :isBundlePrivate", CardBundleQueryDto.class)
+					+ " where cb.bundle.bundleId = :bundleId", CardBundleQueryDto.class)
 			.setParameter("bundleId", bundleId)
-			.setParameter("isBundlePrivate", 0)
 			.getResultList();
+
+		System.out.println(cardbundle.size());
 
 		return cardbundle.stream()
 			.collect(Collectors.groupingBy(CardBundleQueryDto::getBundleId));

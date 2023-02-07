@@ -32,7 +32,7 @@ public class CardResponseDto {
 	private LocalDateTime createdAt;
 	private String cardType;
 
-	private boolean isDeleted;
+	// private boolean isDeleted;
 
 	private Long userId;
 	private String userProfileImage;
@@ -69,7 +69,7 @@ public class CardResponseDto {
 		// this.feedType = card.getFeedType().toString();
 		this.cardType = card.getCardType().toString();
 		this.createdAt = card.getCreatedAt();
-		this.isDeleted = card.isDeleted();
+		// this.isDeleted = card.isDeleted();
 		this.userId = card.getWriter().getUserId();
 		this.userProfileImage = card.getWriter().getUserProfileImage();
 		this.userNickname = card.getWriter().getUserNickname();
