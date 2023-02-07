@@ -2,6 +2,7 @@ package com.ssafy.bundler.domain;
 
 import java.io.Serializable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,31 +20,30 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "CARD_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"bundle_id", "card_id"}))
 @NoArgsConstructor
-public class CardBundle implements Serializable {
+@Entity
+@Table(name = "FEED_CATEGORY", uniqueConstraints = @UniqueConstraint(columnNames = {"feed_id", "category_id"}))
+public class FeedCategory implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "card_bundle_id")
-	private Long cardBundleId;
+	@Column(name = "feed_category_id")
+	private Long feedCategoryId;
 
-	@Column(name = "bundle_id")
-	private Long bundleId;
+	@Column(name = "feed_id")
+	private Long feedId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "card_id")
-	private Card card;
+	// @Column(name = "category_id")
+	// private Long categoryId;
 
-	// @ManyToOne(fetch = LAZY)
-	// @JoinColumn(name = "user_id")
-	// private Bundle bundle;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private Category category;
 
 	@Builder
-	public CardBundle(Long bundleId, Card card) {
-		this.bundleId = bundleId;
-		this.card = card;
+	public FeedCategory(Long feedId, Category category) {
+		this.feedId = feedId;
+		this.category = category;
 	}
 
 }
