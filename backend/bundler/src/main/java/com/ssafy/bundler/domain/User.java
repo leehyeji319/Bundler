@@ -4,7 +4,10 @@ import static jakarta.persistence.CascadeType.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,10 +26,10 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "USERS")
-@SuperBuilder(toBuilder = true)
 public class User extends BaseEntity implements Serializable {
 
 	@Id
@@ -34,41 +37,59 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "user_id")
 	private Long userId;
 
-	@Column(name = "user_email", unique = true)
+	@Column(name = "user_email", unique = true, nullable = false)
 	private String userEmail;
 
-	@Column(name = "user_password")
+	@Column(name = "user_password", nullable = false)
 	private String userPassword;
 
-	@Column(name = "user_nickname", unique = true)
+	@Column(name = "user_nickname", unique = true, nullable = false)
 	private String userNickname;
 
 	@Column(name = "user_introduction")
 	private String userIntroduction;
 
-	@Column(name = "user_profile_image")
+	@Column(name = "user_profile_image", nullable = true)
 	private String userProfileImage;
 
 	@Column(name = "is_deleted")
+	@ColumnDefault(value = "0")
 	private boolean isDeleted;
+
+	@Column(name = "user_role")
+	private String userRole;
+
+	@Column(name = "following_cnt")
+	private int followingCnt;
+
+	@Column(name = "follower_cnt")
+	private int followerCnt;
+
+	public List<String> getRoleList() {
+		if (this.userRole.length() > 0) {
+			return Arrays.asList(this.userRole.split(","));
+		}
+
+		return new ArrayList<>();
+	}
 
 	//////////////////////////////////////
 
-	@Builder.Default
 	@OneToMany(cascade = ALL)
 	@JoinColumn(name = "user_id")
+	@Builder.Default
 	private List<FeedLike> feedUserLikeList = new ArrayList<>();
 
-	@Builder.Default
 	@OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+	@Builder.Default
 	private List<Feed> feedList = new ArrayList<>();
 
-	@Builder.Default
-	@OneToMany(mappedBy = "followTo", cascade = ALL)
-	private List<Follow> followToList = new ArrayList<>();
-
-	@Builder.Default
-	@OneToMany(mappedBy = "followFrom", cascade = ALL)
-	private List<Follow> followFromList = new ArrayList<>();
+	// @OneToMany(mappedBy = "followTo", cascade = ALL)
+	// @Builder.Default
+	// private List<Follow> followToList = new ArrayList<>();
+	//
+	// @OneToMany(mappedBy = "followFrom", cascade = ALL)
+	// @Builder.Default
+	// private List<Follow> followFromList = new ArrayList<>();
 
 }
