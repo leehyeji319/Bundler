@@ -80,6 +80,7 @@ function Make() {
   const [bundleToggle, setBundleToggle] = useState(false); // 번들 토글 버튼
   const [bundleForm, setBundleForm] = useState({
     userId: 1,
+    feedType: "BUNDLE",
     bundleThumbnail: "",
     bundleThumbnailText: "",
     feedTitle: "",
@@ -116,7 +117,7 @@ function Make() {
   // state 초기화 - bundle
   const initBundleForm = () => {
     setBundleForm({
-      userId: 1,
+      ...bundleForm,
       bundleThumbnail: "",
       bundleThumbnailText: "",
       feedTitle: "",
@@ -159,11 +160,6 @@ function Make() {
   const handleFeedType = (event) => {
     event.preventDefault();
     setBundleToggle(!bundleToggle);
-    if (bundleToggle) {
-      setValues({ ...values, feedTitle: "BUNDLE" });
-    } else {
-      setValues({ ...values, feedType: "CARD" });
-    }
   };
 
   // (5) button 함수
