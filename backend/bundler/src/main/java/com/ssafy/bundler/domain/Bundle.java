@@ -1,66 +1,27 @@
 package com.ssafy.bundler.domain;
 
-import java.io.Serializable;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
-
-@Getter
-@Setter
-@NoArgsConstructor
+@Getter @Setter
 @Entity
-@Table(name = "BUNDLES")
-@DiscriminatorValue(value = FeedType.Values.BUNDLE)
-@PrimaryKeyJoinColumn(name = "bundle_id")
-@SuperBuilder(toBuilder = true)
-public class Bundle extends Feed implements Serializable {
+public class Bundle {
 
-	@Column(name = "bundle_id", insertable = false, updatable = false)
+	@Id
+	@GeneratedValue
+	@Column(name = "bundle_id")
 	private Long bundleId;
-
 	@Column(name = "bundle_thumbnail")
 	private String bundleThumbnail;
-
 	@Column(name = "bundle_thumbnail_text")
 	private String bundleThumbnailText;
+	@Column(name = "bundle_is_public")
+	private boolean isBundlePublic;
+	@OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
+	private List<CardBundle> cardBundleList = new ArrayList<>();
 
-	@Column(name = "is_bundle_private")
-	private boolean isBundlePrivate;
-
-	@Column(name = "is_bundle_default")
-	private boolean isBundleDefault;
-
-	@Builder.Default
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "bundle_id")
-	private List<CardBundle> cardList = new ArrayList<>();
-
-	public void addCardBundle(final CardBundle cardBundle) {
-		cardList.add(cardBundle);
-	}
-
-	// @Transient
-	// @Column(name = "feed_type", insertable = false, updatable = false)
-	// protected String feedType;
-
-	@Transient
-	@Column(name = "feed_type")
-	@Enumerated(EnumType.STRING)
-	private FeedType feedType;
 }
