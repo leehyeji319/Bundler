@@ -16,7 +16,7 @@ function Make() {
   // const state = useSelector();
   const state22 = useSelector((state) => state.authToken);
   console.log(state22);
-
+  console.log("makemakemakemakemakemakemakemake");
   // useEffect(() => {
   //   console.log(state22);
   // }, [state22]);

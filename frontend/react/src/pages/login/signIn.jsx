@@ -24,18 +24,18 @@ function SignIn() {
 
   // submit 이후 동작할 코드
   // 백으로 유저 정보 전달
-  const onValid = async ({ userid, password }) => {
+  const onValid = async ({ email, password }) => {
     // input 태그 값 비워주는 코드
     setValue("password", "");
 
     // 백으로부터 받은 응답
-    const response = await loginUser({ userid, password });
+    const response = await loginUser({ email, password });
     console.log(response, 11111111111);
     if (response.status === 200) {
       // 쿠키에 Refresh Token, store에 Access Token 저장
-      setRefreshToken(response.data.refresh_token);
-      dispatch(SET_TOKEN(response.data.access_token));
-      // window.open("/make", "_self");
+      setRefreshToken(response.data.refreshToken);
+      dispatch(SET_TOKEN(response.data));
+      window.open("/home", "_self");
     } else {
       alert("로그인정보가 다릅니다");
     }
@@ -48,15 +48,15 @@ function SignIn() {
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="UserID" className="sr-only">
-                User ID
+              <label htmlFor="email" className="sr-only">
+                email
                 <input
-                  {...register("userid", { required: "Please Enter Your ID" })}
+                  {...register("email", { required: "Please Enter Your ID" })}
                   type="text"
-                  placeholder="User ID"
+                  placeholder="email"
                 />
                 <ErrorMessage
-                  name="userid"
+                  name="email"
                   errors={errors}
                   render={({ message }) => (
                     <p className="text-sm font-medium text-rose-500">{message}</p>
@@ -74,7 +74,7 @@ function SignIn() {
                 />
               </label>
               <ErrorMessage
-                name="userid"
+                name="email"
                 errors={errors}
                 render={({ message }) => (
                   <p className="text-sm font-medium text-rose-500">{message}</p>

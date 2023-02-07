@@ -1,51 +1,32 @@
-/*
-  App Main 구성
-*/
-
 import { useState, useEffect } from "react";
-// import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-// import Icon from "@mui/material/Icon";
-
-// Material Dashboard 2 React components
-// import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React example components
 import Sidenav from "examples/Sidenav";
-// import Configurator from "examples/Configurator";
 
 // Material Dashboard 2 React themes
 import theme from "assets/theme";
-// import themeRTL from "assets/theme/theme-rtl";
 
 // Material Dashboard 2 React Dark Mode themes
 import themeDark from "assets/theme-dark";
-// import themeDarkRTL from "assets/theme-dark/theme-rtl";
-
-// RTL plugins
-// import rtlPlugin from "stylis-plugin-rtl";
-// import { CacheProvider } from "@emotion/react";
-// import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
-import routes from "routes";
+import { routes1, routes2 } from "routes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav } from "context";
-// import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
 // Images NavBar 브랜드 로고
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
 // import AuthLogin from "pages/login";
-
 import Home from "pages/home";
 import Search from "pages/searchall";
 import SearchId from "pages/searchid";
@@ -53,7 +34,9 @@ import Make from "pages/make";
 import Profile from "pages/profile";
 import AuthLogin from "pages/login";
 import SignUp from "pages/signup";
-import PrivateRoute from "./PrivateRoute";
+
+// 로그인 여부 확인
+import CheckToken from "auth/CheckToken";
 
 function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -87,9 +70,6 @@ function App() {
     }
   };
 
-  // Change the openConfigurator state
-  // const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
-
   // Setting the dir attribute for the body element
   useEffect(() => {
     document.body.setAttribute("dir", direction);
@@ -101,50 +81,38 @@ function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  // const getRoutes = (allRoutes) =>
-  //   allRoutes.map((route) => {
-  //     if (route.collapse) {
-  //       return getRoutes(route.collapse);
-  //     }
-
-  //     if (route.route) {
-  //       return <Route exact path={route.route} element={route.component} key={route.key} />;
-  //     }
-
-  //     return null;
-  //   });
+  // ------------로그인 여부 확인-----------------------------
+  // 사용자가 현재 머물러있는 페이지에 대한 정보를 알려주는 hooks
+  const location = useLocation();
+  console.log(location);
+  // 로그인 여부 확인해서 isAuth에 저장
+  const { isAuth } = CheckToken(location.key);
+  // ------------로그인 여부 확인-----------------------------
+  // 로그인 환영
 
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
       {layout === "dashboard" && (
-        <>
-          <Sidenav
-            color={sidenavColor}
-            brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="Bundler"
-            routes={routes}
-            onMouseEnter={handleOnMouseEnter}
-            onMouseLeave={handleOnMouseLeave}
-          />
-          {/* <Configurator />
-          {configsButton} */}
-        </>
+        <Sidenav
+          color={sidenavColor}
+          brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+          brandName="Bundler"
+          routes={isAuth ? routes1 : routes2}
+          onMouseEnter={handleOnMouseEnter}
+          onMouseLeave={handleOnMouseLeave}
+        />
       )}
-      {/* {layout === "vr" && <Configurator />} */}
       <Routes>
-        <Route element={<PrivateRoute />}>
-          <Route path="/home" element={<Home />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/searchid" element={<SearchId />} />
-          <Route path="/make" element={<Make />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/signup" element={<SignUp />} />
-          {/* {getRoutes(routes)}
-          <Route path="/" element={<Navigate to="/home" />} /> */}
-        </Route>
-        <Route path="/login" element={<AuthLogin />} />
-        {/* <Route path="/login" element={<AuthLogin />} /> */}
+        {/* isAuth가 true일 때 들어갈 수 있는 component false일 땐 login으로 */}
+        <Route path="/home" element={isAuth ? <Home /> : <Navigate to="/login" />} />
+        <Route path="/search" element={isAuth ? <Search /> : <Navigate to="/login" />} />
+        <Route path="/searchid" element={isAuth ? <SearchId /> : <Navigate to="/login" />} />
+        <Route path="/make" element={isAuth ? <Make /> : <Navigate to="/login" />} />
+        <Route path="/profile" element={isAuth ? <Profile /> : <Navigate to="/login" />} />
+        {/* isAuth가 false일 때 들어갈 수 있는 component true일 땐 home으로 */}
+        <Route path="/login" element={isAuth === false ? <AuthLogin /> : <Navigate to="/home" />} />
+        <Route path="/signup" element={isAuth === false ? <SignUp /> : <Navigate to="/home" />} />
       </Routes>
     </ThemeProvider>
   );

@@ -16,6 +16,7 @@ import "./index.css";
 import Logo from "assets/images/bundler/loginlogo.png";
 
 // import template
+import GithubLoginButton from "pages/auth/login/template/components/GithubLoginButton";
 import SignIn from "./signIn";
 import SignOut from "./signOut";
 // import SignTemplate from "./template/signTemplate";
@@ -57,6 +58,7 @@ function AuthLogin() {
               </Link>
             </MDBox>
           </div>
+          <GithubLoginButton />
         </Card>
 
         <button type="button" onClick={SignOut}>

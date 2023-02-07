@@ -9,6 +9,8 @@ export const tokenSlice = createSlice({
   name: "authToken",
   // 초기 state 값
   initialState: {
+    // 로그인 후 이름을 저장하기 위한 선언
+    nickname: "",
     // 현재 로그인 여부를 간단히 확인하기위한 선언
     authenticated: false,
     // Access Token을 저장하기 위해 선언
@@ -20,15 +22,25 @@ export const tokenSlice = createSlice({
   reducers: {
     // Access Token 정보를 저장
     SET_TOKEN: (state, action) => {
+      console.log("reduxreduxreduxreduxredux");
+
+      console.log(action.payload.accessToken);
+      console.log(action.payload.nickname);
+      console.log("reduxreduxreduxreduxredux");
+
+      // 로그인에 성공하면 nickname 저장
+      state.nickname = action.payload.nickname;
       // 로그인에 성공하면 authenticated를 True로 바꿔 로그인 여부를 저장
       state.authenticated = true;
       // Access Token에 payload로 온 JWT token을 저장
-      state.accessToken = action.payload;
+      state.accessToken = action.payload.accessToken;
       // Access Token의 만료 시간을 현재시간에 TOKEN_TIME_OUT을 더해서 저장
       state.expireTime = new Date().getTime() + TOKEN_TIME_OUT;
     },
     // 값을 모두 초기화함으로써 Access Token에 대한 정보도 삭제
     DELETE_TOKEN: (state) => {
+      // 로그아웃 성공하면 nickname 삭제
+      state.nickname = "";
       // 로그아웃에 성공하면 authenticated를 False로 바꿔 로그아웃 여부를 저장
       state.authenticated = false;
       // Access Token을 null로 바꿔 token 삭제

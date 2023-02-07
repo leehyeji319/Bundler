@@ -36,7 +36,7 @@ function SignTemplate() {
   // 서버에 post로 authorizationCode를 보내준다
   const getAccessToken = async (authorizationCode) => {
     axios({
-      url: "http://localhost:8123/oauth",
+      url: "너가 가고싶은 클라이언트 주소",
       method: "POST",
       withCredentials: true,
       data: { authorizationCode },
@@ -47,13 +47,6 @@ function SignTemplate() {
       })
       .catch((err) => console.log(err));
   };
-
-  // 토크을 삭제해서 로그아웃 시키는 방법
-  // const githibLogout = () => {
-  //   axios.delete('https://localhost:8123/logout', {accessToken})
-  //   .then((res) => setIsLogin(false)) //화면상의 로그아웃 설정
-  //   .catch((err) => console.log(err.response.data))
-  // };
 
   useEffect(() => {
     // component가 mount될 때 url을 가져와서

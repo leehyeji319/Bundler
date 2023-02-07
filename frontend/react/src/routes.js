@@ -42,7 +42,7 @@ import SignUp from "pages/signup";
 // @mui icons
 import Icon from "@mui/material/Icon";
 
-const routes = [
+const routes1 = [
   {
     type: "collapse",
     name: "홈",
@@ -83,6 +83,8 @@ const routes = [
     route: "/profile",
     component: <Profile />,
   },
+];
+const routes2 = [
   {
     type: "collapse",
     name: "로그인",
@@ -101,4 +103,4 @@ const routes = [
   },
 ];
 
-export default routes;
+export { routes1, routes2 };
