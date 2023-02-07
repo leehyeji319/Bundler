@@ -1,4 +1,9 @@
-// Import React
+/**
+=========================================================
+* Ho
+=========================================================
+*/
+
 import { useEffect } from "react";
 
 // react-router-dom components
@@ -13,7 +18,7 @@ import MDBox from "components/MDBox";
 // Material Dashboard 2 React context
 import { useMaterialUIController, setLayout } from "context";
 
-function HomeLayout({ children }) {
+function DashboardLayout({ children }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav } = controller;
   const { pathname } = useLocation();
@@ -42,9 +47,9 @@ function HomeLayout({ children }) {
   );
 }
 
-// Typechecking props for the HomeLayout
-HomeLayout.propTypes = {
+// Typechecking props for the DashboardLayout
+DashboardLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default HomeLayout;
+export default DashboardLayout;
