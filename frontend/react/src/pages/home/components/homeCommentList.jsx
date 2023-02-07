@@ -82,10 +82,11 @@ function HomeCommentList({ commentList }) {
             <Box>
               {edit.id === comment.id ? (
                 <Box sx={{ display: "flex" }}>
-                  <MDTypography variant="button" fontWeight="light">
+                  <MDTypography variant="body2" fontWeight="light">
                     {comment.name}&nbsp;:
                   </MDTypography>
                   <TextField
+                    sx={{ ml: 1 }}
                     type="text"
                     size="small"
                     id={`edit-comment-${comment.id}`}
@@ -94,7 +95,7 @@ function HomeCommentList({ commentList }) {
                   />
                 </Box>
               ) : (
-                <MDTypography variant="button" fontWeight="light">
+                <MDTypography variant="body2" fontWeight="light">
                   {comment.name} : {comment.reply}
                 </MDTypography>
               )}
