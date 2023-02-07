@@ -1,7 +1,7 @@
 package com.ssafy.bundler.service;
 
 import com.ssafy.bundler.domain.Follow;
-import com.ssafy.bundler.dto.FollowingListResponseDto;
+import com.ssafy.bundler.dto.user.FollowingListResponseDto;
 
 public interface FollowService {
 
