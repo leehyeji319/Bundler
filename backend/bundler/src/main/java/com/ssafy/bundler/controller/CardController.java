@@ -67,7 +67,7 @@ public class CardController {
 		return ResponseEntity.ok("카드 삭제 완료.");
 	}
 
-	@DeleteMapping("/{feed_id")
+	@DeleteMapping("/{feed_id}")
 	public ResponseEntity<?> deleteCardV2(@PathVariable Long feedId) {
 		cardService.deleteCardV2(feedId);
 

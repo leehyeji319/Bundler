@@ -60,7 +60,7 @@ public class BundleController {
 	}
 
 	//번들 삭제 V2
-	@DeleteMapping("/{feed_id")
+	@DeleteMapping("/{feed_id}")
 	public ResponseEntity<?> deleteBundleV2(@PathVariable("feed_id") Long feedId) {
 		bundleService.deleteBundleV2(feedId);
 
