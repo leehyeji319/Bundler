@@ -1,18 +1,3 @@
-/*
-  back에 api를 요청하고 응답 받는 모듈
-  back 특정 controller url 과 연결하면 좋을 듯
-
-  axios.get(url[, config])
-  axios.post(url[, data[, config]])
-  axios.put(url[, data[, config]])
-  axios.patch(url[, data[, config]])
-  axios.delete(url[, config])
-  axios.request(config)
-  axios.head(url[, config])
-  axios.options(url[, config])
-  axios.getUri([config])
-*/
-
 // [Import] api instance
 import { apiInstance } from "apis/utils/axios";
 

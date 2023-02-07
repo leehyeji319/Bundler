@@ -14,7 +14,7 @@ import HomeBundle from "pages/home/components/homeBundle";
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
 // Import - Api
-import { apiGetFeed } from "apis/api/apiHomePage";
+import { apiGetFeeds } from "apis/api/apiHomePage";
 
 function HomeInfiniteScroll() {
   // ============== INIT 선언 ========================
@@ -280,7 +280,7 @@ function HomeInfiniteScroll() {
   const getMorePosts = async () => {
     // 추가 POST가 true인 경우만 함수 실행
     if (morePosts) {
-      await apiGetFeed()
+      await apiGetFeeds()
         .then((res) => {
           const nextPosts = res.data.slice(value.start, value.start + value.range);
           if (nextPosts.length < value.range) {
@@ -301,7 +301,7 @@ function HomeInfiniteScroll() {
   // Function - Hooks useEffect
   useEffect(() => {
     const initCall = async () => {
-      await apiGetFeed()
+      await apiGetFeeds()
         .then((res) => {
           const firstPosts = res.data.slice(value.start, value.start + value.range);
           if (firstPosts.length < value.range) {

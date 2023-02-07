@@ -233,13 +233,14 @@ function Make() {
       const bundle = { ...bundleForm, cardSaveRequestDtoList: cardList };
       console.log(bundle);
       await apiPostBundle(bundle);
+
+      initBundleForm(); // 번들 Form 리셋
     }
 
     // 후속 처리
     setValid({ isValid: true, comment: "생성 되었습니다", state: "info" });
     dispatch({ type: "CARD_STORE_RESET" }); // card List 리셋
     initProblemForm(); // 카드 Form 리셋
-    initBundleForm(); // 번들 Form 리셋
   };
 
   // 생성 버튼 - Validation Check

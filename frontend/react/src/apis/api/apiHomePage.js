@@ -1,28 +1,18 @@
-/*
-  back에 api를 요청하고 응답 받는 모듈
-  back 특정 controller url 과 연결하면 좋을 듯
-
-  axios.get(url[, config])
-  axios.post(url[, data[, config]])
-  axios.put(url[, data[, config]])
-  axios.patch(url[, data[, config]])
-  axios.delete(url[, config])
-  axios.request(config)
-  axios.head(url[, config])
-  axios.options(url[, config])
-  axios.getUri([config])
-*/
-
 // [Import] api instance
-import { apiFeedInstance } from "apis/utils/axios";
+import { apiInstance } from "apis/utils/axios";
 
-const api = apiFeedInstance();
+// api Instance 생성
+const api = apiInstance();
 
-const apiGetFeed = async () => {
+// controller default page url
+const FEED_CONTROLLER = "/api";
+
+const apiGetFeeds = async () => {
   try {
-    const response = await api.get(`/comments`);
+    const response = await api.get(`${FEED_CONTROLLER}/v1/feeds`);
     return response;
   } catch (error) {
+    console.log("FeedList Get 실패");
     return error;
   }
 };
@@ -41,4 +31,4 @@ const apiAuth = async (success, fail) => {
 };
 
 // export 함수
-export { apiGetFeed, apiPost, apiDelete, apiAuth };
+export { apiGetFeeds, apiPost, apiDelete, apiAuth };
