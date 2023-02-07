@@ -8,31 +8,17 @@ import { Box, Button } from "@mui/material";
 // Import - redux
 import { useSelector } from "react-redux";
 
-function MakeButton({ handleValuesAdd, handleValuesDelete, handleValuesEdit, handleValuesCreate }) {
+function MakeButton({
+  handleValuesAdd,
+  handleValuesDelete,
+  handleValuesEdit,
+  handleValuesCreate,
+  bundleToggle,
+  handleEmptyBundleCreate,
+}) {
   // ======================== Data ===========================
   // Data - global
   const { cardList } = useSelector((state) => state.makeReducer); // state 값 가져오기
-
-  // ======================= Function =========================
-  // // (1) 추가
-  // const handleAdd = () => {
-  //   console.log("handleAdd");
-  // };
-
-  // // (2) 수정
-  // const handleEdit = () => {
-  //   console.log("handleEdit");
-  // };
-
-  // // (3) 삭제
-  // const handleDelete = () => {
-  //   console.log("handleDelte");
-  // };
-
-  // // (4) 생성
-  // const handleCreate = () => {
-  //   console.log("handleCreate");
-  // };
 
   // useEffect
   useEffect(() => {
@@ -72,17 +58,28 @@ function MakeButton({ handleValuesAdd, handleValuesDelete, handleValuesEdit, han
           >
             삭제
           </Button>
+          <Button
+            type="button"
+            variant="contained"
+            sx={{ m: 3 }}
+            size="large"
+            onClick={handleValuesCreate}
+          >
+            생성
+          </Button>
         </>
       )}
-      <Button
-        type="button"
-        variant="contained"
-        sx={{ m: 3 }}
-        size="large"
-        onClick={handleValuesCreate}
-      >
-        생성
-      </Button>
+      {bundleToggle && cardList.length === 0 && (
+        <Button
+          type="button"
+          variant="contained"
+          sx={{ m: 3 }}
+          size="large"
+          onClick={handleEmptyBundleCreate}
+        >
+          빈 번들 생성
+        </Button>
+      )}
     </Box>
   );
 }
@@ -92,6 +89,8 @@ MakeButton.propTypes = {
   handleValuesDelete: PropTypes.func.isRequired,
   handleValuesEdit: PropTypes.func.isRequired,
   handleValuesCreate: PropTypes.func.isRequired,
+  bundleToggle: PropTypes.bool.isRequired,
+  handleEmptyBundleCreate: PropTypes.func.isRequired,
 };
 
 export default MakeButton;

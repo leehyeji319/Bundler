@@ -35,6 +35,9 @@ import Switch from "@mui/material/Switch";
 import { useDispatch, useSelector } from "react-redux";
 import { actAddCard, actEditCard, actDeleteCard } from "redux/actions/makeCardAction";
 
+// Import - axios
+import { apiPostCardList, apiPostCard, apiPostBundle } from "apis/api/apiMakePage";
+
 // Import - custom
 import MakeCategory from "pages/make/form/makeCategory";
 import MakeProblem from "pages/make/form/makeProblem";
@@ -59,14 +62,14 @@ function Make() {
   //   type_2: "",
   // });
 
-  // (3) form value 저장
+  // (3) form value 저장 CARD BUNDLE
   const [values, setValues] = useState({
-    userId: "testID",
+    userId: 1,
+    feedType: "CARD",
     feedTitle: "",
     feedContent: "",
-    categoryOne: 1,
-    categoryTwo: "",
-    cardType: "card_problem",
+    categoryId: 1,
+    cardType: "CARD_PROBLEM",
     cardDescription: "",
     cardCommentary: "",
     cardno: 1,
@@ -76,7 +79,7 @@ function Make() {
   // (4) Bundle Form && Toggle
   const [bundleToggle, setBundleToggle] = useState(false); // 번들 토글 버튼
   const [bundleForm, setBundleForm] = useState({
-    userId: "testID",
+    userId: 1,
     bundleThumbnail: "",
     bundleThumbnailText: "",
     feedTitle: "",
@@ -84,11 +87,6 @@ function Make() {
   });
 
   // (*) Validation
-  // const [valid, setValid] = useState({
-  //   isFeedTitle: false,
-  //   isFeedContent: false,
-  //   isCardCommentary: false,
-  // });
   const [valid, setValid] = useState({
     isValid: false,
     comment: "",
@@ -118,7 +116,7 @@ function Make() {
   // state 초기화 - bundle
   const initBundleForm = () => {
     setBundleForm({
-      ...bundleForm,
+      userId: 1,
       bundleThumbnail: "",
       bundleThumbnailText: "",
       feedTitle: "",
@@ -128,6 +126,8 @@ function Make() {
     // render - problem 값 초기환
     document.querySelector("#bundle-bundleThumbnail").value = "";
     document.querySelector("#bundle-bundleThumbnailText").value = "";
+    document.querySelector("#bundle-feedTitle").value = "";
+    document.querySelector("#bundle-feedContent").value = "";
   };
 
   // (1) 유형 선택 - 선택 결과를 저장하는 함수
@@ -137,9 +137,9 @@ function Make() {
   };
 
   // (2) category 선택 함수
-  const handleCategory = (event, first, second) => {
+  const handleCategory = (event, valueId) => {
     event.preventDefault();
-    setValues({ ...values, categoryOne: first, categoryTwo: second });
+    setValues({ ...values, categoryId: valueId });
   };
 
   // (3) form value 저장 함수
@@ -148,15 +148,26 @@ function Make() {
     setValues({ ...values, [name]: value });
   };
 
-  // (4) bundle form 함수
+  // (4-1) bundle form 함수
   const handleBundleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
     setBundleForm({ ...bundleForm, [name]: value });
   };
 
+  // (4-2) handleFeedtype
+  const handleFeedType = (event) => {
+    event.preventDefault();
+    setBundleToggle(!bundleToggle);
+    if (bundleToggle) {
+      setValues({ ...values, feedTitle: "BUNDLE" });
+    } else {
+      setValues({ ...values, feedType: "CARD" });
+    }
+  };
+
   // (5) button 함수
-  // 추가 버튼
+  // (5-1) 추가 버튼
   const handleValuesAdd = (e) => {
     e.preventDefault();
 
@@ -175,7 +186,7 @@ function Make() {
     }
   };
 
-  // 수정 버튼
+  // (5-2) 수정 버튼
   const handleValuesEdit = (e) => {
     e.preventDefault();
 
@@ -190,7 +201,7 @@ function Make() {
     }
   };
 
-  // 삭제 버튼
+  // (5-3) 삭제 버튼
   const handleValuesDelete = (e) => {
     e.preventDefault();
 
@@ -205,7 +216,37 @@ function Make() {
     }
   };
 
-  // 생성 버튼
+  // 카드 Form aios Controller
+  const createCardController = async () => {
+    // main Login
+    console.log(cardList);
+    const cardCnt = cardList.length;
+    // 카드 일때
+    if (!bundleToggle) {
+      if (cardCnt === 1) {
+        // 개별 생성
+        console.log("카드 개별 생성");
+        await apiPostCard(cardList[0]);
+      } else {
+        // 카드 리스트 생성
+        console.log("카드 리스트 생성");
+        await apiPostCardList({ cardSaveRequestDtoList: cardList });
+      }
+    } else {
+      // 카드가 있는 번들 생성
+      const bundle = { ...bundleForm, cardSaveRequestDtoList: cardList };
+      console.log(bundle);
+      await apiPostBundle(bundle);
+    }
+
+    // 후속 처리
+    setValid({ isValid: true, comment: "생성 되었습니다", state: "info" });
+    dispatch({ type: "CARD_STORE_RESET" }); // card List 리셋
+    initProblemForm(); // 카드 Form 리셋
+    initBundleForm(); // 번들 Form 리셋
+  };
+
+  // 생성 버튼 - Validation Check
   const handleValuesCreate = (e) => {
     e.preventDefault();
 
@@ -221,8 +262,33 @@ function Make() {
         state: "error",
       });
     } else {
+      // 컨트롤러 함수 호출
+      createCardController();
+    }
+  };
+
+  // 빈 번들 생성
+  const handleEmptyBundleCreate = () => {
+    console.log("빈 번들 생성 form");
+    // validation
+    if (
+      bundleForm.bundleThumbnail.length === 0 ||
+      bundleForm.bundleThumbnailText.length === 0 ||
+      bundleForm.feedTitle.length === 0 ||
+      bundleForm.feedContent.length === 0
+    ) {
+      setValid({
+        isValid: true,
+        comment: "번들만 생성할 경우 필수 입력 값을 확인해 주세요",
+        state: "error",
+      });
+    } else {
+      // 빈 번들만 생성
+      console.log("빈 번들 생성", bundleForm);
+      apiPostBundle(bundleForm);
+
+      // 후속 처리
       setValid({ isValid: true, comment: "생성 되었습니다", state: "info" });
-      dispatch({ type: "CARD_STORE_RESET" }); // card List 리셋
       initProblemForm(); // 카드 Form 리셋
       initBundleForm(); // 번들 Form 리셋
     }
@@ -299,7 +365,7 @@ function Make() {
       <Box>
         <MDBox display="flex" alignItems="center" mt={3} lineHeight={1}>
           <MDTypography variant="h6">번들로 묶기</MDTypography>
-          <Switch checked={bundleToggle} onChange={() => setBundleToggle(!bundleToggle)} />
+          <Switch checked={bundleToggle} onChange={handleFeedType} />
         </MDBox>
       </Box>
       <MakeBundle selected={bundleToggle} handleBundle={handleBundleChange} />
@@ -308,6 +374,8 @@ function Make() {
         handleValuesEdit={handleValuesEdit}
         handleValuesDelete={handleValuesDelete}
         handleValuesCreate={handleValuesCreate}
+        bundleToggle={bundleToggle}
+        handleEmptyBundleCreate={handleEmptyBundleCreate}
       />
       <MakeCardList />
       <MDSnackbar
