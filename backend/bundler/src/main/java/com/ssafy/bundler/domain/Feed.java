@@ -25,6 +25,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Feed Entity 작성, update메서드 추가
+ *
+ * @author 이혜지
+ * @version 1.0
+ * @see None
+ */
+
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)
@@ -66,16 +74,12 @@ public class Feed extends BaseEntity implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User writer;
 
-	// @OneToOne
-	// private Card card;
-
-	// @OneToOne
-	// private Bundle bundle;
-
+	// @Builder.Default
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "feed_id")
 	private List<Comment> commentList;
 
+	// @Builder.Default
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "feed_id")
 	private List<FeedCategory> feedCategoryList;
@@ -86,4 +90,10 @@ public class Feed extends BaseEntity implements Serializable {
 	@Transient
 	private boolean isFeedLiked;
 
+	//=== 비즈니스 로직 ===//
+
+	//피드 삭제 isDeleted
+	public void deleteFeed() {
+		this.isDeleted = true;
+	}
 }

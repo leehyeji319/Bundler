@@ -32,8 +32,11 @@ public class CardBundle implements Serializable {
 	@Column(name = "bundle_id")
 	private Long bundleId;
 
+	@Column(name = "card_id")
+	private Long cardId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "card_id")
+	@JoinColumn(name = "card_id", insertable = false, updatable = false)
 	private Card card;
 
 	// @ManyToOne(fetch = LAZY)
@@ -41,9 +44,9 @@ public class CardBundle implements Serializable {
 	// private Bundle bundle;
 
 	@Builder
-	public CardBundle(Long bundleId, Card card) {
+	public CardBundle(Long bundleId, Long cardId) {
 		this.bundleId = bundleId;
-		this.card = card;
+		this.cardId = cardId;
 	}
 
 }

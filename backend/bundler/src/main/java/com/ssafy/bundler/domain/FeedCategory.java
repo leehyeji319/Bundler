@@ -1,11 +1,12 @@
 package com.ssafy.bundler.domain;
 
+import static jakarta.persistence.FetchType.*;
+
 import java.io.Serializable;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,17 +34,18 @@ public class FeedCategory implements Serializable {
 	@Column(name = "feed_id")
 	private Long feedId;
 
-	// @Column(name = "category_id")
-	// private Long categoryId;
+	@Column(name = "target_category_id")
+	private Long targetCategoryId;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = LAZY)
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	@Builder
-	public FeedCategory(Long feedId, Category category) {
+	@Builder(toBuilder = true)
+	public FeedCategory(Long feedCategoryId, Long feedId, Long targetCategoryId) {
+		this.feedCategoryId = feedCategoryId;
 		this.feedId = feedId;
-		this.category = category;
+		this.targetCategoryId = targetCategoryId;
 	}
 
 }

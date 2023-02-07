@@ -1,11 +1,12 @@
 package com.ssafy.bundler.domain;
 
+import static jakarta.persistence.FetchType.*;
+
 import java.io.Serializable;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,7 +31,7 @@ public class FeedLike implements Serializable {
 	@Column(name = "feed_like_id")
 	private Long feedLikeId;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = LAZY)
 	@JoinColumn(name = "feed_id")
 	private Feed feed;
 

@@ -45,5 +45,10 @@ public class Card extends Feed implements Serializable {
 	@Column(name = "card_type")
 	@Enumerated(EnumType.STRING)
 	private CardType cardType;
+	
+	//==== 비즈니스 로직 ====//
+	public void addCardScrapCnt() {
+		this.cardScrapCnt++;
+	}
 
 }

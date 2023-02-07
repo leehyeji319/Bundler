@@ -1,5 +1,7 @@
 package com.ssafy.bundler.domain;
 
+import static jakarta.persistence.FetchType.*;
+
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
