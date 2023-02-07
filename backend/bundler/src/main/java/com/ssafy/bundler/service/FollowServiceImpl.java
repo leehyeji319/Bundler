@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.bundler.domain.Follow;
-import com.ssafy.bundler.dto.FollowProfileDto;
-import com.ssafy.bundler.dto.FollowingListResponseDto;
+import com.ssafy.bundler.dto.user.FollowProfileDto;
+import com.ssafy.bundler.dto.user.FollowingListResponseDto;
 import com.ssafy.bundler.repository.FollowRepository;
 
 import lombok.RequiredArgsConstructor;

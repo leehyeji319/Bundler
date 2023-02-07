@@ -1,5 +1,7 @@
 package com.ssafy.bundler.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -10,16 +12,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.bundler.config.auth.PrincipalDetails;
-import com.ssafy.bundler.dto.FollowingListResponseDto;
-import com.ssafy.bundler.dto.UserUpdateRequestDto;
+import com.ssafy.bundler.dto.user.FollowingListResponseDto;
+import com.ssafy.bundler.dto.user.Profile;
+import com.ssafy.bundler.dto.user.UserUpdateRequestDto;
 import com.ssafy.bundler.service.FollowService;
 import com.ssafy.bundler.service.UserService;
 
 @RestController
-@RequestMapping("/api/v1/auth/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
 	@Autowired
@@ -29,14 +33,24 @@ public class UserController {
 	private FollowService followService;
 
 	@GetMapping
-	public String user(Authentication authentication) {
-		PrincipalDetails principal = (PrincipalDetails)authentication.getPrincipal();
-		System.out.println("principal : " + principal.getUser().getUserId());
-		System.out.println("principal : " + principal.getUser().getUserNickname());
-		System.out.println("principal : " + principal.getUser().getUserPassword());
+	public List<Profile> getUserList(@RequestParam String keyword) {
+		// PrincipalDetails principal = (PrincipalDetails)authentication.getPrincipal();
+		// System.out.println("principal : " + principal.getUser().getUserId());
+		// System.out.println("principal : " + principal.getUser().getUserNickname());
+		// System.out.println("principal : " + principal.getUser().getUserPassword());
 
-		return "<h1>user</h1>";
+		return userService.getUserListByUserNickname(keyword);
 	}
+
+	// @GetMapping
+	// public String user(Authentication authentication) {
+	// 	PrincipalDetails principal = (PrincipalDetails)authentication.getPrincipal();
+	// 	System.out.println("principal : " + principal.getUser().getUserId());
+	// 	System.out.println("principal : " + principal.getUser().getUserNickname());
+	// 	System.out.println("principal : " + principal.getUser().getUserPassword());
+	//
+	// 	return "<h1>user</h1>";
+	// }
 
 	//회원 정보 수정
 	@PutMapping("/{userId}")

@@ -1,15 +1,18 @@
 package com.ssafy.bundler.service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.dto.AuthResponseDto;
-import com.ssafy.bundler.dto.SignupRequestDto;
-import com.ssafy.bundler.dto.UserUpdateRequestDto;
+import com.ssafy.bundler.dto.user.AuthResponseDto;
+import com.ssafy.bundler.dto.user.Profile;
+import com.ssafy.bundler.dto.user.SearchUserListResponseDto;
+import com.ssafy.bundler.dto.user.SignupRequestDto;
+import com.ssafy.bundler.dto.user.UserUpdateRequestDto;
 import com.ssafy.bundler.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,8 +28,25 @@ public class UserServiceImpl implements UserService {
 	// private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
-	public User getUserByUserNickname(String userNickname) {
-		return userRepository.findByUserNickname(userNickname).orElseThrow();
+	public List<Profile> getUserListByUserNickname(String userNickname) {
+		List<User> userList = userRepository.findByUserNicknameContains(userNickname);
+
+		if (userList == null || userList.size() == 0) {
+			throw new NullPointerException();
+		}
+
+		List<Profile> response = new ArrayList<>(userList.size());
+
+		userList.stream().forEach(user -> response.add(
+			SearchUserListResponseDto.builder()
+				.userId(user.getUserId())
+				.userNickname(user.getUserNickname())
+				.userIntroduction(user.getUserIntroduction())
+				.userProfileImageUrl(user.getUserProfileImage())
+				.build())
+		);
+
+		return response;
 	}
 
 	@Override
