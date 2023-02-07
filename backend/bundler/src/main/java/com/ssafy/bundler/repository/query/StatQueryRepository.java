@@ -68,4 +68,11 @@ public interface StatQueryRepository extends JpaRepository<Feed,Long> {
 	+ "ORDER BY count DESC "
 	+ "LIMIT 1",nativeQuery = true)
 	StatMostMakeCategoryDto findMostMakeSubCategory(Long userId);
+
+@Query(value = "SELECT COUNT(f.follow_to_id) AS COUNT "
+	+ "FROM follows f "
+	+ "LEFT OUTER JOIN follows f2 ON f.follow_to_id = f2.follow_from_id "
+	+ "WHERE f.follow_from_id = ?1 AND f2.follow_to_id= ?1 "
+	+ "GROUP BY f.follow_from_id",nativeQuery = true)
+	StatTotalCountDto findMutualFollowCount(Long userId);
 }

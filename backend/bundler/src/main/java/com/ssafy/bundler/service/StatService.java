@@ -142,5 +142,14 @@ public class StatService {
 		}
 		return new String[2];
 	}
+	@Transactional
+	public int getMutualFollowCount(Long userId){
+		User user = userRepository.findById(userId).orElseThrow(
+			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
+		);
+		StatTotalCountDto maxFollowCount = statQueryRepository.findMutualFollowCount(user.getUserId());
+		if(maxFollowCount==null) return 0;
+		return maxFollowCount.getCount();
+	}
 
 }
