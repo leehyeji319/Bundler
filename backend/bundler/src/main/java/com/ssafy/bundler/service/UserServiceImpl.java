@@ -1,5 +1,7 @@
 package com.ssafy.bundler.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updateUser(UserUpdateRequestDto user) {
-		User u = userRepository.findByUserId(user.getUserId());
+		User u = userRepository.findByUserId(user.getUserId()).orElseThrow();
 
 		userRepository.save(u.toBuilder()
 			.userIntroduction(user.getUserIntroduction())
@@ -54,9 +56,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUser(Long userId) {
-		userRepository.save(userRepository.findByUserId(userId).toBuilder()
-										.isDeleted(false)
-										.build());
+		User u = userRepository.findByUserId(userId).orElseThrow()
+			.toBuilder()
+			.isDeleted(false)
+			.build();
+		userRepository.save(u);
 	}
 
 	// @Override

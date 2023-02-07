@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@EnableJpaAuditing
 @SpringBootApplication
 @EnableJpaAuditing // JPA Auditing을 활성화
 public class BundlerApplication {
