@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	List<User> findAllByUserNicknameLike(String keyword); //사용자 검색
 
-	User findByUserId(Long userId);
+	// User findByUserId(Long userId);
 
-	// Optional<User> findByUserId(Long userId);
+	Optional<User> findByUserId(Long userId);
 }
