@@ -41,182 +41,6 @@ function HomeInfiniteScroll() {
           commentList: [
             { id: 10, name: "정세권", reply: "댓글 1" },
             { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
           ],
         },
         {
@@ -302,8 +126,9 @@ function HomeInfiniteScroll() {
   useEffect(() => {
     const initCall = async () => {
       await apiGetFeeds()
-        .then((res) => {
-          const firstPosts = res.data.slice(value.start, value.start + value.range);
+        .then(({ data }) => {
+          console.log(data);
+          const firstPosts = data.slice(value.start, value.start + value.range);
           if (firstPosts.length < value.range) {
             setMorePosts(false);
           }
@@ -330,7 +155,7 @@ function HomeInfiniteScroll() {
               <HomeCard
                 image={feed.cardImage}
                 category={feed.category}
-                id={feed.id}
+                id="userId"
                 title={feed.title}
                 description={feed.description}
                 solution={feed.solution}
@@ -363,9 +188,29 @@ function HomeInfiniteScroll() {
           </Box>
         }
       >
-        {viewPosts.map((post) => (
-          <h2 key={post.id}>{post.name}</h2>
-        ))}
+        {viewPosts.map((post) =>
+          post.feedType === "CARD" ? (
+            <div key={post.cardId}>
+              <HomeCard
+                image={CardImg}
+                category={post.firstCategoryName}
+                id={post.cardId}
+                title={post.feedTitle}
+                description={post.feedContent}
+                solution={post.cardCommentary}
+                answer={post.answer}
+              />
+            </div>
+          ) : (
+            <div key={post.cardId}>
+              <HomeBundle
+                bundleTitle={post.feedTitle}
+                bundleAuthor={post.feedContent}
+                cardList={post.cardBundleQueryDtoList}
+              />
+            </div>
+          )
+        )}
       </InfiniteScroll>
     </div>
   );

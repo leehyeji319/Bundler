@@ -12,19 +12,9 @@ import MDTypography from "components/MDTypography";
 
 // Import Custom Component
 import HomeInput from "pages/home/components/homeInput";
-import HomeCommentList from "pages/home/components/homeCommentList";
+// import HomeCommentList from "pages/home/components/homeCommentList";
 
-function ModalDetail({
-  open,
-  handleClose,
-  image,
-  category,
-  id,
-  title,
-  description,
-  solution,
-  commentList,
-}) {
+function ModalDetail({ open, handleClose, image, category, id, title, description, solution }) {
   // 토글 버튼
   const [solutionToggle, setSolutionToggle] = useState(false);
   const [mySolutionToggle, setMySolutionToggle] = useState(false);
@@ -140,7 +130,7 @@ function ModalDetail({
             </MDBox>
             <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
               <HomeInput />
-              <HomeCommentList commentList={commentList} />
+              {/* <HomeCommentList commentList={commentList} /> */}
             </Box>
           </MDBox>
         </Card>
@@ -148,6 +138,10 @@ function ModalDetail({
     </Card>
   );
 }
+
+ModalDetail.defaultProps = {
+  solution: "",
+};
 
 // Typechecking props for the SimpleBlogCard
 ModalDetail.propTypes = {
@@ -158,14 +152,14 @@ ModalDetail.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  solution: PropTypes.string.isRequired,
-  commentList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      reply: PropTypes.string.isRequired,
-    }).isRequired
-  ).isRequired,
+  solution: PropTypes.string,
+  // commentList: PropTypes.arrayOf(
+  //   PropTypes.shape({
+  //     id: PropTypes.number.isRequired,
+  //     name: PropTypes.string.isRequired,
+  //     reply: PropTypes.string.isRequired,
+  //   }).isRequired
+  // ).isRequired,
 };
 
 export default ModalDetail;

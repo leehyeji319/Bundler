@@ -16,7 +16,7 @@ import ModalDetail from "pages/home/components/modalDetail";
 import LikeButton from "pages/home/buttons/likeButton";
 import ScrapButton from "pages/home/buttons/scrapButton";
 
-function HomeCard({ image, category, id, title, description, solution, answer, commentList }) {
+function HomeCard({ image, category, id, title, description, solution, answer }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -33,7 +33,7 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
         description={description}
         solution={solution}
         answer={answer}
-        commentList={commentList}
+        // commentList={commentList}
       />
       <MDBox mx={3}>
         <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
@@ -79,9 +79,9 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
 }
 
 // Default Vlaue
-HomeCard.defaultProps = {
-  commentList: null,
-};
+// HomeCard.defaultProps = {
+//   commentList: null,
+// };
 
 // Typechecking props for the SimpleBlogCard
 HomeCard.propTypes = {
@@ -92,13 +92,13 @@ HomeCard.propTypes = {
   description: PropTypes.string.isRequired,
   solution: PropTypes.string.isRequired,
   answer: PropTypes.string.isRequired,
-  commentList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      reply: PropTypes.string.isRequired,
-    }).isRequired
-  ),
+  // commentList: PropTypes.arrayOf(
+  //   PropTypes.shape({
+  //     id: PropTypes.number.isRequired,
+  //     name: PropTypes.string.isRequired,
+  //     reply: PropTypes.string.isRequired,
+  //   }).isRequired
+  // ),
 };
 
 export default HomeCard;

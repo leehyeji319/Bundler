@@ -58,7 +58,7 @@ function HomeBundle({ bundleTitle, bundleAuthor, cardList }) {
 
 // Default Vlaue
 HomeCard.defaultProps = {
-  commentList: null,
+  cardList: [],
 };
 
 // Typechecking props for the SimpleBlogCard

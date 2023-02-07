@@ -12,7 +12,7 @@ import MDBox from "components/MDBox";
 import DataTable from "pages/home/DataTable";
 import ModalDetail from "pages/home/components/modalDetail";
 import HomeInput from "pages/home/components/homeInput";
-import HomeCommentList from "pages/home/components/homeCommentList";
+// import HomeCommentList from "pages/home/components/homeCommentList";
 
 function ModalCardList({ open, handleCardClose, cardList }) {
   // Data - global
@@ -81,7 +81,7 @@ function ModalCardList({ open, handleCardClose, cardList }) {
         description={cardDetail.description}
         solution={cardDetail.solution}
         answer={cardDetail.answer}
-        commentList={cardDetail.commentList}
+        // commentList={cardDetail.commentList}
       />
       <Modal open={open} onClose={handleBundleCloseModal}>
         <Card sx={style}>
@@ -97,7 +97,7 @@ function ModalCardList({ open, handleCardClose, cardList }) {
           </MDBox>
           <MDBox p={3}>
             <HomeInput />
-            <HomeCommentList commentList={cardList[0].commentList} />
+            {/* <HomeCommentList commentList={cardList[0].commentList} /> */}
           </MDBox>
         </Card>
       </Modal>
@@ -124,13 +124,13 @@ ModalCardList.propTypes = {
       description: PropTypes.string.isRequired,
       solution: PropTypes.string.isRequired,
       answer: PropTypes.string.isRequired,
-      commentList: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
-          reply: PropTypes.string.isRequired,
-        }).isRequired
-      ).isRequired,
+      // commentList: PropTypes.arrayOf(
+      //   PropTypes.shape({
+      //     id: PropTypes.number.isRequired,
+      //     name: PropTypes.string.isRequired,
+      //     reply: PropTypes.string.isRequired,
+      //   }).isRequired
+      // ).isRequired,
     }).isRequired
   ).isRequired,
 };
