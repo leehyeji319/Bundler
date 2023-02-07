@@ -9,9 +9,9 @@ import com.ssafy.bundler.domain.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	Optional<User> findByUserNickname(String userNickname);
+	Optional<User> findOneByUserNickname(String userNickname);
 
-	List<User> findAllByUserNicknameLike(String keyword); //사용자 검색
+	List<User> findByUserNicknameContains(String keyword); //사용자 검색
 
 	// User findByUserId(Long userId);
 

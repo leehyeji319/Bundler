@@ -1,4 +1,4 @@
-package com.ssafy.bundler.dto;
+package com.ssafy.bundler.dto.user;
 
 import java.util.ArrayList;
 import java.util.List;

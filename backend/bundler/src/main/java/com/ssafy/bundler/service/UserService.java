@@ -1,13 +1,15 @@
 package com.ssafy.bundler.service;
 
-import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.dto.AuthResponseDto;
-import com.ssafy.bundler.dto.SignupRequestDto;
-import com.ssafy.bundler.dto.UserUpdateRequestDto;
+import java.util.List;
+
+import com.ssafy.bundler.dto.user.AuthResponseDto;
+import com.ssafy.bundler.dto.user.Profile;
+import com.ssafy.bundler.dto.user.SignupRequestDto;
+import com.ssafy.bundler.dto.user.UserUpdateRequestDto;
 
 public interface UserService {
 
-	public User getUserByUserNickname(String userNickname);
+	public List<Profile> getUserListByUserNickname(String userNickname);
 
 	public AuthResponseDto createUser(SignupRequestDto user);
 
