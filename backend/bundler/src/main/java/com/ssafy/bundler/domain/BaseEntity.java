@@ -7,8 +7,14 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+
+// import jakarta.persistence.Temporal;
+// import jakarta.persistence.TemporalType;
+// import lombok.EqualsAndHashCode;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -18,6 +24,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 //해당 클래스에 Auditing 기능을 포함 (Audit은 감시하다, 감사하다라는 뜻으로 Spring Data JPA에서 시간에 대해서 자동으로 값을 넣어주는 기능)
+
 // @JsonIgnoreProperties(
 // 	value = {"createdAt", "updatedAt"},
 // 	allowGetters = true
@@ -27,6 +34,7 @@ import lombok.experimental.SuperBuilder;
 public abstract class BaseEntity implements Serializable {
 
 	@CreatedDate
+	@Column(nullable = false)
 	// @Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime createdAt;
 

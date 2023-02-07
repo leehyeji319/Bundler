@@ -57,11 +57,18 @@ public class Feed extends BaseEntity implements Serializable {
 	@Column(name = "feed_like_cnt")
 	private int feedLikeCnt;
 
+	// @Column(name = "feed_type")
+	// @Enumerated(EnumType.STRING)
+	// @NaturalId
+	// private FeedType feedType;
+
 	@Column(name = "feed_comment_cnt")
 	private int feedCommentCnt;
 
 	@Column(name = "is_deleted")
 	private boolean isDeleted;
+
+	//////////////////////////
 
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "user_id")
