@@ -1,38 +1,23 @@
 package com.ssafy.bundler.domain;
 
-import java.io.Serializable;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Getter @Setter
 @Entity
-@SuperBuilder(toBuilder = true)
-@Table(name = "LINKS")
-@DiscriminatorValue(value = "CARD_LINK")
-@PrimaryKeyJoinColumn(name = "link_id")
-public class Link extends Card implements Serializable {
+public class Link {
 
-	// @Id
-	// @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "link_id", insertable = false, updatable = false)
+	@Id
+	@GeneratedValue
+	@Column(name = "link_id")
 	private Long linkId;
 
-	@Column(name = "link_url", nullable = false)
+	@Column(name = "link_url")
 	private String linkUrl;
 
 	@Column(name = "link_image")
 	private String linkImage;
-
 	@Column(name = "link_title")
 	private String linkTitle;
 

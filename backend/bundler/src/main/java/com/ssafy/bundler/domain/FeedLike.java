@@ -1,46 +1,24 @@
 package com.ssafy.bundler.domain;
 
-import static jakarta.persistence.FetchType.*;
-
-import java.io.Serializable;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.Builder;
+import com.ssafy.bundler.domain.User;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
+import static jakarta.persistence.FetchType.LAZY;
+@Getter @Setter
 @Entity
-@Table(name = "FEED_LIKE")
-public class FeedLike implements Serializable {
+public class FeedLike {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	@Column(name = "feed_like_id")
 	private Long feedLikeId;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = LAZY)
-	@JoinColumn(name = "feed_id")
-	private Feed feed;
+	@Column(name = "feed_id")
+	private Long feedId;
 
 	@Column(name = "user_id")
 	private Long userId;
-
-	@Builder
-	public FeedLike(Feed feed, Long userId) {
-		this.feed = feed;
-		this.userId = userId;
-	}
 
 }

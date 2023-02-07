@@ -18,20 +18,14 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import App from "App";
 
-// import Redux
-import { Provider } from "react-redux"; // redux store.js에 접근
-import store from "redux/store/store";
-
 // Material Dashboard 2 React Context Provider
 import { MaterialUIControllerProvider } from "context";
 
 ReactDOM.render(
   <BrowserRouter>
-    <Provider store={store}>
-      <MaterialUIControllerProvider>
-        <App />
-      </MaterialUIControllerProvider>
-    </Provider>
+    <MaterialUIControllerProvider>
+      <App />
+    </MaterialUIControllerProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );
