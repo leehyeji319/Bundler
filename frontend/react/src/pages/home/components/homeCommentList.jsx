@@ -1,20 +1,65 @@
 // Import - react
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 // Import - design
 import MDTypography from "components/MDTypography";
-import { Box, Button } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 function HomeCommentList({ commentList }) {
-  const editButton = () => {
-    console.log("edit");
+  // =============================== Data ===============================
+  // 댓글 수정 boolean 값
+  const [edit, setEdit] = useState({
+    id: -1,
+    comment: "",
+  });
+
+  // ============================== Function =============================
+  // function in component
+  // 글 수정 번튼
+  const editButton = (reply, commentId) => {
+    console.log(reply);
+    console.log(commentId);
+    const currentComment = document.getElementById(`#edit-comment-${commentId}`);
+    console.log(currentComment);
+    currentComment.value = reply;
+    setEdit({
+      id: commentId,
+      comment: reply,
+    });
   };
+
+  const handleEdit = (event) => {
+    event.preventDefault();
+
+    console.log(event.target.value);
+
+    setEdit({ ...edit, comment: event.target.value });
+  };
+
+  // 글 수정 완료 버튼
+  const editConfirmButton = () => {
+    console.log("수정 완료");
+
+    // axios로 수정 msg 보내기
+
+    setEdit({
+      id: -1,
+      comment: "",
+    });
+  };
+
+  // 글 삭제 버튼
   const deleteButton = () => {
     console.log("delete");
   };
+
+  // useEffect
+  useEffect(() => {}, [edit]);
+
+  // ================================ Return ===============================
   return (
     <ul
       style={{
@@ -24,17 +69,41 @@ function HomeCommentList({ commentList }) {
       }}
     >
       {commentList.map((comment) => (
-        <li key={comment.Id}>
+        <li key={comment.id}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box>
-              <MDTypography variant="button" fontWeight="light">
-                {comment.name} : {comment.reply}
-              </MDTypography>
+              {edit.id === comment.id ? (
+                <Box sx={{ display: "flex" }}>
+                  <MDTypography variant="button" fontWeight="light">
+                    {comment.name}&nbsp;:
+                  </MDTypography>
+                  <TextField
+                    type="text"
+                    size="small"
+                    id={`edit-comment-${comment.id}`}
+                    onChange={handleEdit}
+                  />
+                </Box>
+              ) : (
+                <MDTypography variant="button" fontWeight="light">
+                  {comment.name} : {comment.reply}
+                </MDTypography>
+              )}
             </Box>
             <Box>
-              <Button type="button" onClick={editButton} sx={{ p: "0" }}>
-                <EditIcon />
-              </Button>
+              {edit.id === comment.id ? (
+                <Button type="button" onClick={editConfirmButton} sx={{ p: "0" }}>
+                  <EditIcon />
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  onClick={() => editButton(comment.reply, comment.id)}
+                  sx={{ p: "0" }}
+                >
+                  <EditIcon />
+                </Button>
+              )}
               <Button type="button" onClick={deleteButton} sx={{ p: "0" }}>
                 <DeleteIcon />
               </Button>
