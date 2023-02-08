@@ -10,10 +10,10 @@ import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.repository.UserRepository;
 
 @SpringBootTest
-class StatServiceTest {
+class StatServiceImplTest {
 
 	@Autowired
-	StatService statService;
+	StatServiceImpl statServiceImpl;
 	@Autowired
 	UserRepository userRepository;
 
@@ -24,7 +24,7 @@ class StatServiceTest {
 		user = userRepository.save(user);
 
 		//when
-		String date = statService.getRegisterDate(user.getUserId());
+		String date = statServiceImpl.getRegisterDate(user.getUserId());
 
 		//then
 		assertThat(date).isEqualTo(user.getCreatedAt().toLocalDate().toString());

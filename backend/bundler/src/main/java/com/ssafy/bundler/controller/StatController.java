@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.bundler.dto.stat.StatCategoryDto;
 import com.ssafy.bundler.dto.stat.StatResponseDto;
-import com.ssafy.bundler.service.StatService;
+import com.ssafy.bundler.service.StatServiceImpl;
 
 @RestController
 public class StatController {
 	@Autowired
-	StatService statService;
+	StatServiceImpl statServiceImpl;
 	@GetMapping("/api/v1/users/{userId}/stats")
 	public ResponseEntity<?> getStat(@PathVariable Long userId){
-		StatCategoryDto[] statsTest= statService.getCategoryStat(userId);
-		String registerDate = statService.getRegisterDate(userId);
-		int totalFeedLikeCnt = statService.getTotalFeedLike(userId);
-		int totalCardScrapCnt = statService.getTotalCardScrappedCount(userId);
-		String[] maxCategories = statService.getMaxCategories(userId);
-		int mutualFollows = statService.getMutualFollowCount(userId);
+		StatCategoryDto[] statsTest= statServiceImpl.getCategoryStat(userId);
+		String registerDate = statServiceImpl.getRegisterDate(userId);
+		int totalFeedLikeCnt = statServiceImpl.getTotalFeedLike(userId);
+		int totalCardScrapCnt = statServiceImpl.getTotalCardScrappedCount(userId);
+		String[] maxCategories = statServiceImpl.getMaxCategories(userId);
+		int mutualFollows = statServiceImpl.getMutualFollowCount(userId);
 
 		StatResponseDto responseDto = StatResponseDto.builder()
 			.statCategory(statsTest)
