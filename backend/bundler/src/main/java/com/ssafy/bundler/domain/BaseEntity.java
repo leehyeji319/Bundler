@@ -34,11 +34,12 @@ import lombok.experimental.SuperBuilder;
 public abstract class BaseEntity implements Serializable {
 
 	@CreatedDate
-	@Column(nullable = false)
+	@Column(name = "created_at", nullable = false)
 	// @Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime createdAt;
 
 	@LastModifiedDate
+	@Column(name = "updated_at", nullable = false)
 	// @Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime updatedAt;
 

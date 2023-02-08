@@ -2,6 +2,7 @@ package com.ssafy.bundler.controller;
 
 import java.util.List;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -33,13 +34,13 @@ public class UserController {
 	private FollowService followService;
 
 	@GetMapping
-	public List<Profile> getUserList(@RequestParam String keyword) {
+	public ResponseEntity<List<Profile>> getUserList(@RequestParam String keyword) {
 		// PrincipalDetails principal = (PrincipalDetails)authentication.getPrincipal();
 		// System.out.println("principal : " + principal.getUser().getUserId());
 		// System.out.println("principal : " + principal.getUser().getUserNickname());
 		// System.out.println("principal : " + principal.getUser().getUserPassword());
 
-		return userService.getUserListByUserNickname(keyword);
+		return ResponseEntity.ok(userService.getUserListByUserNickname(keyword));
 	}
 
 	// @GetMapping

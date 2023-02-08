@@ -13,6 +13,8 @@ import com.ssafy.bundler.dto.user.Profile;
 import com.ssafy.bundler.dto.user.SearchUserListResponseDto;
 import com.ssafy.bundler.dto.user.SignupRequestDto;
 import com.ssafy.bundler.dto.user.UserUpdateRequestDto;
+import com.ssafy.bundler.exception.EntityNotFoundException;
+import com.ssafy.bundler.exception.ErrorCode;
 import com.ssafy.bundler.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -28,11 +30,11 @@ public class UserServiceImpl implements UserService {
 	// private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
-	public List<Profile> getUserListByUserNickname(String userNickname) {
+	public List<Profile> getUserListByUserNickname(String userNickname) throws EntityNotFoundException {
 		List<User> userList = userRepository.findByUserNicknameContains(userNickname);
 
 		if (userList == null || userList.size() == 0) {
-			throw new NullPointerException();
+			throw new EntityNotFoundException("검색 결과가 없습니다.", ErrorCode.USER_NOT_FOUND);
 		}
 
 		List<Profile> response = new ArrayList<>(userList.size());
