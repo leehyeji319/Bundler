@@ -40,8 +40,12 @@ public class BudnleQueryRepository {
 		List<BundleResponseDto> result = findBundles();
 
 		Map<Long, List<CardBundleQueryDto>> cardBundleMap = findCardBundleMap(toBundleIds(result));
+		Map<Long, List<CommentResponseDto>> bundleCommentMap = findBundleCommentMap(toBundleIds(result));
 
+		//번들들에 속한 카드 리스트들 정보 넣기
 		result.forEach(b -> b.setCardBundleQueryDtoList(cardBundleMap.get(b.getBundleId())));
+		//번들들에 속한 번들의 댓글 리스트 넣기
+		result.forEach(b -> b.setBundleCommentResponseList(bundleCommentMap.get(b.getBundleId())));
 
 		return result;
 	}
@@ -68,6 +72,23 @@ public class BudnleQueryRepository {
 		return commentList.stream()
 			.map(CommentResponseDto::new)
 			.collect(Collectors.toList());
+	}
+
+	//번들 여러개 코멘트 찾기
+	public Map<Long, List<CommentResponseDto>> findBundleCommentMap(List<Long> bundleIds) {
+
+		List<CommentResponseDto> bundleComment = em.createQuery(
+				"select new com.ssafy.bundler.dto.comment.CommentResponseDto"
+					+ "(c.commentId, c.feedId,"
+					+ " c.writer.userId, c.writer.userNickname, c.writer.userProfileImage,"
+					+ " c.commentContent, c.createdAt)"
+					+ " from Comment c"
+					+ " where c.feedId in :feedIds", CommentResponseDto.class)
+			.setParameter("feedIds", bundleIds)
+			.getResultList();
+
+		return bundleComment.stream()
+			.collect(Collectors.groupingBy(CommentResponseDto::getFeedId));
 	}
 
 	//번들 여러개 리스트 아이디들만 뽑아오기

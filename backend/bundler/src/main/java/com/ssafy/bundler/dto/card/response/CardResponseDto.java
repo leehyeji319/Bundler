@@ -78,9 +78,6 @@ public class CardResponseDto {
 		// this.linkImage = linkImage;
 		// this.linkTitle = linkTitle;
 		// this.linkDescription = linkDescription;
-		// this.bundleThumbnail = bundleThumbnail;
-		// this.bundleThumbnailText = bundleThumbnailText;
-		// this.isBundlePublic = isBundlePublic;
 		this.cardScrapCnt = card.getCardScrapCnt();
 		this.feedLikeCnt = card.getFeedLikeCnt();
 		this.feedCommentCnt = card.getFeedCommentCnt();

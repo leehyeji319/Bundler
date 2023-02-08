@@ -1,7 +1,10 @@
 package com.ssafy.bundler.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.bundler.dto.bundle.request.BundleSaveRequestDto;
 import com.ssafy.bundler.dto.bundle.request.BundleScrapRequestDto;
+import com.ssafy.bundler.dto.feed.UserBundleListSummary;
 import com.ssafy.bundler.service.BundleService;
 import com.ssafy.bundler.service.CardService;
 
@@ -64,4 +68,11 @@ public class ScrapController {
 
 		return ResponseEntity.ok("번들에서 카드 스크랩 취소");
 	}
+
+	//유저가 스크랩할때 어디 번들에 넣을지 보여주는 번들 제목 리스트 (번들 아이디 + 번들 제목)
+	@GetMapping("/api/v1/users/{user_id}/bundles/summary")
+	public List<UserBundleListSummary> getUserBundleSummaryList(@PathVariable("user_id") Long userId) {
+		return bundleService.getUserBundleListSummary(userId);
+	}
+
 }

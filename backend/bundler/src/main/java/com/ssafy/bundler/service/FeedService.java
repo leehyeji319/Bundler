@@ -20,6 +20,7 @@ import com.ssafy.bundler.repository.CommentRepository;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.LinkRepository;
 import com.ssafy.bundler.repository.query.BudnleQueryRepository;
+import com.ssafy.bundler.repository.query.CardQueryRepository;
 import com.ssafy.bundler.repository.query.UserFeedQueryRepository;
 
 import jakarta.persistence.EntityManager;
@@ -35,6 +36,7 @@ import lombok.RequiredArgsConstructor;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/02/04        modsiw       최초 생성
+ * 2023/02/08		 modsiw		  피드 전체조회시에 댓글리스트까지 포함 (번들은 번들댓글만, 카드는 카드 댓글만)
  */
 
 @Service
@@ -47,7 +49,8 @@ public class FeedService {
 	private final CommentRepository commentRepository;
 	private final BundleRepository bundleRepository;
 	private final LinkRepository linkRepository;
-	private final BudnleQueryRepository feedQueryRepository;
+	private final BudnleQueryRepository budnleQueryRepository;
+	private final CardQueryRepository cardQueryRepository;
 	private final UserFeedQueryRepository userFeedQueryRepository;
 
 	private EntityManager em;
@@ -83,13 +86,15 @@ public class FeedService {
 		return all;
 	}
 
+	//피드 전체조회시에 반환. 번들 + 번들의 댓글, 카드 + 카드의 댓글
 	public List<Object> getAllFeed() {
-		List<CardSummaryResponseDto> cardSummanryList = findCardSummanryList();
-		List<BundleResponseDto> allByDto_optimization = feedQueryRepository.findAllBundleByDto_optimization();
+		List<CardResponseDto> cardResponseDtoList = cardQueryRepository.findAllCardByDto_optimization();
+		// List<CardSummaryResponseDto> cardSummanryList = findCardSummanryList();
+		List<BundleResponseDto> allByDto_optimization = budnleQueryRepository.findAllBundleByDto_optimization();
 
 		List<Object> objects = new ArrayList<>();
 
-		for (CardSummaryResponseDto c : cardSummanryList) {
+		for (CardResponseDto c : cardResponseDtoList) {
 			objects.add(c);
 		}
 		for (BundleResponseDto b : allByDto_optimization) {

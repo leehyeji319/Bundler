@@ -79,7 +79,7 @@ public class FeedController {
 		return new ResponseEntity<>(test, HttpStatus.OK);
 	}
 
-	//전체 조회
+	//전체 조회 test
 	@GetMapping("/test/feeds")
 	public ResponseEntity<List<Feed>> getFeeds() {
 		List<Feed> all = feedRepository.findAll();
