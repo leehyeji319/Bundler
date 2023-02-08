@@ -10,9 +10,6 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import HomeCard from "pages/home/components/homeCard";
 import HomeBundle from "pages/home/components/homeBundle";
 
-// Card Image
-import CardImg from "assets/images/bundler/bundlerRabbit.png";
-
 // Import - Api
 import { apiGetFeeds } from "apis/api/apiHomePage";
 
@@ -22,74 +19,6 @@ function HomeInfiniteScroll() {
   // const dispatch = useDispatch();
 
   // ================= DATA ===========================
-  // store - dummy Data
-  const feedList = [
-    {
-      feedType: "BUNDLE",
-      bundleTitle: "번들 제목",
-      bundleAuthor: "jsk33a@naver.com",
-      cardList: [
-        {
-          cardId: 1,
-          cardImage: CardImg,
-          category: "문제1 > 알고리즘",
-          id: "jsk33a@naver.com",
-          title: "제목인데 json 형식 test 중",
-          description: "이 문제에 대해 설명 하시오",
-          solution: "정답~~",
-          answer: "내가 쓴 답~~",
-          commentList: [
-            { id: 10, name: "정세권", reply: "댓글 1" },
-            { id: 11, name: "정둘권", reply: "댓글 2" },
-          ],
-        },
-        {
-          cardId: 2,
-          cardImage: CardImg,
-          category: "문제2 > 알고리즘",
-          id: "sdfsdfsdf@naver.com",
-          title: "제목인데 json 형식 test 중",
-          description: "이 문제에 대해 설명 하시오",
-          solution: "정답~~",
-          answer: "내가 쓴 답~~",
-          commentList: [
-            { id: 12, name: "정세권", reply: "댓글 1" },
-            { id: 13, name: "정둘권", reply: "댓글 2" },
-          ],
-        },
-      ],
-    },
-    {
-      feedType: "CARD",
-      cardId: 3,
-      cardImage: CardImg,
-      category: "문제1 > 알고리즘",
-      id: "jsk33a@naver.com",
-      title: "제목인데 json 형식 test 중",
-      description: "이 문제에 대해 설명 하시오",
-      solution: "정답~~",
-      answer: "내가 쓴 답~~",
-      commentList: [
-        { id: 14, name: "정세권", reply: "댓글 1" },
-        { id: 15, name: "정둘권", reply: "댓글 2" },
-      ],
-    },
-    {
-      feedType: "CARD",
-      cardId: 4,
-      cardImage: CardImg,
-      category: "문제2 > 알고리즘",
-      id: "sdfsdfsdf@naver.com",
-      title: "제목인데 json 형식 test 중",
-      description: "이 문제에 대해 설명 하시오",
-      solution: "정답~~",
-      answer: "내가 쓴 답~~",
-      commentList: [
-        { id: 16, name: "정세권", reply: "댓글 1" },
-        { id: 17, name: "정둘권", reply: "댓글 2" },
-      ],
-    },
-  ];
 
   // component - local 데이터
   const [value, setValue] = useState({
@@ -148,32 +77,6 @@ function HomeInfiniteScroll() {
   // ================= RETURN =========================
   return (
     <div>
-      {feedList.map((feed) => {
-        if (feed.feedType === "CARD")
-          return (
-            <div key={feed.cardId}>
-              <HomeCard
-                image={feed.cardImage}
-                category={feed.category}
-                id="userId"
-                title={feed.title}
-                description={feed.description}
-                solution={feed.solution}
-                answer={feed.answer}
-                commentList={feed.commentList}
-              />
-            </div>
-          );
-        return (
-          <div key={feed.cardId}>
-            <HomeBundle
-              bundleTitle={feed.bundleTitle}
-              bundleAuthor={feed.bundleAuthor}
-              cardList={feed.cardList}
-            />
-          </div>
-        );
-      })}
       <InfiniteScroll
         dataLength={viewPosts.length} // set the length of the data.This will unlock the subsequent calls to next
         next={getMorePosts} // 페이지 로딩 중 데이터가 더 있을때 끝에서 수행 할 함수
@@ -191,15 +94,7 @@ function HomeInfiniteScroll() {
         {viewPosts.map((post) =>
           post.feedType === "CARD" ? (
             <div key={post.cardId}>
-              <HomeCard
-                image={CardImg}
-                category={post.firstCategoryName}
-                id={post.cardId}
-                title={post.feedTitle}
-                description={post.feedContent}
-                solution={post.cardCommentary}
-                answer={post.answer}
-              />
+              <HomeCard cardInfo={post} />
             </div>
           ) : (
             <div key={post.cardId}>
@@ -213,6 +108,7 @@ function HomeInfiniteScroll() {
         )}
       </InfiniteScroll>
     </div>
+    // </div>
   );
 }
 

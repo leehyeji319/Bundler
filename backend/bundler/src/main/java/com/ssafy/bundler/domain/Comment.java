@@ -37,5 +37,9 @@ public class Comment extends BaseEntity implements Serializable {
 
 	@Column(name = "comment_content")
 	private String commentContent; // 댓글 내용
+
+	public void updateContent(String commentContent){
+		this.commentContent = commentContent;
+	}
 	
 }

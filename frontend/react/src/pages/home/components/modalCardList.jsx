@@ -12,7 +12,7 @@ import MDBox from "components/MDBox";
 import DataTable from "pages/home/DataTable";
 import ModalDetail from "pages/home/components/modalDetail";
 import HomeInput from "pages/home/components/homeInput";
-// import HomeCommentList from "pages/home/components/homeCommentList";
+// import CardImg from "assets/images/bundler/bundler_rabbit_2.png";
 
 function ModalCardList({ open, handleCardClose, cardList }) {
   // Data - global
@@ -20,9 +20,9 @@ function ModalCardList({ open, handleCardClose, cardList }) {
 
   // Data - local
   const columnList = [
-    { Header: "유형", accessor: "category", width: "20%" },
-    { Header: "제목", accessor: "title", width: "40%" },
-    { Header: "내용", accessor: "description" },
+    { Header: "유형", accessor: "firstCategoryName", width: "20%" },
+    { Header: "제목", accessor: "feedTitle", width: "40%" },
+    { Header: "내용", accessor: "feedContent" },
   ];
 
   // useState - card Detail Information
@@ -30,10 +30,11 @@ function ModalCardList({ open, handleCardClose, cardList }) {
     feedType: "CARD",
     cardId: 0,
     cardImage: "",
-    category: "",
-    id: "",
-    title: "",
-    description: "",
+    firstCategoryName: "",
+    userId: 1,
+    feedTitle: "",
+    feedContent: "",
+    cardDescription: "",
     solution: "",
     answer: "",
     commentList: [{ id: 0, name: "", reply: "" }],
@@ -69,70 +70,58 @@ function ModalCardList({ open, handleCardClose, cardList }) {
     borderRadius: 5,
   };
 
+  // open={open}
+  // handleClose={handleClose}
+  // cardInfo={cardInfo}
   return (
-    <>
-      <ModalDetail
-        open={cardOpenModal}
-        handleClose={handleDetailCardClose}
-        image={cardDetail.category}
-        category={cardDetail.category}
-        id={cardDetail.cardId}
-        title={cardDetail.title}
-        description={cardDetail.description}
-        solution={cardDetail.solution}
-        answer={cardDetail.answer}
-        // commentList={cardDetail.commentList}
-      />
-      <Modal open={open} onClose={handleBundleCloseModal}>
-        <Card sx={style}>
-          <MDBox p={3}>
-            <DataTable
-              table={{
-                columns: columnList,
-                rows: cardList,
-              }}
-              handleEdit={handleSelectedCard}
-              canSearch
-            />
-          </MDBox>
-          <MDBox p={3}>
-            <HomeInput />
-            {/* <HomeCommentList commentList={cardList[0].commentList} /> */}
-          </MDBox>
-        </Card>
-      </Modal>
-    </>
+    cardList !== null && (
+      <>
+        <ModalDetail
+          open={cardOpenModal}
+          handleClose={handleDetailCardClose}
+          cardInfo={cardDetail}
+          // image={CardImg}
+          // category={cardDetail.firstCategoryName}
+          // id={cardDetail.userId}
+          // title={cardDetail.feedTitle}
+          // description={cardDetail.feedContent}
+          // solution={cardDetail.cardCommentary}
+          // answer={cardDetail.cardCommentary}
+          // commentList={cardDetail.commentList}
+        />
+        <Modal open={open} onClose={handleBundleCloseModal}>
+          <Card sx={style}>
+            <MDBox p={3}>
+              <DataTable
+                table={{
+                  columns: columnList,
+                  rows: cardList,
+                }}
+                handleEdit={handleSelectedCard}
+                canSearch
+              />
+            </MDBox>
+            <MDBox p={3}>
+              <HomeInput />
+              {/* <HomeCommentList commentList={cardList[0].commentList} /> */}
+            </MDBox>
+          </Card>
+        </Modal>
+      </>
+    )
   );
 }
 
 // Default Vlaue
-// ModalCardList.defaultProps = {
-//   commentList: null,
-// };
+ModalCardList.defaultProps = {
+  cardList: [],
+};
 
 // Typechecking props for the ModalCardList
 ModalCardList.propTypes = {
   open: PropTypes.bool.isRequired,
   handleCardClose: PropTypes.func.isRequired,
-  cardList: PropTypes.arrayOf(
-    PropTypes.shape({
-      cardId: PropTypes.number.isRequired,
-      cardImage: PropTypes.string.isRequired,
-      category: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      solution: PropTypes.string.isRequired,
-      answer: PropTypes.string.isRequired,
-      // commentList: PropTypes.arrayOf(
-      //   PropTypes.shape({
-      //     id: PropTypes.number.isRequired,
-      //     name: PropTypes.string.isRequired,
-      //     reply: PropTypes.string.isRequired,
-      //   }).isRequired
-      // ).isRequired,
-    }).isRequired
-  ).isRequired,
+  cardList: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default ModalCardList;
