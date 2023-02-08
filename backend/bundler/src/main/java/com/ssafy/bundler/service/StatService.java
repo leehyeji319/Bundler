@@ -132,9 +132,11 @@ public class StatService {
 
 
 			categoryDto = statQueryRepository.findMostMakeSubCategory(user.getUserId());
-			category = categoryRepository.findById(categoryDto.getCategoryId()).orElseThrow(
-				()->new IllegalArgumentException("카테고리 조회중 오류가 발생햇습니다.")
-			);
+			if(categoryDto!=null){
+				category = categoryRepository.findById(categoryDto.getCategoryId()).orElseThrow(
+					()->new IllegalArgumentException("카테고리 조회중 오류가 발생햇습니다.")
+				);
+			}
 
 			categories[1] = category;
 
