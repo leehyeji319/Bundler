@@ -26,4 +26,15 @@ public class CommentResponseDto {
 		this.commentContent = comment.getCommentContent();
 		this.createdAt = comment.getCreatedAt();
 	}
+
+	public CommentResponseDto(Long commentId, Long feedId, Long commentWriterId, String commentWriterNickname,
+		String commentWriterProfileImage, String commentContent, LocalDateTime createdAt) {
+		this.commentId = commentId;
+		this.feedId = feedId;
+		this.commentWriterId = commentWriterId;
+		this.commentWriterNickname = commentWriterNickname;
+		this.commentWriterProfileImage = commentWriterProfileImage;
+		this.commentContent = commentContent;
+		this.createdAt = createdAt;
+	}
 }

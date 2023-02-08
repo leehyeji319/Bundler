@@ -19,7 +19,7 @@ import com.ssafy.bundler.repository.CardRepository;
 import com.ssafy.bundler.repository.CommentRepository;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.LinkRepository;
-import com.ssafy.bundler.repository.query.FeedQueryRepository;
+import com.ssafy.bundler.repository.query.BudnleQueryRepository;
 import com.ssafy.bundler.repository.query.UserFeedQueryRepository;
 
 import jakarta.persistence.EntityManager;
@@ -47,7 +47,7 @@ public class FeedService {
 	private final CommentRepository commentRepository;
 	private final BundleRepository bundleRepository;
 	private final LinkRepository linkRepository;
-	private final FeedQueryRepository feedQueryRepository;
+	private final BudnleQueryRepository feedQueryRepository;
 	private final UserFeedQueryRepository userFeedQueryRepository;
 
 	private EntityManager em;
@@ -67,7 +67,7 @@ public class FeedService {
 		return cardResponseDto;
 	}
 
-	//카드 리스트 조회
+	//카드 리스트 조회 V1 (Summary)
 	public List<CardSummaryResponseDto> findCardSummanryList() {
 		List<Card> all = cardRepository.findAll();
 

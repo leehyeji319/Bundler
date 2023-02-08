@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Repository
 @RequiredArgsConstructor
-public class FeedQueryRepository {
+public class BudnleQueryRepository {
 
 	private final EntityManager em;
 	private final CommentRepository commentRepository;

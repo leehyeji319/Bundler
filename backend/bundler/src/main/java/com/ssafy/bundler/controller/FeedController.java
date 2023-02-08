@@ -14,7 +14,8 @@ import com.ssafy.bundler.dto.bundle.response.BundleResponseDto;
 import com.ssafy.bundler.dto.card.response.CardResponseDto;
 import com.ssafy.bundler.dto.card.response.CardSummaryResponseDto;
 import com.ssafy.bundler.repository.FeedRepository;
-import com.ssafy.bundler.repository.query.FeedQueryRepository;
+import com.ssafy.bundler.repository.query.BudnleQueryRepository;
+import com.ssafy.bundler.repository.query.CardQueryRepository;
 import com.ssafy.bundler.service.FeedService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,12 +40,18 @@ import lombok.RequiredArgsConstructor;
 public class FeedController {
 	private final FeedRepository feedRepository;
 	private final FeedService feedService;
-	private final FeedQueryRepository feedQueryRepository;
+	private final BudnleQueryRepository budnleQueryRepository;
+	private final CardQueryRepository cardQueryRepository;
 
-	//카드 리스트
+	//카드 리스트 V1 (댓글 없음)
 	@GetMapping("/v1/feeds/cards")
-	public List<CardSummaryResponseDto> getCards() {
+	public List<CardSummaryResponseDto> getCardsV1() {
 		return feedService.findCardSummanryList();
+	}
+
+	@GetMapping("/v5/feeds/cards")
+	public List<CardResponseDto> getCardsWithCommentList() {
+		return cardQueryRepository.findAllCardByDto_optimization();
 	}
 
 	//카드 개별
@@ -56,13 +63,13 @@ public class FeedController {
 	//번들 리스트
 	@GetMapping("/v5/feeds/bundles")
 	public List<BundleResponseDto> getBundles() {
-		return feedQueryRepository.findAllBundleByDto_optimization();
+		return budnleQueryRepository.findAllBundleByDto_optimization();
 	}
 
 	//번들 개별
 	@GetMapping("/v5/feeds/bundles/{feed_id}")
 	public BundleResponseDto getBundle(@PathVariable("feed_id") Long feedId) {
-		return feedQueryRepository.findBundleByDto_optimization(feedId);
+		return budnleQueryRepository.findBundleByDto_optimization(feedId);
 	}
 
 	//전체 조회
