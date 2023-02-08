@@ -33,7 +33,7 @@ public class CardBundleQueryDto {
 	private String userProfileImage;
 	private String userNickname;
 
-	private String feedTile;
+	private String feedTitle;
 	private String feedContent;
 
 	private Long firstCategoryId;
@@ -56,7 +56,7 @@ public class CardBundleQueryDto {
 		this.cardWriterId = cardWriterId;
 		this.userProfileImage = userProfileImage;
 		this.userNickname = userNickname;
-		this.feedTile = feedTile;
+		this.feedTitle = feedTile;
 		this.feedContent = feedContent;
 		this.firstCategoryId = firstCategoryId;
 		this.firstCategoryName = firstCategoryName;
