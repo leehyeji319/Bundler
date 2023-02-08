@@ -65,9 +65,7 @@ function HomeBundle({ bundleTitle, bundleAuthor, cardList }) {
             {bundleTitle}
           </MDTypography>
         </MDBox>
-        {/* <MDBox sx={{ position: "absolute", bottom: "0", mb: "1" }}> */}
         {cardList !== null && <Button onClick={handleCardListOpen}>번들 상세보기</Button>}
-        {/* </MDBox> */}
       </MDBox>
     </Card>
   );
