@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ssafy.bundler.domain.Card;
+import com.ssafy.bundler.domain.CardType;
 import com.ssafy.bundler.domain.FeedType;
 import com.ssafy.bundler.dto.comment.CommentResponseDto;
 
@@ -30,9 +31,7 @@ public class CardResponseDto {
 	private String feedType = FeedType.CARD.toString();
 
 	private LocalDateTime createdAt;
-	private String cardType;
-
-	// private boolean isDeleted;
+	private CardType cardType;
 
 	private Long userId;
 	private String userProfileImage;
@@ -53,11 +52,6 @@ public class CardResponseDto {
 	// private String linkImage;
 	// private String linkTitle;
 	// private String linkDescription;
-	//
-	// private String bundleThumbnail;
-	// private String bundleThumbnailText;
-	// private boolean isBundlePublic;
-
 	private int cardScrapCnt;
 	private int feedLikeCnt;
 	private int feedCommentCnt;
@@ -66,23 +60,15 @@ public class CardResponseDto {
 
 	public CardResponseDto(Card card) {
 		this.cardId = card.getFeedId();
-		// this.feedType = card.getFeedType().toString();
-		this.cardType = card.getCardType().toString();
+		this.cardType = card.getCardType();
 		this.createdAt = card.getCreatedAt();
-		// this.isDeleted = card.isDeleted();
 		this.userId = card.getWriter().getUserId();
 		this.userProfileImage = card.getWriter().getUserProfileImage();
 		this.userNickname = card.getWriter().getUserNickname();
-		if (card.getCategory().getParent() == null) {
-			this.firstCategoryId = card.getCategory().getCategoryId();
-			this.firstCategoryName = card.getCategory().getCategoryName();
-		} else if (card.getCategory().getParent() != null) {
-			this.firstCategoryId = card.getCategory().getParent().getCategoryId();
-			this.firstCategoryName = card.getCategory().getParent().getCategoryName();
-			this.secondCategoryId = card.getCategory().getCategoryId();
-			this.secondCategoryName = card.getCategory().getCategoryName();
-
-		}
+		this.firstCategoryId = card.getCategory().getParent().getCategoryId();
+		this.firstCategoryName = card.getCategory().getParent().getCategoryName();
+		this.secondCategoryId = card.getCategory().getCategoryId();
+		this.secondCategoryName = card.getCategory().getCategoryName();
 		this.feedTitle = card.getFeedTitle();
 		this.feedContent = card.getFeedContent();
 		this.cardDescription = card.getCardDescription();
@@ -92,11 +78,31 @@ public class CardResponseDto {
 		// this.linkImage = linkImage;
 		// this.linkTitle = linkTitle;
 		// this.linkDescription = linkDescription;
-		// this.bundleThumbnail = bundleThumbnail;
-		// this.bundleThumbnailText = bundleThumbnailText;
-		// this.isBundlePublic = isBundlePublic;
 		this.cardScrapCnt = card.getCardScrapCnt();
 		this.feedLikeCnt = card.getFeedLikeCnt();
 		this.feedCommentCnt = card.getFeedCommentCnt();
+	}
+
+	public CardResponseDto(Long cardId, LocalDateTime createdAt, CardType cardType, Long userId,
+		String userProfileImage, String userNickname, Long firstCategoryId, String firstCategoryName,
+		Long secondCategoryId, String secondCategoryName, String feedTitle, String feedContent,
+		String cardDescription, String cardCommentary, int cardScrapCnt, int feedLikeCnt, int feedCommentCnt) {
+		this.cardId = cardId;
+		this.createdAt = createdAt;
+		this.cardType = cardType;
+		this.userId = userId;
+		this.userProfileImage = userProfileImage;
+		this.userNickname = userNickname;
+		this.firstCategoryId = firstCategoryId;
+		this.firstCategoryName = firstCategoryName;
+		this.secondCategoryId = secondCategoryId;
+		this.secondCategoryName = secondCategoryName;
+		this.feedTitle = feedTitle;
+		this.feedContent = feedContent;
+		this.cardDescription = cardDescription;
+		this.cardCommentary = cardCommentary;
+		this.cardScrapCnt = cardScrapCnt;
+		this.feedLikeCnt = feedLikeCnt;
+		this.feedCommentCnt = feedCommentCnt;
 	}
 }
