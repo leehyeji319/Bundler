@@ -14,7 +14,8 @@ public class CorsConfig {
       UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
       CorsConfiguration config = new CorsConfiguration();
       config.setAllowCredentials(true);
-      config.addAllowedOrigin("*"); // e.g. http://domain1.com
+      config.addAllowedOrigin("http://i8a810.p.ssafy.io:3000");
+      config.addAllowedOrigin("http://localhost:3000");
       config.addAllowedHeader("*");
       config.addAllowedMethod("*");
 
