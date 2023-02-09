@@ -10,6 +10,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: "middle";
 }
 
 /* ------------------------------------- */
@@ -36,7 +39,7 @@ form {
   justify-items: center;
   position: relative;
 }
-[type="password"] {
+.inputinfo {
   padding: 12px 20px;
   font-size: 1rem;
   border-width: calc(var(--border-width) * 1px);
@@ -48,13 +51,13 @@ form {
   width: 100%;
   transition: border-color calc(var(--transition, 0.2) * 1s) ease;
 }
-[type="password"]:valid {
+.inputinfo:valid {
   --accent: #5f0;
 }
-[type="password"]:invalid {
+.inputinfo:invalid {
   --accent: rgba(255, 43, 0, 0.5);
 }
-[type="password"]:placeholder-shown {
+.inputinfo:placeholder-shown {
   --accent: #fff;
 }
 .app {
@@ -71,68 +74,7 @@ form {
   transform: scale(var(--scale));
   transition: transform calc(var(--transition, 0.2) * 1s) ease;
 }
-[for="password"],
-#login {
-  height: 0;
-  width: 0;
-  transform: scale(0);
-  position: absolute;
-}
-.logout-button {
-  --size: 52;
-  --lightness: 45;
-  height: calc(var(--size) * 1px);
-  padding: 12px 20px;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #fff;
-  background: hsl(10, 80%, calc(var(--lightness) * 1%));
-  border: 0;
-  border-radius: calc(var(--border-radius) * 1px);
-  cursor: pointer;
-}
-.logout-button:hover {
-  --lightness: 30;
-}
-.logout-button:active {
-  --lightness: 20;
-}
-.login-button {
-  --size: 52;
-  --lightness: 45;
-  align-items: center;
-  background: hsl(100, 80%, calc(var(--lightness) * 1%));
-  border-radius: calc(var(--border-radius) * 1px);
-  cursor: pointer;
-  display: flex;
-  height: calc(var(--size) * 1px);
-  justify-content: center;
-  padding: 12px 20px;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #fff;
-  width: 100%;
-  transition: background calc(var(--transition, 0.2) * 1s) ease;
-}
-.login-button svg {
-  transform: translate(50%, 0);
-}
-.login-button * {
-  cursor: pointer;
-}
-.login-button:hover {
-  --lightness: 30;
-}
-.login-button:active {
-  --lightness: 20;
-}
-.login-button svg {
-  height: 24px;
-  width: 24px;
-}
-.login-button svg path {
-  fill: #fff;
-}
+
 .padlock {
   --hue: 65;
   --color: #ffd500;
@@ -381,7 +323,7 @@ form {
     0 100%
   );
 }
-.logout-message {
+/* .logout-message {
   display: block;
   width: 100%;
   border-radius: calc(var(--border-radius) * 1px);
@@ -393,31 +335,31 @@ form {
 #login:checked ~ .app {
   --scale: 1;
 }
-[type="password"]:valid ~ #login,
-[type="password"]:valid ~ [for="login"] {
+[type="email"]:valid ~ #login,
+[type="email"]:valid ~ [for="login"] {
   visibility: visible;
 }
-[type="password"]:valid ~ #login:hover ~ .padlock .padlock__mouth--one,
-[type="password"]:valid ~ [for="login"]:hover ~ .padlock .padlock__mouth--one,
-[type="password"]:valid ~ #login:hover ~ .padlock .padlock__mouth--two,
-[type="password"]:valid ~ [for="login"]:hover ~ .padlock .padlock__mouth--two {
+[type="email"]:valid ~ #login:hover ~ .padlock .padlock__mouth--one,
+[type="email"]:valid ~ [for="login"]:hover ~ .padlock .padlock__mouth--one,
+[type="email"]:valid ~ #login:hover ~ .padlock .padlock__mouth--two,
+[type="email"]:valid ~ [for="login"]:hover ~ .padlock .padlock__mouth--two {
   display: none;
 }
-[type="password"]:valid ~ #login:hover ~ .padlock .padlock__mouth--three,
-[type="password"]:valid ~ [for="login"]:hover ~ .padlock .padlock__mouth--three {
+[type="email"]:valid ~ #login:hover ~ .padlock .padlock__mouth--three,
+[type="email"]:valid ~ [for="login"]:hover ~ .padlock .padlock__mouth--three {
   display: block;
 }
-[type="password"]:valid ~ .padlock .padlock__mouth--one {
+[type="email"]:valid ~ .padlock .padlock__mouth--one {
   display: none;
 }
-[type="password"]:valid ~ .padlock .padlock__mouth--two {
+[type="email"]:valid ~ .padlock .padlock__mouth--two {
   display: block;
 }
-[type="password"]:valid ~ .padlock .padlock__hook {
+[type="email"]:valid ~ .padlock .padlock__hook {
   --pos: 60;
   --delay: 0;
 }
-[type="password"]:placeholder-shown ~ .app {
+[type="email"]:placeholder-shown ~ .app {
   transition: transform 0s 0s ease;
 }
 .app:focus-within ~ .logout-message {
@@ -431,4 +373,4 @@ form {
 }
 .app {
   --scale: 0;
-}
+} */

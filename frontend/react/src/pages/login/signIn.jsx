@@ -42,85 +42,80 @@ function SignIn() {
   };
 
   return (
-    <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        {/* ------- */}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onValid)}>
-          <input type="hidden" name="remember" defaultValue="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email" className="sr-only">
-                email
-                <input
-                  {...register("email", { required: "Please Enter Your ID" })}
-                  type="text"
-                  placeholder="email"
-                />
-                <ErrorMessage
-                  name="email"
-                  errors={errors}
-                  render={({ message }) => (
-                    <p className="text-sm font-medium text-rose-500">{message}</p>
-                  )}
-                />
-              </label>
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-                <input
-                  {...register("password", { required: "Please Enter Your Password" })}
-                  type="text"
-                  placeholder="Password"
-                />
-              </label>
-              <ErrorMessage
-                name="password"
-                errors={errors}
-                render={({ message }) => (
-                  <p className="text-sm font-medium text-rose-500">{message}</p>
-                )}
-              />
-            </div>
-          </div>
-          <div>
-            <Button
-              sx={{
-                bgcolor: "#81D8CF",
-                color: "#000000",
-                fontSize: "midium",
-                fontWeight: "bold",
-              }}
-              fullWidth
-              type="submit"
-            >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                <HiLockClosed
-                  className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                  aria-hidden="true"
-                />
-              </span>
-              로그인
-            </Button>
-          </div>
-          <div className="padlock">
-            <div className="padlock__hook">
-              <div className="padlock__hook-body" />
-              <div className="padlock__hook-body" />
-            </div>
-            <div className="padlock__body">
-              <div className="padlock__face">
-                <div className="padlock__eye padlock__eye--left" />
-                <div className="padlock__eye padlock__eye--right" />
-                <div className="padlock__mouth padlock__mouth--one" />
-                <div className="padlock__mouth padlock__mouth--two" />
-                <div className="padlock__mouth padlock__mouth--three" />
-              </div>
-            </div>
-          </div>
-        </form>
+    <form onSubmit={handleSubmit(onValid)}>
+      <div>
+        <div>
+          <label htmlFor="email">
+            <input
+              {...register("email", { required: "Please Enter Your ID" })}
+              className="inputinfo"
+              type="text"
+              pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]"
+              placeholder="이메일을 입력해주세요"
+              required="required"
+            />
+            <ErrorMessage
+              name="email"
+              errors={errors}
+              render={({ message }) => (
+                <p className="text-sm font-medium text-rose-500">{message}</p>
+              )}
+            />
+          </label>
+        </div>
+        <div>
+          <label htmlFor="password">
+            <input
+              {...register("password", { required: "Please Enter Your Password" })}
+              className="inputinfo"
+              type="password"
+              pattern="^([A-Za-z0-9])(?=.*[!@#$%^&*()]).{8,20}$"
+              placeholder="비밀번호를 입력해주세요"
+              required="required"
+            />
+          </label>
+          <ErrorMessage
+            name="password"
+            errors={errors}
+            render={({ message }) => <p className="text-sm font-medium text-rose-500">{message}</p>}
+          />
+        </div>
+        <div>
+          <Button
+            sx={{
+              marginTop: "3%",
+              bgcolor: "#81D8CF",
+              color: "#000000",
+              fontSize: "large",
+              fontWeight: "bold",
+            }}
+            fullWidth
+            type="submit"
+          >
+            <HiLockClosed
+              className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+              aria-hidden="true"
+            />
+            로그인
+          </Button>
+        </div>
       </div>
-    </div>
+      <div className="padlock">
+        <div className="padlock__hook">
+          <div className="padlock__hook-body" />
+          <div className="padlock__hook-body" />
+        </div>
+        <div className="padlock__body">
+          <div className="padlock__face">
+            <div className="padlock__eye padlock__eye--left" />
+            <div className="padlock__eye padlock__eye--right" />
+            <div className="padlock__mouth padlock__mouth--one" />
+            <div className="padlock__mouth padlock__mouth--two" />
+            <div className="padlock__mouth padlock__mouth--three" />
+          </div>
+        </div>
+      </div>
+    </form>
   );
 }
 

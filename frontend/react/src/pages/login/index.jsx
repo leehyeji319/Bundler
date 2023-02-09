@@ -13,7 +13,7 @@ import MDBox from "components/MDBox";
 import "./index.css";
 
 // Images
-import Logo from "assets/images/bundler/loginlogo.png";
+// import Logo from "assets/images/bundler/loginlogo.png";
 
 // import template
 import GithubLoginButton from "pages/auth/login/template/components/GithubLoginButton";
@@ -24,20 +24,16 @@ function AuthLogin() {
     <div className="container">
       <DashboardLayout>
         <DashboardNavbar />
-
         <Card sx={{ minWidth: 400, maxWidth: 500 }}>
-          <div className="container4">
-            <Link to="pages\home">
-              <img src={Logo} alt="mainlogo" width={250} />
-            </Link>
-          </div>
           <div className="container5">
             {/* 로그인 버튼 */}
             <MDBox mt={0} mb={1}>
               <SignIn />
             </MDBox>
           </div>
-          <div className="container5">
+          {/* <div className="container5">
+          <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"> */}
+          <div className="max-w-md w-full space-y-8">
             {/* 회원가입 버튼 */}
             <MDBox mt={0} mb={1} textAlign="center">
               <Link to="/signup">
