@@ -1,6 +1,7 @@
 // Import - react
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 // Import - design
 import MDTypography from "components/MDTypography";
@@ -12,9 +13,11 @@ import CheckIcon from "@mui/icons-material/Check";
 
 function HomeCommentList({ commentList }) {
   // =============================== Data ===============================
+  const { loginInfo } = useSelector((state) => state.homeReducer);
+
   // 댓글 수정 boolean 값
   const [edit, setEdit] = useState({
-    id: -1,
+    id: loginInfo.userId,
     comment: "",
   });
 
@@ -76,70 +79,69 @@ function HomeCommentList({ commentList }) {
         overflowX: "hidden",
       }}
     >
-      {commentList.map((comment) => (
-        <li key={comment.id}>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Box>
-              {edit.id === comment.id ? (
-                <Box sx={{ display: "flex" }}>
+      {commentList !== null &&
+        commentList.map((comment) => (
+          <li key={comment.id}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box>
+                {edit.id === comment.id ? (
+                  <Box sx={{ display: "flex" }}>
+                    <MDTypography variant="body2" fontWeight="light">
+                      {comment.name}&nbsp;:
+                    </MDTypography>
+                    <TextField
+                      sx={{ ml: 1 }}
+                      type="text"
+                      size="small"
+                      id={`edit-comment-${comment.id}`}
+                      onChange={handleEdit}
+                      defaultValue={comment.reply}
+                    />
+                  </Box>
+                ) : (
                   <MDTypography variant="body2" fontWeight="light">
-                    {comment.name}&nbsp;:
+                    {comment.name} : {comment.reply}
                   </MDTypography>
-                  <TextField
-                    sx={{ ml: 1 }}
-                    type="text"
-                    size="small"
-                    id={`edit-comment-${comment.id}`}
-                    onChange={handleEdit}
-                    defaultValue={comment.reply}
-                  />
-                </Box>
-              ) : (
-                <MDTypography variant="body2" fontWeight="light">
-                  {comment.name} : {comment.reply}
-                </MDTypography>
-              )}
+                )}
+              </Box>
+              <Box>
+                {edit.id === comment.id ? (
+                  <Box>
+                    <Button type="button" onClick={editCloseButton} sx={{ p: "0" }}>
+                      <CloseIcon />
+                    </Button>
+                    <Button type="button" onClick={editConfirmButton} sx={{ p: "0" }}>
+                      <CheckIcon />
+                    </Button>
+                  </Box>
+                ) : (
+                  <Box>
+                    <Button
+                      type="button"
+                      onClick={() => editButton(comment.reply, comment.id)}
+                      sx={{ p: "0" }}
+                    >
+                      <EditIcon />
+                    </Button>
+                    <Button type="button" onClick={deleteButton} sx={{ p: "0" }}>
+                      <DeleteIcon />
+                    </Button>
+                  </Box>
+                )}
+              </Box>
             </Box>
-            <Box>
-              {edit.id === comment.id ? (
-                <Box>
-                  <Button type="button" onClick={editCloseButton} sx={{ p: "0" }}>
-                    <CloseIcon />
-                  </Button>
-                  <Button type="button" onClick={editConfirmButton} sx={{ p: "0" }}>
-                    <CheckIcon />
-                  </Button>
-                </Box>
-              ) : (
-                <Box>
-                  <Button
-                    type="button"
-                    onClick={() => editButton(comment.reply, comment.id)}
-                    sx={{ p: "0" }}
-                  >
-                    <EditIcon />
-                  </Button>
-                  <Button type="button" onClick={deleteButton} sx={{ p: "0" }}>
-                    <DeleteIcon />
-                  </Button>
-                </Box>
-              )}
-            </Box>
-          </Box>
-        </li>
-      ))}
+          </li>
+        ))}
     </ul>
   );
 }
 
+HomeCommentList.defaultProps = {
+  commentList: [],
+};
+
 HomeCommentList.propTypes = {
-  commentList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      reply: PropTypes.string.isRequired,
-    }).isRequired
-  ).isRequired,
+  commentList: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default HomeCommentList;

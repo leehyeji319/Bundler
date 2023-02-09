@@ -21,7 +21,8 @@ import {
 import MDBox from "components/MDBox";
 
 // Import Custom Component
-import { apiGetBundle, apiPutCardScrap, apiPostCardScrap } from "apis/api/apiHomePage";
+import { apiPutCardScrap, apiPostCardScrap } from "apis/api/apiHomePage";
+// import { apiGetBundle, apiPutCardScrap, apiPostCardScrap } from "apis/api/apiHomePage";
 
 function ScrapButtonModal({ open, handleClose, targetId }) {
   // 해당 유저 정보
@@ -101,16 +102,17 @@ function ScrapButtonModal({ open, handleClose, targetId }) {
   };
 
   useEffect(() => {
-    const initCall = async () => {
-      await apiGetBundle(loginInfo.userId)
-        .then(({ data }) => {
-          setBundles(data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    initCall();
+    setBundles([]);
+    // const initCall = async () => {
+    //   await apiGetBundle(loginInfo.userId)
+    //     .then(({ data }) => {
+    //       setBundles(data);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // };
+    // initCall();
   }, [open]);
 
   const style = {

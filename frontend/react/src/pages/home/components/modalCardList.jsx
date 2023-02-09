@@ -12,9 +12,9 @@ import MDBox from "components/MDBox";
 import DataTable from "pages/home/DataTable";
 import ModalDetail from "pages/home/components/modalDetail";
 import HomeInput from "pages/home/components/homeInput";
-// import CardImg from "assets/images/bundler/bundler_rabbit_2.png";
+import HomeCommentList from "pages/home/components/homeCommentList";
 
-function ModalCardList({ open, handleCardClose, cardList }) {
+function ModalCardList({ open, handleCardClose, cardList, commentList }) {
   // Data - global
   // const { cardList } = useSelector((state) => state.makeReducer);
 
@@ -80,14 +80,6 @@ function ModalCardList({ open, handleCardClose, cardList }) {
           open={cardOpenModal}
           handleClose={handleDetailCardClose}
           cardInfo={cardDetail}
-          // image={CardImg}
-          // category={cardDetail.firstCategoryName}
-          // id={cardDetail.userId}
-          // title={cardDetail.feedTitle}
-          // description={cardDetail.feedContent}
-          // solution={cardDetail.cardCommentary}
-          // answer={cardDetail.cardCommentary}
-          // commentList={cardDetail.commentList}
         />
         <Modal open={open} onClose={handleBundleCloseModal}>
           <Card sx={style}>
@@ -103,7 +95,7 @@ function ModalCardList({ open, handleCardClose, cardList }) {
             </MDBox>
             <MDBox p={3}>
               <HomeInput />
-              {/* <HomeCommentList commentList={cardList[0].commentList} /> */}
+              <HomeCommentList commentList={commentList} />
             </MDBox>
           </Card>
         </Modal>
@@ -115,6 +107,7 @@ function ModalCardList({ open, handleCardClose, cardList }) {
 // Default Vlaue
 ModalCardList.defaultProps = {
   cardList: [],
+  commentList: [],
 };
 
 // Typechecking props for the ModalCardList
@@ -122,6 +115,7 @@ ModalCardList.propTypes = {
   open: PropTypes.bool.isRequired,
   handleCardClose: PropTypes.func.isRequired,
   cardList: PropTypes.arrayOf(PropTypes.object),
+  commentList: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default ModalCardList;
