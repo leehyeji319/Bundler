@@ -98,4 +98,35 @@ public interface StatQueryRepository extends JpaRepository<Feed,Long> {
 	+ "HAVING like_cnt > ?2 "
 	+ ") temp ")
 	Long countUserFollowerHasMoreLike(Long userId, int userLikeTotal);
+@Query(nativeQuery = true,value = "SELECT SUM(c.card_scrap_cnt) as count FROM  "
+	+ "FEEDS f "
+	+ "LEFT JOIN CARDS c ON c.card_id = f.feed_id "
+	+ "WHERE f.user_id = ?1 "
+	+ "GROUP BY user_id")
+	StatTotalCountDto findCardScrapCountByUser(Long userId);
+
+@Query(nativeQuery = true,value = "SELECT COUNT(*) AS COUNT "
+	+ "FROM  "
+	+ "( "
+	+ "SELECT IF( SUM(c.card_scrap_cnt) IS NULL ,0, SUM(c.card_scrap_cnt) ) AS scrap_cnt "
+	+ "FROM USERS u  "
+	+ "LEFT OUTER JOIN FEEDS f ON f.user_id = u.user_id "
+	+ "LEFT JOIN CARDS c ON c.card_id = f.feed_id "
+	+ "GROUP BY u.user_id "
+	+ "HAVING scrap_cnt > ?1 "
+	+ ") temp")
+	Long countUserHasMoreCardScrap(int userCardsScrapTotal);
+	@Query(nativeQuery = true,value = "SELECT COUNT(*) AS COUNT "
+		+ "FROM  "
+		+ "( "
+		+ "SELECT u.user_id,u.user_nickname,fw.follow_from_id,fw.follow_to_id, IF( SUM(c.card_scrap_cnt) IS NULL ,0, SUM(c.card_scrap_cnt) ) AS like_cnt "
+		+ "FROM USERS u  "
+		+ "LEFT OUTER JOIN FOLLOWS fw ON fw.follow_from_id = u.user_id "
+		+ "LEFT OUTER JOIN FEEDS f ON f.user_id = fw.follow_to_id "
+		+ "LEFT JOIN CARDS c ON c.card_id = f.feed_id "
+		+ "WHERE u.user_id = ?1 "
+		+ "GROUP BY fw.follow_to_id "
+		+ "HAVING like_cnt > ?2 "
+		+ ") temp ")
+	Long countUserFollowerHasMoreCardScrap(Long userId, int userCardsScrapTotal);
 }

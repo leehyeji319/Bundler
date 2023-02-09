@@ -109,4 +109,30 @@ class StatServiceImplTest {
 		// //then
 		// assertThat(1).isEqualTo(1);
 	}
+
+	@Test
+	void getRankingCardScrapCntWholeTest() {
+		// String res = "";
+		// //given
+		// for (int i = 1; i < 6; i++) {
+		// 	Long userId = Long.parseLong(String.valueOf(i));
+		// 	double count = statServiceImpl.getRankingCardScrapCntWhole(userId);
+		// }
+		//
+		// //then
+		// assertThat(1).isEqualTo(1);
+	}
+
+	@Test
+	void getRankingCardScrapCntFollowingTest() {
+		// String res = "";
+		// //given
+		// for (int i = 1; i < 6; i++) {
+		// 	Long userId = Long.parseLong(String.valueOf(i));
+		// 	double count = statServiceImpl.getRankingCardScrapCntFollowing(userId);
+		// }
+		//
+		// //then
+		// assertThat(1).isEqualTo(1);
+	}
 }

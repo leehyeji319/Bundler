@@ -14,5 +14,6 @@ public interface StatService {
 	int getMutualFollowCount(Long userId);
 	double getRankingFeedLikeWhole(Long userId);
 	double getRankingFeedLikeFollowing(Long userId);
-
+	double getRankingCardScrapCntWhole(Long userId);
+	double getRankingCardScrapCntFollowing(Long userId);
 }

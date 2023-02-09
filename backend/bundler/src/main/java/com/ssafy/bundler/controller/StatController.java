@@ -25,7 +25,8 @@ public class StatController {
 
 		double feedLikeRankingFollowing = statServiceImpl.getRankingFeedLikeFollowing(userId);
 		double feedLikeRankingTotal = statServiceImpl.getRankingFeedLikeWhole(userId);
-
+		double cardScrapRankingFollowing = statServiceImpl.getRankingCardScrapCntFollowing(userId);
+		double cardScrapRankingTotal = statServiceImpl.getRankingCardScrapCntWhole(userId);
 		StatResponseDto responseDto = StatResponseDto.builder()
 			.statCategory(statsTest)
 			.registerDate(registerDate)
@@ -36,8 +37,8 @@ public class StatController {
 			.mutualFollows(mutualFollows)
 			.feedLikeRankingFollowing(feedLikeRankingFollowing)
 			.feedLikeRankingTotal(feedLikeRankingTotal)
-			.cardScrapRankingFollowing(0)
-			.cardScrapRankingTotal(0)
+			.cardScrapRankingFollowing(cardScrapRankingFollowing)
+			.cardScrapRankingTotal(cardScrapRankingTotal)
 			.cardMakeRankingTotal(0)
 			.build();
 

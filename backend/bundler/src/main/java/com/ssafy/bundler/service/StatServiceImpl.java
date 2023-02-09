@@ -28,11 +28,14 @@ public class StatServiceImpl implements StatService{
 	@Autowired
 	CategoryRepository categoryRepository;
 
-	@Transactional
-	public StatCategoryDto[] getCategoryStat(Long userId){
-		User user = userRepository.findById(userId).orElseThrow(
+	User getUser(Long userId){
+		return userRepository.findById(userId).orElseThrow(
 			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
 		);
+	}
+	@Transactional
+	public StatCategoryDto[] getCategoryStat(Long userId){
+		User user = getUser(userId);
 		List<StatCategoryCountDto> res = statQueryRepository.findFeedJoinCategory(user.getUserId());
 
 		Map<Long,StatCategoryDto> preResult = new HashMap<>();
@@ -93,35 +96,26 @@ public class StatServiceImpl implements StatService{
 	}
 	@Transactional
 	public String getRegisterDate(Long userId){
-		User user = userRepository.findById(userId).orElseThrow(
-			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
-		);
+		User user = getUser(userId);
 		return user.getCreatedAt().toLocalDate().toString();
 	}
 
 	@Transactional
 	public Integer getTotalFeedLike(Long userId){
-		User user = userRepository.findById(userId).orElseThrow(
-			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
-		);
+		User user = getUser(userId);
 
 		StatTotalCountDto totalLike = statQueryRepository.findLikeTotalCountByUser(user.getUserId());
 		return totalLike == null ? 0 : totalLike.getCount();
 	}
 	@Transactional
 	public Integer getTotalCardScrappedCount(Long userId){
-		User user = userRepository.findById(userId).orElseThrow(
-			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
-		);
+		User user = getUser(userId);
 		StatTotalCountDto totalScrap = statQueryRepository.findScrapCntTotalByUserId(user.getUserId());
 		return totalScrap == null ? 0 : totalScrap.getCount();
 	}
 	@Transactional
 	public String[] getMaxCategories(Long userId){
-
-		User user = userRepository.findById(userId).orElseThrow(
-			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
-		);
+		User user = getUser(userId);
 		Category[] categories = new Category[2];
 
 		StatMostMakeCategoryDto categoryDto = statQueryRepository.findMostMakeCategory(user.getUserId());
@@ -147,9 +141,7 @@ public class StatServiceImpl implements StatService{
 	}
 	@Transactional
 	public int getMutualFollowCount(Long userId){
-		User user = userRepository.findById(userId).orElseThrow(
-			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
-		);
+		User user = getUser(userId);
 		StatTotalCountDto maxFollowCount = statQueryRepository.findMutualFollowCount(user.getUserId());
 		if(maxFollowCount==null) return 0;
 		return maxFollowCount.getCount();
@@ -157,9 +149,7 @@ public class StatServiceImpl implements StatService{
 
 	@Override
 	public double getRankingFeedLikeWhole(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(
-			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
-		);
+		User user = getUser(userId);
 		//내 좋아요 총합
 		StatTotalCountDto totalLike = statQueryRepository.findLikeTotalCountByUser(user.getUserId());
 		int userLikeTotal = totalLike==null ? 0: totalLike.getCount();
@@ -175,18 +165,48 @@ public class StatServiceImpl implements StatService{
 
 	@Override
 	public double getRankingFeedLikeFollowing(Long userId) {
-		User user = userRepository.findById(userId).orElseThrow(
-			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
-		);
+		User user = getUser(userId);
 		//팔로우한  회원수
 		int totalUserFollowerCount = user.getFollowingCnt();
-		if(totalUserFollowerCount==0) return 0d;
+		if(totalUserFollowerCount==0) return 100d;
 
 		//내 좋아요 총합
 		StatTotalCountDto totalLike = statQueryRepository.findLikeTotalCountByUser(user.getUserId());
 		int userLikeTotal = totalLike==null ? 0: totalLike.getCount();
 		//팔로워 중에서 내 좋아요 총합 보다 많은 사람 수
 		Long count = statQueryRepository.countUserFollowerHasMoreLike(user.getUserId(),userLikeTotal);
+
+		return Math.round(count/(double) totalUserFollowerCount * 100);
+	}
+
+	@Override
+	public double getRankingCardScrapCntWhole(Long userId) {
+		User user = getUser(userId);
+		//내 카드 스크랩 총합
+		StatTotalCountDto cardsScrap = statQueryRepository.findCardScrapCountByUser(user.getUserId());
+		int userCardsScrapTotal = cardsScrap==null ? 0: cardsScrap.getCount();
+
+		//내 카드 스크랩 총합 보다 많은 사람 수
+		Long count = statQueryRepository.countUserHasMoreCardScrap(userCardsScrapTotal);
+
+		//전체 회원수
+		long totalUserCount = userRepository.count();
+
+		return Math.round(count/(double) totalUserCount * 100);
+	}
+
+	@Override
+	public double getRankingCardScrapCntFollowing(Long userId) {
+		User user = getUser(userId);
+		//팔로우한  회원수
+		int totalUserFollowerCount = user.getFollowingCnt();
+		if(totalUserFollowerCount==0) return 100d;
+
+		//내 좋아요 총합
+		StatTotalCountDto cardsScrap = statQueryRepository.findCardScrapCountByUser(user.getUserId());
+		int userCardsScrapTotal = cardsScrap==null ? 0: cardsScrap.getCount();
+		//팔로워 중에서 내 카드스크랩 총합 보다 많은 사람 수
+		Long count = statQueryRepository.countUserFollowerHasMoreCardScrap(user.getUserId(),userCardsScrapTotal);
 
 		return Math.round(count/(double) totalUserFollowerCount * 100);
 	}
