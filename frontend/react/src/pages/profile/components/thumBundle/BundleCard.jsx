@@ -43,6 +43,7 @@ function BundleThumbnail2({
   const [open4, setOpen4] = useState(false);
   const BundleSetOpen = () => setOpen4(true);
   const BundleSetClose = () => setOpen4(false);
+  const [IconHovered2, setIconHovered2] = useState(false);
 
   return (
     <Card
@@ -217,8 +218,10 @@ function BundleThumbnail2({
                       width: "25px",
                       height: "25px",
                     }}
-                    color="secondary"
                     onClick={BundleSetOpen}
+                    onMouseEnter={() => setIconHovered2(true)}
+                    onMouseLeave={() => setIconHovered2(false)}
+                    color={IconHovered2 ? "white" : "gray"}
                   />
                 </MDBox>
               </MDBox>

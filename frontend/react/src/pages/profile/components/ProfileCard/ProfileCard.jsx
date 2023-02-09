@@ -32,13 +32,27 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SettingsIcon from "@mui/icons-material/Settings";
+// import HoverableIcon from "../mouseHover/mouseHoverIcon";
 
 import { useState } from "react";
-import FollowingBox from "pages/profile/components/Follow/FollowingBox";
+// import FollowingBox from "pages/profile/components/Follow/FollowingBox";
+// import FollowingInfiniteScroll from "../Follow/FollowingInfinite";
+// import FollowingBox2 from "../Follow/FollowingBox2";
 import FollowerBox from "../Follow/FollowerBox";
-import ProfileSetBox from "../SettingModal/ProfileSetting";
+// import ProfileSetBox from "../SettingModal/ProfileSetting";
+import ProfileSetBox3 from "../SettingModal/ProfileSetting3";
+import InfiniteScrollingModal2 from "../Follow/FollowingInfinite3";
 
-function ProfileCard({ profileImage, nickname, email, introduction, group }) {
+function ProfileCard({
+  // userId,
+  profileImage,
+  nickname,
+  email,
+  introduction,
+  group,
+  FollowingCount,
+  FollowerCount,
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -51,6 +65,7 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
   const ProfileSetOpen = () => setOpen3(true);
   const ProfileSetClose = () => setOpen3(false);
 
+  const [IconHovered, setIconHovered] = useState(false);
   return (
     <MDBox
       sx={{
@@ -67,13 +82,15 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
       }}
     >
       <Modal open={open} onClose={handleClose}>
-        <FollowingBox nickname="임성준" />
+        {/* <FollowingBox nickname="임성준" /> */}
+        {/* <FollowingBox2 nickname="임성준" /> */}
+        <InfiniteScrollingModal2 nickname="임성준" />
       </Modal>
       <Modal open={open2} onClose={FollowerClose}>
         <FollowerBox nickname="임성준" />
       </Modal>
       <Modal open={open3} onClose={ProfileSetClose}>
-        <ProfileSetBox />
+        <ProfileSetBox3 Image={profileImage} />
       </Modal>
       <MDBox // 이미지와 이름, 이메일, 소속 담을 박스
         sx={{
@@ -143,14 +160,14 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
         >
           <SettingsIcon // 프로필 설정 아이콘
             sx={{
-              color: "gray",
+              // color: "gray",
               width: "30px",
               height: "30px",
             }}
             onClick={ProfileSetOpen}
-            // style = {{
-            //   float : "right",
-            // }}
+            onMouseEnter={() => setIconHovered(true)}
+            onMouseLeave={() => setIconHovered(false)}
+            color={IconHovered ? "white" : "gray"}
           />
         </MDBox>
       </MDBox>
@@ -240,7 +257,7 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
                   fontWeight: "medium",
                 }}
               >
-                373
+                {FollowingCount}
               </MDTypography>
             </MDBox>
           </MDButton>
@@ -294,7 +311,7 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
                   fontWeight: "medium",
                 }}
               >
-                359
+                {FollowerCount}
               </MDTypography>
             </MDBox>
           </MDButton>
@@ -311,11 +328,14 @@ function ProfileCard({ profileImage, nickname, email, introduction, group }) {
 
 // Typechecking props for the SimpleBlogCard
 ProfileCard.propTypes = {
+  // userId: PropTypes.number.isRequired,
   profileImage: PropTypes.string.isRequired,
   nickname: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   introduction: PropTypes.string.isRequired,
   group: PropTypes.string.isRequired,
+  FollowingCount: PropTypes.number.isRequired,
+  FollowerCount: PropTypes.number.isRequired,
 };
 
 export default ProfileCard;
