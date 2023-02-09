@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-
+import { Button } from "@mui/material";
 import { getCookieToken, removeCookieToken } from "redux/store/Cookie";
 import { DELETE_TOKEN } from "redux/store/Auth";
 import { logoutUser } from "apis/api/Users";
@@ -33,9 +33,20 @@ function SignOut() {
 
   return (
     <div>
-      <button type="button" onClick={() => logout()}>
+      <Button
+        onClick={() => logout()}
+        className="learn-more2"
+        sx={{
+          marginTop: "0%",
+          bgcolor: "#81D8CF",
+          color: "#000000",
+          fontSize: "medium",
+          fontWeight: "bold",
+        }}
+        type="button"
+      >
         logout
-      </button>
+      </Button>
     </div>
   );
 }
