@@ -1,8 +1,13 @@
 package com.ssafy.bundler.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.ssafy.bundler.domain.Bundle;
+import com.ssafy.bundler.dto.feed.UserBundleListSummary;
 
 public interface BundleRepository extends JpaRepository<Bundle, Long> {
 

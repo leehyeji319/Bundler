@@ -1,23 +1,42 @@
 package com.ssafy.bundler.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.bundler.domain.Card;
+import com.ssafy.bundler.domain.Comment;
+import com.ssafy.bundler.domain.Feed;
+import com.ssafy.bundler.dto.bundle.response.BundleResponseDto;
+import com.ssafy.bundler.dto.card.response.CardResponseDto;
+import com.ssafy.bundler.dto.card.response.CardSummaryResponseDto;
+import com.ssafy.bundler.dto.comment.CommentResponseDto;
 import com.ssafy.bundler.repository.BundleRepository;
 import com.ssafy.bundler.repository.CardRepository;
+import com.ssafy.bundler.repository.CommentRepository;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.LinkRepository;
 import com.ssafy.bundler.repository.query.BundleQueryRepository;
 import com.ssafy.bundler.repository.query.CardQueryRepository;
 import com.ssafy.bundler.repository.query.UserFeedQueryRepository;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 카드 조회
- *
- * @author 이혜지
- * @version 1.0
+ *packageName    : com.ssafy.bundler.dto.bundle.response
+ * fileName       : FeedService
+ * author         : modsiw
+ * date           : 2023/02/04
+ * description    :
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/02/04        modsiw       최초 생성
+ * 2023/02/08		 modsiw		  피드 전체조회시에 댓글리스트까지 포함 (번들은 번들댓글만, 카드는 카드 댓글만)
  */
 
 @Service
@@ -27,6 +46,7 @@ public class FeedService {
 
 	private final FeedRepository feedRepository;
 	private final CardRepository cardRepository;
+	private final CommentRepository commentRepository;
 	private final BundleRepository bundleRepository;
 	private final LinkRepository linkRepository;
 	private final BundleQueryRepository budnleQueryRepository;
@@ -92,9 +112,12 @@ public class FeedService {
 				CardSummaryResponseDto::new)
 			.collect(Collectors.toList());
 
-	//번들 조회
+		return collect;
+	}
 
-	//번들 리스트 조회
+	public List<BundleResponseDto> getBundlesFindByUserIdContainIsBundlePrivate(Long userId) {
+		return userFeedQueryRepository.findBundlesByUserIdContainIsBundlePrivate(userId);
+	}
 
 	public List<BundleResponseDto> getBundlesFindByUserIdExceptIsBundlePrivate(Long userId) {
 		return userFeedQueryRepository.findBundlesByUserIdExceptIsBundlePrivate(userId);

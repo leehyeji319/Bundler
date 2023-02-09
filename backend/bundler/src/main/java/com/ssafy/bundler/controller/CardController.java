@@ -17,6 +17,13 @@ import com.ssafy.bundler.service.CardService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 카드 생성 수정 삭제 컨트롤러
+ *
+ * @author 이혜지
+ * @version 1.0
+ */
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
