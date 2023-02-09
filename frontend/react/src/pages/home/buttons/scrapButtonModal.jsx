@@ -1,5 +1,6 @@
 // Import React
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 // @mui material components
@@ -20,10 +21,18 @@ import {
 import MDBox from "components/MDBox";
 
 // Import Custom Component
+import { apiGetBundle, apiPutCardScrap, apiPostCardScrap } from "apis/api/apiHomePage";
 
-function ScrapButtonModal({ open, handleClose, handleIsAdded }) {
+function ScrapButtonModal({ open, handleClose, targetId }) {
+  // 해당 유저 정보
+  const { loginInfo } = useSelector((state) => state.homeReducer);
+
+  // 현재 사용자가 가지고 있는 번들 목록
+  const [bundles, setBundles] = useState([]);
+
   // 어떤 번들을 선택할지 또는 생성할지 선택
-  const [selectedBundle, setSelectedBundle] = useState("");
+  const [selectedBundle, setSelectedBundle] = useState(0);
+
   // 빈 번들 생성 시 제목과 내용
   const [createNewBundle, setCreateNewBundle] = useState({
     bundleTitle: "",
@@ -56,15 +65,53 @@ function ScrapButtonModal({ open, handleClose, handleIsAdded }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (selectedBundle === "createBundle") {
+    if (selectedBundle === "-1") {
       // 새로운 번들 생성 시
-      handleIsAdded(createNewBundle, true);
+      const added = async () => {
+        const params = {
+          userId: loginInfo.userId,
+          feedTitle: createNewBundle.bundleTitle,
+          feedContent: createNewBundle.bundleContent,
+          feedType: "BUNDLE",
+        };
+        console.log(targetId, params);
+        await apiPostCardScrap(targetId, params)
+          .then((success) => console.log(success))
+          .then((error) => console.log(error));
+      };
+      added();
     } else {
       // 기존 번들에 추가
-      handleIsAdded(selectedBundle, false);
+      const added = async () => {
+        const params = {
+          cardId: targetId,
+          bundleId: Number.parseInt(selectedBundle, 10),
+        };
+        console.log(params);
+        await apiPutCardScrap({
+          cardId: targetId,
+          bundleId: selectedBundle,
+        })
+          .then((success) => console.log(success))
+          .catch((error) => console.log(error));
+      };
+      added();
     }
     handleClose();
   };
+
+  useEffect(() => {
+    const initCall = async () => {
+      await apiGetBundle(loginInfo.userId)
+        .then(({ data }) => {
+          setBundles(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    initCall();
+  }, [open]);
 
   const style = {
     position: "absolute",
@@ -90,13 +137,19 @@ function ScrapButtonModal({ open, handleClose, handleIsAdded }) {
                 value={selectedBundle}
                 onChange={handleRadioChange}
               >
-                <FormControlLabel value="bundle 1" control={<Radio />} label="번들 1" />
-                <FormControlLabel value="bundle 2" control={<Radio />} label="번들 2" />
-                <FormControlLabel value="createBundle" control={<Radio />} label="번들 생성" />
+                {bundles.map((bundle) => (
+                  <FormControlLabel
+                    key={bundle.bundleId}
+                    value={bundle.bundleId}
+                    control={<Radio />}
+                    label={bundle.feedTitle}
+                  />
+                ))}
+                <FormControlLabel value="-1" control={<Radio />} label="번들 생성" />
               </RadioGroup>
               {/* <FormHelperText>{helperText}</FormHelperText> */}
             </FormControl>
-            {selectedBundle === "createBundle" && (
+            {selectedBundle === "-1" && (
               <Box display="grid" width="70%">
                 <Input placeholder="번들 제목" onChange={handleBundleTitle} />
                 <Input placeholder="번들 내용" onChange={handleBundleContent} />
@@ -131,7 +184,7 @@ function ScrapButtonModal({ open, handleClose, handleIsAdded }) {
 ScrapButtonModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  handleIsAdded: PropTypes.func.isRequired,
+  targetId: PropTypes.number.isRequired,
 };
 
 export default ScrapButtonModal;

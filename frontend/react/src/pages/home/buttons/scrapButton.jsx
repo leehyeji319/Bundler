@@ -1,37 +1,21 @@
 // Import React
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 // Import mui/style
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
+// import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { Box } from "@mui/material";
 
 // Import - custom
 import ScrapButtonModal from "pages/home/buttons/scrapButtonModal";
 
 // scrap Button 상태 - 활성화/비활성화
-function ScrapButton() {
+function ScrapButton({ targetId }) {
   // scrap Button Modal Set
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [value, setValue] = useState({
-    isChecked: false,
-    notice: "",
-  });
-
-  const handleIsAdded = (selectedBundle, isNew) => {
-    console.log(selectedBundle);
-    setValue({ ...value, isChecked: !value.isChecked });
-
-    // axios 통신 데이터 보내기
-    if (isNew) {
-      console.log("새로운 번들");
-    } else {
-      console.log("기존에 있던 번들");
-    }
-  };
 
   const handleToggle = (e) => {
     e.preventDefault();
@@ -40,8 +24,15 @@ function ScrapButton() {
 
   return (
     <Box className="icons-list">
-      <ScrapButtonModal open={open} handleClose={handleClose} handleIsAdded={handleIsAdded} />
-      {value.isChecked ? (
+      <ScrapButtonModal open={open} handleClose={handleClose} targetId={targetId} />
+      <BookmarkBorderIcon
+        sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
+        fontSize="large"
+        transitio="1.2"
+        className="button"
+        onClick={handleToggle}
+      />
+      {/* {value.isChecked ? (
         <BookmarkIcon
           sx={{
             color: "red",
@@ -61,11 +52,15 @@ function ScrapButton() {
           onClick={handleToggle}
         />
       )}
-      {/* <Typography variant="caption" color="red">
+      <Typography variant="caption" color="red">
         hello
       </Typography> */}
     </Box>
   );
 }
-// style= {{fontSize: '50px', color:'red'}}
+
+ScrapButton.propTypes = {
+  targetId: PropTypes.number.isRequired,
+};
+
 export default ScrapButton;
