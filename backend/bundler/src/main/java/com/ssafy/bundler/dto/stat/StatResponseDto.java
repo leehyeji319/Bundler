@@ -15,10 +15,10 @@ public class StatResponseDto {
 	private String mostMakeCategory;
 	private String mostMakeSubCategory;
 
-	private int feedLikeRankingFollowing;
-	private int cardScrapRankingFollowing;
-	private int feedLikeRankingTotal;
-	private int cardScrapRankingTotal;
-	private int cardMakeRankingTotal;
+	private double feedLikeRankingFollowing;
+	private double cardScrapRankingFollowing;
+	private double feedLikeRankingTotal;
+	private double cardScrapRankingTotal;
+	private double cardMakeRankingTotal;
 
 }
