@@ -16,60 +16,58 @@ import ModalDetail from "pages/home/components/modalDetail";
 import LikeButton from "pages/home/buttons/likeButton";
 import ScrapButton from "pages/home/buttons/scrapButton";
 
-function HomeCard({ image, category, id, title, description, solution, answer, commentList }) {
+// Card Image
+import CardImg from "assets/images/bundler/bundlerRabbit.png";
+
+// const cardInfo
+function HomeCard({ cardInfo }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
-    <Card sx={{ ml: 2, mb: 3, maxWidth: 800 }}>
+    <Card sx={{ ml: 2, mb: 3, maxWidth: 800, minHeight: 200, maxHeight: 400 }}>
       <ModalDetail
         open={open}
         handleClose={handleClose}
-        image={image}
-        category={category}
-        id={id}
-        title={title}
-        description={description}
-        solution={solution}
-        answer={answer}
-        commentList={commentList}
+        cardInfo={cardInfo}
+        // commentList={commentList}
       />
       <MDBox mx={3}>
         <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
-          <MDBox display="flex" sx={{ alignItems: "center" }}>
+          <MDBox display="flex" sx={{ alignItems: "center", width: "80%" }}>
             <MDBox
               component="img"
-              src={image}
-              alt={title}
+              src={CardImg}
+              alt={CardImg}
               borderRadius="lg"
               shadow="md"
-              width="25%"
-              height="80%"
+              width="70px"
+              height="70px"
               zIndex={1}
             />
             <MDBox mx={2} width="70%">
               <MDTypography variant="h4" textTransform="capitalize" fontWeight="bold">
-                {category}
+                [카드]&nbsp;{cardInfo.firstCategoryName}
               </MDTypography>
               <MDTypography variant="overline" mt={1}>
-                {id}
+                {cardInfo.userId}
               </MDTypography>
             </MDBox>
           </MDBox>
-          <MDBox display="flex" m="2rem">
+          <MDBox display="flex" m="1" sx={{ alignItems: "center", width: "20%" }}>
             <LikeButton />
-            <ScrapButton />
+            <ScrapButton feedType={cardInfo.feedType} targetId={cardInfo.cardId} />
           </MDBox>
         </MDBox>
         <MDBox mt={2} mb={3}>
           <MDTypography display="inline" variant="h6" textTransform="capitalize" fontWeight="bold">
-            {title}
+            {cardInfo.feedTitle}
           </MDTypography>
         </MDBox>
         <MDBox mt={2} mb={3}>
           <MDTypography variant="body2" component="p" color="text">
-            {description}
+            {cardInfo.feedContent}
           </MDTypography>
         </MDBox>
         <Button onClick={handleOpen}>카드 상세보기</Button>
@@ -80,25 +78,55 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
 
 // Default Vlaue
 HomeCard.defaultProps = {
-  commentList: null,
+  cardInfo: {
+    cardCommentary: "",
+    cardDescription: "",
+    linkDescription: "",
+    linkImage: "",
+    linkTitle: "",
+    linkUrl: "",
+    secondCategoryName: "",
+    userProfileImage: "",
+    secondCategoryId: -1,
+    linkId: -1,
+  },
 };
 
 // Typechecking props for the SimpleBlogCard
 HomeCard.propTypes = {
-  image: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  solution: PropTypes.string.isRequired,
-  answer: PropTypes.string.isRequired,
-  commentList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      reply: PropTypes.string.isRequired,
-    }).isRequired
-  ),
+  cardInfo: PropTypes.shape({
+    cardId: PropTypes.number.isRequired,
+    cardScrapCnt: PropTypes.number.isRequired,
+    feedCommentCnt: PropTypes.number.isRequired,
+    feedLikeCnt: PropTypes.number.isRequired,
+    feedType: PropTypes.string.isRequired,
+    cardType: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    deleted: PropTypes.bool.isRequired,
+    firstCategoryId: PropTypes.number.isRequired,
+    firstCategoryName: PropTypes.string.isRequired,
+    userId: PropTypes.number.isRequired,
+    userNickname: PropTypes.string.isRequired,
+    feedTitle: PropTypes.string.isRequired,
+    feedContent: PropTypes.string.isRequired,
+    cardCommentary: PropTypes.string,
+    cardDescription: PropTypes.string,
+    linkDescription: PropTypes.string,
+    linkId: PropTypes.number,
+    linkImage: PropTypes.string,
+    linkTitle: PropTypes.string,
+    linkUrl: PropTypes.string,
+    secondCategoryId: PropTypes.number,
+    secondCategoryName: PropTypes.string,
+    userProfileImage: PropTypes.string,
+  }),
+  // commentList: PropTypes.arrayOf(
+  //   PropTypes.shape({
+  //     id: PropTypes.number.isRequired,
+  //     name: PropTypes.string.isRequired,
+  //     reply: PropTypes.string.isRequired,
+  //   }).isRequired
+  // ),
 };
 
 export default HomeCard;

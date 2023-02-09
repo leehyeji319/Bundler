@@ -20,7 +20,7 @@ import App from "App";
 
 // import Redux
 import { Provider } from "react-redux"; // redux store.js에 접근
-import store from "redux/store/store";
+import store from "redux/store";
 
 // Material Dashboard 2 React Context Provider
 import { MaterialUIControllerProvider } from "context";

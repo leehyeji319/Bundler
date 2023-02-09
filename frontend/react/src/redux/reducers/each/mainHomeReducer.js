@@ -1,13 +1,17 @@
 // 1. Reducer의 초기 state 지정
 const initialState = {
-  userId: "",
-  cardList: [],
+  loginInfo: {
+    userId: 1,
+    userNickname: "귀여운토꺵이",
+    userEmail: "bundler@gmail.com",
+  },
+  feedList: [],
 };
 
 // 2. Type에 따른 state 변화 설정 && state가 변화할 때 수행되는 함수
 const mainHomeReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SHOW_CARD": {
+    case "GET_FEED_LIST": {
       return {
         // spread 연산자를 이용하여 기존 객체를 불러옴
         ...state,
