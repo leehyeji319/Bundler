@@ -32,6 +32,7 @@ import Search from "pages/searchall";
 import SearchId from "pages/searchid";
 import Make from "pages/make";
 import Profile from "pages/profile";
+import Start from "pages/start";
 import AuthLogin from "pages/login";
 import SignUp from "pages/signup";
 
@@ -50,6 +51,7 @@ function App() {
     whiteSidenav,
     darkMode,
   } = controller;
+
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   // const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
@@ -88,7 +90,6 @@ function App() {
   // 로그인 여부 확인해서 isAuth에 저장
   const { isAuth } = CheckToken(location.key);
   // ------------로그인 여부 확인-----------------------------
-  // 로그인 환영
 
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
@@ -105,12 +106,13 @@ function App() {
       )}
       <Routes>
         {/* isAuth가 true일 때 들어갈 수 있는 component false일 땐 login으로 */}
-        <Route path="/home" element={isAuth ? <Home /> : <Navigate to="/login" />} />
+        <Route path="/home" element={isAuth ? <Home /> : <Navigate to="/" />} />
         <Route path="/search" element={isAuth ? <Search /> : <Navigate to="/login" />} />
         <Route path="/searchid" element={isAuth ? <SearchId /> : <Navigate to="/login" />} />
         <Route path="/make" element={isAuth ? <Make /> : <Navigate to="/login" />} />
         <Route path="/profile" element={isAuth ? <Profile /> : <Navigate to="/login" />} />
         {/* isAuth가 false일 때 들어갈 수 있는 component true일 땐 home으로 */}
+        <Route path="/" element={isAuth === false ? <Start /> : <Navigate to="/home" />} />
         <Route path="/login" element={isAuth === false ? <AuthLogin /> : <Navigate to="/home" />} />
         <Route path="/signup" element={isAuth === false ? <SignUp /> : <Navigate to="/home" />} />
       </Routes>

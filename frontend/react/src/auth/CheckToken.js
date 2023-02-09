@@ -5,7 +5,7 @@ import { requestToken } from "../apis/api/Users";
 import { DELETE_TOKEN, SET_TOKEN } from "../redux/store/Auth";
 
 function CheckToken(key) {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState("loading");
   const { authenticated, expireTime } = useSelector((state) => state.authToken);
   const refreshToken = getCookieToken();
   const dispatch = useDispatch();

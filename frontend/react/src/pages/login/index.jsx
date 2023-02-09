@@ -18,16 +18,14 @@ import Logo from "assets/images/bundler/loginlogo.png";
 // import template
 import GithubLoginButton from "pages/auth/login/template/components/GithubLoginButton";
 import SignIn from "./signIn";
-import SignOut from "./signOut";
-// import SignTemplate from "./template/signTemplate";
-// import App from "./template/App";
 
 function AuthLogin() {
   return (
     <div className="container">
       <DashboardLayout>
         <DashboardNavbar />
-        <Card sx={{ minWidth: 500, maxWidth: 600 }}>
+
+        <Card sx={{ minWidth: 400, maxWidth: 500 }}>
           <div className="container4">
             <Link to="pages\home">
               <img src={Logo} alt="mainlogo" width={250} />
@@ -58,12 +56,9 @@ function AuthLogin() {
               </Link>
             </MDBox>
           </div>
+          {/* github 로그인 */}
           <GithubLoginButton />
         </Card>
-
-        <button type="button" onClick={SignOut}>
-          logout
-        </button>
       </DashboardLayout>
     </div>
   );

@@ -30,12 +30,12 @@ function SignIn() {
 
     // 백으로부터 받은 응답
     const response = await loginUser({ email, password });
-    console.log(response, 11111111111);
+    console.log(response.data, 11111111111);
     if (response.status === 200) {
       // 쿠키에 Refresh Token, store에 Access Token 저장
       setRefreshToken(response.data.refreshToken);
       dispatch(SET_TOKEN(response.data));
-      window.open("/home", "_self");
+      // window.open("/home", "_self");
     } else {
       alert("로그인정보가 다릅니다");
     }
@@ -44,6 +44,7 @@ function SignIn() {
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        {/* ------- */}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onValid)}>
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">
@@ -74,7 +75,7 @@ function SignIn() {
                 />
               </label>
               <ErrorMessage
-                name="email"
+                name="password"
                 errors={errors}
                 render={({ message }) => (
                   <p className="text-sm font-medium text-rose-500">{message}</p>
@@ -101,6 +102,21 @@ function SignIn() {
               </span>
               로그인
             </Button>
+          </div>
+          <div className="padlock">
+            <div className="padlock__hook">
+              <div className="padlock__hook-body" />
+              <div className="padlock__hook-body" />
+            </div>
+            <div className="padlock__body">
+              <div className="padlock__face">
+                <div className="padlock__eye padlock__eye--left" />
+                <div className="padlock__eye padlock__eye--right" />
+                <div className="padlock__mouth padlock__mouth--one" />
+                <div className="padlock__mouth padlock__mouth--two" />
+                <div className="padlock__mouth padlock__mouth--three" />
+              </div>
+            </div>
           </div>
         </form>
       </div>

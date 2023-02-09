@@ -4,6 +4,7 @@ import axios from "axios";
 // 백으로 유저 정보와 함께 로그인 요청을 보낸다. 받은 응답 코드에 따라 에러 또는 응답 받은 json 정보를 리턴한다.
 const loginUser = async (info) => {
   const response = await axios({
+    // url: "http://localhost:8080/login",
     url: "http://localhost:8123/login",
     method: "POST",
     headers: {
@@ -21,8 +22,9 @@ const loginUser = async (info) => {
   // });
 };
 
-const logoutUser = async (refreshtoken) => {
+const logoutUser = async (refreshToken) => {
   const response = await axios({
+    // url: "http://localhost:8080/logout",
     url: "http://localhost:8123/logout",
     method: "POST",
     headers: {
@@ -30,14 +32,15 @@ const logoutUser = async (refreshtoken) => {
     },
     withCredentials: true,
     data: {
-      refreshtoken,
+      refreshToken,
     },
   });
   return response;
 };
 
-const requestToken = async (refreshtoken) => {
+const requestToken = async (refreshToken) => {
   const response = await axios({
+    // url: "http://localhost:8080/requestToken",
     url: "http://localhost:8123/requestToken",
     method: "POST",
     headers: {
@@ -45,7 +48,7 @@ const requestToken = async (refreshtoken) => {
     },
     withCredentials: true,
     data: {
-      refreshtoken,
+      refreshToken,
     },
   });
   return response;
