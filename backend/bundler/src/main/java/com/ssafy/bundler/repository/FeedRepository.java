@@ -16,4 +16,6 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 	@Query("select f from Feed f where f.writer.userId = :userId")
 	List<Feed> findByUserId(Long userId);
 
+	@Query("select f from Feed f where f.feedTitle like %:keyword%")
+	List<Feed> findByFeedTitle(@Param("keyword") String keyword);
 }

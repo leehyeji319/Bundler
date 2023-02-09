@@ -37,6 +37,7 @@ import lombok.RequiredArgsConstructor;
  * -----------------------------------------------------------
  * 2023/02/04        modsiw       최초 생성
  * 2023/02/08		 modsiw		  피드 전체조회시에 댓글리스트까지 포함 (번들은 번들댓글만, 카드는 카드 댓글만)
+ * 2023/02/09		 modsiw		  검색페이지 메서드들 추가
  */
 
 @Service
@@ -123,6 +124,25 @@ public class FeedService {
 		return userFeedQueryRepository.findBundlesByUserIdExceptIsBundlePrivate(userId);
 	}
 
-	public void findCardsByCategoryName() {
+	// ======= 검색 ======= //
+	public List<CardResponseDto> findCardsByCategoryId(Long categoryId) {
+		return cardQueryRepository.findAllCardByDto_optimization(categoryId);
+
+	}
+
+	public List<Object> findAllByKeyword(String keyword) {
+		List<CardResponseDto> cardResponseDtoList = cardQueryRepository.findAllCardByDto_optimization(keyword);
+		List<BundleResponseDto> allByDto_optimization = budnleQueryRepository.findAllBundleByDto_optimization(keyword);
+
+		List<Object> objects = new ArrayList<>();
+
+		for (CardResponseDto c : cardResponseDtoList) {
+			objects.add(c);
+		}
+		for (BundleResponseDto b : allByDto_optimization) {
+			objects.add(b);
+		}
+
+		return objects;
 	}
 }

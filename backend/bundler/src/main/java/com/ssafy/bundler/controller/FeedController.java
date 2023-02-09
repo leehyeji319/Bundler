@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.bundler.domain.Feed;
 import com.ssafy.bundler.dto.bundle.response.BundleResponseDto;
 import com.ssafy.bundler.dto.card.response.CardResponseDto;
 import com.ssafy.bundler.dto.card.response.CardSummaryResponseDto;
@@ -88,9 +88,9 @@ public class FeedController {
 
 	//전체 조회 test
 	@GetMapping("/test/feeds")
-	public ResponseEntity<List<Feed>> getFeeds() {
-		List<Feed> all = feedRepository.findAll();
-		return new ResponseEntity<List<Feed>>(all, HttpStatus.OK);
+	public ResponseEntity<List<Object>> getFeeds(@RequestParam("keyword") String keyword) {
+		List<Object> allByKeyword = feedService.findAllByKeyword(keyword);
+		return new ResponseEntity<List<Object>>(allByKeyword, HttpStatus.OK);
 	}
 
 }

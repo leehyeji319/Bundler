@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.bundler.domain.Comment;
 import com.ssafy.bundler.dto.comment.CommentCreateResponseDto;
-import com.ssafy.bundler.dto.comment.CommentRequestCreateDto;
-import com.ssafy.bundler.dto.comment.CommentRequestUpdateDto;
+import com.ssafy.bundler.dto.comment.CommentSaveRequestDto;
+import com.ssafy.bundler.dto.comment.CommentUpdateRequestDto;
 import com.ssafy.bundler.service.CommentService;
 
 /**
@@ -28,7 +28,7 @@ public class CommentController {
 	CommentService commentService;
 
 	@PostMapping("/api/v1/comment")
-	public ResponseEntity<?> saveComment(@RequestBody CommentRequestCreateDto commentDto) {
+	public ResponseEntity<?> saveComment(@RequestBody CommentSaveRequestDto commentDto) {
 		Comment comment = commentService.saveComment(commentDto);
 		if (comment == null) {
 			return ResponseEntity.ok(new CommentCreateResponseDto(false, "댓글 등록에 실해했습니다.", null));
@@ -38,7 +38,7 @@ public class CommentController {
 
 	@PutMapping("/api/v1/comment/{comment_id}")
 	public ResponseEntity<Long> updateComment(@PathVariable("comment_id") long commentId,
-		@RequestBody CommentRequestUpdateDto commentDto) {
+		@RequestBody CommentUpdateRequestDto commentDto) {
 
 		Comment comment = commentService.updateComment(commentId, commentDto);
 		if (comment == null) {

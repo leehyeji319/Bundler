@@ -168,4 +168,45 @@ public class BundleQueryRepository {
 		return cardbundle.stream()
 			.collect(Collectors.groupingBy(CardBundleQueryDto::getBundleId));
 	}
+
+	// =========== 검색 ============= //
+
+	// ========= 번들 키워드 검색 ========//
+	public List<BundleResponseDto> findAllBundleByDto_optimization(String keyword) {
+
+		List<BundleResponseDto> result = findBundles(keyword);
+
+		Map<Long, List<CardBundleQueryDto>> cardBundleMap = findCardBundleMap(toBundleIds(result));
+
+		Map<Long, List<CommentResponseDto>> bundleCommentMap = findBundleCommentMap(toBundleIds(result));
+
+		//번들들에 속한 카드 리스트들 정보 넣기
+		result.forEach(b -> b.setCardBundleQueryDtoList(cardBundleMap.get(b.getBundleId())));
+		//번들들에 속한 번들의 댓글 리스트 넣기
+		result.forEach(b -> b.setBundleCommentResponseList(bundleCommentMap.get(b.getBundleId())));
+
+		return result;
+	}
+
+	//번들 여러개 찾기
+	private List<BundleResponseDto> findBundles(String keyword) {
+		System.out.println("들어왓나?");
+		List<BundleResponseDto> resultList = em.createQuery(
+				"select new com.ssafy.bundler.dto.bundle.response.BundleResponseDto"
+					+ "(b.bundleId, b.createdAt, w.userId, w.userProfileImage, w.userNickname,"
+					+ " b.feedTitle, b.feedContent, b.bundleThumbnail, b.bundleThumbnailText,"
+					+ " b.feedLikeCnt, b.feedCommentCnt)"
+					+ " from Bundle b"
+					+ " join b.writer w"
+					+ " where b.isBundlePrivate = :isBundlePrivate"
+					+ " and b.feedTitle like :feedTitle", BundleResponseDto.class)
+			.setParameter("feedTitle", "%" + keyword + "%")
+			.setParameter("isBundlePrivate", false)
+			.getResultList();
+
+		System.out.println(resultList.size());
+		return resultList;
+
+	}
+
 }

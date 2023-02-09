@@ -50,12 +50,19 @@ public class BundleService {
 	public Long saveBundle(BundleSaveRequestDto requestDto) {
 		User writerUser = userRepository.findById(requestDto.getUserId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 유저가 존재하지 않습니다. userId= " + requestDto.getUserId()));
+
+		// Integer size = validateFeedTitleAlreadyExistInUserBundle(requestDto.getFeedTitle());
+		// if (size > 0) {
+		// 	requestDto.setFeedTitle(requestDto.getFeedTitle() + "+" + size);
+		// }
+
 		return bundleRepository.save(requestDto.toEntity(writerUser)).getFeedId();
 	}
 
 	//카드와 함께 번들 생성
 	@Transactional
 	public void saveBundleWithCards(BundleSaveRequestDto requestDto) {
+
 		Long savedBundleId = saveBundle(requestDto);
 		List<Long> savedCardsIdList = cardService.saveCardListwithBundle(requestDto.getCardSaveRequestDtoList());
 
@@ -209,5 +216,15 @@ public class BundleService {
 
 	private boolean validateCardAlreadyExistInBundle(Long bundleId, Long cardId) {
 		return cardBundleRepository.findCardBundleByBundleIdWithCardId(bundleId, cardId) == null;
+	}
+
+	private Integer validateFeedTitleAlreadyExistInUserBundle(String feedTitle) {
+		List<Bundle> byFeedTitle = bundleRepository.findByFeedTitle(feedTitle);
+		int size = byFeedTitle.size();
+
+		if (size > 0) {
+			return size;
+		}
+		return 0;
 	}
 }
