@@ -129,4 +129,21 @@ public interface StatQueryRepository extends JpaRepository<Feed,Long> {
 		+ "HAVING like_cnt > ?2 "
 		+ ") temp ")
 	Long countUserFollowerHasMoreCardScrap(Long userId, int userCardsScrapTotal);
+@Query(nativeQuery = true,value = "SELECT COUNT(*) count "
+	+ "FROM FEEDS f "
+	+ "WHERE f.feed_type = 'CARD' AND f.user_id=?1 "
+	+ "GROUP BY f.user_id")
+	Long countCardWrittenByUserId(Long user);
+@Query(nativeQuery = true,value = "SELECT COUNT(*) as COUNT "
+	+ " "
+	+ "FROM ( "
+	+ " "
+	+ "SELECT COUNT(*) count "
+	+ "FROM FEEDS f "
+	+ "WHERE f.feed_type = 'CARD' "
+	+ "GROUP BY f.user_id "
+	+ "HAVING COUNT > ?1 "
+	+ " "
+	+ ") temp")
+Long countHasCardCntMore(Long count);
 }

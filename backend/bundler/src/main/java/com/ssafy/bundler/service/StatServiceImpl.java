@@ -196,6 +196,19 @@ public class StatServiceImpl implements StatService{
 	}
 
 	@Override
+	public double getRankingCardCntWhole(Long userId) {
+		User user = getUser(userId);
+		Long userCardCnt = statQueryRepository.countCardWrittenByUserId(user.getUserId());
+		if(userCardCnt==null) return 100d;
+		Long count = statQueryRepository.countHasCardCntMore(userCardCnt);
+
+		//전체 회원수
+		long totalUserCount = userRepository.count();
+
+		return Math.round(count/(double) totalUserCount * 100);
+	}
+
+	@Override
 	public double getRankingCardScrapCntFollowing(Long userId) {
 		User user = getUser(userId);
 		//팔로우한  회원수

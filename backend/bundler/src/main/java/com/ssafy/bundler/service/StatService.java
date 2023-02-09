@@ -15,5 +15,7 @@ public interface StatService {
 	double getRankingFeedLikeWhole(Long userId);
 	double getRankingFeedLikeFollowing(Long userId);
 	double getRankingCardScrapCntWhole(Long userId);
+
 	double getRankingCardScrapCntFollowing(Long userId);
+	double getRankingCardCntWhole(Long userId);
 }
