@@ -17,7 +17,7 @@ import lombok.Data;
 public class UserBundleListSummary {
 	private Long bundleId;
 	private String feedTitle;
-	private boolean isCardExistInBundle;
+	private boolean isAbleToInsertCardInBundle;
 
 	public UserBundleListSummary(Long bundleId, String feedTitle) {
 		this.bundleId = bundleId;

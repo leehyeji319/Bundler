@@ -161,6 +161,11 @@ public class CardService {
 	//===== Bundle =====//
 	@Transactional
 	public void scrapCardWithExistBundle(BundleScrapRequestDto requestDto) {
+		//카드 번들이 아이디가 똑같을때
+		if (requestDto.getCardId() == requestDto.getBundleId()) {
+			throw new IllegalArgumentException("카드와 번들의 Id는 같을 수 없습니다.");
+		}
+
 		//카드의 scrapCnt + 1
 		Card card = cardRepository.findById(requestDto.getCardId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드의 id를 찾을 수 없습니다. cardId(feedId)= " + requestDto.getCardId()));

@@ -1,5 +1,6 @@
 package com.ssafy.bundler.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.bundle.request.BundleSaveRequestDto;
 import com.ssafy.bundler.dto.bundle.request.BundleScrapRequestDto;
 import com.ssafy.bundler.dto.bundle.request.BundleUpdateRequestDto;
+import com.ssafy.bundler.dto.feed.UserBundleListSummary;
 import com.ssafy.bundler.repository.BundleRepository;
 import com.ssafy.bundler.repository.CardBundleRepository;
 import com.ssafy.bundler.repository.CardRepository;
@@ -180,38 +182,32 @@ public class BundleService {
 			new IllegalArgumentException("해당 카드의 id가 존재하지 않습니다. cardId(feedId)= " + cardId));
 	}
 
-	// public List<UserBundleListSummary> getUserBundleListSummary(Long userId, Long cardId) {
-	//
-	// 	// List<UserBundleListSummary> result = bundleRepository.findAllFeedTitleByUserId(userId);
-	//
-	// 	System.out.println("error");
-	// 	// List<Long> bundleIdsByUserId = feedRepository.findBundleIdsByUserId(userId);
-	//
-	// 	List<Feed> feeds = feedRepository.findByUserId(userId);
-	//
-	// 	List<Long> collect = feeds.stream().map(f -> f.getFeedId()).collect(Collectors.toList());
-	//
-	// 	System.out.println("error2");
-	// 	List<Boolean> existValue = new ArrayList<>();
-	//
-	// 	for (Long c : collect) {
-	// 		existValue.add(validateCardAlreadyExistInBundle(c, cardId));
-	// 	}
-	// 	System.out.println(existValue.size());
-	//
-	// 	int resultSize = result.size();
-	// 	for (int i = 0; i < resultSize; i++) {
-	// 		Boolean aBoolean = existValue.get(i);
-	// 		result.get(i).setCardExistInBundle(aBoolean);
-	// 	}
-	//
-	// 	return result;
-	// }
+	public List<UserBundleListSummary> getUserBundleListSummary(Long userId, Long cardId) {
+
+		cardRepository.findById(cardId).orElseThrow(() -> new IllegalArgumentException("해당 카드는 존재하지 않습니다."));
+
+		//사용자의 모든 피드 타이틀 들고오기
+		List<UserBundleListSummary> result = bundleRepository.findAllFeedTitleByUserId(userId);
+
+		List<Long> bundleIds = bundleRepository.findBundleIdsByUserId(userId);
+
+		List<Boolean> existValue = new ArrayList<>();
+
+		//해당 유저가 가지고잇는 번들들의 id를 돌면서 해당 번들에 카드가 있는지 확인
+		for (Long bundleId : bundleIds) {
+			existValue.add(validateCardAlreadyExistInBundle(bundleId, cardId));
+		}
+
+		int resultSize = result.size();
+		for (int i = 0; i < resultSize; i++) {
+			Boolean aBoolean = existValue.get(i);
+			result.get(i).setAbleToInsertCardInBundle(aBoolean);
+		}
+
+		return result;
+	}
 
 	private boolean validateCardAlreadyExistInBundle(Long bundleId, Long cardId) {
-		if (cardBundleRepository.findCardBundleByBundleIdWithCardId(bundleId, cardId) != null) {
-			return false;
-		}
-		return true;
+		return cardBundleRepository.findCardBundleByBundleIdWithCardId(bundleId, cardId) == null;
 	}
 }
