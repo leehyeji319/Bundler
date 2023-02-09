@@ -23,6 +23,9 @@ public class StatController {
 		String[] maxCategories = statServiceImpl.getMaxCategories(userId);
 		int mutualFollows = statServiceImpl.getMutualFollowCount(userId);
 
+		double feedLikeRankingFollowing = statServiceImpl.getRankingFeedLikeFollowing(userId);
+		double feedLikeRankingTotal = statServiceImpl.getRankingFeedLikeWhole(userId);
+
 		StatResponseDto responseDto = StatResponseDto.builder()
 			.statCategory(statsTest)
 			.registerDate(registerDate)
@@ -31,12 +34,11 @@ public class StatController {
 			.mostMakeCategory(maxCategories[0])
 			.mostMakeSubCategory(maxCategories[1])
 			.mutualFollows(mutualFollows)
-			.continuousCardMakeCnt(33)
-			.feedLikeRankingFollowing(21)
-			.cardScrapRankingFollowing(11)
-			.feedLikeRankingTotal(23)
-			.cardScrapRankingTotal(44)
-			.cardMakeRankingTotal(123)
+			.feedLikeRankingFollowing(feedLikeRankingFollowing)
+			.feedLikeRankingTotal(feedLikeRankingTotal)
+			.cardScrapRankingFollowing(0)
+			.cardScrapRankingTotal(0)
+			.cardMakeRankingTotal(0)
 			.build();
 
 		return ResponseEntity.ok(responseDto);

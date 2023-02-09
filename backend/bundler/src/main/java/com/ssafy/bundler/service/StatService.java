@@ -12,5 +12,7 @@ public interface StatService {
 	Integer getTotalCardScrappedCount(Long userId);
 	String[] getMaxCategories(Long userId);
 	int getMutualFollowCount(Long userId);
+	double getRankingFeedLikeWhole(Long userId);
+	double getRankingFeedLikeFollowing(Long userId);
 
 }

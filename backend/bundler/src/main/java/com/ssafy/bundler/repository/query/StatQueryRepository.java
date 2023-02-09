@@ -75,4 +75,27 @@ public interface StatQueryRepository extends JpaRepository<Feed,Long> {
 	+ "WHERE f.follow_from_id = ?1 AND f2.follow_to_id= ?1 "
 	+ "GROUP BY f.follow_from_id",nativeQuery = true)
 	StatTotalCountDto findMutualFollowCount(Long userId);
+
+@Query(value = "SELECT COUNT(*) AS COUNT "
+	+ "FROM  "
+	+ "( "
+	+ "SELECT IF( SUM(f.feed_like_cnt) IS NULL ,0, SUM(f.feed_like_cnt) ) AS like_cnt "
+	+ "FROM USERS u  "
+	+ "LEFT OUTER JOIN FEEDS f ON f.user_id = u.user_id "
+	+ "GROUP BY u.user_id "
+	+ "HAVING like_cnt > ?1 "
+	+ ") temp",nativeQuery = true)
+	Long countUserHasMoreLike(int like);
+@Query(nativeQuery = true,value = "SELECT COUNT(*) AS COUNT "
+	+ "FROM  "
+	+ "( "
+	+ "SELECT u.user_id,u.user_nickname,fw.follow_from_id,fw.follow_to_id, IF( SUM(f.feed_like_cnt) IS NULL ,0, SUM(f.feed_like_cnt) ) AS like_cnt "
+	+ "FROM USERS u  "
+	+ "LEFT OUTER JOIN FOLLOWS fw ON fw.follow_from_id = u.user_id "
+	+ "LEFT OUTER JOIN FEEDS f ON f.user_id = fw.follow_to_id "
+	+ "WHERE u.user_id = ?1 "
+	+ "GROUP BY fw.follow_to_id "
+	+ "HAVING like_cnt > ?2 "
+	+ ") temp ")
+	Long countUserFollowerHasMoreLike(Long userId, int userLikeTotal);
 }

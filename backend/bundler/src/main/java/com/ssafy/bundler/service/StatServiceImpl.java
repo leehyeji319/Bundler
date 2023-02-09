@@ -27,6 +27,7 @@ public class StatServiceImpl implements StatService{
 	StatQueryRepository statQueryRepository;
 	@Autowired
 	CategoryRepository categoryRepository;
+
 	@Transactional
 	public StatCategoryDto[] getCategoryStat(Long userId){
 		User user = userRepository.findById(userId).orElseThrow(
@@ -152,5 +153,41 @@ public class StatServiceImpl implements StatService{
 		StatTotalCountDto maxFollowCount = statQueryRepository.findMutualFollowCount(user.getUserId());
 		if(maxFollowCount==null) return 0;
 		return maxFollowCount.getCount();
+	}
+
+	@Override
+	public double getRankingFeedLikeWhole(Long userId) {
+		User user = userRepository.findById(userId).orElseThrow(
+			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
+		);
+		//내 좋아요 총합
+		StatTotalCountDto totalLike = statQueryRepository.findLikeTotalCountByUser(user.getUserId());
+		int userLikeTotal = totalLike==null ? 0: totalLike.getCount();
+
+		//내 좋아요 총합 보다 많은 사람 수
+		Long count = statQueryRepository.countUserHasMoreLike(userLikeTotal);
+
+		//전체 회원수
+		long totalUserCount = userRepository.count();
+
+		return Math.round(count/(double) totalUserCount * 100);
+	}
+
+	@Override
+	public double getRankingFeedLikeFollowing(Long userId) {
+		User user = userRepository.findById(userId).orElseThrow(
+			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
+		);
+		//팔로우한  회원수
+		int totalUserFollowerCount = user.getFollowingCnt();
+		if(totalUserFollowerCount==0) return 0d;
+
+		//내 좋아요 총합
+		StatTotalCountDto totalLike = statQueryRepository.findLikeTotalCountByUser(user.getUserId());
+		int userLikeTotal = totalLike==null ? 0: totalLike.getCount();
+		//팔로워 중에서 내 좋아요 총합 보다 많은 사람 수
+		Long count = statQueryRepository.countUserFollowerHasMoreLike(user.getUserId(),userLikeTotal);
+
+		return Math.round(count/(double) totalUserFollowerCount * 100);
 	}
 }

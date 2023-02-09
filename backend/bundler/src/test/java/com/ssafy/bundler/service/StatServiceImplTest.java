@@ -79,4 +79,34 @@ class StatServiceImplTest {
 		// //then
 		// assertThat(count).isEqualTo(2);
 	}
+	@Test
+	void getRankingFeedLikeWholeTest() {
+		// String res = "";
+		// //given
+		// for (int i = 1; i < 6; i++) {
+		// 	Long userId = Long.parseLong(String.valueOf(i));
+		// 	double count = statServiceImpl.getRankingFeedLikeWhole(userId);
+		// }
+		// //when
+		// System.out.println(res);
+		//
+		// //then
+		// assertThat(1).isEqualTo(1);
+	}
+
+	@Test
+	void getRankingFeedLikeFollowersTest() {
+		// String res = "";
+		// //given
+		// for (int i = 1; i < 6; i++) {
+		// 	Long userId = Long.parseLong(String.valueOf(i));
+		// 	double count = statServiceImpl.getRankingFeedLikeFollowing(userId);
+		// 	res +="\n"+ String.valueOf(i) +"::"+ String.valueOf(count);
+		// }
+		// //when
+		// System.out.println(res);
+		//
+		// //then
+		// assertThat(1).isEqualTo(1);
+	}
 }
