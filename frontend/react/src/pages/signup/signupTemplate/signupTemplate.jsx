@@ -1,20 +1,10 @@
 import { React, useState } from "react";
 import axios from "axios";
-// react-router-dom components
-// import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
-// import MuiLink from "@mui/material/Link";
-// import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material/";
-
-// @mui icons
-// import GitHubIcon from "@mui/icons-material/GitHub";
-
-// Material Dashboard 2 React components
-// import MDBox from "components/MDBox";
-import "./signupTemplate.css";
+import MDBox from "components/MDBox";
 
 // Images
 import bundlerRabbit from "assets/images/bundler/bundler_rabbit.png";
@@ -58,13 +48,11 @@ function SignUpTemplate() {
   return (
     <div className="container">
       <Card sx={{ minWidth: 400, maxWidth: 500 }}>
-        <div className="container">
-          <div className="greenbox">
-            <div className="welcome">
-              <img className="rabbit" src={bundlerRabbit} alt="signupimg" width={125} />
-              <p>환영합니다</p>
-              <div className="stretch">나만의 학습카드 번들러, 지금 바로 시작해보세요.</div>
-            </div>
+        <div className="greenbox">
+          <div className="welcome">
+            <img className="rabbit" src={bundlerRabbit} alt="signupimg" width={125} />
+            <p>환영합니다</p>
+            <div className="stretch">나만의 학습카드 번들러, 지금 바로 시작해보세요.</div>
           </div>
         </div>
         {/* 회원 가입 form */}
@@ -149,8 +137,8 @@ function SignUpTemplate() {
               />
             </label>
           </div>
-          {/* 로그인 버튼 */}
-          <div className="signupMargin">
+          {/* 가입 버튼 */}
+          <MDBox mt={0} mb={3} textAlign="center">
             <Button
               onClick={signUp}
               className="learn-more2"
@@ -160,13 +148,13 @@ function SignUpTemplate() {
                 color: "#000000",
                 fontSize: "large",
                 fontWeight: "bold",
+                width: "350px",
               }}
-              fullWidth
               type="submit"
             >
               가입 하기
             </Button>
-          </div>
+          </MDBox>
         </form>
       </Card>
     </div>

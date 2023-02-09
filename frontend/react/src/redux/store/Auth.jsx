@@ -23,11 +23,9 @@ export const tokenSlice = createSlice({
     // Access Token 정보를 저장
     SET_TOKEN: (state, action) => {
       console.log("reduxreduxreduxreduxredux");
-
       console.log(action.payload.accessToken);
       console.log(action.payload.nickname);
       console.log("reduxreduxreduxreduxredux");
-
       // 로그인에 성공하면 nickname 저장
       state.nickname = action.payload.nickname;
       // 로그인에 성공하면 authenticated를 True로 바꿔 로그인 여부를 저장
