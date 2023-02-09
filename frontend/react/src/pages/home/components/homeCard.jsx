@@ -57,7 +57,7 @@ function HomeCard({ cardInfo }) {
           </MDBox>
           <MDBox display="flex" m="1" sx={{ alignItems: "center", width: "20%" }}>
             <LikeButton />
-            <ScrapButton targetId={cardInfo.cardId} />
+            <ScrapButton feedType={cardInfo.feedType} targetId={cardInfo.cardId} />
           </MDBox>
         </MDBox>
         <MDBox mt={2} mb={3}>
