@@ -51,6 +51,7 @@ function Make() {
   // ==================== Data =================================
   // Data - global
   const { cardNo, cardList, editCardNumber } = useSelector((state) => state.makeReducer); // state 값 가져오기
+  const { loginInfo } = useSelector((state) => state.homeReducer);
 
   // Data - local
   // (1) 유형 선택 - 어떤 값은 선택햇는지 저장하는 state 값
@@ -64,7 +65,7 @@ function Make() {
 
   // (3) form value 저장 CARD BUNDLE
   const [values, setValues] = useState({
-    userId: 1,
+    userId: loginInfo.userId,
     feedType: "CARD",
     feedTitle: "",
     feedContent: "",

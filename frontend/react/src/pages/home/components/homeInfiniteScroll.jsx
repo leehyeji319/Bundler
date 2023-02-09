@@ -98,11 +98,7 @@ function HomeInfiniteScroll() {
             </div>
           ) : (
             <div key={post.cardId}>
-              <HomeBundle
-                bundleTitle={post.feedTitle}
-                bundleAuthor={post.feedContent}
-                cardList={post.cardBundleQueryDtoList}
-              />
+              <HomeBundle bundleInfo={post} />
             </div>
           )
         )}

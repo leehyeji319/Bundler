@@ -29,7 +29,7 @@ const apiGetBundle = async (userId) => {
   }
 };
 
-// 스크랩 : 기존 "번들"에 "카드" 추가
+// 스크랩 카드 : 기존 "번들"에 "카드" 추가
 const apiPutCardScrap = async (params) => {
   try {
     const response = await api.put(`${FEED_CONTROLLER}/scrap/cards`, params);
@@ -40,7 +40,7 @@ const apiPutCardScrap = async (params) => {
   }
 };
 
-// 스크랩 : 기존 "번들"에 "카드" 추가
+// 스크랩 카드 : 기존 "번들"에 "카드" 추가
 const apiPostCardScrap = async (feedId, params) => {
   try {
     const response = await api.post(`${FEED_CONTROLLER}/scrap/cards/bundles/${feedId}`, params);
@@ -51,26 +51,16 @@ const apiPostCardScrap = async (feedId, params) => {
   }
 };
 
-const apiPost = async (params, success, fail) => {
-  await api.post(`/주소`, params).then(success).catch(fail);
-};
-
-const apiDelete = async (success, fail) => {
-  await api.delete(`/주소/${"id"}`).then(success).catch(fail);
-};
-
-const apiAuth = async (success, fail) => {
-  api.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
-  await api.get(`/user/info/kakao`).then(success).catch(fail);
+// 스크랩 번들 : 번들 list 추가
+const apiPostBundleScrap = async (params) => {
+  try {
+    const response = await api.post(`${FEED_CONTROLLER}/scrap/bundles`, params);
+    return response;
+  } catch (error) {
+    console.log("Bundle Scrap 실패");
+    return error;
+  }
 };
 
 // export 함수
-export {
-  apiGetFeeds,
-  apiGetBundle,
-  apiPutCardScrap,
-  apiPostCardScrap,
-  apiPost,
-  apiDelete,
-  apiAuth,
-};
+export { apiGetFeeds, apiGetBundle, apiPutCardScrap, apiPostCardScrap, apiPostBundleScrap };
