@@ -35,14 +35,16 @@ function AuthLogin() {
           <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"> */}
           <div className="max-w-md w-full space-y-8">
             {/* 회원가입 버튼 */}
-            <MDBox mt={0} mb={1} textAlign="center">
+            <MDBox mt={1} mb={2} textAlign="center">
               <Link to="/signup">
                 <Button
+                  className="learn-more"
                   sx={{
                     bgcolor: "#FFFFFF",
                     color: "#000000",
-                    fontSize: "midium",
+                    fontSize: "large",
                     fontWeight: "bold",
+                    width: "350px",
                   }}
                   variant="contained"
                   fullWidth
@@ -53,7 +55,9 @@ function AuthLogin() {
             </MDBox>
           </div>
           {/* github 로그인 */}
-          <GithubLoginButton />
+          <MDBox mt={0} mb={3} textAlign="center">
+            <GithubLoginButton />
+          </MDBox>
         </Card>
       </DashboardLayout>
     </div>

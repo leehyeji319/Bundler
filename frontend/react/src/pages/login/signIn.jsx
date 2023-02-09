@@ -63,7 +63,7 @@ function SignIn() {
             />
           </label>
         </div>
-        <div>
+        <div className="loginMargin">
           <label htmlFor="password">
             <input
               {...register("password", { required: "Please Enter Your Password" })}
@@ -82,8 +82,9 @@ function SignIn() {
         </div>
         <div>
           <Button
+            className="learn-more2"
             sx={{
-              marginTop: "3%",
+              marginTop: "4%",
               bgcolor: "#81D8CF",
               color: "#000000",
               fontSize: "large",
@@ -96,7 +97,7 @@ function SignIn() {
               className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
               aria-hidden="true"
             />
-            로그인
+            &nbsp;로그인
           </Button>
         </div>
       </div>

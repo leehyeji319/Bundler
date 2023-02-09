@@ -1,6 +1,7 @@
 // GithubLogin을 Component로 사용하기 위해 import
 import React from "react";
 // @mui material components
+// import "./GithubLoginButton.css";
 import { Button } from "@mui/material/";
 // 버튼에 있는 github아이콘 import
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -22,21 +23,24 @@ function GithubLoginButton() {
   };
 
   return (
-    <Button
-      // 버튼을 클릭하면 socialLoginHandler를 실행한다
-      onClick={socialLoginHandler}
-      sx={{
-        bgcolor: "#FFFFFF",
-        color: "#000000",
-        fontSize: "midium",
-        fontWeight: "bold",
-      }}
-      variant="contained"
-      fullWidth
-      startIcon={<GitHubIcon />}
-    >
-      GitHub
-    </Button>
+    <div>
+      <Button
+        // 버튼을 클릭하면 socialLoginHandler를 실행한다
+        onClick={socialLoginHandler}
+        className="learn-more"
+        sx={{
+          bgcolor: "#FFFFFF",
+          color: "#000000",
+          fontSize: "large",
+          fontWeight: "bold",
+          width: "350px",
+        }}
+        variant="contained"
+      >
+        <GitHubIcon />
+        &nbsp;GitHub
+      </Button>
+    </div>
   );
 }
 
