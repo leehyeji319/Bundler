@@ -4,7 +4,6 @@ package com.ssafy.bundler.controller;
 import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.List;
 
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,8 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.bundler.common.ApiResponse;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.config.auth.PrincipalDetails;
+import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.user.FollowingListResponseDto;
 import com.ssafy.bundler.dto.user.Profile;
+import com.ssafy.bundler.dto.user.UserCalendarResponseDto;
+import com.ssafy.bundler.dto.user.UserMypageResponseDto;
 import com.ssafy.bundler.dto.user.UserUpdateRequestDto;
 import com.ssafy.bundler.service.FollowService;
 import com.ssafy.bundler.service.UserService;
@@ -121,4 +123,16 @@ public class UserController {
 	// public ResponseEntity getUserFollowerList(@PathVariable Long userId) {
 	//
 	// }
+
+	@GetMapping("/{userId}/mypage")
+	public ResponseEntity<UserMypageResponseDto> mypage(@PathVariable Long userId){
+
+		UserCalendarResponseDto calendar = userService.getDayFeedCount(userId);
+		UserMypageResponseDto mypageResponseDto = UserMypageResponseDto.builder().userCalendar(calendar).build();
+
+		User user = userService.getUserByUserId(userId);
+		mypageResponseDto.userInit(user);
+
+		return ResponseEntity.ok(mypageResponseDto);
+	}
 }

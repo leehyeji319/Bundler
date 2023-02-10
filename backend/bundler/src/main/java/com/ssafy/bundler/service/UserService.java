@@ -6,6 +6,7 @@ import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.user.AuthResponseDto;
 import com.ssafy.bundler.dto.user.Profile;
 // import com.ssafy.bundler.dto.user.SignupRequestDto;
+import com.ssafy.bundler.dto.user.UserCalendarResponseDto;
 import com.ssafy.bundler.dto.user.UserUpdateRequestDto;
 
 public interface UserService {
@@ -25,5 +26,6 @@ public interface UserService {
 	void deleteUser(Long userId);
 
 	// public User getUserByUserId(Long userId);
-
+	UserCalendarResponseDto getDayFeedCount(Long userId);
+	User getUserByUserId(Long userId);
 }

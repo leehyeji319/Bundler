@@ -1,5 +1,6 @@
 package com.ssafy.bundler.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,13 @@ import com.ssafy.bundler.dto.user.AuthResponseDto;
 import com.ssafy.bundler.dto.user.Profile;
 import com.ssafy.bundler.dto.user.SearchUserListResponseDto;
 import com.ssafy.bundler.dto.user.SignupRequestDto;
+import com.ssafy.bundler.dto.user.UserCalendarDto;
+import com.ssafy.bundler.dto.user.UserCalendarResponseDto;
 import com.ssafy.bundler.dto.user.UserUpdateRequestDto;
 import com.ssafy.bundler.exception.EntityNotFoundException;
 import com.ssafy.bundler.exception.ErrorCode;
 import com.ssafy.bundler.repository.UserRepository;
+import com.ssafy.bundler.repository.query.UserQueryRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 
+	@Autowired
+	UserQueryRepository userQueryRepository;
 	// private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
@@ -101,5 +107,20 @@ public class UserServiceImpl implements UserService {
 	// public User getUserByUserId(Long userId) {
 	// 	return null;
 	// }
+	@Transactional
+	public UserCalendarResponseDto getDayFeedCount(Long userId){
+		User user = userRepository.findById(userId).orElseThrow(
+			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
+		);
+		List<UserCalendarDto> dates = userQueryRepository.findDayFeedCount(user.getUserId());
+		Integer year = LocalDate.now().getYear();
+		return UserCalendarResponseDto.builder().dates(dates).year(year).build();
+	}
+	@Transactional
+	public User getUserByUserId(Long userId){
+		return userRepository.findByUserId(userId).orElseThrow();
+	}
+
+
 
 }
