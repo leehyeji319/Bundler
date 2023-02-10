@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.ssafy.bundler.config.auth.UserPrincipal;
 import com.ssafy.bundler.dto.LoginRequestDto;
 

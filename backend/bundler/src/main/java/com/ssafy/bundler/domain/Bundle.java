@@ -37,12 +37,16 @@ public class Bundle extends Feed implements Serializable {
 	@Column(name = "bundle_thumbnail_text")
 	private String bundleThumbnailText;
 
-	@Column(name = "bundle_is_public")
+	@Column(name = "is_bundle_public")
 	private boolean isBundlePublic;
 
+	@Builder.Default
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "bundle_id")
-	@Builder.Default
 	private List<CardBundle> cardList = new ArrayList<>();
+
+	public void addCardBundle(final CardBundle cardBundle) {
+		cardList.add(cardBundle);
+	}
 
 }

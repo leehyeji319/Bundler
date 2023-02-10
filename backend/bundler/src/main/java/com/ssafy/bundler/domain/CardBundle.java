@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "CARD_BUNDLE")
+@Table(name = "CARD_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"bundle_id", "card_id"}))
 @NoArgsConstructor
 public class CardBundle implements Serializable {
 
@@ -31,8 +32,11 @@ public class CardBundle implements Serializable {
 	@Column(name = "bundle_id")
 	private Long bundleId;
 
+	@Column(name = "card_id")
+	private Long cardId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "card_id")
+	@JoinColumn(name = "card_id", insertable = false, updatable = false)
 	private Card card;
 
 	// @ManyToOne(fetch = LAZY)
@@ -40,9 +44,9 @@ public class CardBundle implements Serializable {
 	// private Bundle bundle;
 
 	@Builder
-	public CardBundle(Long bundleId, Card card) {
+	public CardBundle(Long bundleId, Long cardId) {
 		this.bundleId = bundleId;
-		this.card = card;
+		this.cardId = cardId;
 	}
 
 }

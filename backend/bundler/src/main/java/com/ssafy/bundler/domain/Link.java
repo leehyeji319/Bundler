@@ -22,6 +22,8 @@ import lombok.experimental.SuperBuilder;
 @PrimaryKeyJoinColumn(name = "link_id")
 public class Link extends Card implements Serializable {
 
+	// @Id
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "link_id", insertable = false, updatable = false)
 	private Long linkId;
 

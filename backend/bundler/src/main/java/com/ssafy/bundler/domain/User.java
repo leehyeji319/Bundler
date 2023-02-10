@@ -61,7 +61,18 @@ public class User extends BaseEntity implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private UserRole userRole;
 
-	// OAuth를 위해 구성한 추가 필드 2개
+	
+	@Column(name = "following_cnt")
+	private int followingCnt;
+
+	@Column(name = "follower_cnt")
+	private int followerCnt;
+
+	public List<String> getRoleList() {
+		if (this.userRole.length() > 0) {
+			return Arrays.asList(this.userRole.split(","));
+		}
+
 	@Column(name = "provider_type", nullable = true)
 	@Enumerated(EnumType.STRING)
 	private ProviderType providerType;
