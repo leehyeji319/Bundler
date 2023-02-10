@@ -10,10 +10,21 @@ const FEED_CONTROLLER = "/api/v1";
 // Feed List 가져오기
 const apiGetFeeds = async () => {
   try {
-    const response = await api.get(`/api/v1/feeds`);
+    const response = await api.get(`${FEED_CONTROLLER}/feeds`);
     return response;
   } catch (error) {
     console.log("FeedList Get 실패");
+    return error;
+  }
+};
+
+// Feed Card click 시, 상세 모달 페이지 내용 가져오기
+const apiGetCardDetail = async (cardId) => {
+  try {
+    const response = await api.get(`${FEED_CONTROLLER}/feeds/cards/${cardId}`);
+    return response;
+  } catch (error) {
+    console.log("Feed Card Detail Get 실패");
     return error;
   }
 };
@@ -63,4 +74,11 @@ const apiPostBundleScrap = async (params) => {
 };
 
 // export 함수
-export { apiGetFeeds, apiGetBundle, apiPutCardScrap, apiPostCardScrap, apiPostBundleScrap };
+export {
+  apiGetFeeds,
+  apiGetCardDetail,
+  apiGetBundle,
+  apiPutCardScrap,
+  apiPostCardScrap,
+  apiPostBundleScrap,
+};

@@ -81,10 +81,10 @@ function HomeCommentList({ commentList }) {
     >
       {commentList !== null &&
         commentList.map((comment) => (
-          <li key={comment.id}>
+          <li key={comment.commentId}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box>
-                {edit.id === comment.id ? (
+                {edit.id === comment.commentId ? (
                   <Box sx={{ display: "flex" }}>
                     <MDTypography variant="body2" fontWeight="light">
                       {comment.name}&nbsp;:
@@ -93,42 +93,44 @@ function HomeCommentList({ commentList }) {
                       sx={{ ml: 1 }}
                       type="text"
                       size="small"
-                      id={`edit-comment-${comment.id}`}
+                      id={`edit-comment-${comment.commentId}`}
                       onChange={handleEdit}
-                      defaultValue={comment.reply}
+                      defaultValue={comment.commentContent}
                     />
                   </Box>
                 ) : (
                   <MDTypography variant="body2" fontWeight="light">
-                    {comment.name} : {comment.reply}
+                    {comment.commentWriterNickname} : {comment.commentContent}
                   </MDTypography>
                 )}
               </Box>
-              <Box>
-                {edit.id === comment.id ? (
-                  <Box>
-                    <Button type="button" onClick={editCloseButton} sx={{ p: "0" }}>
-                      <CloseIcon />
-                    </Button>
-                    <Button type="button" onClick={editConfirmButton} sx={{ p: "0" }}>
-                      <CheckIcon />
-                    </Button>
-                  </Box>
-                ) : (
-                  <Box>
-                    <Button
-                      type="button"
-                      onClick={() => editButton(comment.reply, comment.id)}
-                      sx={{ p: "0" }}
-                    >
-                      <EditIcon />
-                    </Button>
-                    <Button type="button" onClick={deleteButton} sx={{ p: "0" }}>
-                      <DeleteIcon />
-                    </Button>
-                  </Box>
-                )}
-              </Box>
+              {loginInfo.userId === comment.commentWriterId && (
+                <Box>
+                  {edit.id === comment.commentId ? (
+                    <Box>
+                      <Button type="button" onClick={editCloseButton} sx={{ p: "0" }}>
+                        <CloseIcon />
+                      </Button>
+                      <Button type="button" onClick={editConfirmButton} sx={{ p: "0" }}>
+                        <CheckIcon />
+                      </Button>
+                    </Box>
+                  ) : (
+                    <Box>
+                      <Button
+                        type="button"
+                        onClick={() => editButton(comment.reply, comment.id)}
+                        sx={{ p: "0" }}
+                      >
+                        <EditIcon />
+                      </Button>
+                      <Button type="button" onClick={deleteButton} sx={{ p: "0" }}>
+                        <DeleteIcon />
+                      </Button>
+                    </Box>
+                  )}
+                </Box>
+              )}
             </Box>
           </li>
         ))}

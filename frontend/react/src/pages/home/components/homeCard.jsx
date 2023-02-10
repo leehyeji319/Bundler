@@ -15,24 +15,35 @@ import MDTypography from "components/MDTypography";
 import ModalDetail from "pages/home/components/modalDetail";
 import LikeButton from "pages/home/buttons/likeButton";
 import ScrapButton from "pages/home/buttons/scrapButton";
+import { apiGetCardDetail } from "apis/api/apiHomePage";
 
 // Card Image
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
 // const cardInfo
 function HomeCard({ cardInfo }) {
+  const [cardDetailInfo, setCardDetailInfo] = useState({});
+
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleOpen = () => {
+    const emp = async () => {
+      await apiGetCardDetail(cardInfo.cardId)
+        .then(({ data }) => {
+          console.log("data", data);
+          setCardDetailInfo(data);
+        })
+        .catch((error) => console.log(error));
+    };
+    emp();
+
+    setOpen(true);
+  };
 
   return (
     <Card sx={{ ml: 2, mb: 3, maxWidth: 800, minHeight: 200, maxHeight: 400 }}>
-      <ModalDetail
-        open={open}
-        handleClose={handleClose}
-        cardInfo={cardInfo}
-        // commentList={commentList}
-      />
+      <ModalDetail open={open} handleClose={handleClose} cardInfo={cardDetailInfo} />
       <MDBox mx={3}>
         <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
           <MDBox display="flex" sx={{ alignItems: "center", width: "80%" }}>
@@ -79,16 +90,13 @@ function HomeCard({ cardInfo }) {
 // Default Vlaue
 HomeCard.defaultProps = {
   cardInfo: {
-    cardCommentary: "",
-    cardDescription: "",
-    linkDescription: "",
-    linkImage: "",
-    linkTitle: "",
-    linkUrl: "",
-    secondCategoryName: "",
-    userProfileImage: "",
     secondCategoryId: -1,
-    linkId: -1,
+    secondCategoryName: "",
+    cardDescription: "",
+    cardCommentary: "",
+    createdAt: "",
+    userProfileImage: "",
+    commentResponseDtoList: [],
   },
 };
 
@@ -96,37 +104,61 @@ HomeCard.defaultProps = {
 HomeCard.propTypes = {
   cardInfo: PropTypes.shape({
     cardId: PropTypes.number.isRequired,
-    cardScrapCnt: PropTypes.number.isRequired,
-    feedCommentCnt: PropTypes.number.isRequired,
-    feedLikeCnt: PropTypes.number.isRequired,
     feedType: PropTypes.string.isRequired,
     cardType: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    deleted: PropTypes.bool.isRequired,
-    firstCategoryId: PropTypes.number.isRequired,
-    firstCategoryName: PropTypes.string.isRequired,
     userId: PropTypes.number.isRequired,
     userNickname: PropTypes.string.isRequired,
+    firstCategoryId: PropTypes.number.isRequired,
+    firstCategoryName: PropTypes.string.isRequired,
     feedTitle: PropTypes.string.isRequired,
     feedContent: PropTypes.string.isRequired,
-    cardCommentary: PropTypes.string,
-    cardDescription: PropTypes.string,
-    linkDescription: PropTypes.string,
-    linkId: PropTypes.number,
-    linkImage: PropTypes.string,
-    linkTitle: PropTypes.string,
-    linkUrl: PropTypes.string,
+    cardScrapCnt: PropTypes.number.isRequired,
+    feedLikeCnt: PropTypes.number.isRequired,
+    feedCommentCnt: PropTypes.number.isRequired,
     secondCategoryId: PropTypes.number,
     secondCategoryName: PropTypes.string,
+    cardDescription: PropTypes.string,
+    cardCommentary: PropTypes.string,
+    createdAt: PropTypes.string,
     userProfileImage: PropTypes.string,
+    commentResponseDtoList: PropTypes.arrayOf(PropTypes.object),
   }),
-  // commentList: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     id: PropTypes.number.isRequired,
-  //     name: PropTypes.string.isRequired,
-  //     reply: PropTypes.string.isRequired,
-  //   }).isRequired
-  // ),
 };
 
 export default HomeCard;
+
+// HomeCard.propTypes = {
+//   cardInfo: PropTypes.shape({
+//     cardId: PropTypes.number.isRequired,
+//     cardScrapCnt: PropTypes.number.isRequired,
+//     feedCommentCnt: PropTypes.number.isRequired,
+//     feedLikeCnt: PropTypes.number.isRequired,
+//     feedType: PropTypes.string.isRequired,
+//     cardType: PropTypes.string.isRequired,
+//     createdAt: PropTypes.string.isRequired,
+//     deleted: PropTypes.bool.isRequired,
+//     firstCategoryId: PropTypes.number.isRequired,
+//     firstCategoryName: PropTypes.string.isRequired,
+//     userId: PropTypes.number.isRequired,
+//     userNickname: PropTypes.string.isRequired,
+//     feedTitle: PropTypes.string.isRequired,
+//     feedContent: PropTypes.string.isRequired,
+//     cardCommentary: PropTypes.string,
+//     cardDescription: PropTypes.string,
+//     linkDescription: PropTypes.string,
+//     linkId: PropTypes.number,
+//     linkImage: PropTypes.string,
+//     linkTitle: PropTypes.string,
+//     linkUrl: PropTypes.string,
+//     secondCategoryId: PropTypes.number,
+//     secondCategoryName: PropTypes.string,
+//     userProfileImage: PropTypes.string,
+//   }),
+//   commentList: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       id: PropTypes.number.isRequired,
+//       name: PropTypes.string.isRequired,
+//       reply: PropTypes.string.isRequired,
+//     }).isRequired
+//   ),
+// };

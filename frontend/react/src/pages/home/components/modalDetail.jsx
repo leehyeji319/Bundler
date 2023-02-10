@@ -12,6 +12,7 @@ import MDTypography from "components/MDTypography";
 
 // Import Custom Component
 import HomeInput from "pages/home/components/homeInput";
+import HomeCommentList from "pages/home/components/homeCommentList";
 import CardImg from "assets/images/bundler/bundler_rabbit_3.png";
 
 function ModalDetail({ open, handleClose, cardInfo }) {
@@ -130,7 +131,7 @@ function ModalDetail({ open, handleClose, cardInfo }) {
             </MDBox>
             <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
               <HomeInput />
-              {/* <HomeCommentList commentList={commentList} /> */}
+              <HomeCommentList commentList={cardInfo.commentResponseDtoList} />
             </Box>
           </MDBox>
         </Card>
@@ -141,16 +142,15 @@ function ModalDetail({ open, handleClose, cardInfo }) {
 
 ModalDetail.defaultProps = {
   cardInfo: {
-    cardCommentary: "",
-    cardDescription: "",
-    linkDescription: "",
-    linkImage: "",
-    linkTitle: "",
-    linkUrl: "",
-    userProfileImage: "",
-    secondCategoryName: "",
+    cardId: -1,
+    cardType: "",
     secondCategoryId: -1,
-    linkId: -1,
+    secondCategoryName: "",
+    cardDescription: "",
+    cardCommentary: "",
+    createdAt: "",
+    userProfileImage: "",
+    commentResponseDtoList: [],
   },
 };
 
@@ -159,38 +159,26 @@ ModalDetail.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   cardInfo: PropTypes.shape({
-    cardId: PropTypes.number.isRequired,
-    cardScrapCnt: PropTypes.number.isRequired,
-    feedCommentCnt: PropTypes.number.isRequired,
-    feedLikeCnt: PropTypes.number.isRequired,
+    cardId: PropTypes.number,
     feedType: PropTypes.string.isRequired,
-    cardType: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    deleted: PropTypes.bool.isRequired,
-    firstCategoryId: PropTypes.number.isRequired,
-    firstCategoryName: PropTypes.string.isRequired,
+    cardType: PropTypes.string,
     userId: PropTypes.number.isRequired,
     userNickname: PropTypes.string.isRequired,
+    firstCategoryId: PropTypes.number.isRequired,
+    firstCategoryName: PropTypes.string.isRequired,
     feedTitle: PropTypes.string.isRequired,
     feedContent: PropTypes.string.isRequired,
-    cardCommentary: PropTypes.string,
-    cardDescription: PropTypes.string,
-    linkDescription: PropTypes.string,
-    linkId: PropTypes.number,
-    linkImage: PropTypes.string,
-    linkTitle: PropTypes.string,
-    linkUrl: PropTypes.string,
+    cardScrapCnt: PropTypes.number.isRequired,
+    feedLikeCnt: PropTypes.number.isRequired,
+    feedCommentCnt: PropTypes.number.isRequired,
     secondCategoryId: PropTypes.number,
     secondCategoryName: PropTypes.string,
+    cardDescription: PropTypes.string,
+    cardCommentary: PropTypes.string,
+    createdAt: PropTypes.string,
     userProfileImage: PropTypes.string,
+    commentResponseDtoList: PropTypes.arrayOf(PropTypes.object),
   }),
-  // commentList: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     id: PropTypes.number.isRequired,
-  //     name: PropTypes.string.isRequired,
-  //     reply: PropTypes.string.isRequired,
-  //   }).isRequired
-  // ).isRequired,
 };
 
 export default ModalDetail;

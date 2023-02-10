@@ -95,7 +95,7 @@ HomeBundle.propTypes = {
   bundleInfo: PropTypes.shape({
     bundleId: PropTypes.number.isRequired,
     feedType: PropTypes.string.isRequired,
-    bundleWriterId: PropTypes.string.isRequired,
+    bundleWriterId: PropTypes.number.isRequired,
     bundleWriterNickname: PropTypes.string.isRequired,
     feedTitle: PropTypes.string.isRequired,
     feedContent: PropTypes.string.isRequired,
