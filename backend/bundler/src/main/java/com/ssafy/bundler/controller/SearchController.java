@@ -12,6 +12,7 @@ import com.ssafy.bundler.service.SearchService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *packageName    : com.ssafy.bundler.controller
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class SearchController {
 
 	private final FeedService feedService;

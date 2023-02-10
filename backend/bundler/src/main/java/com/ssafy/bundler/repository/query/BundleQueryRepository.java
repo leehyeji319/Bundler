@@ -35,7 +35,8 @@ public class BundleQueryRepository {
 	private final CommentRepository commentRepository;
 
 	//번들 리스트
-	public List<BundleResponseDto> findAllBundleByDto_optimization() {
+	public List<BundleResponseDto>
+	findAllBundleByDto_optimization() {
 
 		List<BundleResponseDto> result = findBundles();
 
