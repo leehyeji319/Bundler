@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -15,13 +15,22 @@ import MDTypography from "components/MDTypography";
 import ModalDetail from "pages/home/components/modalDetail";
 import LikeButton from "pages/home/buttons/likeButton";
 import ScrapButton from "pages/home/buttons/scrapButton";
-import { apiGetCardDetail } from "apis/api/apiHomePage";
+import { apiGetCardDetail, apiGetBundle } from "apis/api/apiHomePage";
 
 // Card Image
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
+// Import custom
+import { useSelector } from "react-redux";
+
 // const cardInfo
 function HomeCard({ cardInfo }) {
+  // 해당 유저 정보
+  const { loginInfo } = useSelector((state) => state.homeReducer);
+
+  // 현재 사용자가 가지고 있는 번들 목록
+  const [bundleList, setBundleList] = useState([]);
+
   const [cardDetailInfo, setCardDetailInfo] = useState({});
 
   const [open, setOpen] = useState(false);
@@ -40,6 +49,34 @@ function HomeCard({ cardInfo }) {
 
     setOpen(true);
   };
+
+  const handleBundleList = () => {
+    const initCall = async () => {
+      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
+        .then(({ data }) => {
+          setBundleList(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    initCall();
+  };
+
+  useEffect(() => {
+    const initCall = async () => {
+      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
+        .then(({ data }) => {
+          setBundleList(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    initCall();
+  }, []);
 
   return (
     <Card sx={{ ml: 2, mb: 3, maxWidth: 800, minHeight: 200, maxHeight: 400 }}>
@@ -68,7 +105,12 @@ function HomeCard({ cardInfo }) {
           </MDBox>
           <MDBox display="flex" m="1" sx={{ alignItems: "center", width: "20%" }}>
             <LikeButton />
-            <ScrapButton feedType={cardInfo.feedType} targetId={cardInfo.cardId} />
+            <ScrapButton
+              feedType={cardInfo.feedType}
+              targetId={cardInfo.cardId}
+              bundleList={bundleList}
+              handleBundleList={handleBundleList}
+            />
           </MDBox>
         </MDBox>
         <MDBox mt={2} mb={3}>
