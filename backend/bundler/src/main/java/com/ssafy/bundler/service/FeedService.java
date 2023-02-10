@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.bundler.domain.Card;
 import com.ssafy.bundler.domain.Comment;
 import com.ssafy.bundler.domain.Feed;
+import com.ssafy.bundler.domain.FeedLike;
+import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.bundle.response.BundleResponseDto;
 import com.ssafy.bundler.dto.card.response.CardResponseDto;
 import com.ssafy.bundler.dto.card.response.CardSummaryResponseDto;
@@ -17,8 +19,10 @@ import com.ssafy.bundler.dto.comment.CommentResponseDto;
 import com.ssafy.bundler.repository.BundleRepository;
 import com.ssafy.bundler.repository.CardRepository;
 import com.ssafy.bundler.repository.CommentRepository;
+import com.ssafy.bundler.repository.FeedLikeRepository;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.LinkRepository;
+import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.repository.query.BundleQueryRepository;
 import com.ssafy.bundler.repository.query.CardQueryRepository;
 import com.ssafy.bundler.repository.query.UserFeedQueryRepository;
@@ -38,6 +42,7 @@ import lombok.RequiredArgsConstructor;
  * 2023/02/04        modsiw       최초 생성
  * 2023/02/08		 modsiw		  피드 전체조회시에 댓글리스트까지 포함 (번들은 번들댓글만, 카드는 카드 댓글만)
  * 2023/02/09		 modsiw		  검색페이지 메서드들 추가
+ * * 2023/02/09		 cfdw011	  피드 좋아요 메서드 추가
  */
 
 @Service
@@ -54,7 +59,9 @@ public class FeedService {
 	private final CardQueryRepository cardQueryRepository;
 	private final UserFeedQueryRepository userFeedQueryRepository;
 
+	private final FeedLikeRepository feedLikeRepository;
 	private EntityManager em;
+	private final UserRepository userRepository;
 
 	//카드 개별 조회 = 카드정보 + 댓글 리스트
 	public CardResponseDto findCard(Long feedId) {
@@ -122,6 +129,29 @@ public class FeedService {
 
 	public List<BundleResponseDto> getBundlesFindByUserIdExceptIsBundlePrivate(Long userId) {
 		return userFeedQueryRepository.findBundlesByUserIdExceptIsBundlePrivate(userId);
+	}
+	@Transactional
+	public boolean likeFeed(Long feedId,Long userId){
+		Feed feed = feedRepository.findById(feedId).orElseThrow();
+		User user = userRepository.findByUserId(userId).orElseThrow();
+
+		FeedLike feedlike = feedLikeRepository.findByFeedAndUserId(feed,user.getUserId());
+
+		if(feedlike==null){
+			//좋아요 insert, cnt++
+			FeedLike newFeedLike = FeedLike.builder().userId(userId).feed(feed).build();
+			feedLikeRepository.save(newFeedLike);
+			feed.like(1);
+			System.out.println("feed Like::::::::::::::"+feed.getFeedLikeCnt());
+			return true;
+		}else{
+			//좋아요 취소 delete, cnt--
+			feedLikeRepository.delete(feedlike);
+			feed.like(-1);
+			System.out.println("feed unLike::::::::::::::"+feed.getFeedLikeCnt());
+			return false;
+		}
+
 	}
 
 	// ======= 검색 ======= //
