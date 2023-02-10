@@ -46,7 +46,7 @@ public class CardController {
 		String cardType = requestDto.getCardType();
 
 		if (CardType.CARD_LINK.toString().equals(cardType)) {
-			cardService.saveLinkCard(requestDto);
+			cardService.saveCard(requestDto);
 		} else {
 			cardService.saveCard(requestDto);
 		}

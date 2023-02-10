@@ -42,40 +42,33 @@ public class SearchController {
 		@RequestParam(value = "category_id", required = false) Long categoryId,
 		@RequestParam(value = "keyword", required = false) String keyword) {
 
-		//피드 타입 없고 카테고리 없고 키워드 없을때
 		if (feedType == null && keyword == null) {
-			System.out.println("그냥 전체");
-			return new Result(feedService.getAllFeed()); // 찐완료
+			log.info("전체 조회");
+			return new Result(feedService.getAllFeed());
 		} else if (feedType == null && keyword != null) {
-			System.out.println("전체에서 키워드만");
-			return new Result(feedService.findAllByKeyword(keyword)); //찐완료
+			log.info("전체에서 키워드만");
+			return new Result(feedService.findAllByKeyword(keyword));
 		} else if (feedType != null && keyword == null) {
 			if (feedType.equals("CARD") && categoryId == null) {
-				//그냥 카드만
-				System.out.println("그냥 카드만");
-				return new Result(feedService.findCardSummanryList()); //찐완료
+				log.info("그냥 카드만");
+				return new Result(feedService.findCardSummanryList());
 			} else if (feedType.equals("CARD") && categoryId != null) {
-				//피드타입이 카드면서 카테고리 값이 있을 때
-				System.out.println("피드타입이 카드면서 카테고리 값이 있을 때");
-				return new Result(feedService.findCardsByCategoryId(categoryId));  //찐완료
+				log.info("피드타입이 카드면서 카테고리 값이 있을 때");
+				return new Result(feedService.findCardsByCategoryId(categoryId));
 			} else {
-				//그냥 번들만
-				System.out.println("그냥 번들만");
-				return new Result(bundleQueryRepository.findAllBundleByDto_optimization()); //찐완료
+				log.info("그냥 번들만");
+				return new Result(bundleQueryRepository.findAllBundleByDto_optimization());
 			}
 		} else if (feedType != null && keyword != null) {
 			if (feedType.equals("CARD") && categoryId == null) {
-				//카드에서 검색어만
-				System.out.println("카드에서 검색어만");
-				return new Result(cardQueryRepository.findAllCardByDto_optimization(keyword)); // 찐완료
+				log.info("카드에서 검색어만");
+				return new Result(cardQueryRepository.findAllCardByDto_optimization(keyword));
 			} else if (feedType.equals("CARD") && categoryId != null) {
-				//카드에서 카테고리 검색어 같이
-				System.out.println("카드에서 카테고리 검색어 같이");
-				return new Result(cardQueryRepository.findAllCardByDto_optimization(categoryId, keyword)); //찐완료
+				log.info("카드에서 카테고리 검색어 같이");
+				return new Result(cardQueryRepository.findAllCardByDto_optimization(categoryId, keyword));
 			} else {
-				//그냥 번들일때 키워드만 검색
-				System.out.println("그냥 번들일때 키워드만 검색");
-				return new Result(bundleQueryRepository.findAllBundleByDto_optimization(keyword)); //찐완료
+				log.info("그냥 번들일때 키워드만 검색");
+				return new Result(bundleQueryRepository.findAllBundleByDto_optimization(keyword));
 			}
 		}
 		return null;

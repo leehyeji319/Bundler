@@ -71,6 +71,9 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation 'commons-io:commons-io:2.6'
 
+    // jsoup HTML parser library @ https://jsoup.org/
+    implementation 'org.jsoup:jsoup:1.15.3'
+
 }
 
 tasks.named('test') {

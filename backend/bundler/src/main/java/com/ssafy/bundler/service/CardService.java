@@ -1,8 +1,11 @@
 package com.ssafy.bundler.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,7 @@ import com.ssafy.bundler.repository.CardBundleRepository;
 import com.ssafy.bundler.repository.CardRepository;
 import com.ssafy.bundler.repository.CategoryRepository;
 import com.ssafy.bundler.repository.FeedRepository;
+import com.ssafy.bundler.repository.LinkRepository;
 import com.ssafy.bundler.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/02/06        modsiw       삭제 리팩토링
+ * 2023/02/10		 modsiw		  Jsoup 라이브러리 추가
  */
 @Service
 @Transactional(readOnly = true)
@@ -46,6 +51,7 @@ public class CardService {
 	private final UserRepository userRepository;
 	private final CategoryRepository categoryRepository;
 	private final CardBundleRepository cardBundleRepository;
+	private final LinkRepository linkRepository;
 
 	//문제, 일반 카드 생성
 	@Transactional
@@ -59,17 +65,57 @@ public class CardService {
 
 		Long savedFeedId = cardRepository.save(requestDto.toEntity(writerUser, category)).getFeedId();
 
+		// if (requestDto.getCardType() == "CARD_LINK") {
+		// 	saveLinkCard(savedFeedId);
+		// }
+
 		return savedFeedId;
 	}
 
 	//링크 카드 생성
 	@Transactional
-	public void saveLinkCard(CardSaveRequestDto requestDto) {
-		saveCard(requestDto);
-		String link = requestDto.getCardDescription(); //링크는 cardDescription에 링크 url이 들어온다.
-		// 여기서 링크 백단으로 받아서 저장 -> Jsoup 으로 하는거. 아니면 아예 메소드로만 빼도 될듯??
+	public void saveLinkCard(Long cardId) {
+		Card card = cardRepository.findById(cardId).get();
 
+		String targetLink = card.getCardDescription(); //링크는 cardDescription에 링크 url이 들어온다.
+		Document document;
+		try {
+			//Get Document object after parsing the html from given url.
+			document = Jsoup.connect(
+					targetLink)
+				.get();
+			//Get keywords from document object.
+			String description =
+				document.select("meta[name=description]").get(0)
+					.attr("content");
+			//Print description.
+			System.out.println("Meta Description: " + description);
+			String title =
+				document.select("meta[property=\"og:title\"]").get(0)
+					.attr("content");
+			//Print description.
+			System.out.println("Meta title: " + title);
+
+			System.out.println("Meta Description: " + description);
+			String image =
+				document.select("meta[property=\"og:image\"]").get(0)
+					.attr("content");
+			//Print description.
+			System.out.println("Meta image: " + image);
+
+			// Link.builder()
+			// 	.cardId(cardId)
+			// 	.linkUrl(card.getCardDescription())
+			// 	.linkDescription(description)
+			// 	.linkTitle(title)
+			// 	.linkImage(image)
+			// 	.build();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	// 여기서 링크 백단으로 받아서 저장 -> Jsoup 으로 하는거. 아니면 아예 메소드로만 빼도 될듯??
 
 	//카드 리스트 받아왔을 때 번들로 안만들때
 	@Transactional
@@ -83,8 +129,8 @@ public class CardService {
 			} else if (CardType.CARD_GENERAL.toString().equals(cardType)) {
 				saveCard(cardSaveRequestDto);
 			} else {
-				//링크카드로 보내야하지만 아직 구현이 안됐음
 				saveCard(cardSaveRequestDto);
+
 			}
 		}
 	}
