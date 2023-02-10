@@ -31,9 +31,9 @@ public class CommentController {
 	public ResponseEntity<?> saveComment(@RequestBody CommentSaveRequestDto commentDto) {
 		Comment comment = commentService.saveComment(commentDto);
 		if (comment == null) {
-			return ResponseEntity.ok(new CommentCreateResponseDto(false, "댓글 등록에 실해했습니다.", null));
+			return ResponseEntity.ok(new CommentCreateResponseDto(false, "댓글 등록에 실해했습니다."));
 		}
-		return ResponseEntity.ok(new CommentCreateResponseDto(true, "댓글이 성공적으로 등록됐습니다.", comment));
+		return ResponseEntity.ok(new CommentCreateResponseDto(true, "댓글이 성공적으로 등록됐습니다."));
 	}
 
 	@PutMapping("/api/v1/comment/{comment_id}")
