@@ -4,7 +4,6 @@ import static jakarta.persistence.CascadeType.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -12,6 +11,8 @@ import org.hibernate.annotations.ColumnDefault;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -57,11 +58,13 @@ public class User extends BaseEntity implements Serializable {
 	private boolean isDeleted;
 
 	@Column(name = "user_role", nullable = false)
-	private String userRole;
+	@Enumerated(EnumType.STRING)
+	private UserRole userRole;
 
 	// OAuth를 위해 구성한 추가 필드 2개
-	@Column(name = "provider", nullable = true)
-	private String provider;
+	@Column(name = "provider_type", nullable = true)
+	@Enumerated(EnumType.STRING)
+	private ProviderType providerType;
 
 	@Column(name = "provider_id", nullable = true)
 	private String providerId;
@@ -69,13 +72,17 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "provider_email", nullable = true)
 	private String providerEmail;
 
-	public List<String> getRoleList() {
-		if (this.userRole.length() > 0) {
-			return Arrays.asList(this.userRole.split(","));
-		}
+	@Setter
+	@Column(name = "github_url", nullable = true)
+	private String githubUrl;
 
-		return new ArrayList<>();
-	}
+	// public List<String> getRoleList() {
+	// 	if (this.userRole.length() > 0) {
+	// 		return Arrays.asList(this.userRole.split(","));
+	// 	}
+	//
+	// 	return new ArrayList<>();
+	// }
 
 	//////////////////////////////////////
 
@@ -88,12 +95,12 @@ public class User extends BaseEntity implements Serializable {
 	@Builder.Default
 	private List<Feed> feedList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "followTo", cascade = ALL)
-	@Builder.Default
-	private List<Follow> followToList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "followFrom", cascade = ALL)
-	@Builder.Default
-	private List<Follow> followFromList = new ArrayList<>();
+	// @OneToMany(mappedBy = "followTo", cascade = ALL)
+	// @Builder.Default
+	// private List<Follow> followToList = new ArrayList<>();
+	//
+	// @OneToMany(mappedBy = "followFrom", cascade = ALL)
+	// @Builder.Default
+	// private List<Follow> followFromList = new ArrayList<>();
 
 }
