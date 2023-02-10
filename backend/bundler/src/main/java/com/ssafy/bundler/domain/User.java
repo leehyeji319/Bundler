@@ -4,6 +4,7 @@ import static jakarta.persistence.CascadeType.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -54,23 +55,23 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "is_deleted")
 	@ColumnDefault(value = "0")
 	private boolean isDeleted;
-	//
-	// @Column(name = "user_role")
-	// private String userRole;
-	//
-	// @Column(name = "following_cnt")
-	// private int followingCnt;
-	//
-	// @Column(name = "follower_cnt")
-	// private int followerCnt;
-	//
-	// public List<String> getRoleList() {
-	// 	if (this.userRole.length() > 0) {
-	// 		return Arrays.asList(this.userRole.split(","));
-	// 	}
-	//
-	// 	return new ArrayList<>();
-	// }
+
+	@Column(name = "user_role")
+	private String userRole;
+
+	@Column(name = "following_cnt")
+	private Integer followingCnt;
+
+	@Column(name = "follower_cnt")
+	private Integer followerCnt;
+
+	public List<String> getRoleList() {
+		if (this.userRole.length() > 0) {
+			return Arrays.asList(this.userRole.split(","));
+		}
+
+		return new ArrayList<>();
+	}
 
 	//////////////////////////////////////
 
