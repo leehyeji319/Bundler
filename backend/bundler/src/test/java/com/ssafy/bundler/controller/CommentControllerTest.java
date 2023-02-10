@@ -21,8 +21,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.ssafy.bundler.domain.Comment;
 import com.ssafy.bundler.domain.Feed;
 import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.dto.comment.CommentRequestCreateDto;
-import com.ssafy.bundler.dto.comment.CommentRequestUpdateDto;
+import com.ssafy.bundler.dto.comment.CommentSaveRequestDto;
+import com.ssafy.bundler.dto.comment.CommentUpdateRequestDto;
 import com.ssafy.bundler.repository.CommentRepository;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.UserRepository;
@@ -46,8 +46,9 @@ public class CommentControllerTest {
 	private Feed feed;
 	private User user;
 	private Comment comment;
+
 	@Before
-	public void createTestData(){
+	public void createTestData() {
 
 		//given
 		feed = new Feed().builder().build();
@@ -57,53 +58,56 @@ public class CommentControllerTest {
 		userRepository.save(user);
 
 		comment = new Comment().builder()
-		.feedId(feed.getFeedId())
-		.writer(user)
-		.commentContent("test comment")
-		.build();
+			.feedId(feed.getFeedId())
+			.writer(user)
+			.commentContent("test comment")
+			.build();
 		commentRepository.save(comment);
 	}
+
 	@After
-	public void deleteTestData() throws Exception{
+	public void deleteTestData() throws Exception {
 		System.out.println("deleteTestDatadeleteTestDatadeleteTestDatadeleteTestData");
 		feedRepository.deleteById(feed.getFeedId());
 		userRepository.deleteById(user.getUserId());
 	}
+
 	@Test
-	public void comment_be_created() throws Exception{
+	public void comment_be_created() throws Exception {
 
-			String commentContent="test content";
+		String commentContent = "test content";
 
-			long targetFeedId = feed.getFeedId();
+		long targetFeedId = feed.getFeedId();
 
-			CommentRequestCreateDto commentDto = new CommentRequestCreateDto().builder()
-				.targetFeedId(targetFeedId)
-				.content(commentContent)
-				.build();
-			String url = "http://localhost:"+port+"/comment";
+		CommentSaveRequestDto commentDto = new CommentSaveRequestDto().builder()
+			.targetFeedId(targetFeedId)
+			.content(commentContent)
+			.build();
+		String url = "http://localhost:" + port + "/comment";
 		//when
-			ResponseEntity<Long> responseEntity = testRestTemplate.postForEntity(url,commentDto, Long.class);
+		ResponseEntity<Long> responseEntity = testRestTemplate.postForEntity(url, commentDto, Long.class);
 
 		//then
-			assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-			assertThat(responseEntity.getBody()).isGreaterThan(0L);
+		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
-			List<Comment> comments = commentRepository.findAll();
-			assertThat(comments.get(0).getCommentContent()).isEqualTo(commentContent);
+		List<Comment> comments = commentRepository.findAll();
+		assertThat(comments.get(0).getCommentContent()).isEqualTo(commentContent);
 	}
-	@Test
-	public void comment_be_updated(){
-		//given
-		String commentContentToUpdate="test content after update";
 
-		CommentRequestUpdateDto commentDto = new CommentRequestUpdateDto().builder()
+	@Test
+	public void comment_be_updated() {
+		//given
+		String commentContentToUpdate = "test content after update";
+
+		CommentUpdateRequestDto commentDto = new CommentUpdateRequestDto().builder()
 			.content(commentContentToUpdate)
 			.build();
 
-		HttpEntity<CommentRequestUpdateDto> requestEntity = new HttpEntity<>(commentDto);
-		String url = "http://localhost:"+port+"/comment/"+comment.getCommentId();
+		HttpEntity<CommentUpdateRequestDto> requestEntity = new HttpEntity<>(commentDto);
+		String url = "http://localhost:" + port + "/comment/" + comment.getCommentId();
 		//when
-		ResponseEntity<Long> responseEntity = testRestTemplate.exchange(url, HttpMethod.PUT,requestEntity, Long.class);
+		ResponseEntity<Long> responseEntity = testRestTemplate.exchange(url, HttpMethod.PUT, requestEntity, Long.class);
 
 		//then
 		assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

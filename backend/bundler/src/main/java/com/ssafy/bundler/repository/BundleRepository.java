@@ -18,4 +18,6 @@ public interface BundleRepository extends JpaRepository<Bundle, Long> {
 	@Query("select b.bundleId from Bundle b where b.writer.userId = :userId")
 	List<Long> findBundleIdsByUserId(@Param("userId") Long userId);
 
+	@Query("select b from Bundle b where b.feedTitle = :feedTitle")
+	List<Bundle> findByFeedTitle(@Param("feedTitle") String feedTitle);
 }

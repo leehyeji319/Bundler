@@ -1,5 +1,7 @@
 package com.ssafy.bundler.service;
 
+import org.springframework.stereotype.Service;
+
 /**
  *packageName    : com.ssafy.bundler.service
  * fileName       : SearchService
@@ -11,5 +13,6 @@ package com.ssafy.bundler.service;
  * -----------------------------------------------------------
  * 2023/02/09        modsiw       최초 생성
  */
+@Service
 public class SearchService {
 }
