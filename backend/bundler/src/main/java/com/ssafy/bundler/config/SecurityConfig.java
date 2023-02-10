@@ -1,47 +1,53 @@
 package com.ssafy.bundler.config;
 
-import static org.springframework.security.config.Customizer.*;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsUtils;
 
 import com.ssafy.bundler.config.auth.AuthTokenProvider;
 import com.ssafy.bundler.config.properties.AppProperties;
 import com.ssafy.bundler.config.properties.CorsProperties;
-import com.ssafy.bundler.domain.RoleType;
+import com.ssafy.bundler.domain.UserRole;
 import com.ssafy.bundler.exception.RestAuthenticationEntryPoint;
 import com.ssafy.bundler.filter.TokenAuthenticationFilter;
+import com.ssafy.bundler.handler.CustomLogoutHandler;
+import com.ssafy.bundler.handler.CustomLogoutSuccessHandler;
 import com.ssafy.bundler.handler.OAuth2AuthenticationFailureHandler;
 import com.ssafy.bundler.handler.OAuth2AuthenticationSuccessHandler;
 import com.ssafy.bundler.handler.TokenAccessDeniedHandler;
 import com.ssafy.bundler.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
+import com.ssafy.bundler.repository.UserRepository;
+import com.ssafy.bundler.service.AuthService;
 import com.ssafy.bundler.service.CustomOAuth2UserService;
 import com.ssafy.bundler.service.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 // https://github.com/spring-projects/spring-security/issues/10822 참고
 @Configuration
 @EnableWebSecurity // 시큐리티 활성화 -> 기본 스프링 필터체인에 등록
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 
 	// private final PrincipalOauth2UserService principalOauth2UserService;
 	// private final UserRepository userRepository;
 
-	// @Autowired
-	// private CorsConfig corsConfig;
+	@Autowired
+	private CorsConfig corsConfig;
 
 	////////////////////////////////
 	// private final AuthenticationManager authenticationManager;
@@ -49,15 +55,20 @@ public class SecurityConfig {
 	private final AppProperties appProperties;
 	private final AuthTokenProvider tokenProvider;
 	private final CustomUserDetailsService userDetailsService;
+	private final AuthService authService;
 	private final CustomOAuth2UserService oAuth2UserService;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
+	private final UserRepository userRepository;
+
+	//로그아웃
+	private final CustomLogoutSuccessHandler logoutSuccessHandler;
+	private final CustomLogoutHandler logoutHandler;
 	////////////////////////////////
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
-			.cors(withDefaults())
 
 			.sessionManagement(httpSecuritySessionManagementConfigurer ->
 				httpSecuritySessionManagementConfigurer
@@ -88,35 +99,65 @@ public class SecurityConfig {
 			.apply(new MyCustomDsl()) // 커스텀 필터 등록
 			.and()
 
-			.securityMatcher("/api/**")
+			// .securityMatcher("/api/**")
 			.authorizeHttpRequests(authroize ->
 				authroize
 					.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-					.requestMatchers("/auth/admin/**").hasAuthority(RoleType.ADMIN.getCode())
+					.requestMatchers("/auth/admin/**").hasAuthority(UserRole.ADMIN.getCode())
 					// .requestMatchers("/auth/manager/**").hasRole("MANAGER")
-					.requestMatchers("/auth/**").hasAuthority(RoleType.USER.getCode())
+					.requestMatchers("/auth/**").hasAuthority(UserRole.USER.getCode())
+					.anyRequest().permitAll()
+			)
+
+			// .userDetailsService(userDetailsService)
+
+			.logout(httpSecurityLogoutConfigurer ->
+				httpSecurityLogoutConfigurer
+					.logoutUrl("/api/v1/logout")
+					.deleteCookies("refreshToken")
+					.clearAuthentication(true)
+					// .addLogoutHandler(logoutHandler)
+					.addLogoutHandler(logoutHandler)
+					.logoutSuccessHandler(logoutSuccessHandler)
 			)
 
 			.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
 				httpSecurityOAuth2LoginConfigurer
-					.authorizationEndpoint(authorizationEndpointConfig ->
-						authorizationEndpointConfig
-							.baseUri("/oauth2/authorization")
-							.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
+					.authorizationEndpoint(authorizationEndpointConfig -> {
+							System.out.println("authorizationEndpointConfig 진입!!");
+
+							// authorizationEndpointConfig
+							// .baseUri("/oauth2/authorization")
+							// .authorizationRedirectStrategy((request, response, url) ->
+							// 	url = request.getParameter("redirect_uri")
+							// )
+							// .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository());
+						}
 					)
-					.redirectionEndpoint(redirectionEndpointConfig ->
-						redirectionEndpointConfig
-							.baseUri("/*/oauth2/code/*")
+					.redirectionEndpoint(redirectionEndpointConfig -> {
+							System.out.println("redirectionEndpoinConfig 진입!!");
+
+							// redirectionEndpointConfig
+							// .baseUri("/*/oauth2/code/*");
+
+						}
 					)
-					.userInfoEndpoint(userInfoEndpointConfig ->
-						userInfoEndpointConfig
-							.userService(oAuth2UserService)
+					.userInfoEndpoint(userInfoEndpointConfig -> {
+							System.out.println("userInfoEndpointConfig 진입!!");
+
+							userInfoEndpointConfig
+								.userService(oAuth2UserService);
+
+						}
 					)
 					.successHandler(oAuth2AuthenticationSuccessHandler())
 					.failureHandler(oAuth2AuthenticationFailureHandler())
 			)
 
-			.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(tokenAuthenticationFilter(), OAuth2LoginAuthenticationFilter.class)
+			// .addFilterBefore(tokenAuthenticationFilter(), SecurityContextPersistenceFilter.class)
+
+			// .addFilterAfter(tokenAuthenticationFilter())
 
 			.build();
 	}
@@ -124,37 +165,38 @@ public class SecurityConfig {
 	/*
 	 * auth 매니저 설정
 	 * */
-	// @Bean(BeanIds.AUTHENTICATION_MANAGER)
-	// protected AuthenticationManager authenticationManager() throws Exception {
-	// 	return
-	// }
+	@Bean(BeanIds.AUTHENTICATION_MANAGER)
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws
+		Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
 	public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
 			AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(
 				AuthenticationManagerBuilder.class);
-			authenticationManagerBuilder
-				.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+			AuthenticationManager authenticationManager = authenticationManagerBuilder.getSharedObject(
+				AuthenticationManager.class);
+			// authenticationManagerBuilder
+			// 	.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 
-			AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
-			http.authenticationManager(authenticationManager);
+			// LogoutConfigurer logoutConfigurer = http.getSharedObject(LogoutConfigurer.class);
 
-			// http
-			// .addFilter(corsConfig.corsFilter())
+			http
+				.addFilter(corsConfig.corsFilter());
 			// .addFilter(new JwtAuthenticationFilter(authenticationManager))
 			// .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
-			// 	.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		}
 	}
 
 	/*
 	 * security 설정 시, 사용할 인코더 설정
 	 * */
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+	// @Bean
+	// public BCryptPasswordEncoder passwordEncoder() {
+	// 	return new BCryptPasswordEncoder();
+	// }
 
 	/*
 	 * 토큰 필터 설정
@@ -178,12 +220,14 @@ public class SecurityConfig {
 	 * */
 	@Bean
 	public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
-		return new OAuth2AuthenticationSuccessHandler(
-			tokenProvider,
-			appProperties,
-			userRefreshTokenRepository,
-			oAuth2AuthorizationRequestBasedOnCookieRepository()
-		);
+		log.debug(OAuth2AuthenticationSuccessHandler.class + ": success");
+
+		return OAuth2AuthenticationSuccessHandler.builder()
+			.tokenProvider(tokenProvider)
+			.appProperties(appProperties)
+			.userRefreshTokenRepository(userRefreshTokenRepository)
+			.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
+			.build();
 	}
 
 	/*
@@ -191,6 +235,7 @@ public class SecurityConfig {
 	 * */
 	@Bean
 	public OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler() {
+		log.debug(OAuth2AuthenticationFailureHandler.class + ": fail");
 		return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository());
 	}
 

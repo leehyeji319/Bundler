@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserByUserNickname(String userNickname) {
-		return userRepository.findByUserNickname(userNickname);
+		return userRepository.findOneByUserNickname(userNickname).orElseThrow();
 	}
 
 	// @Override
@@ -35,8 +35,13 @@ public class UserServiceImpl implements UserService {
 	// 		.build();
 	// }
 
+	@Override
 	public User getUser(String userId) {
-		return userRepository.findByUserId(userId);
+		return null;
+	}
+
+	public User getUser(Long userId) {
+		return userRepository.findOneByUserId(userId).orElseThrow();
 	}
 
 }

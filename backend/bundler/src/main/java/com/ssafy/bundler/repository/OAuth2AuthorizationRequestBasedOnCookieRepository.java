@@ -8,7 +8,9 @@ import com.ssafy.bundler.util.CookieUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class OAuth2AuthorizationRequestBasedOnCookieRepository
 	implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
@@ -19,6 +21,9 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository
 
 	@Override
 	public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+		/////////////////////////////
+		log.debug(OAuth2AuthorizationRequestBasedOnCookieRepository.class + " loadAuthorizationRequest()!!");
+		/////////////////////////////
 		return CookieUtil.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
 			.map(cookie -> CookieUtil.deserialize(cookie, OAuth2AuthorizationRequest.class))
 			.orElse(null);

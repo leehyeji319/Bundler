@@ -59,7 +59,7 @@ public class User extends BaseEntity implements Serializable {
 
 	@Column(name = "user_role", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private RoleType userRole;
+	private UserRole userRole;
 
 	// OAuth를 위해 구성한 추가 필드 2개
 	@Column(name = "provider_type", nullable = true)
@@ -71,6 +71,10 @@ public class User extends BaseEntity implements Serializable {
 
 	@Column(name = "provider_email", nullable = true)
 	private String providerEmail;
+
+	@Setter
+	@Column(name = "github_url", nullable = true)
+	private String githubUrl;
 
 	// public List<String> getRoleList() {
 	// 	if (this.userRole.length() > 0) {
@@ -91,12 +95,12 @@ public class User extends BaseEntity implements Serializable {
 	@Builder.Default
 	private List<Feed> feedList = new ArrayList<>();
 
-	@OneToMany(mappedBy = "followTo", cascade = ALL)
-	@Builder.Default
-	private List<Follow> followToList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "followFrom", cascade = ALL)
-	@Builder.Default
-	private List<Follow> followFromList = new ArrayList<>();
+	// @OneToMany(mappedBy = "followTo", cascade = ALL)
+	// @Builder.Default
+	// private List<Follow> followToList = new ArrayList<>();
+	//
+	// @OneToMany(mappedBy = "followFrom", cascade = ALL)
+	// @Builder.Default
+	// private List<Follow> followFromList = new ArrayList<>();
 
 }

@@ -8,7 +8,9 @@ import org.springframework.util.SerializationUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class CookieUtil {
 
 	public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
@@ -25,6 +27,8 @@ public class CookieUtil {
 	}
 
 	public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
+		log.debug("addCookie 진입");
+
 		Cookie cookie = new Cookie(name, value);
 		cookie.setPath("/");
 		cookie.setHttpOnly(true);

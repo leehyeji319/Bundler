@@ -13,8 +13,8 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.ssafy.bundler.domain.ProviderType;
-import com.ssafy.bundler.domain.RoleType;
 import com.ssafy.bundler.domain.User;
+import com.ssafy.bundler.domain.UserRole;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,10 +29,10 @@ import lombok.Setter;
 @Builder
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 	private final Long userId;
-	private final String userNickname;
+	private final String username;
 	private final String password;
 	private final ProviderType providerType;
-	private final RoleType roleType;
+	private final UserRole userRole;
 	private final Collection<GrantedAuthority> authorities;
 	private Map<String, Object> attributes;
 
@@ -53,7 +53,7 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
 	@Override
 	public String getUsername() {
-		return this.userNickname;
+		return this.username;
 	}
 
 	@Override
@@ -103,11 +103,11 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
 		return UserPrincipal.builder()
 			.userId(user.getUserId())
-			.userNickname(user.getUserNickname())
+			.username(user.getUserNickname())
 			.password(user.getUserPassword())
 			.providerType(user.getProviderType())
-			.roleType(RoleType.USER)
-			.authorities(Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode())))
+			.userRole(UserRole.USER)
+			.authorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.USER.getCode())))
 			.build();
 	}
 

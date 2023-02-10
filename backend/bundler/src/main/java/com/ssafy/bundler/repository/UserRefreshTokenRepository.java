@@ -1,15 +1,24 @@
 package com.ssafy.bundler.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.ssafy.bundler.domain.ProviderType;
 import com.ssafy.bundler.domain.UserRefreshToken;
 
 @Repository
 public interface UserRefreshTokenRepository extends JpaRepository<UserRefreshToken, Long> {
 
-	UserRefreshToken findByUserId(String userId);
+	Optional<UserRefreshToken> findByUser_UserEmail(String userEmail);
+
+	Optional<UserRefreshToken> findOneByUserId(Long userId);
 
 	UserRefreshToken findByUserIdAndRefreshToken(String userId, String refreshToken);
+
+	UserRefreshToken findByUser_ProviderTypeAndUser_ProviderId(ProviderType providerType, String providerId);
+
+	long deleteByUserId(Long userId);
 
 }

@@ -10,7 +10,7 @@ public class GithubOAuth2UserInfo extends OAuth2UserInfo {
 
 	@Override
 	public String getId() {
-		return (String)attributes.get("sub");
+		return (String)attributes.get("id");
 	}
 
 	@Override
@@ -25,7 +25,11 @@ public class GithubOAuth2UserInfo extends OAuth2UserInfo {
 
 	@Override
 	public String getImageUrl() {
-		return (String)attributes.get("picture");
+		return (String)attributes.get("avatar_url");
+	}
+
+	public String getGithubUrl() {
+		return (String)attributes.get("html_url");
 	}
 
 }

@@ -22,31 +22,44 @@ import com.ssafy.bundler.config.oauthUserInfo.OAuth2UserInfoFactory;
 import com.ssafy.bundler.config.oauthUserInfo.provider.OAuth2UserInfo;
 import com.ssafy.bundler.config.properties.AppProperties;
 import com.ssafy.bundler.domain.ProviderType;
-import com.ssafy.bundler.domain.RoleType;
+import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.domain.UserRefreshToken;
+import com.ssafy.bundler.domain.UserRole;
 import com.ssafy.bundler.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
+import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.util.CookieUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Builder
+@Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	private final AuthTokenProvider tokenProvider;
 	private final AppProperties appProperties;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
+	private final UserRepository userRepository;
 	private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws IOException, ServletException {
-		String targetUrl = determineTargetUrl(request, response, authentication);
+		// String targetUrl = determineTargetUrl(request, response, authentication);
+		String targetUrl = "http://localhost:3000/";
+
+		///////////////
+
+		log.debug("onAuthenticationSuccess");
+		///////////////
 
 		if (response.isCommitted()) {
 			logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
@@ -55,6 +68,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 		clearAuthenticationAttributes(request, response);
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
+		// setRedirectStrategy((request1, response1, url) -> {
+		// 	response1;
+		// });
 	}
 
 	protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
@@ -76,12 +92,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
 		Collection<? extends GrantedAuthority> authorities = ((OidcUser)authentication.getPrincipal()).getAuthorities();
 
-		RoleType roleType = hasAuthority(authorities, RoleType.ADMIN.getCode()) ? RoleType.ADMIN : RoleType.USER;
+		UserRole userRole = hasAuthority(authorities, UserRole.ADMIN.getCode()) ? UserRole.ADMIN : UserRole.USER;
 
 		Date now = new Date();
 		AuthToken accessToken = tokenProvider.createAuthToken(
 			userInfo.getId(),
-			roleType.getCode(),
+			userRole.getCode(),
 			new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
 		);
 
@@ -94,12 +110,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		);
 
 		// DB 저장
-		UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
-		if (userRefreshToken != null) {
-			userRefreshToken.setRefreshToken(refreshToken.getToken());
+		Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUser_UserEmail(
+			userInfo.getEmail());
+		if (userRefreshToken.isPresent()) {
+			userRefreshToken.get().setRefreshToken(refreshToken.getToken());
 		} else {
-			userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());
-			userRefreshTokenRepository.saveAndFlush(userRefreshToken);
+			User u = userRepository.findOneByProviderTypeAndProviderId(providerType, userInfo.getId()).orElseThrow();
+
+			userRefreshTokenRepository.saveAndFlush(
+				UserRefreshToken.builder()
+					.userId(u.getUserId())
+					.refreshToken(refreshToken.getToken())
+					.build()
+			);
 		}
 
 		int cookieMaxAge = (int)refreshTokenExpiry / 60;
@@ -140,8 +163,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 				URI authorizedURI = URI.create(authorizedRedirectUri);
 				if (authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
 					&& authorizedURI.getPort() == clientRedirectUri.getPort()) {
+					log.trace("OAuth2AuthenticationSuccessHandler - isAuthorizedRedirectUri 성공");
 					return true;
 				}
+				log.trace("OAuth2AuthenticationSuccessHandler - isAuthorizedRedirectUri 실패");
 				return false;
 			});
 	}
