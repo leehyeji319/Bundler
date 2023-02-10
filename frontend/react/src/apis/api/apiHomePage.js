@@ -13,7 +13,6 @@ const apiGetFeeds = async () => {
     const response = await api.get(`${FEED_CONTROLLER}/feeds`);
     return response;
   } catch (error) {
-    console.log("FeedList Get 실패");
     return error;
   }
 };
@@ -24,18 +23,18 @@ const apiGetCardDetail = async (cardId) => {
     const response = await api.get(`${FEED_CONTROLLER}/feeds/cards/${cardId}`);
     return response;
   } catch (error) {
-    console.log("Feed Card Detail Get 실패");
     return error;
   }
 };
 
 // 스크랩 버튼 클릭 시 -> 내가 가지고 있는 번들 lsit 목록 불러오기
-const apiGetBundle = async (userId) => {
+const apiGetBundle = async (userId, cardId) => {
   try {
-    const response = await api.get(`${FEED_CONTROLLER}/users/${userId}/bundles/summary`);
+    const response = await api.get(
+      `${FEED_CONTROLLER}/users/${userId}/bundles/summary?card_id=${cardId}`
+    );
     return response;
   } catch (error) {
-    console.log("번들 List 조회 실패");
     return error;
   }
 };
@@ -46,18 +45,28 @@ const apiPutCardScrap = async (params) => {
     const response = await api.put(`${FEED_CONTROLLER}/scrap/cards`, params);
     return response;
   } catch (error) {
-    console.log("Card Scrap 실패");
     return error;
   }
 };
 
-// 스크랩 카드 : 기존 "번들"에 "카드" 추가
+// 스크랩 카드 : "번들 생성" 하며 "카드" 추가
 const apiPostCardScrap = async (feedId, params) => {
   try {
     const response = await api.post(`${FEED_CONTROLLER}/scrap/cards/bundles/${feedId}`, params);
     return response;
   } catch (error) {
-    console.log("Card Create Scrap 실패");
+    return error;
+  }
+};
+
+// 스크랩 카드 : 이미 번들에 추가된 카드 삭제
+const apiDeleteCardScrap = async (bundleId, cardId) => {
+  try {
+    const response = await api.delete(
+      `${FEED_CONTROLLER}/scrap/bundles/${bundleId}/cards/${cardId}`
+    );
+    return response;
+  } catch (error) {
     return error;
   }
 };
@@ -68,7 +77,6 @@ const apiPostBundleScrap = async (params) => {
     const response = await api.post(`${FEED_CONTROLLER}/scrap/bundles`, params);
     return response;
   } catch (error) {
-    console.log("Bundle Scrap 실패");
     return error;
   }
 };
@@ -80,5 +88,6 @@ export {
   apiGetBundle,
   apiPutCardScrap,
   apiPostCardScrap,
+  apiDeleteCardScrap,
   apiPostBundleScrap,
 };

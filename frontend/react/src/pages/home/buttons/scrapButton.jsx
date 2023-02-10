@@ -13,7 +13,7 @@ import { apiPostBundleScrap } from "apis/api/apiHomePage";
 import { useSelector } from "react-redux";
 
 // scrap Button 상태 - 활성화/비활성화
-function ScrapButton({ feedType, targetId }) {
+function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
   // Data Global
   const { loginInfo } = useSelector((state) => state.homeReducer);
 
@@ -44,7 +44,13 @@ function ScrapButton({ feedType, targetId }) {
 
   return (
     <Box className="icons-list">
-      <ScrapButtonModal open={open} handleClose={handleClose} targetId={targetId} />
+      <ScrapButtonModal
+        open={open}
+        handleClose={handleClose}
+        targetId={targetId}
+        bundleList={bundleList}
+        handleBundleList={handleBundleList}
+      />
       {feedType === "CARD" ? (
         <BookmarkBorderIcon
           sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
@@ -66,9 +72,15 @@ function ScrapButton({ feedType, targetId }) {
   );
 }
 
+ScrapButton.defaultProps = {
+  bundleList: [],
+};
+
 ScrapButton.propTypes = {
   feedType: PropTypes.string.isRequired,
   targetId: PropTypes.number.isRequired,
+  bundleList: PropTypes.arrayOf(PropTypes.object),
+  handleBundleList: PropTypes.func.isRequired,
 };
 
 export default ScrapButton;

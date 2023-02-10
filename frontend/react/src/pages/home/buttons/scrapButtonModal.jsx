@@ -1,5 +1,5 @@
 // Import React
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -19,20 +19,20 @@ import {
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
+import MDSnackbar from "components/MDSnackbar";
 
 // Import Custom Component
-import { apiPutCardScrap, apiPostCardScrap } from "apis/api/apiHomePage";
-// import { apiGetBundle, apiPutCardScrap, apiPostCardScrap } from "apis/api/apiHomePage";
+import { apiPutCardScrap, apiPostCardScrap, apiDeleteCardScrap } from "apis/api/apiHomePage";
 
-function ScrapButtonModal({ open, handleClose, targetId }) {
+function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundleList }) {
   // 해당 유저 정보
   const { loginInfo } = useSelector((state) => state.homeReducer);
 
-  // 현재 사용자가 가지고 있는 번들 목록
-  const [bundles, setBundles] = useState([]);
-
   // 어떤 번들을 선택할지 또는 생성할지 선택
   const [selectedBundle, setSelectedBundle] = useState(0);
+
+  // 선택한 카드가 이미 선택된 번들에 추가 되어 있는지 안되어 있는지 확인
+  const [isExist, setIsExist] = useState(false);
 
   // 빈 번들 생성 시 제목과 내용
   const [createNewBundle, setCreateNewBundle] = useState({
@@ -40,9 +40,25 @@ function ScrapButtonModal({ open, handleClose, targetId }) {
     bundleContent: "",
   });
 
+  // (*) Alarm
+  const [valid, setValid] = useState({
+    isValid: false,
+    comment: "",
+    state: "",
+  });
+
   // 번들 선택
   const handleRadioChange = (event) => {
     setSelectedBundle(event.target.value);
+    setIsExist(false);
+
+    bundleList.forEach((bundle) => {
+      if (bundle.bundleId === Number.parseInt(event.target.value, 10)) {
+        if (bundle.ableToInsertCardInBundle === false) {
+          setIsExist(true);
+        }
+      }
+    });
   };
 
   // 번들 제목
@@ -59,6 +75,37 @@ function ScrapButtonModal({ open, handleClose, targetId }) {
   // 모달 닫기
   const handleCloseModal = (e) => {
     e.preventDefault();
+    setSelectedBundle(0);
+    handleClose();
+  };
+
+  // 이미 추가된 카드 이므로 번들에서 삭제
+  const handleDelete = (event) => {
+    event.preventDefault();
+
+    const del = async () => {
+      await apiDeleteCardScrap(selectedBundle, targetId)
+        .then((success) => {
+          handleBundleList();
+          console.log(success);
+          setValid({
+            isValid: true,
+            comment: success.data,
+            state: "info",
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          setValid({
+            isValid: true,
+            comment: "카드 삭제 실패",
+            state: "error",
+          });
+        });
+    };
+    del();
+
+    setSelectedBundle(0);
     handleClose();
   };
 
@@ -73,47 +120,58 @@ function ScrapButtonModal({ open, handleClose, targetId }) {
           userId: loginInfo.userId,
           feedTitle: createNewBundle.bundleTitle,
           feedContent: createNewBundle.bundleContent,
-          feedType: "BUNDLE",
         };
-        console.log(targetId, params);
+        console.log(params);
         await apiPostCardScrap(targetId, params)
-          .then((success) => console.log(success))
-          .then((error) => console.log(error));
+          .then((success) => {
+            handleBundleList();
+            setValid({
+              isValid: true,
+              comment: success.data,
+              state: "info",
+            });
+          })
+          .catch((error) => {
+            console.log("error", error);
+            setValid({
+              isValid: true,
+              comment: error,
+              state: "error",
+            });
+          });
       };
       added();
     } else {
       // 기존 번들에 추가
       const added = async () => {
-        const params = {
-          cardId: targetId,
-          bundleId: Number.parseInt(selectedBundle, 10),
-        };
-        console.log(params);
         await apiPutCardScrap({
           cardId: targetId,
           bundleId: selectedBundle,
         })
-          .then((success) => console.log(success))
-          .catch((error) => console.log(error));
+          .then((success) => {
+            handleBundleList();
+            console.log(success);
+            setValid({
+              isValid: true,
+              comment: success.data,
+              state: "info",
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            setValid({
+              isValid: true,
+              comment: "해당 번들에 추가할 수 없습니다",
+              state: "error",
+            });
+          });
       };
       added();
     }
+
+    setSelectedBundle(0);
     handleClose();
   };
-
-  useEffect(() => {
-    setBundles([]);
-    // const initCall = async () => {
-    //   await apiGetBundle(loginInfo.userId)
-    //     .then(({ data }) => {
-    //       setBundles(data);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // };
-    // initCall();
-  }, [open]);
 
   const style = {
     position: "absolute",
@@ -130,7 +188,11 @@ function ScrapButtonModal({ open, handleClose, targetId }) {
     <Card sx={{ ml: 10, mb: 3, minWidth: 200, maxWidth: 800 }}>
       <Modal open={open} onClose={handleCloseModal}>
         <Card sx={style}>
-          <MDBox p={3} bgColor="#152744">
+          <MDBox
+            p={3}
+            bgColor="#152744"
+            sx={{ maxHeight: "600px", overflowY: "scroll", overflowX: "hidden" }}
+          >
             <FormControl sx={{ m: 3 }} variant="standard">
               <FormLabel id="scrap-card-bundle">스크랩 추가 하기</FormLabel>
               <RadioGroup
@@ -139,7 +201,7 @@ function ScrapButtonModal({ open, handleClose, targetId }) {
                 value={selectedBundle}
                 onChange={handleRadioChange}
               >
-                {bundles.map((bundle) => (
+                {bundleList.map((bundle) => (
                   <FormControlLabel
                     key={bundle.bundleId}
                     value={bundle.bundleId}
@@ -164,29 +226,55 @@ function ScrapButtonModal({ open, handleClose, targetId }) {
                 variant="outlined"
                 onClick={(e) => handleCloseModal(e)}
               >
-                생성 취소
+                취소
               </Button>
-              <Button
-                sx={{ mt: 1, mr: 1 }}
-                type="button"
-                variant="outlined"
-                onClick={(e) => handleSubmit(e)}
-              >
-                생성 완료
-              </Button>
+              {isExist === true ? (
+                <Button
+                  sx={{ mt: 1, mr: 1 }}
+                  type="button"
+                  variant="outlined"
+                  onClick={(e) => handleDelete(e)}
+                >
+                  해당 번들에서 삭제
+                </Button>
+              ) : (
+                <Button
+                  sx={{ mt: 1, mr: 1 }}
+                  type="button"
+                  variant="outlined"
+                  onClick={(e) => handleSubmit(e)}
+                >
+                  생성
+                </Button>
+              )}
             </Box>
           </MDBox>
         </Card>
       </Modal>
+      <MDSnackbar
+        color={valid.state} // info: 파랑, error: 빨강
+        icon="notifications"
+        title="알람"
+        content={valid.comment}
+        // dateTime="11 mins ago"
+        open={valid.isValid}
+        close={() => setValid({ valid: false, comment: "", state: "" })}
+      />
     </Card>
   );
 }
+
+ScrapButtonModal.defaultProps = {
+  bundleList: [],
+};
 
 // Typechecking props for the SimpleBlogCard
 ScrapButtonModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   targetId: PropTypes.number.isRequired,
+  bundleList: PropTypes.arrayOf(PropTypes.object),
+  handleBundleList: PropTypes.func.isRequired,
 };
 
 export default ScrapButtonModal;
