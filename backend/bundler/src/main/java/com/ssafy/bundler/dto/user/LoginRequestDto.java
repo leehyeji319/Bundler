@@ -1,13 +1,15 @@
 package com.ssafy.bundler.dto.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginRequestDto {
 
-	private String username;
+	private String email;
 	private String password;
 
 }

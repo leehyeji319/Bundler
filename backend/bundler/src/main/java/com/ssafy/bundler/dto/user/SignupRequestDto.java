@@ -3,7 +3,6 @@ package com.ssafy.bundler.dto.user;
 import java.io.Serializable;
 
 import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.util.Password;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +22,7 @@ public class SignupRequestDto implements Serializable {
 		return User.builder()
 			.userEmail(this.userEmail)
 			.userNickname(this.userNickname)
-			.userPassword(Password.encrypt(this.userPassword))
+			.userPassword(this.userPassword)
 			.userIntroduction(this.userIntroduction)
 			.build();
 	}
