@@ -87,4 +87,7 @@ public class Feed extends BaseEntity implements Serializable {
 	public void deleteFeed() {
 		this.isDeleted = true;
 	}
+	public void like(int i){
+		this.feedLikeCnt += i;
+	}
 }

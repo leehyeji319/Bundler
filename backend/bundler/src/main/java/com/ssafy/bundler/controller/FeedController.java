@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.bundler.dto.bundle.response.BundleResponseDto;
 import com.ssafy.bundler.dto.card.response.CardResponseDto;
 import com.ssafy.bundler.dto.card.response.CardSummaryResponseDto;
+import com.ssafy.bundler.dto.feed.FeedLikeRequestDto;
+import com.ssafy.bundler.dto.feed.FeedLikeResponseDto;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.query.BundleQueryRepository;
 import com.ssafy.bundler.repository.query.CardQueryRepository;
@@ -92,5 +96,13 @@ public class FeedController {
 		List<Object> allByKeyword = feedService.findAllByKeyword(keyword);
 		return new ResponseEntity<List<Object>>(allByKeyword, HttpStatus.OK);
 	}
+	@PostMapping("/v1/feeds/like/{feed_id}")
+	public ResponseEntity<?> likeFeed(@PathVariable("feed_id") Long feedId,@RequestBody FeedLikeRequestDto feedLikeRequestDto){
+		FeedLikeResponseDto responseDto = new FeedLikeResponseDto(
+			feedService.likeFeed(feedId,Long.parseLong(String.valueOf(feedLikeRequestDto.getUserId())))
+		);
+		return new ResponseEntity<FeedLikeResponseDto>(responseDto,HttpStatus.OK);
+	}
+
 
 }

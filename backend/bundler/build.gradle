@@ -40,7 +40,7 @@ dependencies {
 
     //database
 //   runtimeOnly 'com.h2database:h2'
-//   runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.0.6'
+   runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:3.0.6'
 
     //configuration
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
