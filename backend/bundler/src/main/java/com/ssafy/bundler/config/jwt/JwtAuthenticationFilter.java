@@ -12,8 +12,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.bundler.config.auth.PrincipalDetails;
-import com.ssafy.bundler.dto.user.LoginRequestDto;
+
+import com.ssafy.bundler.config.auth.UserPrincipal;
+import com.ssafy.bundler.dto.LoginRequestDto;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		// 유저네임패스워드 토큰 생성
 		UsernamePasswordAuthenticationToken authenticationToken =
 			new UsernamePasswordAuthenticationToken(
-				loginRequestDto.getUsername(),
+				loginRequestDto.getEmail(),
 				loginRequestDto.getPassword());
 
 		System.out.println("JwtAuthenticationFilter : 토큰생성완료");
@@ -65,8 +66,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		Authentication authentication =
 			authenticationManager.authenticate(authenticationToken);
 
-		PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
-		System.out.println("Authentication : " + principalDetails.getUser().getUserNickname());
+		UserPrincipal principalDetails = (UserPrincipal)authentication.getPrincipal();
+		System.out.println("Authentication : " + principalDetails.getUsername());
 		return authentication;
 	}
 
@@ -75,13 +76,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 		Authentication authResult) throws IOException, ServletException {
 
-		PrincipalDetails principalDetails = (PrincipalDetails)authResult.getPrincipal();
+		UserPrincipal principalDetails = (UserPrincipal)authResult.getPrincipal();
 
 		String jwtToken = JWT.create()
 			.withSubject(principalDetails.getUsername())
 			.withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME + 32400000))
-			.withClaim("id", principalDetails.getUser().getUserId())
-			.withClaim("username", principalDetails.getUser().getUserNickname())
+			.withClaim("id", principalDetails.getUserId())
+			.withClaim("userEmail", principalDetails.getUsername())
 			.sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
 		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);

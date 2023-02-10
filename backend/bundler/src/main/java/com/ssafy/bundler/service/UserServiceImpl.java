@@ -24,12 +24,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	// private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
+
+	// public User getUserByUserNickname(String userNickname) {
+	// 	return userRepository.findOneByUserNickname(userNickname).orElseThrow();
+
 	public List<Profile> getUserListByUserNickname(String userNickname) throws EntityNotFoundException {
 		List<User> userList = userRepository.findByUserNicknameContains(userNickname);
 
@@ -51,17 +54,26 @@ public class UserServiceImpl implements UserService {
 		return response;
 	}
 
-	@Override
-	public AuthResponseDto createUser(SignupRequestDto request) {
-		User userEntity = userRepository.save(
-			request.toEntity()
-				.toBuilder()
-				.userRole("ROLE_USER")
-				.build());
+	// @Override
+	// public AuthResponseDto createUser(SignupRequestDto request) {
+	// 	User userEntity = userRepository.save(
+	// 		request.toEntity()
+	// 			.toBuilder()
+	// 			.userRole(RoleType.USER)
+	// 			.build());
+	//
+	// 	return AuthResponseDto.builder()
+	// 		.userNickname(userEntity.getUserNickname())
+	// 		.build();
+	// }
 
-		return AuthResponseDto.builder()
-			.userNickname(userEntity.getUserNickname())
-			.build();
+	@Override
+	public User getUser(String userId) {
+		return null;
+	}
+
+	public User getUser(Long userId) {
+		return userRepository.findOneByUserId(userId).orElseThrow();
 	}
 
 	@Override
