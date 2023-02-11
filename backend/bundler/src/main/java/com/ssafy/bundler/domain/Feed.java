@@ -75,6 +75,11 @@ public class Feed extends BaseEntity implements Serializable {
 	@JoinColumn(name = "feed_id")
 	private List<Comment> commentList = new ArrayList<>();
 
+	// @Builder.Default
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "feed_id")
+	private List<FeedCategory> feedCategoryList;
+
 	//===== 로그인 사용자 =====//
 
 	//사용자가 좋아요한 피드
@@ -87,7 +92,8 @@ public class Feed extends BaseEntity implements Serializable {
 	public void deleteFeed() {
 		this.isDeleted = true;
 	}
-	public void like(int i){
+
+	public void like(int i) {
 		this.feedLikeCnt += i;
 	}
 }
