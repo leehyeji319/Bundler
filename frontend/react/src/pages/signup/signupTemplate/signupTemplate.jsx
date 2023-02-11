@@ -39,7 +39,7 @@ function SignUpTemplate() {
   const signUp = () => {
     // 아래와 같은 조건으로 axios 보냄
     axios({
-      url: "http://localhost:8087/api/v1/auth/signup",
+      url: "https://i8a810.p.ssafy.io/api/v1/auth/signup",
       method: "POST",
       withCredentials: true,
       data: {
