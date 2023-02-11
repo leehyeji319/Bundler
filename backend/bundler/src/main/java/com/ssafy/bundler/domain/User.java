@@ -56,41 +56,24 @@ public class User extends BaseEntity implements Serializable {
 	@ColumnDefault(value = "0")
 	private boolean isDeleted;
 
-	// @Column(name = "user_role")
-	// private String userRole;
-	//
-	// @Column(name = "following_cnt")
-	// private int followingCnt;
-	//
-	// @Column(name = "follower_cnt")
-	// private int followerCnt;
-	//
-	// public List<String> getRoleList() {
-	// 	if (this.userRole.length() > 0) {
-	// 		return Arrays.asList(this.userRole.split(","));
-	// 	}
-	//
-	// 	return new ArrayList<>();
-	// }
+	@Column(name = "user_role")
+	private String userRole;
 
+	@Column(name = "following_cnt")
+	private Integer followingCnt;
 
-//	@Column(name = "user_role")
-//	private String userRole;
-//
-//	@Column(name = "following_cnt")
-//	private int followingCnt;
-//
-//	@Column(name = "follower_cnt")
-//	private int followerCnt;
-//
-//	public List<String> getRoleList() {
-//		if (this.userRole.length() > 0) {
-//			return Arrays.asList(this.userRole.split(","));
-//		}
-//
-//		return new ArrayList<>();
-//	}
+	@Column(name = "follower_cnt")
+	private Integer followerCnt;
 
+	public List<String> getRoleList() {
+		if (this.userRole.length() > 0) {
+			return Arrays.asList(this.userRole.split(","));
+		}
+
+		return new ArrayList<>();
+	}
+
+	//////////////////////////////////////
 
 	@OneToMany(cascade = ALL)
 	@JoinColumn(name = "user_id")
