@@ -1,27 +1,52 @@
 package com.ssafy.bundler.domain;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter
-@Entity
-public class Bundle {
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-	@Id
-	@GeneratedValue
-	@Column(name = "bundle_id")
+@Getter
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "BUNDLES")
+@DiscriminatorValue(value = "BUNDLE")
+@PrimaryKeyJoinColumn(name = "bundle_id")
+@SuperBuilder(toBuilder = true)
+public class Bundle extends Feed implements Serializable {
+
+	@Column(name = "bundle_id", insertable = false, updatable = false)
 	private Long bundleId;
+
 	@Column(name = "bundle_thumbnail")
 	private String bundleThumbnail;
+
 	@Column(name = "bundle_thumbnail_text")
 	private String bundleThumbnailText;
-	@Column(name = "bundle_is_public")
+
+	@Column(name = "is_bundle_public")
 	private boolean isBundlePublic;
-	@OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
-	private List<CardBundle> cardBundleList = new ArrayList<>();
+
+	@Builder.Default
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "bundle_id")
+	private List<CardBundle> cardList = new ArrayList<>();
+
+	public void addCardBundle(final CardBundle cardBundle) {
+		cardList.add(cardBundle);
+	}
 
 }
