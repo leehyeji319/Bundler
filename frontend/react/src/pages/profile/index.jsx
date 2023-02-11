@@ -42,7 +42,7 @@ import MySkill from "./components/Skill/SkillBox";
 // import CardListTab from "./Form/CardListForm";
 // import StatTab from "./Form/StatForm";
 import SelectedTab from "./Form/TabSelect";
-import profiletestdata from "./data/profileTest0209.json";
+// import profiletestdata from "./data/profileTest0209.json";
 
 function Profile() {
   const [tabvalue, setTabValue] = useState("cardTab");
@@ -52,7 +52,7 @@ function Profile() {
   };
   // const data1 = strickdata;
 
-  const profiledata = profiletestdata;
+  // const profiledata = profiletestdata;
   // const profiletempdata = {
   //   userId: 273,
   //   userEmail: "dellojoon7@gmail.com",
@@ -65,9 +65,7 @@ function Profile() {
   //   userFollowerCount: 500,
   // };
 
-  // const [profileDataGet, setProfileData] = useState([]);
   console.log("test");
-  const [StatData, setStatisticData] = useState([]);
 
   // -----다중 axios일 때의 코드 (23.02.09) -----
   // useEffect(() => {
@@ -89,30 +87,20 @@ function Profile() {
   //       console.log("hi22-YOUR DATA ERROR");
   //     });
   // }, []);
+  console.log("test010");
 
+  const [profileDataGet, setProfileData] = useState([]);
+  const [CalendarData, setCalendar] = useState([]);
+  const [CalendarDate, setDate] = useState([]);
   // 프로필 axios를 통해 먼저 렌더링
-  // useEffect(() => {
-  //   console.log("test011");
-  //   axios
-  //     .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/mypage")
-  //     .then((res) => {
-  //       setProfileData(res.data);
-  //       console.log("hi11-YOUR DATA OK");
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       console.log("hi22-YOUR DATA ERROR");
-  //     });
-  // }, []);
-
-  console.log("test2222");
-  // -----stat만 axios 하나로 받고, 프로필이 json 파일 일때의 axios (23.02.09)-----
   useEffect(() => {
-    console.log("test012");
+    console.log("test011");
     axios
-      .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
-      .then((res2) => {
-        setStatisticData(res2.data);
+      .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/mypage")
+      .then((res) => {
+        setProfileData(res.data);
+        setCalendar(res.data.userCalendar);
+        setDate(res.data.userCalendar.dates);
         console.log("hi11-YOUR DATA OK");
       })
       .catch((error) => {
@@ -121,17 +109,36 @@ function Profile() {
       });
   }, []);
 
-  // console.log(profileDataGet);
-  // const profiledata = profileDataGet;
+  console.log(profileDataGet);
+  console.log("test2222");
+  // -----stat만 axios 하나로 받고, 프로필이 json 파일 일때의 axios (23.02.09)-----
+  const [StatData, setStatisticData] = useState([]);
+  useEffect(() => {
+    console.log("test012");
+    axios
+      .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
+      .then((res2) => {
+        setStatisticData(res2.data);
+        console.log("hi33-YOUR DATA OK");
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log("hi44-YOUR DATA ERROR");
+      });
+  }, []);
 
-  // const profiledata = profiletestdata;0
   // console.log(profileDataGet);
-  // console.log(StatData);
-  const thisyear = profiledata.userCalendar.year;
+  const profiledata = profileDataGet;
+
+  console.log(profiledata);
+
+  const thisyear = CalendarData.year;
   const startDate = `${thisyear}-01-01`;
   const endDate = `${thisyear}-12-31`;
-  // console.log(endDate);
-  const calendarData = profiledata.userCalendar.dates;
+
+  const cal2 = CalendarData.dates;
+  console.log(cal2);
+  const calendarData = CalendarDate;
 
   return (
     <DashboardLayout>
@@ -302,6 +309,7 @@ function Profile() {
           }}
         >
           <SelectedTab selected={tabvalue} data={StatData} />
+          {/* <SelectedTab selected={tabvalue} /> */}
         </MDBox>
       </MDBox>
     </DashboardLayout>
