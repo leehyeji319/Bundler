@@ -6,7 +6,7 @@ function SearchCard() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <CardSearch />
+      <div>search all</div>
     </DashboardLayout>
   );
 }

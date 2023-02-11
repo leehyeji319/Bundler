@@ -11,12 +11,12 @@ axios.defaults.headers["Access-Control-Allow-Origin"] = "*";
 // 로그인 함수를 실행해서
 function Login() {
   // setEmail 함수로 email 대응 하는 값을 변경할 수 있게 useState 생성
-  const [username, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   // setPassword 함수로 password 대응 하는 값을 변경할 수 있게 useState 생성
   const [password, setPassword] = useState("");
   // login 함수를 실행하면
   const requestLogin = async () => {
-    await apiPostLogin(username, password).then((res) => {
+    await apiPostLogin(email, password).then((res) => {
       if (res.status === 200) {
         window.open("/auth/login", "_self");
       }
@@ -34,7 +34,7 @@ function Login() {
             placeholder="email"
             className="inputValue"
             onChange={(e) => setEmail(e.target.value)}
-            value={username}
+            value={email}
           />
         </label>
       </div>
