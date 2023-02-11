@@ -1,12 +1,11 @@
 package com.ssafy.bundler.controller;
 
-
-import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import com.ssafy.bundler.common.ApiResponse;
-import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.config.auth.PrincipalDetails;
+import com.ssafy.bundler.config.auth.UserPrincipal;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.user.FollowingListResponseDto;
 import com.ssafy.bundler.dto.user.Profile;
@@ -82,10 +79,10 @@ public class UserController {
 	//회원 정보 삭제
 	@DeleteMapping("/{userId}")
 	public ResponseEntity deleteUser(Authentication authentication, @PathVariable Long userId) {
-		
-		PrincipalDetails principal = (PrincipalDetails)authentication.getPrincipal();
 
-		if (principal.getUser().getUserId().equals(userId)) {
+		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
+
+		if (principal.getUserId().equals(userId)) {
 			System.out.println("성공");
 			userService.deleteUser(userId);
 		}
@@ -125,7 +122,7 @@ public class UserController {
 	// }
 
 	@GetMapping("/{userId}/mypage")
-	public ResponseEntity<UserMypageResponseDto> mypage(@PathVariable Long userId){
+	public ResponseEntity<UserMypageResponseDto> mypage(@PathVariable Long userId) {
 
 		UserCalendarResponseDto calendar = userService.getDayFeedCount(userId);
 		UserMypageResponseDto mypageResponseDto = UserMypageResponseDto.builder().userCalendar(calendar).build();

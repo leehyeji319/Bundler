@@ -13,16 +13,15 @@ import com.ssafy.bundler.config.auth.AuthTokenProvider;
 import com.ssafy.bundler.config.jwt.JwtToken;
 import com.ssafy.bundler.config.properties.AppProperties;
 import com.ssafy.bundler.dto.JwtTokenDto;
-import com.ssafy.bundler.dto.LoginRequestDto;
-import com.ssafy.bundler.dto.SignupRequestDto;
 import com.ssafy.bundler.dto.TokenReIssueRequest;
 import com.ssafy.bundler.dto.UserDto;
+import com.ssafy.bundler.dto.user.LoginRequestDto;
+import com.ssafy.bundler.dto.user.SignupRequestDto;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 
 @RestController
 @RequestMapping("/api/v1")
