@@ -25,7 +25,7 @@ function SignUpTemplate() {
   const signUp = () => {
     // 아래와 같은 조건으로 axios 보냄
     axios({
-      url: "http://localhost:8087/signup",
+      url: "http://localhost:8087/api/v1/signup",
       // url: "http://localhost:8080/signUp",
       method: "POST",
       withCredentials: true,
@@ -33,7 +33,7 @@ function SignUpTemplate() {
         userEmail,
         userNickname,
         userPassword,
-        confirmPassword,
+        // confirmPassword,
         userIntroduction,
       },
     })
@@ -46,118 +46,116 @@ function SignUpTemplate() {
   };
 
   return (
-    <div className="container">
-      <Card sx={{ minWidth: 400, maxWidth: 500 }}>
-        <div className="greenbox">
-          <div className="welcome">
-            <img className="rabbit" src={bundlerRabbit} alt="signupimg" width={125} />
-            <p>환영합니다</p>
-            <div className="stretch">나만의 학습카드 번들러, 지금 바로 시작해보세요.</div>
-          </div>
+    <Card sx={{ minWidth: 400, maxWidth: 500 }}>
+      <div className="greenbox">
+        <div className="welcome">
+          <img className="rabbit" src={bundlerRabbit} alt="signupimg" width={125} />
+          <p>환영합니다</p>
+          <div className="stretch">나만의 학습카드 번들러, 지금 바로 시작해보세요.</div>
         </div>
-        {/* 회원 가입 form */}
-        <form>
-          <div className="signupMargin">
-            {/* 이메일 받기 */}
-            <label htmlFor="email">
-              &nbsp;이메일
-              <input
-                className="inputinfo"
-                type="text"
-                pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]"
-                placeholder="이메일을 입력해주세요"
-                required="required"
-                id="Email"
-                value={userEmail}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
-          </div>
-          {/* 닉네임 받기 */}
-          <div className="signupMargin">
-            <label htmlFor="nickname">
-              &nbsp;닉네임(영문)
-              <input
-                className="inputinfo"
-                type="text"
-                pattern="^([A-Za-z0-9]).{1,20}$"
-                placeholder="닉네임을 입력해주세요"
-                required="required"
-                id="nickname"
-                value={userNickname}
-                onChange={(e) => setNickname(e.target.value)}
-              />
-            </label>
-          </div>
-          {/* 비밀번호 받기 */}
-          <div className="signupMargin">
-            <label htmlFor="password">
-              &nbsp;비밀번호
-              <input
-                className="inputinfo"
-                type="password"
-                pattern="^([A-Za-z0-9])(?=.*[!@#$%^&*()]).{7,20}$"
-                placeholder="비밀번호를 입력해주세요"
-                required="required"
-                id="password"
-                value={userPassword}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </label>
-          </div>
-          {/* 비밀번호 확인 받기 */}
-          <div className="signupMargin">
-            <label htmlFor="password">
-              &nbsp;비밀번호 확인
-              <input
-                className="inputinfo"
-                type="password"
-                pattern={userPassword}
-                placeholder="비밀번호를 다시 한 번 입력해주세요"
-                required="required"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </label>
-          </div>
-          {/* 한줄 소개 받기 */}
-          <div className="signupMargin">
-            <label htmlFor="online">
-              &nbsp;한 줄 소개
-              <input
-                className="inputinfo"
-                type="text"
-                pattern="^([가-힣A-Za-z0-9]).{1,20}$"
-                placeholder="한 줄 소개를 입력해주세요"
-                required="required"
-                id="oneline"
-                value={userIntroduction}
-                onChange={(e) => setOneline(e.target.value)}
-              />
-            </label>
-          </div>
-          {/* 가입 버튼 */}
-          <MDBox mt={0} mb={3} textAlign="center">
-            <Button
-              onClick={signUp}
-              className="learn-more2"
-              sx={{
-                marginTop: "4%",
-                bgcolor: "#81D8CF",
-                color: "#000000",
-                fontSize: "large",
-                fontWeight: "bold",
-                width: "350px",
-              }}
-              type="submit"
-            >
-              가입 하기
-            </Button>
-          </MDBox>
-        </form>
-      </Card>
-    </div>
+      </div>
+      {/* 회원 가입 form */}
+      <form>
+        <div className="signupMargin">
+          {/* 이메일 받기 */}
+          <label htmlFor="email">
+            &nbsp;이메일
+            <input
+              className="inputinfo"
+              type="text"
+              pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]"
+              placeholder="이메일을 입력해주세요"
+              required="required"
+              id="Email"
+              value={userEmail}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
+        </div>
+        {/* 닉네임 받기 */}
+        <div className="signupMargin">
+          <label htmlFor="nickname">
+            &nbsp;닉네임(영문)
+            <input
+              className="inputinfo"
+              type="text"
+              pattern="^([A-Za-z0-9]).{1,20}$"
+              placeholder="닉네임을 입력해주세요"
+              required="required"
+              id="nickname"
+              value={userNickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
+          </label>
+        </div>
+        {/* 비밀번호 받기 */}
+        <div className="signupMargin">
+          <label htmlFor="password">
+            &nbsp;비밀번호
+            <input
+              className="inputinfo"
+              type="password"
+              pattern="^([A-Za-z0-9])(?=.*[!@#$%^&*()]).{7,20}$"
+              placeholder="비밀번호를 입력해주세요"
+              required="required"
+              id="password"
+              value={userPassword}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+        </div>
+        {/* 비밀번호 확인 받기 */}
+        <div className="signupMargin">
+          <label htmlFor="password">
+            &nbsp;비밀번호 확인
+            <input
+              className="inputinfo"
+              type="password"
+              pattern={userPassword}
+              placeholder="비밀번호를 다시 한 번 입력해주세요"
+              required="required"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </label>
+        </div>
+        {/* 한줄 소개 받기 */}
+        <div className="signupMargin">
+          <label htmlFor="online">
+            &nbsp;한 줄 소개
+            <input
+              className="inputinfo"
+              type="text"
+              pattern="^([가-힣A-Za-z0-9]).{1,20}$"
+              placeholder="한 줄 소개를 입력해주세요"
+              required="required"
+              id="oneline"
+              value={userIntroduction}
+              onChange={(e) => setOneline(e.target.value)}
+            />
+          </label>
+        </div>
+        {/* 가입 버튼 */}
+        <MDBox mt={0} mb={3} textAlign="center">
+          <Button
+            onClick={signUp}
+            className="learn-more2"
+            sx={{
+              marginTop: "4%",
+              bgcolor: "#81D8CF",
+              color: "#000000",
+              fontSize: "large",
+              fontWeight: "bold",
+              width: "350px",
+            }}
+            type="submit"
+          >
+            가입 하기
+          </Button>
+        </MDBox>
+      </form>
+    </Card>
   );
 }
 

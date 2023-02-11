@@ -120,7 +120,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox color={light ? "white" : "inherit"}>
               {state22.authenticated ? (
-                <MDBox>
+                <MDBox color="white">
                   {state22.nickname} 님 번들러에 오신것을 환영합니다. <SignOut />{" "}
                   <Link to="/profile">
                     <IconButton sx={navbarIconButton} size="small" disableRipple>
@@ -129,7 +129,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                   </Link>
                 </MDBox>
               ) : (
-                <MDBox> 로그인 해주세요 </MDBox>
+                <MDBox color="white"> 로그인 해주세요 </MDBox>
               )}
 
               <IconButton

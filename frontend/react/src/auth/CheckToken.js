@@ -1,3 +1,4 @@
+// axios 설정
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCookieToken, removeCookieToken } from "../redux/store/Cookie";

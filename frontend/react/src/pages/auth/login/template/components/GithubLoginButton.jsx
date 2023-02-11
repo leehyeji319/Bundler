@@ -26,7 +26,7 @@ function GithubLoginButton() {
 
   const GithubLoginButtonClick = async () => {
     axios({
-      url: "https://localhost:8087/oauth2/authorization/github?redirect_uri=http://localhost:3000/",
+      url: "http://localhost:8087/oauth2/authorization/github?redirect_uri=http://localhost:3000/",
       method: "GET",
       withCredentials: true,
       // headers: { Authorization: `Token ${accessToken}` },

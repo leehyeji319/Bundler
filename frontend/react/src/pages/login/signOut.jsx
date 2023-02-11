@@ -17,7 +17,7 @@ function SignOut() {
   // eslint-disable-next-line
   const logout = async () => {
     // 백으로부터 받은 응답
-    const data = await logoutUser({ refresh_token: refreshToken }, accessToken);
+    const data = await logoutUser(refreshToken, accessToken);
 
     if (data.status) {
       console.log("44444444444444444");

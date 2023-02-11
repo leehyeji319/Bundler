@@ -9,6 +9,10 @@ export const tokenSlice = createSlice({
   name: "authToken",
   // 초기 state 값
   initialState: {
+    // 로그인 후 유저 pk를 저장하기 위한 선언
+    userId: "",
+    // 로그인 후 이메일을 저장하기 위한 선언
+    userEmail: "",
     // 로그인 후 이름을 저장하기 위한 선언
     nickname: "",
     // 현재 로그인 여부를 간단히 확인하기위한 선언
@@ -26,6 +30,10 @@ export const tokenSlice = createSlice({
       console.log(action.payload.accessToken);
       console.log(action.payload.nickname);
       console.log("reduxreduxreduxreduxredux");
+      // 로그인에 성공하면 userId 저장
+      state.userId = action.payload.userId;
+      // 로그인에 성공하면 email 저장
+      state.userEmail = action.payload.userEmail;
       // 로그인에 성공하면 nickname 저장
       state.nickname = action.payload.nickname;
       // 로그인에 성공하면 authenticated를 True로 바꿔 로그인 여부를 저장
@@ -37,6 +45,10 @@ export const tokenSlice = createSlice({
     },
     // 값을 모두 초기화함으로써 Access Token에 대한 정보도 삭제
     DELETE_TOKEN: (state) => {
+      // 로그아웃에 성공하면 pk삭제
+      state.userId = "";
+      // 로그아웃에 성공하면 email 삭제
+      state.userEmail = "";
       // 로그아웃 성공하면 nickname 삭제
       state.nickname = "";
       // 로그아웃에 성공하면 authenticated를 False로 바꿔 로그아웃 여부를 저장

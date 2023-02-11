@@ -3,8 +3,9 @@ import axios from "axios";
 // server로 로그인 요청
 // 백으로 유저 정보와 함께 로그인 요청을 보낸다. 받은 응답 코드에 따라 에러 또는 응답 받은 json 정보를 리턴한다.
 const loginUser = async (info) => {
+  const { email, password } = info;
   const response = await axios({
-    url: "http://localhost:8087/login",
+    url: "http://localhost:8087/api/v1/login",
     // url: "http://localhost:8123/login",
     method: "POST",
     headers: {
@@ -12,7 +13,8 @@ const loginUser = async (info) => {
     },
     withCredentials: true,
     data: {
-      info,
+      email,
+      password,
     },
   });
   return response;
@@ -22,13 +24,13 @@ const loginUser = async (info) => {
   // });
 };
 
-const logoutUser = async (refreshToken) => {
+const logoutUser = async (refreshToken, accessToken) => {
   const response = await axios({
-    url: "http://localhost:8087/logout",
+    url: "http://localhost:8087/api/v1/logout",
     // url: "http://localhost:8123/logout",
     method: "POST",
     headers: {
-      "Content-Type": "application/json;charset=UTF-8",
+      Authorization: `Bearer ${accessToken}`,
     },
     withCredentials: true,
     data: {
@@ -40,7 +42,7 @@ const logoutUser = async (refreshToken) => {
 
 const requestToken = async (refreshToken) => {
   const response = await axios({
-    url: "http://localhost:8087/requestToken",
+    url: "http://localhost:8087/api/v1/requestToken",
     // url: "http://localhost:8123/requestToken",
     method: "POST",
     headers: {
