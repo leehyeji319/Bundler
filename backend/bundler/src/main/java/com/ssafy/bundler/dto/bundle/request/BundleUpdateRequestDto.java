@@ -1,4 +1,4 @@
-package com.ssafy.bundler.dto.bundle;
+package com.ssafy.bundler.dto.bundle.request;
 
 import lombok.Data;
 
@@ -10,6 +10,6 @@ public class BundleUpdateRequestDto {
 	private String feedContent;
 	private String bundleThumbnail;
 	private String bundleThumbnailText;
-	private boolean isBundlePublic;
+	private boolean isBundlePrivate;
 
 }

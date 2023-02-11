@@ -62,10 +62,10 @@ public class User extends BaseEntity implements Serializable {
 	private UserRole userRole;
 
 	@Column(name = "following_cnt")
-	private int followingCnt;
+	private Integer followingCnt;
 
 	@Column(name = "follower_cnt")
-	private int followerCnt;
+	private Integer followerCnt;
 
 	// public List<String> getRoleList() {
 	// 	if (this.userRole.length() > 0) {
