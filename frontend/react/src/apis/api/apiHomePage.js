@@ -7,6 +7,7 @@ const api = apiInstance();
 // controller default page url
 const FEED_CONTROLLER = "/api/v1";
 
+// ================================= Feed ================================================
 // Feed List 가져오기
 const apiGetFeeds = async () => {
   try {
@@ -17,7 +18,7 @@ const apiGetFeeds = async () => {
   }
 };
 
-// Feed Card click 시, 상세 모달 페이지 내용 가져오기
+// Card 상세 정보 가져오기
 const apiGetCardDetail = async (cardId) => {
   try {
     const response = await api.get(`${FEED_CONTROLLER}/feeds/cards/${cardId}`);
@@ -27,6 +28,17 @@ const apiGetCardDetail = async (cardId) => {
   }
 };
 
+// 번들 상세 정보 가져오기
+const apiGetBundleDetail = async (bundleId) => {
+  try {
+    const response = await api.get(`/api/v5/feeds/bundles/${bundleId}`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+// ================================= Scrap ================================================[
 // 스크랩 버튼 클릭 시 -> 내가 가지고 있는 번들 lsit 목록 불러오기
 const apiGetBundle = async (userId, cardId) => {
   try {
@@ -81,13 +93,26 @@ const apiPostBundleScrap = async (params) => {
   }
 };
 
+// ================================= Comment ===============================================
+// 댓글 쓰기
+const apiPostComment = async (params) => {
+  try {
+    const response = await api.post(`${FEED_CONTROLLER}/comment`, params);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 // export 함수
 export {
   apiGetFeeds,
   apiGetCardDetail,
+  apiGetBundleDetail,
   apiGetBundle,
   apiPutCardScrap,
   apiPostCardScrap,
   apiDeleteCardScrap,
   apiPostBundleScrap,
+  apiPostComment,
 };

@@ -31,11 +31,14 @@ function HomeCard({ cardInfo }) {
   // 현재 사용자가 가지고 있는 번들 목록
   const [bundleList, setBundleList] = useState([]);
 
+  // 카드 상세 정보 저장
   const [cardDetailInfo, setCardDetailInfo] = useState({});
 
+  // 카드 모달 on/off
   const [open, setOpen] = useState(false);
+  // 카드 모달 닫기
   const handleClose = () => setOpen(false);
-
+  // 카드 모달 열기 - 열때 카드 상세 정보 api 불러오기
   const handleOpen = () => {
     const emp = async () => {
       await apiGetCardDetail(cardInfo.cardId)
@@ -50,6 +53,7 @@ function HomeCard({ cardInfo }) {
     setOpen(true);
   };
 
+  // 스크랩 클릭 시, 해당 유저가 가지고 있는 번들 리스트 불러오기
   const handleBundleList = () => {
     const initCall = async () => {
       await apiGetBundle(loginInfo.userId, cardInfo.cardId)
@@ -64,8 +68,9 @@ function HomeCard({ cardInfo }) {
     initCall();
   };
 
+  // 처음 조회 시, 가지고 있는 번들 리스트 불러오기
   useEffect(() => {
-    const initCall = async () => {
+    const getNewComment = async () => {
       await apiGetBundle(loginInfo.userId, cardInfo.cardId)
         .then(({ data }) => {
           setBundleList(data);
@@ -74,13 +79,17 @@ function HomeCard({ cardInfo }) {
           console.log(error);
         });
     };
-
-    initCall();
+    getNewComment();
   }, []);
 
   return (
     <Card sx={{ ml: 2, mb: 3, maxWidth: 800, minHeight: 200, maxHeight: 400 }}>
-      <ModalDetail open={open} handleClose={handleClose} cardInfo={cardDetailInfo} />
+      <ModalDetail
+        open={open}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        cardInfo={cardDetailInfo}
+      />
       <MDBox mx={3}>
         <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
           <MDBox display="flex" sx={{ alignItems: "center", width: "80%" }}>

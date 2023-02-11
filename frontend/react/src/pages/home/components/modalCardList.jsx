@@ -1,6 +1,7 @@
 // Import react
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 // @mui material components
 import { Card, Modal } from "@mui/material";
@@ -14,9 +15,19 @@ import ModalDetail from "pages/home/components/modalDetail";
 import HomeInput from "pages/home/components/homeInput";
 import HomeCommentList from "pages/home/components/homeCommentList";
 
-function ModalCardList({ open, handleCardClose, cardList, commentList }) {
+// Import - axios
+import { apiPostComment } from "apis/api/apiHomePage";
+
+function ModalCardList({
+  open,
+  handleCommetList,
+  handleCardClose,
+  bundleId,
+  cardList,
+  commentList,
+}) {
   // Data - global
-  // const { cardList } = useSelector((state) => state.makeReducer);
+  const { loginInfo } = useSelector((state) => state.homeReducer);
 
   // Data - local
   const columnList = [
@@ -56,6 +67,25 @@ function ModalCardList({ open, handleCardClose, cardList, commentList }) {
     handleDetailCardOpen();
   };
 
+  // 번들 댓글 저장 및 댓글 다시 불러오기
+  const handleComment = async (comment) => {
+    const params = {
+      targetFeedId: bundleId,
+      content: comment.inputData,
+      userId: loginInfo.userId,
+    };
+    console.log(params);
+
+    await apiPostComment(params)
+      .then(async ({ data }) => {
+        console.log(data.message);
+        handleCommetList(); // 댓글 목록 다시 불러오기
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   // custom style
   const style = {
     position: "absolute",
@@ -70,9 +100,6 @@ function ModalCardList({ open, handleCardClose, cardList, commentList }) {
     borderRadius: 5,
   };
 
-  // open={open}
-  // handleClose={handleClose}
-  // cardInfo={cardInfo}
   return (
     cardList !== null && (
       <>
@@ -94,8 +121,8 @@ function ModalCardList({ open, handleCardClose, cardList, commentList }) {
               />
             </MDBox>
             <MDBox p={3}>
-              <HomeInput />
-              <HomeCommentList commentList={commentList} />
+              <HomeInput handleComment={handleComment} />
+              <HomeCommentList handleCommetList={handleCommetList} commentList={commentList} />
             </MDBox>
           </Card>
         </Modal>
@@ -113,7 +140,9 @@ ModalCardList.defaultProps = {
 // Typechecking props for the ModalCardList
 ModalCardList.propTypes = {
   open: PropTypes.bool.isRequired,
+  handleCommetList: PropTypes.func.isRequired,
   handleCardClose: PropTypes.func.isRequired,
+  bundleId: PropTypes.number.isRequired,
   cardList: PropTypes.arrayOf(PropTypes.object),
   commentList: PropTypes.arrayOf(PropTypes.object),
 };

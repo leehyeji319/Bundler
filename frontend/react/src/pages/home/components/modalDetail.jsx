@@ -1,6 +1,8 @@
 // Import React
 import React, { useState } from "react";
+// import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 // @mui material components
 import { Card, Modal, Box, TextField } from "@mui/material";
@@ -15,11 +17,19 @@ import HomeInput from "pages/home/components/homeInput";
 import HomeCommentList from "pages/home/components/homeCommentList";
 import CardImg from "assets/images/bundler/bundler_rabbit_3.png";
 
-function ModalDetail({ open, handleClose, cardInfo }) {
+// Import - axios
+import { apiPostComment } from "apis/api/apiHomePage";
+// import { apiGetCardDetail, apiPostComment } from "apis/api/apiHomePage";
+
+function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
+  const { loginInfo } = useSelector((state) => state.homeReducer);
   // 토글 버튼
   const [solutionToggle, setSolutionToggle] = useState(false);
   const [mySolutionToggle, setMySolutionToggle] = useState(false);
   const [mySolution, setMySolution] = useState("");
+
+  // 댓글 저장
+  // const [commentList, setCommentList] = useState([]);
 
   const handleMyAnswerChange = (e) => {
     e.preventDefault();
@@ -29,6 +39,25 @@ function ModalDetail({ open, handleClose, cardInfo }) {
   const handleCloseModal = (e) => {
     e.preventDefault();
     handleClose();
+  };
+
+  // 카드 댓글 저장 및 댓글 다시 불러오기
+  const handleComment = async (comment) => {
+    const params = {
+      targetFeedId: cardInfo.cardId,
+      content: comment.inputData,
+      userId: loginInfo.userId,
+    };
+    console.log(params);
+
+    await apiPostComment(params)
+      .then(async ({ data }) => {
+        console.log(data.message);
+        handleOpen(); // 댓글 목록 다시 불러오기
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const style = {
@@ -130,8 +159,11 @@ function ModalDetail({ open, handleClose, cardInfo }) {
               )}
             </MDBox>
             <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
-              <HomeInput />
-              <HomeCommentList commentList={cardInfo.commentResponseDtoList} />
+              <HomeInput handleOpen={handleOpen} handleComment={handleComment} />
+              <HomeCommentList
+                handleCommetList={handleOpen}
+                commentList={cardInfo.commentResponseDtoList}
+              />
             </Box>
           </MDBox>
         </Card>
@@ -161,6 +193,7 @@ ModalDetail.defaultProps = {
 ModalDetail.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleOpen: PropTypes.func.isRequired,
   cardInfo: PropTypes.shape({
     cardId: PropTypes.number,
     cardType: PropTypes.string,

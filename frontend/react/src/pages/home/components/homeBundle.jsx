@@ -17,21 +17,50 @@ import ModalCardList from "pages/home/components/modalCardList";
 import LikeButton from "pages/home/buttons/likeButton";
 import ScrapButton from "pages/home/buttons/scrapButton";
 
+// Import api
+import { apiGetBundleDetail } from "apis/api/apiHomePage";
+
 // Card Image
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
 function HomeBundle({ bundleInfo }) {
   const [cardListModal, setCardListModal] = useState(false);
-  const handleCardListOpen = () => setCardListModal(true);
+
   const handleCardClose = () => setCardListModal(false);
+
+  // 번들 상세 정보 저장
+  const [bundleDetail, setBundleDetail] = useState([]);
+
+  // 번들 상세 조회
+  const handleBundleDetail = () => {
+    const getInfo = async () => {
+      await apiGetBundleDetail(bundleInfo.bundleId)
+        .then(({ data }) => {
+          console.log(bundleInfo);
+          console.log(bundleInfo.bundleId);
+          console.log("api 재호출", data);
+          setBundleDetail(data);
+        })
+        .catch((error) => console.log(error));
+    };
+    getInfo();
+  };
+
+  // 번들 상세 조회 모달 클릭
+  const handleCardListOpen = () => {
+    handleBundleDetail(); // api 통신 - 번들 상세 정보 가져오기
+    setCardListModal(true);
+  };
 
   return (
     <Card sx={{ ml: 2, mb: 3, maxWidth: 800, minHeight: 200, maxHeight: 400 }}>
       <ModalCardList
         open={cardListModal}
+        handleCommetList={handleBundleDetail}
         handleCardClose={handleCardClose}
-        cardList={bundleInfo.cardBundleQueryDtoList}
-        commentList={bundleInfo.bundleCommentResponseList}
+        bundleId={bundleInfo.bundleId}
+        cardList={bundleDetail.cardBundleQueryDtoList}
+        commentList={bundleDetail.bundleCommentResponseList}
       />
       <MDBox mx={3} sx={{ position: "realative" }}>
         <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>

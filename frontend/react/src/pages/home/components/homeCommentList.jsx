@@ -11,13 +11,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 
-function HomeCommentList({ commentList }) {
+function HomeCommentList({ handleCommetList, commentList }) {
   // =============================== Data ===============================
   const { loginInfo } = useSelector((state) => state.homeReducer);
 
   // 댓글 수정 boolean 값
   const [edit, setEdit] = useState({
-    id: loginInfo.userId,
+    id: -1,
     comment: "",
   });
 
@@ -25,11 +25,12 @@ function HomeCommentList({ commentList }) {
   // function in component
   // (1) 글 수정 버튼
   const editButton = (reply, commentId) => {
-    console.log("글 수정 시작;");
+    console.log("글 수정 시작");
     setEdit({
       id: commentId,
       comment: reply,
     });
+    handleCommetList(); // 목록 다시 불러오기
   };
 
   // (1-2) 글 수정 정보 local data에 저장
@@ -143,6 +144,7 @@ HomeCommentList.defaultProps = {
 };
 
 HomeCommentList.propTypes = {
+  handleCommetList: PropTypes.func.isRequired,
   commentList: PropTypes.arrayOf(PropTypes.object),
 };
 
