@@ -54,7 +54,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws IOException, ServletException {
 		// String targetUrl = determineTargetUrl(request, response, authentication);
-		String targetUrl = "http://localhost:3000/";
+		String targetUrl = "http://127.0.0.1/3000";
 
 		///////////////
 

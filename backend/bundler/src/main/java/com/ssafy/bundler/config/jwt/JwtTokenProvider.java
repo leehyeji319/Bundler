@@ -16,10 +16,10 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,17 +28,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtTokenProvider {
 
-	@Value("${app.auth.jwt.secret}")
+	@Value("${app.jwt.secret}")
 	private String secret;
 
 	private SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
 	private String base64Key = Encoders.BASE64.encode(key.getEncoded());
 
-	@Value("${app.auth.jwt.accessTokenPeriod}")
+	@Value("${app.jwt.accessTokenPeriod}")
 	private Long accessTokenPeriod;
 
-	@Value("${app.auth.jwt.refreshTokenPeriod}")
+	@Value("${app.jwt.refreshTokenPeriod}")
 	private Long refreshTokenPeriod;
 
 	public JwtToken createJwtToken(Authentication authentication) {
@@ -122,8 +122,9 @@ public class JwtTokenProvider {
 
 	private Claims parseClaims(String token) {
 		try {
-			return Jwts.parser()
+			return Jwts.parserBuilder()
 				.setSigningKey(key)
+				.build()
 				.parseClaimsJws(token)
 				.getBody();
 		} catch (ExpiredJwtException e) {
@@ -138,8 +139,9 @@ public class JwtTokenProvider {
 
 	public boolean verifyToken(String token) {
 		try {
-			Jwts.parser()
+			Jwts.parserBuilder()
 				.setSigningKey(key)
+				.build()
 				.parseClaimsJws(token);
 
 			return true;

@@ -3,7 +3,6 @@ package com.ssafy.bundler.config;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,9 +34,7 @@ import com.ssafy.bundler.handler.TokenAccessDeniedHandler;
 import com.ssafy.bundler.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
-import com.ssafy.bundler.service.AuthService;
 import com.ssafy.bundler.service.CustomOAuth2UserService;
-import com.ssafy.bundler.service.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,16 +49,15 @@ public class SecurityConfig {
 	// private final PrincipalOauth2UserService principalOauth2UserService;
 	// private final UserRepository userRepository;
 
-	@Autowired
-	private CorsConfig corsConfig;
+	// private final CorsConfig corsConfig;
 
 	////////////////////////////////
 	// private final AuthenticationManager authenticationManager;
 	private final CorsProperties corsProperties;
 	private final AppProperties appProperties;
 	private final AuthTokenProvider tokenProvider;
-	private final CustomUserDetailsService userDetailsService;
-	private final AuthService authService;
+	// private final CustomUserDetailsService userDetailsService;
+
 	private final CustomOAuth2UserService oAuth2UserService;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
@@ -75,6 +71,11 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
+
+			.cors(httpSecurityCorsConfigurer ->
+				httpSecurityCorsConfigurer
+					.configurationSource(corsConfigurationSource())
+			)
 
 			.sessionManagement(httpSecuritySessionManagementConfigurer ->
 				httpSecuritySessionManagementConfigurer
@@ -180,12 +181,15 @@ public class SecurityConfig {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+		configuration.setAllowedOrigins(
+			List.of("http://localhost:3000", "http://127.0.0.1/3000", "http://i8a810.p.ssafy.io:3000"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 		configuration.setAllowCredentials(true);
 		configuration.setAllowedHeaders(List.of("*"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
+		// source.registerCorsConfiguration("/api/**", configuration);
+
 		return source;
 	}
 
@@ -201,8 +205,8 @@ public class SecurityConfig {
 
 			// LogoutConfigurer logoutConfigurer = http.getSharedObject(LogoutConfigurer.class);
 
-			http
-				.addFilter(corsConfig.corsFilter());
+			// http
+			// 	.addFilter(corsConfig.corsFilter());
 			// .addFilter(new JwtAuthenticationFilter(authenticationManager))
 			// .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
 		}
