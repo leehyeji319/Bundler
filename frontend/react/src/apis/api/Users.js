@@ -5,7 +5,7 @@ import axios from "axios";
 const loginUser = async (info) => {
   const { email, password } = info;
   const response = await axios({
-    url: "http://localhost:8087/api/v1/login",
+    url: "https://i8a810.p.ssafy.io/api/v1/login",
     // url: "http://localhost:8123/login",
     method: "POST",
     headers: {
@@ -26,7 +26,7 @@ const loginUser = async (info) => {
 
 const logoutUser = async (refreshToken, accessToken) => {
   const response = await axios({
-    url: "http://localhost:8087/api/v1/logout",
+    url: "https://i8a810.p.ssafy.io/api/v1/logout",
     // url: "http://localhost:8123/logout",
     method: "POST",
     headers: {
@@ -42,7 +42,7 @@ const logoutUser = async (refreshToken, accessToken) => {
 
 const requestToken = async (refreshToken) => {
   const response = await axios({
-    url: "http://localhost:8087/api/v1/requestToken",
+    url: "https://i8a810.p.ssafy.io/api/v1/requestToken",
     // url: "http://localhost:8123/requestToken",
     method: "POST",
     headers: {
