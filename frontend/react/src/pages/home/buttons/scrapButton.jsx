@@ -74,13 +74,14 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
 
 ScrapButton.defaultProps = {
   bundleList: [],
+  handleBundleList: function async() {},
 };
 
 ScrapButton.propTypes = {
   feedType: PropTypes.string.isRequired,
   targetId: PropTypes.number.isRequired,
   bundleList: PropTypes.arrayOf(PropTypes.object),
-  handleBundleList: PropTypes.func.isRequired,
+  handleBundleList: PropTypes.func,
 };
 
 export default ScrapButton;

@@ -38,6 +38,7 @@ public class Category implements Serializable {
 	@Column(name = "category_name")
 	private String categoryName;
 
+	@Builder.Default
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
 	private List<Card> cardList = new ArrayList<>();
 

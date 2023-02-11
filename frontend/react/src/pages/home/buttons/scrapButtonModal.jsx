@@ -44,7 +44,7 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
   const [valid, setValid] = useState({
     isValid: false,
     comment: "",
-    state: "",
+    state: "info",
   });
 
   // 번들 선택
@@ -87,7 +87,6 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
       await apiDeleteCardScrap(selectedBundle, targetId)
         .then((success) => {
           handleBundleList();
-          console.log(success);
           setValid({
             isValid: true,
             comment: success.data,
@@ -95,11 +94,10 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
           });
         })
         .catch((error) => {
-          console.log(error);
           setValid({
             isValid: true,
             comment: "카드 삭제 실패",
-            state: "error",
+            state: error,
           });
         });
     };
@@ -121,7 +119,6 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
           feedTitle: createNewBundle.bundleTitle,
           feedContent: createNewBundle.bundleContent,
         };
-        console.log(params);
         await apiPostCardScrap(targetId, params)
           .then((success) => {
             handleBundleList();
@@ -132,11 +129,10 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
             });
           })
           .catch((error) => {
-            console.log("error", error);
             setValid({
               isValid: true,
               comment: error,
-              state: "error",
+              state: error,
             });
           });
       };
@@ -150,7 +146,6 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
         })
           .then((success) => {
             handleBundleList();
-            console.log(success);
             setValid({
               isValid: true,
               comment: success.data,
@@ -158,10 +153,9 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
             });
           })
           .catch((error) => {
-            console.log(error);
             setValid({
               isValid: true,
-              comment: "해당 번들에 추가할 수 없습니다",
+              comment: error,
               state: "error",
             });
           });
@@ -258,7 +252,7 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
         content={valid.comment}
         // dateTime="11 mins ago"
         open={valid.isValid}
-        close={() => setValid({ valid: false, comment: "", state: "" })}
+        close={() => setValid({ valid: false, comment: "", state: "info" })}
       />
     </Card>
   );
