@@ -1,9 +1,8 @@
 // 1. Reducer의 초기 state 지정
 const initialState = {
   loginInfo: {
-    userId: 5,
-    userNickname: "섹쉬토끼",
-    userEmail: "sexyRabbit@gmail.com",
+    userId: "testId",
+    id: 1,
   },
   feedList: [],
 };

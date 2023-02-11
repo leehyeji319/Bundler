@@ -4,7 +4,6 @@ import static jakarta.persistence.CascadeType.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -12,6 +11,8 @@ import org.hibernate.annotations.ColumnDefault;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,18 +47,19 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "user_nickname", unique = true, nullable = false)
 	private String userNickname;
 
-	@Column(name = "user_introduction")
+	@Column(name = "user_introduction", nullable = false)
 	private String userIntroduction;
 
 	@Column(name = "user_profile_image", nullable = true)
 	private String userProfileImage;
 
-	@Column(name = "is_deleted")
+	@Column(name = "is_deleted", nullable = false)
 	@ColumnDefault(value = "0")
 	private boolean isDeleted;
 
-	@Column(name = "user_role")
-	private String userRole;
+	@Column(name = "user_role", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private UserRole userRole;
 
 	@Column(name = "following_cnt")
 	private Integer followingCnt;
@@ -65,13 +67,33 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "follower_cnt")
 	private Integer followerCnt;
 
-	public List<String> getRoleList() {
-		if (this.userRole.length() > 0) {
-			return Arrays.asList(this.userRole.split(","));
-		}
+	// public List<String> getRoleList() {
+	// 	if (this.userRole.length() > 0) {
+	// 		return Arrays.asList(this.userRole.split(","));
+	// 	}
+	// }
 
-		return new ArrayList<>();
-	}
+	@Column(name = "provider_type", nullable = true)
+	@Enumerated(EnumType.STRING)
+	private ProviderType providerType;
+
+	@Column(name = "provider_id", nullable = true)
+	private String providerId;
+
+	@Column(name = "provider_email", nullable = true)
+	private String providerEmail;
+
+	@Setter
+	@Column(name = "github_url", nullable = true)
+	private String githubUrl;
+
+	// public List<String> getRoleList() {
+	// 	if (this.userRole.length() > 0) {
+	// 		return Arrays.asList(this.userRole.split(","));
+	// 	}
+	//
+	// 	return new ArrayList<>();
+	// }
 
 	//////////////////////////////////////
 
