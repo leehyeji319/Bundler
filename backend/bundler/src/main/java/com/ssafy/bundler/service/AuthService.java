@@ -44,7 +44,7 @@ public class AuthService {
 			throw new RefreshTokenValidFailedException();
 		}
 
-		Long userId = Long.valueOf(jwtTokenProvider.getUserId(refreshToken));
+		Long userId = jwtTokenProvider.getUserId(refreshToken);
 
 		// 토큰에 등록되어 있는 사용자가 실제 있는 사용자인지 확인
 		User user = userRepository.findOneByUserId(userId).orElseThrow(UserNotFoundException::new);
