@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -25,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 public class Comment extends BaseEntity implements Serializable {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "comment_id")
 	private Long commentId;
 
@@ -38,5 +39,9 @@ public class Comment extends BaseEntity implements Serializable {
 
 	@Column(name = "comment_content")
 	private String commentContent; // 댓글 내용
+
+	public void updateContent(String commentContent) {
+		this.commentContent = commentContent;
+	}
 
 }

@@ -71,6 +71,12 @@ public class User extends BaseEntity implements Serializable {
 	@ColumnDefault(value = "0")
 	private int followerCnt;
 
+	// @Column(name = "following_cnt")
+	// private Integer followingCnt;
+
+	// @Column(name = "follower_cnt")
+	// private Integer followerCnt;
+
 	// public List<String> getRoleList() {
 	// 	if (this.userRole.length() > 0) {
 	// 		return Arrays.asList(this.userRole.split(","));

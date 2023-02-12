@@ -12,7 +12,6 @@ public class CardUpdateRequestDto {
 
 	@NotEmpty
 	private Long categoryId;
-	// private Long categorySecondId;
 
 	private String cardDescription;
 	private String cardCommentary;
