@@ -4,8 +4,9 @@
 */
 // import axios
 import axios from "axios";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+// import { useEffect } from "react";
+// import { useSelector } from "react-redux";
+import store from "redux/store";
 
 // 전역 설정
 axios.defaults.headers["Access-Control-Allow-Origin"] = "*";
@@ -13,23 +14,23 @@ axios.defaults.withCredentials = true; // 쿠키 데이터를 전송받기 위�
 
 // 요청 주소
 const BUNDLER_URL = "http://localhost:8080";
-const AUTH_URL = "https://i8a810.p.ssafy.io";
-const accessToken = useSelector((state) => state.authToken.accessToken);
-
+const AUTH_URL = "http://i8a810.p.ssafy.io:8080";
+// const accessToken = useSelector((state) => state.authToken.accessToken);
 // basic Instance
 const apiInstance = () => {
+  const state = store.getState();
   const instance = axios.create({
     baseURL: BUNDLER_URL,
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${state.authToken.accessToken}`,
     },
   });
   return instance;
 };
 
-useEffect(() => {
-  apiInstance();
-}, [accessToken]);
+// useEffect(() => {
+//   apiInstance();
+// }, [accessToken]);
 
 // Auth
 const apiLogin = () => {
