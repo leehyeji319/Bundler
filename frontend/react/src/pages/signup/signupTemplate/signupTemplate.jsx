@@ -51,7 +51,7 @@ function SignUpTemplate() {
       <div className="greenbox">
         <div className="welcome">
           <img className="rabbit" src={bundlerRabbit} alt="signupimg" width={125} />
-          <p>환영합니다</p>
+          <div className="stretch">환영합니다</div>
           <div className="stretch">나만의 학습카드 번들러, 지금 바로 시작해보세요.</div>
         </div>
       </div>

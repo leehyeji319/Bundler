@@ -31,7 +31,7 @@ import {
   setWhiteSidenav,
 } from "context";
 
-function Sidenav({ color, brand, brandName, routes, ...rest }) {
+function Sidenav({ color, brand, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
   const location = useLocation();
@@ -146,15 +146,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </MDTypography>
         </MDBox>
         <MDBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <MDBox component="img" src={brand} alt="Brand" width="2rem" />}
+          {brand && <MDBox component="img" src={brand} alt="Brand" width="10rem" />}
           <MDBox
-            width={!brandName && "100%"}
+            // width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
-          >
-            <MDTypography component="h6" variant="button" fontWeight="medium" color={textColor}>
-              {brandName}
-            </MDTypography>
-          </MDBox>
+          />
         </MDBox>
       </MDBox>
       <Divider
@@ -178,7 +174,7 @@ Sidenav.defaultProps = {
 Sidenav.propTypes = {
   color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
   brand: PropTypes.string,
-  brandName: PropTypes.string.isRequired,
+  // brandName: PropTypes.string.isRequired,
   routes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
