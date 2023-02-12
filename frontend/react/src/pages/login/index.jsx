@@ -12,11 +12,8 @@ import { Button } from "@mui/material/";
 import MDBox from "components/MDBox";
 import "./index.css";
 
-// Images
-// import Logo from "assets/images/bundler/loginlogo.png";
-
 // import template
-import GithubLoginButton from "pages/auth/login/template/components/GithubLoginButton";
+import GithubLoginButton from "pages//login/GithubLoginButton";
 import SignIn from "./signIn";
 
 function AuthLogin() {
@@ -31,8 +28,6 @@ function AuthLogin() {
               <SignIn />
             </MDBox>
           </div>
-          {/* <div className="container5">
-          <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"> */}
           <div className="max-w-md w-full space-y-8">
             {/* 회원가입 버튼 */}
             <MDBox mt={1} mb={2} textAlign="center">

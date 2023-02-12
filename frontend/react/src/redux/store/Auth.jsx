@@ -26,37 +26,37 @@ export const tokenSlice = createSlice({
   reducers: {
     // Access Token 정보를 저장
     SET_TOKEN: (state, action) => {
-      console.log("reduxreduxreduxreduxredux");
-      console.log(action.payload.accessToken);
-      console.log(action.payload.nickname);
-      console.log("reduxreduxreduxreduxredux");
+      // eslint에 맞게 복사 후 변경
+      const newState = { ...state };
       // 로그인에 성공하면 userId 저장
-      state.userId = action.payload.userId;
+      newState.userId = action.payload.userId;
       // 로그인에 성공하면 email 저장
-      state.userEmail = action.payload.userEmail;
+      newState.userEmail = action.payload.userEmail;
       // 로그인에 성공하면 nickname 저장
-      state.nickname = action.payload.nickname;
+      newState.nickname = action.payload.nickname;
       // 로그인에 성공하면 authenticated를 True로 바꿔 로그인 여부를 저장
-      state.authenticated = true;
+      newState.authenticated = true;
       // Access Token에 payload로 온 JWT token을 저장
-      state.accessToken = action.payload.accessToken;
+      newState.accessToken = action.payload.accessToken;
       // Access Token의 만료 시간을 현재시간에 TOKEN_TIME_OUT을 더해서 저장
-      state.expireTime = new Date().getTime() + TOKEN_TIME_OUT;
+      newState.expireTime = new Date().getTime() + TOKEN_TIME_OUT;
     },
     // 값을 모두 초기화함으로써 Access Token에 대한 정보도 삭제
     DELETE_TOKEN: (state) => {
+      // eslint에 맞게 복사 후 변경
+      const newState = { ...state };
       // 로그아웃에 성공하면 pk삭제
-      state.userId = "";
+      newState.userId = "";
       // 로그아웃에 성공하면 email 삭제
-      state.userEmail = "";
+      newState.userEmail = "";
       // 로그아웃 성공하면 nickname 삭제
-      state.nickname = "";
+      newState.nickname = "";
       // 로그아웃에 성공하면 authenticated를 False로 바꿔 로그아웃 여부를 저장
-      state.authenticated = false;
+      newState.authenticated = false;
       // Access Token을 null로 바꿔 token 삭제
-      state.accessToken = null;
+      newState.accessToken = null;
       // Access Token의 만료 시간을 null로 바꿔 token 삭제
-      state.expireTime = null;
+      newState.expireTime = null;
     },
   },
 });

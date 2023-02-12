@@ -25,15 +25,16 @@ function SignUpTemplate() {
   const signUp = () => {
     // 아래와 같은 조건으로 axios 보냄
     axios({
+      // 서버용
       url: "https://i8a810.p.ssafy.io/api/v1/signup",
-      // url: "http://localhost:8080/signUp",
+      // 시험용
+      // url: "http://localhost:8087/api/v1/signup"
       method: "POST",
       withCredentials: true,
       data: {
         userEmail,
         userNickname,
         userPassword,
-        // confirmPassword,
         userIntroduction,
       },
     })
@@ -127,9 +128,8 @@ function SignUpTemplate() {
             <input
               className="inputinfo"
               type="text"
-              pattern="^([가-힣A-Za-z0-9]).{1,20}$"
+              pattern=""
               placeholder="한 줄 소개를 입력해주세요"
-              required="required"
               id="oneline"
               value={userIntroduction}
               onChange={(e) => setOneline(e.target.value)}

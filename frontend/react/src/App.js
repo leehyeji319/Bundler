@@ -23,10 +23,8 @@ import { routes1, routes2 } from "routes";
 import { useMaterialUIController, setMiniSidenav } from "context";
 
 // Images NavBar 브랜드 로고
-import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
+import logoImage from "assets/images/bundler/sideLogo.png";
 
-// import AuthLogin from "pages/login";
 import Home from "pages/home";
 import Search from "pages/searchall";
 import SearchId from "pages/searchid";
@@ -45,7 +43,6 @@ function App() {
     miniSidenav,
     direction,
     layout,
-    // openConfigurator,
     sidenavColor,
     transparentSidenav,
     whiteSidenav,
@@ -86,7 +83,6 @@ function App() {
   // ------------로그인 여부 확인-----------------------------
   // 사용자가 현재 머물러있는 페이지에 대한 정보를 알려주는 hooks
   const location = useLocation();
-  console.log(location);
   // 로그인 여부 확인해서 isAuth에 저장
   const { isAuth } = CheckToken(location.key);
   // ------------로그인 여부 확인-----------------------------
@@ -97,8 +93,7 @@ function App() {
       {layout === "dashboard" && (
         <Sidenav
           color={sidenavColor}
-          brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-          brandName="Bundler"
+          brand={(transparentSidenav && !darkMode) || whiteSidenav ? logoImage : logoImage}
           routes={isAuth ? routes1 : routes2}
           onMouseEnter={handleOnMouseEnter}
           onMouseLeave={handleOnMouseLeave}
