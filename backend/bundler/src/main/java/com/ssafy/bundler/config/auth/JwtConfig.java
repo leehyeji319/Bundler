@@ -1,15 +1,13 @@
-package com.ssafy.bundler.config.jwt;
+package com.ssafy.bundler.config.auth;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.ssafy.bundler.config.auth.AuthTokenProvider;
-
 @Configuration
 public class JwtConfig {
 
-	@Value("${jwt.secret}")
+	@Value(value = "${jwt.secret}")
 	private String secret;
 
 	@Bean

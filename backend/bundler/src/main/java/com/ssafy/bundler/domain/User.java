@@ -19,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +31,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Entity
-@Table(name = "USERS")
+@Table(name = "USERS", uniqueConstraints = @UniqueConstraint(columnNames = {"provider_type", "provider_id"}))
 public class User extends BaseEntity implements Serializable {
 
 	@Id
@@ -47,9 +48,10 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "user_nickname", unique = true, nullable = false)
 	private String userNickname;
 
-	@Column(name = "user_introduction", nullable = false)
+	@Column(name = "user_introduction", nullable = true)
 	private String userIntroduction;
 
+	@Setter
 	@Column(name = "user_profile_image", nullable = true)
 	private String userProfileImage;
 
@@ -62,10 +64,18 @@ public class User extends BaseEntity implements Serializable {
 	private UserRole userRole;
 
 	@Column(name = "following_cnt")
-	private Integer followingCnt;
+	@ColumnDefault(value = "0")
+	private int followingCnt;
 
 	@Column(name = "follower_cnt")
-	private Integer followerCnt;
+	@ColumnDefault(value = "0")
+	private int followerCnt;
+
+	// @Column(name = "following_cnt")
+	// private Integer followingCnt;
+
+	// @Column(name = "follower_cnt")
+	// private Integer followerCnt;
 
 	// public List<String> getRoleList() {
 	// 	if (this.userRole.length() > 0) {

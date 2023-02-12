@@ -17,9 +17,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
@@ -27,6 +29,9 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException exception) throws IOException, ServletException {
+
+		log.info("onAuthenticationFailure 진입");
+
 		String targetUrl = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
 			.map(Cookie::getValue)
 			.orElse(("/"));
