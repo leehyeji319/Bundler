@@ -60,8 +60,8 @@ function MDSnackbar({ color, icon, title, dateTime, content, close, bgWhite, ...
       TransitionComponent={Fade}
       autoHideDuration={5000}
       anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
+        vertical: "top",
+        horizontal: "center",
       }}
       {...rest}
       action={
@@ -149,6 +149,7 @@ function MDSnackbar({ color, icon, title, dateTime, content, close, bgWhite, ...
 MDSnackbar.defaultProps = {
   bgWhite: false,
   color: "info",
+  dateTime: "",
 };
 
 // Typechecking props for MDSnackbar
@@ -165,7 +166,7 @@ MDSnackbar.propTypes = {
   ]),
   icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
-  dateTime: PropTypes.string.isRequired,
+  dateTime: PropTypes.string,
   content: PropTypes.node.isRequired,
   close: PropTypes.func.isRequired,
   bgWhite: PropTypes.bool,

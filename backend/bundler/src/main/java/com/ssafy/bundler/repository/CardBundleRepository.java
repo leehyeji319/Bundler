@@ -14,7 +14,7 @@ import jakarta.transaction.Transactional;
 public interface CardBundleRepository extends JpaRepository<CardBundle, Long> {
 
 	List<CardBundle> findAllByBundleId(Long bundleId);
-	
+
 	@Query("select cb from CardBundle cb where cb.bundleId = :bundleId and cb.cardId = :cardId")
 	CardBundle findCardBundleByBundleIdWithCardId(@Param("bundleId") Long bundleId, @Param("cardId") Long cardId);
 
@@ -22,4 +22,7 @@ public interface CardBundleRepository extends JpaRepository<CardBundle, Long> {
 	@Modifying
 	@Transactional
 	void deleteCardBundleByBundleIdWithCardId(@Param("bundleId") Long bundleId, @Param("cardId") Long cardId);
+
+	@Query("select cb from CardBundle cb where cb.cardId = :feedId")
+	List<CardBundle> findAllByCardId(@Param("feedId") Long feedId);
 }

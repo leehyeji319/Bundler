@@ -13,7 +13,7 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Icon from "@mui/material/Icon";
-import Autocomplete from "@mui/material/Autocomplete";
+// import Autocomplete from "@mui/material/Autocomplete";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -35,10 +35,10 @@ function DataTable({
   noEndBorder,
   handleEdit,
 }) {
-  const defaultValue = entriesPerPage.defaultValue ? entriesPerPage.defaultValue : 10;
-  const entries = entriesPerPage.entries
-    ? entriesPerPage.entries.map((el) => el.toString())
-    : ["5", "10", "15", "20", "25"];
+  const defaultValue = entriesPerPage.defaultValue ? entriesPerPage.defaultValue : 5;
+  // const entries = entriesPerPage.entries
+  //   ? entriesPerPage.entries.map((el) => el.toString())
+  //   : ["5", "10", "15", "20", "25"];
   const columns = useMemo(() => table.columns, [table]);
   const data = useMemo(() => table.rows, [table]);
 
@@ -64,14 +64,15 @@ function DataTable({
     previousPage,
     setPageSize,
     setGlobalFilter,
-    state: { pageIndex, pageSize, globalFilter },
+    state: { pageIndex, globalFilter },
+    // state: { pageIndex, pageSize, globalFilter },
   } = tableInstance;
 
   // Set the default value for the entries per page when component mounts
   useEffect(() => setPageSize(defaultValue || 10), [defaultValue]);
 
   // Set the entries per page value based on the select value
-  const setEntriesPerPage = (value) => setPageSize(value);
+  // const setEntriesPerPage = (value) => setPageSize(value);
 
   // Render the paginations
   const renderPagination = pageOptions.map((option) => (
@@ -119,24 +120,25 @@ function DataTable({
   };
 
   // Setting the entries starting point
-  const entriesStart = pageIndex === 0 ? pageIndex + 1 : pageIndex * pageSize + 1;
+  // const entriesStart = pageIndex === 0 ? pageIndex + 1 : pageIndex * pageSize + 1;
 
   // Setting the entries ending point
-  let entriesEnd;
+  // let entriesEnd;
 
-  if (pageIndex === 0) {
-    entriesEnd = pageSize;
-  } else if (pageIndex === pageOptions.length - 1) {
-    entriesEnd = rows.length;
-  } else {
-    entriesEnd = pageSize * (pageIndex + 1);
-  }
+  // if (pageIndex === 0) {
+  //   entriesEnd = pageSize;
+  // } else if (pageIndex === pageOptions.length - 1) {
+  //   entriesEnd = rows.length;
+  // } else {
+  //   entriesEnd = pageSize * (pageIndex + 1);
+  // }
 
   return (
     <TableContainer sx={{ boxShadow: "none" }}>
       {entriesPerPage || canSearch ? (
         <MDBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-          {entriesPerPage && (
+          <MDTypography variant="h6">카드 리스트</MDTypography>
+          {/* {entriesPerPage && (
             <MDBox display="flex" alignItems="center">
               <Autocomplete
                 disableClearable
@@ -153,7 +155,7 @@ function DataTable({
                 &nbsp;&nbsp;entries per page
               </MDTypography>
             </MDBox>
-          )}
+          )} */}
           {canSearch && (
             <MDBox width="12rem" ml="auto">
               <MDInput
@@ -216,13 +218,13 @@ function DataTable({
         alignItems={{ xs: "flex-start", sm: "center" }}
         p={!showTotalEntries && pageOptions.length === 1 ? 0 : 3}
       >
-        {showTotalEntries && (
+        {/* {showTotalEntries && (
           <MDBox mb={{ xs: 3, sm: 0 }}>
             <MDTypography variant="button" color="secondary" fontWeight="regular">
               Showing {entriesStart} to {entriesEnd} of {rows.length} entries
             </MDTypography>
           </MDBox>
-        )}
+        )} */}
         {pageOptions.length > 1 && (
           <MDPagination
             variant={pagination.variant ? pagination.variant : "gradient"}
@@ -258,7 +260,7 @@ function DataTable({
 
 // Setting default values for the props of DataTable
 DataTable.defaultProps = {
-  entriesPerPage: { defaultValue: 10, entries: [5, 10, 15, 20, 25] },
+  entriesPerPage: { defaultValue: 5, entries: [5, 10, 15, 20, 25] },
   canSearch: false,
   showTotalEntries: true,
   pagination: { variant: "gradient", color: "info" },

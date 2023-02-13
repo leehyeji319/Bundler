@@ -4,7 +4,6 @@ import static jakarta.persistence.FetchType.*;
 
 import java.io.Serializable;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +29,7 @@ public class FeedLike implements Serializable {
 	@Column(name = "feed_like_id")
 	private Long feedLikeId;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = LAZY)
+	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "feed_id")
 	private Feed feed;
 
