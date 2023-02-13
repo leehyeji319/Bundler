@@ -1,5 +1,6 @@
 // import axios
 import axios from "axios";
+import store from "redux/store";
 
 
 // 전역 설정
@@ -14,7 +15,7 @@ const BUNDLER_URL = "https://i8a810.p.ssafy.io";
 
 // basic Instance
 const apiInstance = () => {
-  // const state = store.getState();
+  const state = store.getState();
   const authTokenAccessToken = state.authToken.accessToken;
   const instance = axios.create({
     baseURL: BUNDLER_URL,
