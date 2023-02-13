@@ -33,6 +33,7 @@ function AuthLogin() {
             <MDBox mt={1} mb={2} textAlign="center">
               <Link to="/signup">
                 <Button
+                  id="bundlerBtn"
                   className="learn-more"
                   sx={{
                     bgcolor: "#FFFFFF",

@@ -30,6 +30,7 @@ function SignOut() {
     <div>
       <Button
         onClick={() => logout()}
+        id="bundlerBtn"
         className="learn-more2"
         sx={{
           marginTop: "0%",

@@ -5,12 +5,15 @@ import { Button } from "@mui/material";
 
 function Notfound() {
   const navigate = useNavigate();
-  const navigateToPurchase = () => {
+  const navigateToHome = () => {
     navigate("/home");
+  };
+  const navigateToA810 = () => {
+    navigate("/A810");
   };
 
   return (
-    <div classNameName="container">
+    <div className="container">
       <DashboardLayout>
         <div id="background" />
         <div className="top">
@@ -40,7 +43,8 @@ function Notfound() {
           <h4>잘못된 경로에요! 알맞는 경로로 돌아가주세요</h4>
           <div className="buttons">
             <Button
-              onClick={navigateToPurchase}
+              onClick={navigateToHome}
+              id="bundlerBtn"
               className="learn-more2"
               sx={{
                 marginTop: "4%",
@@ -53,6 +57,23 @@ function Notfound() {
               type="submit"
             >
               홈으로 돌아가기
+            </Button>
+            &nbsp; &nbsp;
+            <Button
+              onClick={navigateToA810}
+              id="bundlerBtn"
+              className="learn-more2"
+              sx={{
+                marginTop: "4%",
+                bgcolor: "#81D8CF",
+                color: "#000000",
+                fontSize: "large",
+                fontWeight: "bold",
+                width: "250px",
+              }}
+              type="submit"
+            >
+              A810
             </Button>
           </div>
         </div>

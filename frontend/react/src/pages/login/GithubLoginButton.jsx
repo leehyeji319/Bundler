@@ -18,6 +18,7 @@ function GithubLoginButton() {
     <div>
       <Button
         onClick={GithubLoginButtonClick}
+        id="bundlerBtn"
         className="learn-more"
         sx={{
           bgcolor: "#FFFFFF",

@@ -25,6 +25,7 @@ import { useMaterialUIController, setMiniSidenav } from "context";
 // Images NavBar 브랜드 로고
 import logoImage from "assets/images/bundler/sideLogo.png";
 
+// route
 import Home from "pages/home";
 import Search from "pages/searchall";
 import SearchId from "pages/searchid";
@@ -33,10 +34,14 @@ import Profile from "pages/profile";
 import Start from "pages/start";
 import AuthLogin from "pages/login";
 import SignUp from "pages/signup";
+import A810 from "pages/A810";
 import Notfound from "pages/404Notfound";
 
 // 로그인 여부 확인
 import CheckToken from "auth/CheckToken";
+
+// font
+import "./App.css";
 
 function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -107,11 +112,13 @@ function App() {
         <Route path="/searchid" element={isAuth ? <SearchId /> : <Navigate to="/login" />} />
         <Route path="/make" element={isAuth ? <Make /> : <Navigate to="/login" />} />
         <Route path="/profile" element={isAuth ? <Profile /> : <Navigate to="/login" />} />
+        <Route path="/A810" element={<A810 />} />
         <Route path="/*" element={<Notfound />} />
         {/* isAuth가 false일 때 들어갈 수 있는 component true일 땐 home으로 */}
         <Route path="/" element={isAuth === false ? <Start /> : <Navigate to="/home" />} />
         <Route path="/login" element={isAuth === false ? <AuthLogin /> : <Navigate to="/home" />} />
         <Route path="/signup" element={isAuth === false ? <SignUp /> : <Navigate to="/home" />} />
+        <Route path="/A810" element={<A810 />} />
         <Route path="/*" element={<Notfound />} />
       </Routes>
     </ThemeProvider>

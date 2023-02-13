@@ -29,6 +29,7 @@ function SignIn() {
     // loginUser를 이용하여 "https://i8a810.p.ssafy.io/api/v1/login" 요청
     const response = await loginUser({ email, password });
     if (response.status === 200) {
+      console.log(response);
       // 쿠키에 Refresh Token 저장
       setRefreshToken(response.data.refreshToken);
       // store에 Access Token 저장
@@ -83,6 +84,7 @@ function SignIn() {
         <div>
           <Button
             className="learn-more2"
+            id="bundlerBtn"
             sx={{
               marginTop: "4%",
               bgcolor: "#81D8CF",
