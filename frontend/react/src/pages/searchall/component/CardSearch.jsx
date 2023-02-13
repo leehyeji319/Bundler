@@ -125,7 +125,7 @@ function CardSearch() {
   // clickSearchBtn 실행시켜 회원검색 진행
   const clickSearchBtn = () => {
     axios({
-      url: "http://localhost:8080/api/v4/feeds/",
+      url: "http://localhost:8080/api/v1/search",
       method: "get",
       params: { feedType, cardType, categoryId, search },
       withCredentials: true,
