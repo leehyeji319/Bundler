@@ -1,12 +1,11 @@
 // react
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
 
 // @mui material components
 import { Button, Card } from "@mui/material";
-// import Modal from "@mui/material/Modal";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -17,15 +16,25 @@ import ModalCardList from "pages/home/components/modalCardList";
 import LikeButton from "pages/home/buttons/likeButton";
 import ScrapButton from "pages/home/buttons/scrapButton";
 
-// Import api
-import { apiGetBundleDetail } from "apis/api/apiHomePage";
+// Import - api
+import { apiGetBundleDetail, apiGetLike } from "apis/api/apiHomePage";
 
 // Card Image
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
-function HomeBundle({ bundleInfo }) {
-  const [cardListModal, setCardListModal] = useState(false);
+// Import - redux store
+import { useSelector } from "react-redux";
 
+function HomeBundle({ bundleInfo }) {
+  // 해당 유저 정보
+  const { loginInfo } = useSelector((state) => state.homeReducer);
+
+  // 현재 사용자가 해당 카드를 좋아요 했는지 확인
+  const [isLiked, setIsLiked] = useState(false);
+
+  // 번들 모달 on/off
+  const [cardListModal, setCardListModal] = useState(false);
+  // 번들 모달 off
   const handleCardClose = () => setCardListModal(false);
 
   // 번들 상세 정보 저장
@@ -36,9 +45,6 @@ function HomeBundle({ bundleInfo }) {
     const getInfo = async () => {
       await apiGetBundleDetail(bundleInfo.bundleId)
         .then(({ data }) => {
-          console.log(bundleInfo);
-          console.log(bundleInfo.bundleId);
-          console.log("api 재호출", data);
           setBundleDetail(data);
         })
         .catch((error) => console.log(error));
@@ -51,6 +57,20 @@ function HomeBundle({ bundleInfo }) {
     handleBundleDetail(); // api 통신 - 번들 상세 정보 가져오기
     setCardListModal(true);
   };
+
+  // 처음 조회 시, 해당 번들의 좋아요 확인
+  useEffect(() => {
+    const getIsLiked = async () => {
+      await apiGetLike(bundleInfo.bundleId, loginInfo.userId)
+        .then(({ data }) => {
+          setIsLiked(data.like);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    getIsLiked();
+  }, []);
 
   return (
     <Card sx={{ ml: 2, mb: 3, maxWidth: 800, minHeight: 200, maxHeight: 400 }}>
@@ -85,7 +105,11 @@ function HomeBundle({ bundleInfo }) {
             </MDBox>
           </MDBox>
           <MDBox display="flex" m="1" sx={{ alignItems: "center", width: "20%" }}>
-            <LikeButton likeCnt={bundleInfo.feedLikeCnt} feedId={bundleInfo.bundleId} />
+            <LikeButton
+              isLiked={isLiked}
+              likeCnt={bundleInfo.feedLikeCnt}
+              feedId={bundleInfo.bundleId}
+            />
             <ScrapButton feedType={bundleInfo.feedType} targetId={bundleInfo.bundleId} />
           </MDBox>
         </MDBox>

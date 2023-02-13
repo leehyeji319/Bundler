@@ -26,7 +26,6 @@ function CheckToken(key) {
           const response = await requestToken(refreshToken);
           // 만일 리덕스 내에 저장되어 있지 않거나, 저장되었더라도 토큰이 만료되었다면 새로운 access 토큰을 요청한다.
           if (response.status) {
-            console.log(response);
             dispatch(SET_TOKEN(response.data));
             setIsAuth(true);
           } else {

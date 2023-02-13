@@ -48,13 +48,6 @@ function SignTemplate() {
       .catch((err) => console.log(err));
   };
 
-  // 토크을 삭제해서 로그아웃 시키는 방법
-  // const githibLogout = () => {
-  //   axios.delete('https://localhost:8123/logout', {accessToken})
-  //   .then((res) => setIsLogin(false)) //화면상의 로그아웃 설정
-  //   .catch((err) => console.log(err.response.data))
-  // };
-
   useEffect(() => {
     // component가 mount될 때 url을 가져와서
     const url = new URL(window.location.href);

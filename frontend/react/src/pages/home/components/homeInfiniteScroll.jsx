@@ -55,9 +55,7 @@ function HomeInfiniteScroll() {
   useEffect(() => {
     const initCall = async () => {
       await apiGetFeeds()
-        .then(({ sorted, feedIdList }) => {
-          console.log(sorted);
-          console.log(feedIdList);
+        .then(({ sorted }) => {
           const firstPosts = sorted.slice(value.start, value.start + value.range);
           if (firstPosts.length < value.range) {
             setMorePosts(false);
@@ -73,6 +71,14 @@ function HomeInfiniteScroll() {
         });
     };
     initCall();
+
+    // timer 작동 -> feeds update 확인
+    // const timer = setTimeout(() => {
+    //   console.log("5초 마다 작동");
+    //   timer;
+    // }, 5000);
+
+    // return () => clearTimeout(timer);
   }, []);
 
   // ================= RETURN =========================

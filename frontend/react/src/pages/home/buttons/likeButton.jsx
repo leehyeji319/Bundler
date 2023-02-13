@@ -11,7 +11,7 @@ import { Box, Typography } from "@mui/material";
 // Import apis
 import { apiPostLike } from "apis/api/apiHomePage";
 
-function LikeButton({ likeCnt, feedId }) {
+function LikeButton({ isLiked, likeCnt, feedId }) {
   const { loginInfo } = useSelector((state) => state.homeReducer);
   const [value, setValue] = useState({
     isChecked: false,
@@ -35,7 +35,6 @@ function LikeButton({ likeCnt, feedId }) {
     }
 
     const params = { userId: loginInfo.userId };
-    console.log(feedId, params);
     const likeToggle = async () => {
       await apiPostLike(feedId, params)
         .then((res) => {
@@ -49,8 +48,8 @@ function LikeButton({ likeCnt, feedId }) {
   };
 
   useEffect(() => {
-    setValue({ ...value, notice: likeCnt });
-  }, [likeCnt]);
+    setValue({ isChecked: isLiked, notice: likeCnt });
+  }, [isLiked, likeCnt]);
 
   return (
     <Box className="icons-list">
@@ -85,11 +84,13 @@ function LikeButton({ likeCnt, feedId }) {
 }
 
 LikeButton.defaultProps = {
+  isLiked: false,
   likeCnt: 0,
   feedId: 0,
 };
 
 LikeButton.propTypes = {
+  isLiked: PropTypes.bool,
   likeCnt: PropTypes.number,
   feedId: PropTypes.number,
 };

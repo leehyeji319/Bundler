@@ -14,19 +14,16 @@ const apiPostCardList = async (params) => {
     const response = await api.post(`${CARD_CONTROLLER}/list`, params);
     return response;
   } catch (error) {
-    console.log("카드 리스트 생성 실패");
     return error;
   }
 };
 
 // 카드 - 개별 생성
 const apiPostCard = async (params) => {
-  console.log(params);
   try {
     const response = await api.post(`${CARD_CONTROLLER}`, params);
     return response;
   } catch (error) {
-    console.log("카드 개별 생성 실패");
     return error;
   }
 };
@@ -36,7 +33,6 @@ const apiPostBundle = async (params) => {
     const response = await api.post(`${BUNDLE_CONTROLLER}`, params);
     return response;
   } catch (error) {
-    console.log("번들 생성 실패");
     return error;
   }
 };
