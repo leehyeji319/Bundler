@@ -26,10 +26,7 @@ export const tokenSlice = createSlice({
   reducers: {
     // Access Token 정보를 저장
     SET_TOKEN: (state, action) => {
-      console.log("reduxreduxreduxreduxredux");
-      console.log(action.payload.accessToken);
-      console.log(action.payload.nickname);
-      console.log("reduxreduxreduxreduxredux");
+      // eslint에 맞게 복사 후 변경
       const newState = { ...state };
       // 로그인에 성공하면 userId 저장
       newState.userId = action.payload.userId;
@@ -43,9 +40,11 @@ export const tokenSlice = createSlice({
       newState.accessToken = action.payload.accessToken;
       // Access Token의 만료 시간을 현재시간에 TOKEN_TIME_OUT을 더해서 저장
       newState.expireTime = new Date().getTime() + TOKEN_TIME_OUT;
+      return newState;
     },
     // 값을 모두 초기화함으로써 Access Token에 대한 정보도 삭제
     DELETE_TOKEN: (state) => {
+      // eslint에 맞게 복사 후 변경
       const newState = { ...state };
       // 로그아웃에 성공하면 pk삭제
       newState.userId = "";
@@ -59,6 +58,7 @@ export const tokenSlice = createSlice({
       newState.accessToken = null;
       // Access Token의 만료 시간을 null로 바꿔 token 삭제
       newState.expireTime = null;
+      return newState;
     },
   },
 });

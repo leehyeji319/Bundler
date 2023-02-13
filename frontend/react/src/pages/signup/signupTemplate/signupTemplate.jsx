@@ -25,15 +25,16 @@ function SignUpTemplate() {
   const signUp = () => {
     // 아래와 같은 조건으로 axios 보냄
     axios({
+      // 서버용
       url: "https://i8a810.p.ssafy.io/api/v1/signup",
-      // url: "http://localhost:8080/signUp",
+      // 시험용
+      // url: "http://localhost:8087/api/v1/signup",
       method: "POST",
       withCredentials: true,
       data: {
         userEmail,
         userNickname,
         userPassword,
-        // confirmPassword,
         userIntroduction,
       },
     })
@@ -50,7 +51,7 @@ function SignUpTemplate() {
       <div className="greenbox">
         <div className="welcome">
           <img className="rabbit" src={bundlerRabbit} alt="signupimg" width={125} />
-          <p>환영합니다</p>
+          <div className="stretch">환영합니다</div>
           <div className="stretch">나만의 학습카드 번들러, 지금 바로 시작해보세요.</div>
         </div>
       </div>
@@ -75,7 +76,10 @@ function SignUpTemplate() {
         {/* 닉네임 받기 */}
         <div className="signupMargin">
           <label htmlFor="nickname">
-            &nbsp;닉네임(영문)
+            &nbsp;닉네임
+            <p>
+              (영문)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
             <input
               className="inputinfo"
               type="text"
@@ -92,6 +96,10 @@ function SignUpTemplate() {
         <div className="signupMargin">
           <label htmlFor="password">
             &nbsp;비밀번호
+            <p>
+              (8자 이상 특수문자 1개
+              이상)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
             <input
               className="inputinfo"
               type="password"
@@ -127,9 +135,7 @@ function SignUpTemplate() {
             <input
               className="inputinfo"
               type="text"
-              pattern="^([가-힣A-Za-z0-9]).{1,20}$"
               placeholder="한 줄 소개를 입력해주세요"
-              required="required"
               id="oneline"
               value={userIntroduction}
               onChange={(e) => setOneline(e.target.value)}
@@ -140,6 +146,7 @@ function SignUpTemplate() {
         <MDBox mt={0} mb={3} textAlign="center">
           <Button
             onClick={signUp}
+            id="bundlerBtn"
             className="learn-more2"
             sx={{
               marginTop: "4%",

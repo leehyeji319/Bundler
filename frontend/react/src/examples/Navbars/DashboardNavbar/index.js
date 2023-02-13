@@ -42,8 +42,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const route = useLocation().pathname.split("/").slice(1);
 
   const state22 = useSelector((state) => state.authToken);
-  console.log(state22);
-  console.log("navnavnavnavnavnavnavnavnavnav");
 
   useEffect(() => {
     // Setting the navbar type
