@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 
 // Import mui/style
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-// import BookmarkIcon from "@mui/icons-material/Bookmark";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import MDSnackbar from "components/MDSnackbar";
 
 // Import - custom
 import ScrapButtonModal from "pages/home/buttons/scrapButtonModal";
@@ -22,6 +22,13 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // (*) Alarm
+  const [valid, setValid] = useState({
+    isValid: false,
+    comment: "",
+    state: "info",
+  });
+
   // CARD Scrap Modal 창
   const handleToggle = (e) => {
     e.preventDefault();
@@ -36,8 +43,20 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
       await apiPostBundleScrap(params)
         .then(({ data }) => {
           console.log(data);
+          setValid({
+            isValid: true,
+            comment: data,
+            state: "info",
+          });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          setValid({
+            isValid: true,
+            comment: "번들 스크랩 실패",
+            state: "error",
+          });
+        });
     };
     added();
   };
@@ -51,23 +70,41 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
         bundleList={bundleList}
         handleBundleList={handleBundleList}
       />
-      {feedType === "CARD" ? (
-        <BookmarkBorderIcon
-          sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
-          fontSize="large"
-          transitio="1.2"
-          className="button"
-          onClick={handleToggle}
-        />
-      ) : (
-        <BookmarkBorderIcon
-          sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
-          fontSize="large"
-          transitio="1.2"
-          className="button"
-          onClick={handleBundleScrap}
-        />
+      {feedType === "CARD" && (
+        <>
+          <BookmarkBorderIcon
+            sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
+            fontSize="large"
+            className="button"
+            onClick={handleToggle}
+          />
+          <Typography variant="h2" align="center">
+            &nbsp;
+          </Typography>
+        </>
       )}
+      {feedType === "BUNDLE" && (
+        <>
+          <BookmarkBorderIcon
+            sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
+            fontSize="large"
+            className="button"
+            onClick={handleBundleScrap}
+          />
+          <Typography variant="h2" align="center">
+            &nbsp;
+          </Typography>
+        </>
+      )}
+      <MDSnackbar
+        color={valid.state} // info: 파랑, error: 빨강
+        icon="notifications"
+        title="알람"
+        content={valid.comment}
+        // dateTime="11 mins ago"
+        open={valid.isValid}
+        close={() => setValid({ valid: false, comment: "", state: "info" })}
+      />
     </Box>
   );
 }

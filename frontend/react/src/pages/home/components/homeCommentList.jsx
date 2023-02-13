@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import { apiPutComment, apiDeleteComment } from "apis/api/apiHomePage";
 
 // Import - design
 import MDTypography from "components/MDTypography";
@@ -30,7 +31,6 @@ function HomeCommentList({ handleCommetList, commentList }) {
       id: commentId,
       comment: reply,
     });
-    handleCommetList(); // 목록 다시 불러오기
   };
 
   // (1-2) 글 수정 정보 local data에 저장
@@ -52,20 +52,39 @@ function HomeCommentList({ handleCommetList, commentList }) {
   };
 
   // (3) 글 수정 완료 버튼 -> axios로 db에 update 요청
-  const editConfirmButton = () => {
+  const editConfirmButton = async () => {
     console.log("글 수정 완료");
 
     // axios로 수정 msg 보내기
+    await apiPutComment(edit.id, edit.comment)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     setEdit({
       id: -1,
       comment: "",
     });
+
+    handleCommetList(); // 목록 다시 불러오기
   };
 
   // (4) 글 삭제 버튼 -> axios로 db에 delete 요청
-  const deleteButton = () => {
+  const deleteButton = async (deleteCommentId) => {
     console.log("글 삭제");
+
+    await apiDeleteComment(deleteCommentId)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    handleCommetList(); // 목록 다시 불러오기
   };
 
   // useEffect
@@ -88,7 +107,7 @@ function HomeCommentList({ handleCommetList, commentList }) {
                 {edit.id === comment.commentId ? (
                   <Box sx={{ display: "flex" }}>
                     <MDTypography variant="body2" fontWeight="light">
-                      {comment.name}&nbsp;:
+                      {comment.commentWriterNickname}&nbsp;:
                     </MDTypography>
                     <TextField
                       sx={{ ml: 1 }}
@@ -120,12 +139,16 @@ function HomeCommentList({ handleCommetList, commentList }) {
                     <Box>
                       <Button
                         type="button"
-                        onClick={() => editButton(comment.reply, comment.id)}
+                        onClick={() => editButton(comment.commentContent, comment.commentId)}
                         sx={{ p: "0" }}
                       >
                         <EditIcon />
                       </Button>
-                      <Button type="button" onClick={deleteButton} sx={{ p: "0" }}>
+                      <Button
+                        type="button"
+                        onClick={() => deleteButton(comment.commentId)}
+                        sx={{ p: "0" }}
+                      >
                         <DeleteIcon />
                       </Button>
                     </Box>

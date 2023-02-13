@@ -85,7 +85,7 @@ function HomeBundle({ bundleInfo }) {
             </MDBox>
           </MDBox>
           <MDBox display="flex" m="1" sx={{ alignItems: "center", width: "20%" }}>
-            <LikeButton />
+            <LikeButton likeCnt={bundleInfo.feedLikeCnt} feedId={bundleInfo.bundleId} />
             <ScrapButton feedType={bundleInfo.feedType} targetId={bundleInfo.bundleId} />
           </MDBox>
         </MDBox>

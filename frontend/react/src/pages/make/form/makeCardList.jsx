@@ -1,5 +1,6 @@
 // Import - react
 import { useSelector, useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 
 // Import - Material Dashboard 2 React Examples
 import DataTable from "pages/make/Tables/DataTable";
@@ -7,7 +8,7 @@ import DataTable from "pages/make/Tables/DataTable";
 // Import - Redux-action redux-action 함수
 import { actEditCardNo } from "redux/actions/makeCardAction";
 
-function MakeCardList() {
+function MakeCardList({ handleSelectedListCategory }) {
   // Data - global
   const { cardList } = useSelector((state) => state.makeReducer);
 
@@ -28,6 +29,7 @@ function MakeCardList() {
       if (cardList[i].cardno === item.cardno) {
         // data store - edit card number 업데이트 하기
         const patEditCardNo = actEditCardNo(i);
+        handleSelectedListCategory(item.cardType);
         dispatch(patEditCardNo);
       }
     }
@@ -43,5 +45,13 @@ function MakeCardList() {
     />
   );
 }
+
+MakeCardList.defaultProps = {
+  handleSelectedListCategory: () => {},
+};
+
+MakeCardList.propTypes = {
+  handleSelectedListCategory: PropTypes.func,
+};
 
 export default MakeCardList;

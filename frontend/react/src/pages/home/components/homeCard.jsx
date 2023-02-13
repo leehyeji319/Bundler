@@ -28,6 +28,9 @@ function HomeCard({ cardInfo }) {
   // 해당 유저 정보
   const { loginInfo } = useSelector((state) => state.homeReducer);
 
+  // 현재 사용자가 해당 카드를 좋아요 했는지 확인
+  // const [isLike, setIsLike] = useState(false);
+
   // 현재 사용자가 가지고 있는 번들 목록
   const [bundleList, setBundleList] = useState([]);
 
@@ -113,7 +116,7 @@ function HomeCard({ cardInfo }) {
             </MDBox>
           </MDBox>
           <MDBox display="flex" m="1" sx={{ alignItems: "center", width: "20%" }}>
-            <LikeButton />
+            <LikeButton likeCnt={cardInfo.feedLikeCnt} feedId={cardInfo.cardId} />
             <ScrapButton
               feedType={cardInfo.feedType}
               targetId={cardInfo.cardId}

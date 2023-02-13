@@ -34,8 +34,8 @@ function HomeInfiniteScroll() {
     // 추가 POST가 true인 경우만 함수 실행
     if (morePosts) {
       await apiGetFeeds()
-        .then((res) => {
-          const nextPosts = res.data.slice(value.start, value.start + value.range);
+        .then(({ sorted }) => {
+          const nextPosts = sorted.slice(value.start, value.start + value.range);
           if (nextPosts.length < value.range) {
             setMorePosts(false);
           }
@@ -55,9 +55,10 @@ function HomeInfiniteScroll() {
   useEffect(() => {
     const initCall = async () => {
       await apiGetFeeds()
-        .then(({ data }) => {
-          console.log(data);
-          const firstPosts = data.slice(value.start, value.start + value.range);
+        .then(({ sorted, feedIdList }) => {
+          console.log(sorted);
+          console.log(feedIdList);
+          const firstPosts = sorted.slice(value.start, value.start + value.range);
           if (firstPosts.length < value.range) {
             setMorePosts(false);
           }

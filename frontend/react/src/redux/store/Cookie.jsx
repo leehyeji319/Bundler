@@ -11,7 +11,7 @@ export const setRefreshToken = (refreshToken) => {
   const expireDate = today.setDate(today.getDate() + 7);
 
   // 쿠키 값 설정 set(쿠키 이름, 밸류 : 값을 저장하고 필요한 경우 객체를 문자열화, [옵션])
-  return cookies.set("refreshToken", refreshToken, {
+  return cookies.set("refresh_token", refreshToken, {
     // 엄격하거나 느슨한 적용
     sameSite: "strict",
     // 모든 페이지에서 쿠키에 액세스할 수 있도록 하려면 경로로 사용
@@ -22,16 +22,18 @@ export const setRefreshToken = (refreshToken) => {
 };
 
 // 3. Cookie에 저장된 Refresh Token 값을 갖고 오기 위한 함수
-export const getCookieToken = () =>
+export const getCookieToken = () => {
   // 쿠키 값 가져오기 get(쿠키 이름, [옵션])
-  cookies.get("refreshToken");
+  return cookies.get("refresh_token");
+};
 
 // 4. Cookie 삭제를 위한 함수. 로그아웃 시 사용
-export const removeCookieToken = () =>
+export const removeCookieToken = () => {
   // remove(쿠키 이름, [옵션])
-  cookies.remove("refreshToken", {
+  return cookies.remove("refresh_token", {
     // 엄격하거나 느슨한 적용
     sameSite: "strict",
     // 모든 페이지에서 쿠키에 액세스할 수 있도록 하려면 경로로 사용
     path: "/",
   });
+};

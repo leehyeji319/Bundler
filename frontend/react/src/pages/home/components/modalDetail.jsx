@@ -43,6 +43,7 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
 
   // 카드 댓글 저장 및 댓글 다시 불러오기
   const handleComment = async (comment) => {
+    console.log(cardInfo);
     const params = {
       targetFeedId: cardInfo.cardId,
       content: comment.inputData,

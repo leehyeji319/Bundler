@@ -1,7 +1,7 @@
 // Import react
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 // @mui material components
 import { Card, Modal } from "@mui/material";
@@ -16,7 +16,10 @@ import HomeInput from "pages/home/components/homeInput";
 import HomeCommentList from "pages/home/components/homeCommentList";
 
 // Import - axios
-import { apiPostComment } from "apis/api/apiHomePage";
+import { apiGetCardDetail, apiPostComment } from "apis/api/apiHomePage";
+
+// Import - redux action
+import actBundleCardId from "redux/actions/actionFeed";
 
 function ModalCardList({
   open,
@@ -27,7 +30,8 @@ function ModalCardList({
   commentList,
 }) {
   // Data - global
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const dispatch = useDispatch();
+  const { loginInfo, bundleCardId } = useSelector((state) => state.homeReducer);
 
   // Data - local
   const columnList = [
@@ -37,19 +41,8 @@ function ModalCardList({
   ];
 
   // useState - card Detail Information
-  const [cardDetail, setCardDetail] = useState({
-    feedType: "CARD",
-    cardId: 0,
-    cardImage: "",
-    firstCategoryName: "",
-    userId: 1,
-    feedTitle: "",
-    feedContent: "",
-    cardDescription: "",
-    solution: "",
-    answer: "",
-    commentList: [{ id: 0, name: "", reply: "" }],
-  });
+  // const [targetCardId, setTargetCardId] = useState(-1);
+  const [cardDetail, setCardDetail] = useState({});
   const [cardOpenModal, setCardOpenModal] = useState(false);
   const handleDetailCardOpen = () => setCardOpenModal(true);
   const handleDetailCardClose = () => setCardOpenModal(false);
@@ -60,10 +53,26 @@ function ModalCardList({
     handleCardClose();
   };
 
-  // function
+  // api로 카드 detail 정보 가져오기
+  const handleOpen = async () => {
+    await apiGetCardDetail(bundleCardId)
+      .then(({ data }) => {
+        setCardDetail(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    handleDetailCardOpen(); // 카드 모달 상세 페이지 열기
+  };
+
+  // List 클릭 시, 해당 카드의 상세정보 가져오고 모달 창으로 띄우기
   const handleSelectedCard = (item) => {
-    console.log(item);
-    setCardDetail(item);
+    dispatch(actBundleCardId(item.cardId));
+    // const call = () => setTargetCardId(item.cardId);
+    // call();
+    handleOpen();
+
     handleDetailCardOpen();
   };
 
@@ -74,17 +83,18 @@ function ModalCardList({
       content: comment.inputData,
       userId: loginInfo.userId,
     };
-    console.log(params);
 
     await apiPostComment(params)
       .then(async ({ data }) => {
-        console.log(data.message);
+        console.log(data);
         handleCommetList(); // 댓글 목록 다시 불러오기
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  useEffect(() => {}, [bundleCardId]);
 
   // custom style
   const style = {
@@ -105,6 +115,7 @@ function ModalCardList({
       <>
         <ModalDetail
           open={cardOpenModal}
+          handleOpen={handleOpen}
           handleClose={handleDetailCardClose}
           cardInfo={cardDetail}
         />

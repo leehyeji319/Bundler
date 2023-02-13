@@ -94,10 +94,11 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
           });
         })
         .catch((error) => {
+          console.log(error);
           setValid({
             isValid: true,
             comment: "카드 삭제 실패",
-            state: error,
+            state: "error",
           });
         });
     };
@@ -129,10 +130,11 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
             });
           })
           .catch((error) => {
+            console.log(error);
             setValid({
               isValid: true,
               comment: error,
-              state: error,
+              state: "error",
             });
           });
       };
