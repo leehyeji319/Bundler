@@ -91,6 +91,8 @@ function App() {
   const location = useLocation();
   // 로그인 여부 확인해서 isAuth에 저장
   const { isAuth } = CheckToken(location.key);
+  console.log(location);
+  console.log(isAuth);
   // ------------로그인 여부 확인-----------------------------
 
   return (

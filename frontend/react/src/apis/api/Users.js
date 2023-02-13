@@ -5,9 +5,9 @@ const loginUser = async (info) => {
   const { email, password } = info;
   const response = await axios({
     // 서버용
-    // url: "https://i8a810.p.ssafy.io/api/v1/login",
+    url: "https://i8a810.p.ssafy.io/api/v1/login",
     // 시험용
-    url: "http://localhost:8087/api/v1/login",
+    // url: "http://localhost:8087/api/v1/login",
     method: "POST",
     withCredentials: true,
     data: {
@@ -22,9 +22,9 @@ const loginUser = async (info) => {
 const logoutUser = async (refreshToken, accessToken) => {
   const response = await axios({
     // 서버용
-    // url: "https://i8a810.p.ssafy.io/api/v1/logout",
+    url: "https://i8a810.p.ssafy.io/api/v1/logout",
     // 시험용
-    url: "http://localhost:8087/api/v1/logout",
+    // url: "http://localhost:8087/api/v1/logout",
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -41,9 +41,9 @@ const logoutUser = async (refreshToken, accessToken) => {
 const requestToken = async (refreshToken) => {
   const response = await axios({
     // 서버용
-    // url: "https://i8a810.p.ssafy.io/api/v1/refresh",
+    url: "https://i8a810.p.ssafy.io/api/v1/refresh",
     // 시험용
-    url: "http://localhost:8087/api/v1/refresh",
+    // url: "http://localhost:8087/api/v1/refresh",
     method: "POST",
     withCredentials: true,
     data: {

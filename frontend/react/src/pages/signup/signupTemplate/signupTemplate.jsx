@@ -26,9 +26,9 @@ function SignUpTemplate() {
     // 아래와 같은 조건으로 axios 보냄
     axios({
       // 서버용
-      // url: "https://i8a810.p.ssafy.io/api/v1/signup",
+      url: "https://i8a810.p.ssafy.io/api/v1/signup",
       // 시험용
-      url: "http://localhost:8087/api/v1/signup",
+      // url: "http://localhost:8087/api/v1/signup",
       method: "POST",
       withCredentials: true,
       data: {
@@ -135,7 +135,6 @@ function SignUpTemplate() {
             <input
               className="inputinfo"
               type="text"
-              pattern=""
               placeholder="한 줄 소개를 입력해주세요"
               id="oneline"
               value={userIntroduction}

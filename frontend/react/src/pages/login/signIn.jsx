@@ -1,7 +1,7 @@
 // import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-
+import { useNavigate } from "react-router-dom";
 import { HiLockClosed } from "react-icons/hi";
 import { ErrorMessage } from "@hookform/error-message";
 
@@ -21,6 +21,7 @@ function SignIn() {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const navigate = useNavigate();
 
   // submit 이후 동작할 코드
   const onValid = async ({ email, password }) => {
@@ -29,11 +30,12 @@ function SignIn() {
     // loginUser를 이용하여 "https://i8a810.p.ssafy.io/api/v1/login" 요청
     const response = await loginUser({ email, password });
     if (response.status === 200) {
-      console.log(response);
       // 쿠키에 Refresh Token 저장
       setRefreshToken(response.data.refreshToken);
       // store에 Access Token 저장
       dispatch(SET_TOKEN(response.data));
+
+      navigate("/home");
     } else {
       alert("로그인정보가 다릅니다");
     }
