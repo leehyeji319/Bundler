@@ -38,17 +38,17 @@ public class SearchController {
 	//전체 조회
 	@GetMapping("/api/v1/search")
 	public Result getFeedsFindBySearchParameter(
-		@RequestParam(value = "feed_type", required = false) String feedType,
-		@RequestParam(value = "category_id", required = false) Long categoryId,
-		@RequestParam(value = "keyword", required = false) String keyword) {
+		@RequestParam(value = "feedType", required = false) String feedType,
+		@RequestParam(value = "categoryId", required = false) Long categoryId,
+		@RequestParam(value = "search", required = false) String search) {
 
-		if (feedType == null && keyword == null) {
+		if (feedType == null && search == null) {
 			log.info("전체 조회");
 			return new Result(feedService.getAllFeed());
-		} else if (feedType == null && keyword != null) {
+		} else if (feedType == null && search != null) {
 			log.info("전체에서 키워드만");
-			return new Result(feedService.findAllByKeyword(keyword));
-		} else if (feedType != null && keyword == null) {
+			return new Result(feedService.findAllByKeyword(search));
+		} else if (feedType != null && search == null) {
 			if (feedType.equals("CARD") && categoryId == null) {
 				log.info("그냥 카드만");
 				return new Result(feedService.findCardSummanryList());
@@ -59,16 +59,16 @@ public class SearchController {
 				log.info("그냥 번들만");
 				return new Result(bundleQueryRepository.findAllBundleByDto_optimization());
 			}
-		} else if (feedType != null && keyword != null) {
+		} else if (feedType != null && search != null) {
 			if (feedType.equals("CARD") && categoryId == null) {
 				log.info("카드에서 검색어만");
-				return new Result(cardQueryRepository.findAllCardByDto_optimization(keyword));
+				return new Result(cardQueryRepository.findAllCardByDto_optimization(search));
 			} else if (feedType.equals("CARD") && categoryId != null) {
 				log.info("카드에서 카테고리 검색어 같이");
-				return new Result(cardQueryRepository.findAllCardByDto_optimization(categoryId, keyword));
+				return new Result(cardQueryRepository.findAllCardByDto_optimization(categoryId, search));
 			} else {
 				log.info("그냥 번들일때 키워드만 검색");
-				return new Result(bundleQueryRepository.findAllBundleByDto_optimization(keyword));
+				return new Result(bundleQueryRepository.findAllBundleByDto_optimization(search));
 			}
 		}
 		return null;
