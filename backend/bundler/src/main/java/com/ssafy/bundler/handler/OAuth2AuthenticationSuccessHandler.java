@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
+import jakarta.annotation.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -47,7 +49,6 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	private final AuthTokenProvider tokenProvider;
-
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AppProperties appProperties;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
@@ -98,9 +99,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 		UserRole userRole = hasAuthority(authorities, UserRole.ADMIN.getCode()) ? UserRole.ADMIN : UserRole.USER;
 
+		User u = userRepository.findOneByProviderTypeAndProviderId(providerType, userInfo.getId()).orElseThrow();
+
 		Date now = new Date();
 		AuthToken accessToken = tokenProvider.createAuthToken(
-			userInfo.getId(),
+//			userInfo.getId(),
+			String.valueOf(u.getUserId()),
 			userRole.getCode(),
 			new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
 		);
@@ -109,7 +113,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 
 		AuthToken refreshToken = tokenProvider.createAuthToken(
-			appProperties.getAuth().getTokenSecret(),
+//			appProperties.getAuth().getTokenSecret(),
+				String.valueOf(u.getUserId()),
 			new Date(now.getTime() + refreshTokenExpiry)
 		);
 
@@ -123,12 +128,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			userRefreshToken.setRefreshToken(refreshToken.getToken());
 			userRefreshTokenRepository.saveAndFlush(userRefreshToken);
 		} else {
-			User u = userRepository.findOneByProviderTypeAndProviderId(providerType, userInfo.getId()).orElseThrow(
+			User user1 = userRepository.findOneByProviderTypeAndProviderId(providerType, userInfo.getId()).orElseThrow(
 				UserNotFoundException::new);
 
 			userRefreshTokenRepository.saveAndFlush(
 				UserRefreshToken.builder()
-					.userId(u.getUserId())
+					.userId(user1.getUserId())
 					.refreshToken(refreshToken.getToken())
 					.build()
 			);

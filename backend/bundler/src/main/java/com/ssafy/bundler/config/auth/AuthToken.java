@@ -3,6 +3,7 @@ package com.ssafy.bundler.config.auth;
 import java.security.Key;
 import java.util.Date;
 
+import com.ssafy.bundler.domain.UserRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -22,6 +23,8 @@ public class AuthToken {
 	private final Key key;
 
 	private static final String AUTHORITIES_KEY = "role";
+	private static final String USER_NICKNAME = "userNickname";
+	private static final String USER_EMAIL = "userEmail";
 
 	AuthToken(String id, Date expiry, Key key) {
 		this.key = key;
@@ -36,6 +39,7 @@ public class AuthToken {
 	private String createAuthToken(String id, Date expiry) {
 		return Jwts.builder()
 			.setSubject(id)
+			.claim(AUTHORITIES_KEY, UserRole.USER)
 			.signWith(key, SignatureAlgorithm.HS256)
 			.setExpiration(expiry)
 			.compact();
@@ -52,6 +56,10 @@ public class AuthToken {
 
 	public boolean validate() {
 		return this.getTokenClaims() != null;
+	}
+
+	public Long getUserId() {
+		return Long.valueOf(getTokenClaims().getSubject());
 	}
 
 	public Claims getTokenClaims() {

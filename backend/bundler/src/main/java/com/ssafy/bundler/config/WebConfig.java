@@ -1,4 +1,4 @@
-// package com.ssafy.bundler.config;
+package com.ssafy.bundler.config;// package com.ssafy.bundler.config;
 //
 // import org.springframework.context.annotation.Configuration;
 // import org.springframework.web.servlet.config.annotation.CorsRegistry;

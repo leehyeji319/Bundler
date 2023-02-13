@@ -8,6 +8,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.ssafy.bundler.config.auth.AuthToken;
 import com.ssafy.bundler.config.auth.AuthTokenProvider;
+import com.ssafy.bundler.exception.TokenValidFailedException;
 import com.ssafy.bundler.util.HeaderUtil;
 
 import jakarta.servlet.FilterChain;
@@ -37,6 +38,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 			Authentication authentication = tokenProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
+//		else {
+//			throw new TokenValidFailedException();
+//		}
 
 		filterChain.doFilter(request, response);
 	}

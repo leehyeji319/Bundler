@@ -1,4 +1,4 @@
-// package com.ssafy.bundler.config.oauth;
+package com.ssafy.bundler.config.oauthUserInfo;// package com.ssafy.bundler.config.oauth;
 //
 // import java.time.LocalDateTime;
 // import java.util.Map;

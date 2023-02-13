@@ -1,6 +1,7 @@
 package com.ssafy.bundler.service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -149,13 +150,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 					User localUser = localUserOptional.get();
 
 					User newOAuthUser = localUser.toBuilder()
-						.providerType(providerType)
-						.providerId(oAuthUserInfo.getId())
-						.providerEmail(oAuthUserInfo.getEmail())
-						.build();
+							.providerType(providerType)
+							.providerId(oAuthUserInfo.getId())
+							.providerEmail(oAuthUserInfo.getEmail())
+							.build();
 
 					if (providerType == ProviderType.GITHUB) { //Provider가 Github이면 githubUrl 추가
-						GithubOAuth2UserInfo githubOAuth2UserInfo = (GithubOAuth2UserInfo)oAuthUserInfo;
+						GithubOAuth2UserInfo githubOAuth2UserInfo = (GithubOAuth2UserInfo) oAuthUserInfo;
 
 						newOAuthUser.setGithubUrl(githubOAuth2UserInfo.getGithubUrl());
 					}
@@ -163,6 +164,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 					loginUser = userRepository.saveAndFlush(newOAuthUser);
 				} else { //기존 Local 회원이 아니라면 -> 회원가입
 					log.info("기존 OAuth 계정이 없었고, 기존 Local 계정도 없음 -> OAuth 회원가입");
+
+					log.info("userId: " + oAuthUserInfo.getEmail());
+					log.info("userEmail: " + oAuthUserInfo.getEmail());
 
 					//OAuth 회원가입 성공. 로그인 성공. -> 토큰 발급
 					User newOAuthUser = User.builder()
