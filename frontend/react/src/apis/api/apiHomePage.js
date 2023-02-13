@@ -1,5 +1,5 @@
 // [Import] api instance
-import { apiInstance } from "apis/utils/axios";
+import apiInstance from "apis/utils/axios";
 
 // api Instance 생성
 const api = apiInstance();
