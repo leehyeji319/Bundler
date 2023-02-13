@@ -18,10 +18,6 @@ const loginUser = async (info) => {
     },
   });
   return response;
-  // axios 요청이 성공
-  // .then((result) => {
-  //   console.log(result);
-  // });
 };
 
 const logoutUser = async (refreshToken, accessToken) => {

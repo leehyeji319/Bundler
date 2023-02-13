@@ -15,18 +15,23 @@ import MDTypography from "components/MDTypography";
 import ModalDetail from "pages/home/components/modalDetail";
 import LikeButton from "pages/home/buttons/likeButton";
 import ScrapButton from "pages/home/buttons/scrapButton";
-import { apiGetCardDetail, apiGetBundle } from "apis/api/apiHomePage";
+
+// Import - api
+import { apiGetCardDetail, apiGetBundle, apiGetLike } from "apis/api/apiHomePage";
 
 // Card Image
 import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
-// Import custom
+// Import - redux store
 import { useSelector } from "react-redux";
 
 // const cardInfo
 function HomeCard({ cardInfo }) {
   // 해당 유저 정보
   const { loginInfo } = useSelector((state) => state.homeReducer);
+
+  // 현재 사용자가 해당 카드를 좋아요 했는지 확인
+  const [isLiked, setIsLiked] = useState(false);
 
   // 현재 사용자가 가지고 있는 번들 목록
   const [bundleList, setBundleList] = useState([]);
@@ -43,7 +48,6 @@ function HomeCard({ cardInfo }) {
     const emp = async () => {
       await apiGetCardDetail(cardInfo.cardId)
         .then(({ data }) => {
-          console.log("data", data);
           setCardDetailInfo(data);
         })
         .catch((error) => console.log(error));
@@ -68,18 +72,30 @@ function HomeCard({ cardInfo }) {
     initCall();
   };
 
-  // 처음 조회 시, 가지고 있는 번들 리스트 불러오기
+  // 처음 조회 시, 가지고 있는 번들 리스트 불러오기 + 좋아요 확인
   useEffect(() => {
     const getNewComment = async () => {
-      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
+      const params = { userId: loginInfo.userId };
+      await apiGetBundle(cardInfo.cardId, params)
         .then(({ data }) => {
-          setBundleList(data);
+          setBundleList(data.like);
         })
         .catch((error) => {
           console.log(error);
         });
     };
     getNewComment();
+
+    const getIsLiked = async () => {
+      await apiGetLike(cardInfo.cardId, loginInfo.userId)
+        .then(({ data }) => {
+          setIsLiked(data.like);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    getIsLiked();
   }, []);
 
   return (
@@ -113,7 +129,7 @@ function HomeCard({ cardInfo }) {
             </MDBox>
           </MDBox>
           <MDBox display="flex" m="1" sx={{ alignItems: "center", width: "20%" }}>
-            <LikeButton />
+            <LikeButton isLiked={isLiked} likeCnt={cardInfo.feedLikeCnt} feedId={cardInfo.cardId} />
             <ScrapButton
               feedType={cardInfo.feedType}
               targetId={cardInfo.cardId}

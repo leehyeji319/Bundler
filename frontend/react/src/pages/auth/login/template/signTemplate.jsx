@@ -36,7 +36,7 @@ function SignTemplate() {
   // 서버에 post로 authorizationCode를 보내준다
   const getAccessToken = async (authorizationCode) => {
     axios({
-      url: "너가 가고싶은 클라이언트 주소",
+      url: "http://localhost:8123/oauth",
       method: "POST",
       withCredentials: true,
       data: { authorizationCode },

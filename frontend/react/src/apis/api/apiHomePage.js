@@ -1,6 +1,9 @@
 // [Import] api instance
 import { apiInstance } from "apis/utils/axios";
 
+// Import - service
+import { sortFeedList, listId } from "apis/service/serviceHomePage";
+
 // api Instance 생성
 const api = apiInstance();
 
@@ -12,7 +15,9 @@ const FEED_CONTROLLER = "/api/v1";
 const apiGetFeeds = async () => {
   try {
     const response = await api.get(`${FEED_CONTROLLER}/feeds`);
-    return response;
+    const sorted = sortFeedList(response.data);
+    const feedIdList = listId(sorted);
+    return { sorted, feedIdList };
   } catch (error) {
     return error;
   }
@@ -94,10 +99,52 @@ const apiPostBundleScrap = async (params) => {
 };
 
 // ================================= Comment ===============================================
-// 댓글 쓰기
+// 댓글 Create
 const apiPostComment = async (params) => {
   try {
     const response = await api.post(`${FEED_CONTROLLER}/comment`, params);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+// 댓글 Update
+const apiPutComment = async (commentId, comment) => {
+  try {
+    const response = await api.put(`${FEED_CONTROLLER}/comment/${commentId}`, comment);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+// 댓글 Delete
+const apiDeleteComment = async (commentId) => {
+  try {
+    const response = await api.delete(`${FEED_CONTROLLER}/comment/${commentId}`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+// ================================= FeedLike ============================
+// 좋아요 상태 확인
+const apiGetLike = async (feedId, userId) => {
+  try {
+    const response = await api.get(`${FEED_CONTROLLER}/feeds/like/${feedId}?user_id=${userId}`);
+    return response;
+  } catch (error) {
+    console.log("error");
+    return error;
+  }
+};
+
+// 좋아요 누르기 or 취소
+const apiPostLike = async (feedId, userId) => {
+  try {
+    const response = await api.post(`${FEED_CONTROLLER}/feeds/like/${feedId}?`, userId);
     return response;
   } catch (error) {
     return error;
@@ -115,4 +162,8 @@ export {
   apiDeleteCardScrap,
   apiPostBundleScrap,
   apiPostComment,
+  apiPutComment,
+  apiDeleteComment,
+  apiGetLike,
+  apiPostLike,
 };

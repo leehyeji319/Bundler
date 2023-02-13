@@ -48,7 +48,6 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
       content: comment.inputData,
       userId: loginInfo.userId,
     };
-    console.log(params);
 
     await apiPostComment(params)
       .then(async ({ data }) => {
@@ -177,6 +176,7 @@ ModalDetail.defaultProps = {
     cardId: -1,
     cardType: "",
     firstCategoryId: -1,
+    firstCategoryName: "",
     secondCategoryId: -1,
     secondCategoryName: "",
     cardDescription: "",
@@ -186,6 +186,7 @@ ModalDetail.defaultProps = {
     userNickname: "",
     userProfileImage: "",
     commentResponseDtoList: [],
+    userId: -1,
   },
 };
 
@@ -197,14 +198,14 @@ ModalDetail.propTypes = {
   cardInfo: PropTypes.shape({
     cardId: PropTypes.number,
     cardType: PropTypes.string,
-    userId: PropTypes.number.isRequired,
     firstCategoryId: PropTypes.number,
-    firstCategoryName: PropTypes.string.isRequired,
+    firstCategoryName: PropTypes.string,
     feedTitle: PropTypes.string.isRequired,
     feedContent: PropTypes.string.isRequired,
     cardScrapCnt: PropTypes.number.isRequired,
     feedLikeCnt: PropTypes.number.isRequired,
     feedCommentCnt: PropTypes.number.isRequired,
+    userId: PropTypes.number,
     feedType: PropTypes.string,
     secondCategoryId: PropTypes.number,
     userNickname: PropTypes.string,
