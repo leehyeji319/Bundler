@@ -31,12 +31,12 @@ import BundleSetBox from "../SettingModal/BundleSetting";
 
 function BundleThumbnail2({
   bundleId,
-  bundleTitle,
+  feedTitle,
   bundleLike,
-  bundlePrivate,
-  bundleImage,
-  bundleThumtext,
-  bundleDefault,
+  isBundlePrivate,
+  bundleThumbnail,
+  bundleThumbnailText,
+  isBundleDefault,
 }) {
   // const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
@@ -44,6 +44,22 @@ function BundleThumbnail2({
   const BundleSetOpen = () => setOpen4(true);
   const BundleSetClose = () => setOpen4(false);
   const [IconHovered2, setIconHovered2] = useState(false);
+  const [CardImgHover, setCardImgHover] = useState(false);
+
+  const CardStyles = {
+    // width: "400px",
+    // height: "220px",
+    transform: "scale(1)",
+    transition: ".3s ease-in-out",
+    // overflow: "hidden",
+  };
+
+  const CardHoverStyles = {
+    // width: "400px",
+    // height: "220px",
+    transform: "scale(1.3)",
+    // overflow: "hidden",
+  };
 
   return (
     <Card
@@ -59,27 +75,22 @@ function BundleThumbnail2({
       <Modal open={open4} onClose={BundleSetClose}>
         <BundleSetBox
           SelectBundleId={bundleId}
-          bundleImage={bundleImage}
-          bundleThumtext={bundleThumtext}
-          bundleTitle={bundleTitle}
+          bundleImage={bundleThumbnail}
+          bundleThumtext={bundleThumbnailText}
+          bundleTitle={feedTitle}
         />
       </Modal>
-      {/* <MDBox p={3}>
-        <MDBox // 설정 버튼 최상단
-          sx = {{
-            float : "right"
-          }}>
-          <SettingsIcon 
-          sx = {{
-            width : "24px",
-            height : "24px",
-          }}/>
-        </MDBox> */}
-      <MDBox position="relative" width="100.25%" shadow="xl" borderRadius="xl">
+      <MDBox
+        position="relative"
+        width="100.25%"
+        shadow="xl"
+        borderRadius="xl"
+        style={{ overflow: "hidden" }}
+      >
         <CardMedia
-          src={bundleImage}
+          src={bundleThumbnail}
           component="img"
-          title={bundleTitle}
+          title={feedTitle}
           sx={{
             maxWidth: "100%",
             margin: 0,
@@ -89,7 +100,13 @@ function BundleThumbnail2({
             opacity: "50%",
             width: "400px",
             height: "220px",
+            overflow: "hidden",
+            // width: "400px",
+            // height: "220px",
           }}
+          onMouseEnter={() => setCardImgHover(true)}
+          onMouseLeave={() => setCardImgHover(false)}
+          style={CardImgHover ? CardHoverStyles : CardStyles}
         />
         <MDTypography // 번들 썸네일 텍스트
           position="absolute"
@@ -102,7 +119,7 @@ function BundleThumbnail2({
             textAlign: "center",
           }}
         >
-          {bundleThumtext}
+          {bundleThumbnailText}
         </MDTypography>
       </MDBox>
       <MDBox mt={1} mx={0.5} mb={1.5}>
@@ -115,7 +132,7 @@ function BundleThumbnail2({
             fontSize="20px"
             sx={{ marginLeft: "10px" }}
           >
-            {bundleTitle}
+            {feedTitle}
           </MDTypography>
         </MDBox>
         <MDBox // 번들 썸네일 하단 4개 컴퍼넌트
@@ -128,7 +145,7 @@ function BundleThumbnail2({
                   justifyContent: "spaceBetween",
                 }}
               >
-                {bundleDefault === "non" ? (
+                {isBundleDefault === "false" ? (
                   <MDBox // 썸네일 번들 하단 - 1. 좋아요와 좋아요 숫자
                     sx={{
                       marginLeft: "10px",
@@ -171,7 +188,7 @@ function BundleThumbnail2({
                     marginLeft: "10px",
                   }}
                 >
-                  {bundlePrivate === "private" ? (
+                  {isBundlePrivate === "true" ? (
                     <MDBox>
                       <LockIcon
                         sx={{
@@ -236,14 +253,14 @@ function BundleThumbnail2({
 // 썸네일 카드의 프롭타입 설정
 BundleThumbnail2.propTypes = {
   bundleId: PropTypes.number.isRequired,
-  bundleTitle: PropTypes.string.isRequired,
+  feedTitle: PropTypes.string.isRequired,
   bundleLike: PropTypes.number.isRequired,
-  bundlePrivate: PropTypes.string.isRequired,
-  bundleDefault: PropTypes.string.isRequired,
+  isBundlePrivate: PropTypes.bool.isRequired,
+  isBundleDefault: PropTypes.bool.isRequired,
   // bundlePrivate: PropTypes.oneOf(["public", "private"]),
   // bundleDefault: PropTypes.oneOf(["non", "default"]),
-  bundleImage: PropTypes.string.isRequired,
-  bundleThumtext: PropTypes.string.isRequired,
+  bundleThumbnail: PropTypes.string.isRequired,
+  bundleThumbnailText: PropTypes.string.isRequired,
 };
 
 export default BundleThumbnail2;

@@ -27,7 +27,8 @@ import CompareStat from "../components/Statistic/CompareStat";
 // function StatTab(userId) {
 function StatTab(statdata) {
   // console.log(data);
-  const fullStatData = statdata.data;
+  const propstatdata = statdata;
+  const fullStatData = propstatdata.data;
   console.log(fullStatData);
 
   const fullstatCategory = fullStatData.statCategory;

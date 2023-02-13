@@ -12,8 +12,8 @@ function SelectedTab({ selected, data }) {
     case "bundleTab":
       return <BundleListTab />;
     case "statTab":
-      const statdata = data;
-      return <StatTab data={statdata} />;
+      // const statdata = data;
+      return <StatTab data={data} />;
     default:
       return <CardListTab />;
   }

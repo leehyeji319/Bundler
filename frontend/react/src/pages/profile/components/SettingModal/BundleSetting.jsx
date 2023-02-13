@@ -73,8 +73,8 @@ function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
         <MDTypography
           sx={{
             fontSize: "30px",
-            marginLeft: "10%",
-            marginTop: "5%",
+            marginLeft: "5%",
+            marginTop: "2%",
           }}
         >
           번들 상세 설정

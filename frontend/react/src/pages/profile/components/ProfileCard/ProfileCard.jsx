@@ -15,6 +15,8 @@ import PropTypes from "prop-types";
 // import MuiLink from "@mui/material/Link";
 // import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -28,20 +30,21 @@ import MDButton from "components/MDButton";
 
 // Icon
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
-import LocationCityIcon from "@mui/icons-material/LocationCity";
+// import LocationCityIcon from "@mui/icons-material/LocationCity";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SettingsIcon from "@mui/icons-material/Settings";
+import GitHubIcon from "@mui/icons-material/GitHub";
 // import HoverableIcon from "../mouseHover/mouseHoverIcon";
 
-import { useState } from "react";
 // import FollowingBox from "pages/profile/components/Follow/FollowingBox";
 // import FollowingInfiniteScroll from "../Follow/FollowingInfinite";
 // import FollowingBox2 from "../Follow/FollowingBox2";
-import FollowerBox from "../Follow/FollowerBox";
+// import FollowerBox from "../Follow/FollowerBox";
 // import ProfileSetBox from "../SettingModal/ProfileSetting";
 import ProfileSetBox3 from "../SettingModal/ProfileSetting3";
 import InfiniteScrollingModal2 from "../Follow/FollowingInfinite3";
+import FollowerInfiniteScroll from "../Follow/FollowerInfinite";
 
 function ProfileCard({
   // userId,
@@ -49,7 +52,7 @@ function ProfileCard({
   nickname,
   email,
   introduction,
-  group,
+  GithubUrl,
   FollowingCount,
   FollowerCount,
 }) {
@@ -66,6 +69,25 @@ function ProfileCard({
   const ProfileSetClose = () => setOpen3(false);
 
   const [IconHovered, setIconHovered] = useState(false);
+
+  const [FollowingDataGet, setFollowingData] = useState([]);
+  // 팔로잉 Axios
+  useEffect(() => {
+    console.log("test011");
+    axios
+      .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/followings")
+      .then((res) => {
+        setFollowingData(res.data);
+        console.log("hi55-YOUR DATA OK");
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log("hi66-YOUR DATA ERROR");
+      });
+  }, []);
+
+  const FollowingData = FollowingDataGet;
+
   return (
     <MDBox
       sx={{
@@ -84,19 +106,19 @@ function ProfileCard({
       <Modal open={open} onClose={handleClose}>
         {/* <FollowingBox nickname="임성준" /> */}
         {/* <FollowingBox2 nickname="임성준" /> */}
-        <InfiniteScrollingModal2 nickname="임성준" />
+        <InfiniteScrollingModal2 nickname="임성준" followingData={FollowingData} />
       </Modal>
       <Modal open={open2} onClose={FollowerClose}>
-        <FollowerBox nickname="임성준" />
+        <FollowerInfiniteScroll nickname="임성준" />
       </Modal>
       <Modal open={open3} onClose={ProfileSetClose}>
-        <ProfileSetBox3 Image={profileImage} />
+        <ProfileSetBox3 SetImage={profileImage} />
       </Modal>
       <MDBox // 이미지와 이름, 이메일, 소속 담을 박스
         sx={{
           width: "450px",
           height: "110px",
-          marginTop: "20px",
+          marginTop: "15px",
         }}
         style={{
           justifyContent: "flex-start",
@@ -129,32 +151,34 @@ function ProfileCard({
           <MDTypography variant="h4" fontweight="medium" color="white">
             {nickname}
           </MDTypography>
-          <MDBox>
+          <MDBox sx={{ marginTop: "2px" }}>
             <AlternateEmailIcon sx={{ color: "gray" }} />
             <MDTypography
               variant="h7"
               fontWeight="medium"
               color="white"
-              sx={{ marginLeft: "10px", fontSize: "17px" }}
+              sx={{ marginLeft: "10px", fontSize: "17px", marginBottom: "10px" }}
             >
               {email}
             </MDTypography>
           </MDBox>
           <MDBox sx={{ alignItems: "left" }}>
-            <LocationCityIcon sx={{ color: "gray" }} />
+            <GitHubIcon sx={{ color: "gray" }} />
             <MDTypography
               variant="h7"
               fontWeight="medium"
               color="white"
               sx={{ marginLeft: "10px", fontSize: "17px" }}
             >
-              {group}
+              {GithubUrl}
             </MDTypography>
           </MDBox>
         </MDBox>
-        <MDBox // 프로필 설정 아이콘 담을 박스
+        <MDBox // 프로필 설정 아이콘 및 팔로우 아이콘 담을 박스
           style={{
             marginLeft: "50px",
+            display: "flex",
+            flexDirection: "Column",
             float: "right",
           }}
         >
@@ -186,6 +210,7 @@ function ProfileCard({
             color: "white",
             marginLeft: "15px",
             marginTop: "5px",
+            padding: "3px",
             fontSize: "15px",
             fontWeight: "medium",
           }}
@@ -333,7 +358,7 @@ ProfileCard.propTypes = {
   nickname: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   introduction: PropTypes.string.isRequired,
-  group: PropTypes.string.isRequired,
+  GithubUrl: PropTypes.string.isRequired,
   FollowingCount: PropTypes.number.isRequired,
   FollowerCount: PropTypes.number.isRequired,
 };

@@ -209,7 +209,8 @@ function Profile() {
                     dayBorderColor="#ffffff"
                     theme={{
                       textColor: "#ffffff",
-                      fontSize: "20px",
+                      // fontSize: "20px",
+                      fontSize: "3vh",
                     }}
                     legends={[
                       {

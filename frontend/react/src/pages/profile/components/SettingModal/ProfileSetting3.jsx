@@ -8,7 +8,7 @@
 // import { Link } from "react-router-dom";
 
 // prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 // @mui material components
 // import Card from "@mui/material/Card";
@@ -40,9 +40,11 @@ import MakeProfileImageUpload from "./makeProfileUploadImage";
 // Icon
 
 // function ProfileSetBox({ userId, profileImage, nickname, email, introduction, group }) {
-function ProfileSetBox3(Image) {
-  // console.log(Image);
-  const profileNowImg = Image.Image;
+function ProfileSetBox3(SetImage) {
+  console.log(SetImage);
+  const ProfileImg = SetImage;
+  const profileNowImg = ProfileImg.SetImage;
+  console.log(profileNowImg);
   return (
     <MDBox // 전체 외부 설정페이지 박스
       sx={{
@@ -68,8 +70,8 @@ function ProfileSetBox3(Image) {
         <MDTypography
           sx={{
             fontSize: "30px",
-            marginLeft: "10%",
-            marginTop: "5%",
+            marginLeft: "5%",
+            marginTop: "2%",
           }}
         >
           프로필 설정
@@ -169,7 +171,7 @@ function ProfileSetBox3(Image) {
               marginTop: "20px",
             }}
           >
-            <MDTypography>소속 그룹</MDTypography>
+            <MDTypography>GitHub URL</MDTypography>
             <MDInput
               sx={{
                 width: "600px",
@@ -223,13 +225,13 @@ function ProfileSetBox3(Image) {
   );
 }
 
-ProfileSetBox3.propTypes = {
-  // userId: PropTypes.string.isRequired,
-  Image: PropTypes.string.isRequired,
-  // nickname: PropTypes.string.isRequired,
-  // email: PropTypes.string.isRequired,
-  // introduction: PropTypes.string.isRequired,
-  // group: PropTypes.string.isRequired,
-};
+// ProfileSetBox3.propTypes = {
+//   // userId: PropTypes.string.isRequired,
+//   // Image: PropTypes.string.isRequired,
+//   // nickname: PropTypes.string.isRequired,
+//   // email: PropTypes.string.isRequired,
+//   // introduction: PropTypes.string.isRequired,
+//   // group: PropTypes.string.isRequired,
+// };
 
 export default ProfileSetBox3;
