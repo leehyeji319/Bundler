@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.bundler.config.auth.AuthTokenProvider;
 import com.ssafy.bundler.config.jwt.JwtToken;
-import com.ssafy.bundler.config.properties.AppProperties;
 import com.ssafy.bundler.dto.JwtTokenDto;
 import com.ssafy.bundler.dto.TokenReIssueRequest;
 import com.ssafy.bundler.dto.UserDto;
@@ -29,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthController {
 
-	private final AppProperties appProperties;
+	// private final AppProperties appProperties;
 	private final AuthTokenProvider tokenProvider;
 	private final AuthenticationManager authenticationManager;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;

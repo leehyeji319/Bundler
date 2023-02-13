@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "USER_CARD_HIT")
+@Table(name = "USER_CARD_HIT", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "card_id"}))
 public class UserCardHit implements Serializable {
 
 	@Id

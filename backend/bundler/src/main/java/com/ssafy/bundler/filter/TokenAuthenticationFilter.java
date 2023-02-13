@@ -29,7 +29,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
 		AuthToken token = tokenProvider.convertAuthToken(tokenStr);
 
+		log.info("token: " + token.getToken());
+
 		if (token.validate()) {
+			log.info("유효한 토큰입니다");
+
 			Authentication authentication = tokenProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}

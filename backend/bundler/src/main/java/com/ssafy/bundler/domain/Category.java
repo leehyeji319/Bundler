@@ -39,6 +39,7 @@ public class Category implements Serializable {
 	private String categoryName;
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+	@Builder.Default
 	private List<Card> cardList = new ArrayList<>();
 
 	@ManyToOne(fetch = LAZY)
