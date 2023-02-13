@@ -14,7 +14,7 @@ import lombok.ToString;
 public class AreaDto {
 
 	private Long userId;
-	private Object[] job;
-	private Object[] skill;
+	private String[] job;
+	private String[] skill;
 
 }

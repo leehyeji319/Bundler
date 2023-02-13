@@ -1,9 +1,6 @@
 package com.ssafy.bundler.controller;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +24,8 @@ public class AreaController {
 	@GetMapping(value = "/{userId}")
 	public ResponseEntity<?> get(@PathVariable("userId") Long userId){
 		Area userArea =  areaService.getArea(userId);
-		Object[] job = getArrayFromString(userArea.getJob());
-		Object[] skill = getArrayFromString(userArea.getSkill());
+		String[] job = getArrayFromString(userArea.getJob());
+		String[] skill = getArrayFromString(userArea.getSkill());
 		AreaDto area = new AreaDto(userArea.getUserId(),job,skill);
 
 		return ResponseEntity.ok(area);
@@ -44,16 +41,7 @@ public class AreaController {
 		return ResponseEntity.ok("create");
 	}
 
-	Object[] getArrayFromString(String str){
-		List<String> arr = new ArrayList<>();
-
-		String plain = str.substring(1,str.length()-1);
-		StringTokenizer st = new StringTokenizer(plain,", ");
-
-		while(st.hasMoreTokens()){
-			arr.add(st.nextToken());
-		}
-
-		return arr.toArray();
+	String[] getArrayFromString(String str){
+		return  str.substring(1,str.length()-1).split(", ");
 	}
 }
