@@ -1,11 +1,10 @@
-// Material Dashboard 2 React Examples
-import DataTable from "pages/make/Tables/DataTable";
-// import { useState } from "react";
-
-// [Import - React-Redux]
+// Import - react
 import { useSelector, useDispatch } from "react-redux";
 
-// [Import - Redux-action] redux-action 함수
+// Import - Material Dashboard 2 React Examples
+import DataTable from "pages/make/Tables/DataTable";
+
+// Import - Redux-action redux-action 함수
 import { actEditCardNo } from "redux/actions/makeCardAction";
 
 function MakeCardList() {
@@ -35,16 +34,13 @@ function MakeCardList() {
   };
 
   return (
-    <div>
-      <DataTable
-        table={{
-          columns: columnList,
-          rows: cardList,
-        }}
-        handleEdit={handleEdit}
-      />
-      ;
-    </div>
+    <DataTable
+      table={{
+        columns: columnList,
+        rows: cardList,
+      }}
+      handleEdit={handleEdit}
+    />
   );
 }
 

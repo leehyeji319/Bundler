@@ -14,8 +14,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class FollowResponseDTO implements Serializable {
-
-	private List<User> userList = new ArrayList<User>();
+	@Builder.Default
+	private List<User> userList = new ArrayList<>();
 
 	// public User toEntity() {
 	// 	return User.builder()

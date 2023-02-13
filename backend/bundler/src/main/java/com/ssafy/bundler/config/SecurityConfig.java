@@ -3,7 +3,6 @@ package com.ssafy.bundler.config;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,8 +13,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
@@ -23,7 +22,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.ssafy.bundler.config.auth.AuthTokenProvider;
 import com.ssafy.bundler.config.properties.AppProperties;
-import com.ssafy.bundler.config.properties.CorsProperties;
 import com.ssafy.bundler.domain.UserRole;
 import com.ssafy.bundler.exception.RestAuthenticationEntryPoint;
 import com.ssafy.bundler.filter.TokenAuthenticationFilter;
@@ -35,9 +33,7 @@ import com.ssafy.bundler.handler.TokenAccessDeniedHandler;
 import com.ssafy.bundler.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
-import com.ssafy.bundler.service.AuthService;
 import com.ssafy.bundler.service.CustomOAuth2UserService;
-import com.ssafy.bundler.service.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,16 +48,15 @@ public class SecurityConfig {
 	// private final PrincipalOauth2UserService principalOauth2UserService;
 	// private final UserRepository userRepository;
 
-	@Autowired
-	private CorsConfig corsConfig;
+	// private final CorsConfig corsConfig;
 
 	////////////////////////////////
 	// private final AuthenticationManager authenticationManager;
-	private final CorsProperties corsProperties;
+	// private final CorsProperties corsProperties;
 	private final AppProperties appProperties;
 	private final AuthTokenProvider tokenProvider;
-	private final CustomUserDetailsService userDetailsService;
-	private final AuthService authService;
+	// private final CustomUserDetailsService userDetailsService;
+
 	private final CustomOAuth2UserService oAuth2UserService;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
@@ -75,6 +70,11 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
+
+			.cors(httpSecurityCorsConfigurer ->
+				httpSecurityCorsConfigurer
+					.configurationSource(corsConfigurationSource())
+			)
 
 			.sessionManagement(httpSecuritySessionManagementConfigurer ->
 				httpSecuritySessionManagementConfigurer
@@ -102,8 +102,8 @@ public class SecurityConfig {
 					.accessDeniedHandler(tokenAccessDeniedHandler)
 			)
 
-			.apply(new MyCustomDsl()) // 커스텀 필터 등록
-			.and()
+			// .apply(new MyCustomDsl()) // 커스텀 필터 등록
+			// .and()
 
 			// .securityMatcher("/api/**")
 			.authorizeHttpRequests(authroize ->
@@ -129,41 +129,26 @@ public class SecurityConfig {
 
 			.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
 				httpSecurityOAuth2LoginConfigurer
-					.authorizationEndpoint(authorizationEndpointConfig -> {
-							System.out.println("authorizationEndpointConfig 진입!!");
-
-							// authorizationEndpointConfig
-							// .baseUri("/oauth2/authorization")
-							// .authorizationRedirectStrategy((request, response, url) ->
-							// 	url = request.getParameter("redirect_uri")
-							// )
-							// .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository());
-						}
+					.authorizationEndpoint(authorizationEndpointConfig ->
+						authorizationEndpointConfig
+							.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
 					)
-					.redirectionEndpoint(redirectionEndpointConfig -> {
-							System.out.println("redirectionEndpoinConfig 진입!!");
 
-							// redirectionEndpointConfig
-							// .baseUri("/*/oauth2/code/*");
-
-						}
+					.redirectionEndpoint(redirectionEndpointConfig ->
+						redirectionEndpointConfig
+							.baseUri("/login/oauth2/code/*")
 					)
-					.userInfoEndpoint(userInfoEndpointConfig -> {
-							System.out.println("userInfoEndpointConfig 진입!!");
 
-							userInfoEndpointConfig
-								.userService(oAuth2UserService);
-
-						}
+					.userInfoEndpoint(userInfoEndpointConfig ->
+						userInfoEndpointConfig
+							.userService(oAuth2UserService)
 					)
+
 					.successHandler(oAuth2AuthenticationSuccessHandler())
 					.failureHandler(oAuth2AuthenticationFailureHandler())
 			)
 
-			.addFilterBefore(tokenAuthenticationFilter(), OAuth2LoginAuthenticationFilter.class)
-			// .addFilterBefore(tokenAuthenticationFilter(), SecurityContextPersistenceFilter.class)
-
-			// .addFilterAfter(tokenAuthenticationFilter())
+			.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 
 			.build();
 	}
@@ -180,12 +165,16 @@ public class SecurityConfig {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+		configuration.setAllowedOrigins(
+			List.of("http://localhost:5500", "http://localhost:3000", "http://127.0.0.1/3000",
+				"http://i8a810.p.ssafy.io:3000"));
 		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 		configuration.setAllowCredentials(true);
 		configuration.setAllowedHeaders(List.of("*"));
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
+		// source.registerCorsConfiguration("/api/**", configuration);
+
 		return source;
 	}
 
@@ -201,20 +190,12 @@ public class SecurityConfig {
 
 			// LogoutConfigurer logoutConfigurer = http.getSharedObject(LogoutConfigurer.class);
 
-			http
-				.addFilter(corsConfig.corsFilter());
+			// http
+			// 	.addFilter(corsConfig.corsFilter());
 			// .addFilter(new JwtAuthenticationFilter(authenticationManager))
 			// .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
 		}
 	}
-
-	/*
-	 * security 설정 시, 사용할 인코더 설정
-	 * */
-	// @Bean
-	// public BCryptPasswordEncoder passwordEncoder() {
-	// 	return new BCryptPasswordEncoder();
-	// }
 
 	/*
 	 * 토큰 필터 설정
@@ -244,6 +225,7 @@ public class SecurityConfig {
 			.tokenProvider(tokenProvider)
 			.appProperties(appProperties)
 			.userRefreshTokenRepository(userRefreshTokenRepository)
+			// .authorizationRequestRepository()
 			.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
 			.build();
 	}
@@ -256,23 +238,5 @@ public class SecurityConfig {
 		log.debug(OAuth2AuthenticationFailureHandler.class + ": fail");
 		return new OAuth2AuthenticationFailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository());
 	}
-
-	/*
-	 * Cors 설정
-	 * */
-	// @Bean
-	// public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-	// 	UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
-	//
-	// 	CorsConfiguration corsConfig = new CorsConfiguration();
-	// 	corsConfig.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
-	// 	corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
-	// 	corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
-	// 	corsConfig.setAllowCredentials(true);
-	// 	corsConfig.setMaxAge(corsConfig.getMaxAge());
-	//
-	// 	corsConfigSource.registerCorsConfiguration("/**", corsConfig);
-	// 	return corsConfigSource;
-	// }
 
 }

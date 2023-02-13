@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -15,61 +15,121 @@ import MDTypography from "components/MDTypography";
 import ModalDetail from "pages/home/components/modalDetail";
 import LikeButton from "pages/home/buttons/likeButton";
 import ScrapButton from "pages/home/buttons/scrapButton";
+import { apiGetCardDetail, apiGetBundle } from "apis/api/apiHomePage";
 
-function HomeCard({ image, category, id, title, description, solution, answer, commentList }) {
+// Card Image
+import CardImg from "assets/images/bundler/bundlerRabbit.png";
+
+// Import custom
+import { useSelector } from "react-redux";
+
+// const cardInfo
+function HomeCard({ cardInfo }) {
+  // 해당 유저 정보
+  const { loginInfo } = useSelector((state) => state.homeReducer);
+
+  // 현재 사용자가 가지고 있는 번들 목록
+  const [bundleList, setBundleList] = useState([]);
+
+  // 카드 상세 정보 저장
+  const [cardDetailInfo, setCardDetailInfo] = useState({});
+
+  // 카드 모달 on/off
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  // 카드 모달 닫기
   const handleClose = () => setOpen(false);
+  // 카드 모달 열기 - 열때 카드 상세 정보 api 불러오기
+  const handleOpen = () => {
+    const emp = async () => {
+      await apiGetCardDetail(cardInfo.cardId)
+        .then(({ data }) => {
+          console.log("data", data);
+          setCardDetailInfo(data);
+        })
+        .catch((error) => console.log(error));
+    };
+    emp();
+
+    setOpen(true);
+  };
+
+  // 스크랩 클릭 시, 해당 유저가 가지고 있는 번들 리스트 불러오기
+  const handleBundleList = () => {
+    const initCall = async () => {
+      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
+        .then(({ data }) => {
+          setBundleList(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    initCall();
+  };
+
+  // 처음 조회 시, 가지고 있는 번들 리스트 불러오기
+  useEffect(() => {
+    const getNewComment = async () => {
+      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
+        .then(({ data }) => {
+          setBundleList(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    getNewComment();
+  }, []);
 
   return (
-    <Card sx={{ ml: 2, mb: 3, maxWidth: 800 }}>
+    <Card sx={{ ml: 2, mb: 3, maxWidth: 800, minHeight: 200, maxHeight: 400 }}>
       <ModalDetail
         open={open}
+        handleOpen={handleOpen}
         handleClose={handleClose}
-        image={image}
-        category={category}
-        id={id}
-        title={title}
-        description={description}
-        solution={solution}
-        answer={answer}
-        commentList={commentList}
+        cardInfo={cardDetailInfo}
       />
       <MDBox mx={3}>
         <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
-          <MDBox display="flex" sx={{ alignItems: "center" }}>
+          <MDBox display="flex" sx={{ alignItems: "center", width: "80%" }}>
             <MDBox
               component="img"
-              src={image}
-              alt={title}
+              src={CardImg}
+              alt={CardImg}
               borderRadius="lg"
               shadow="md"
-              width="25%"
-              height="80%"
+              width="70px"
+              height="70px"
               zIndex={1}
             />
             <MDBox mx={2} width="70%">
               <MDTypography variant="h4" textTransform="capitalize" fontWeight="bold">
-                {category}
+                [카드]&nbsp;{cardInfo.firstCategoryName}
               </MDTypography>
               <MDTypography variant="overline" mt={1}>
-                {id}
+                {cardInfo.userId}
               </MDTypography>
             </MDBox>
           </MDBox>
-          <MDBox display="flex" m="2rem">
+          <MDBox display="flex" m="1" sx={{ alignItems: "center", width: "20%" }}>
             <LikeButton />
-            <ScrapButton />
+            <ScrapButton
+              feedType={cardInfo.feedType}
+              targetId={cardInfo.cardId}
+              bundleList={bundleList}
+              handleBundleList={handleBundleList}
+            />
           </MDBox>
         </MDBox>
         <MDBox mt={2} mb={3}>
           <MDTypography display="inline" variant="h6" textTransform="capitalize" fontWeight="bold">
-            {title}
+            {cardInfo.feedTitle}
           </MDTypography>
         </MDBox>
         <MDBox mt={2} mb={3}>
           <MDTypography variant="body2" component="p" color="text">
-            {description}
+            {cardInfo.feedContent}
           </MDTypography>
         </MDBox>
         <Button onClick={handleOpen}>카드 상세보기</Button>
@@ -80,25 +140,76 @@ function HomeCard({ image, category, id, title, description, solution, answer, c
 
 // Default Vlaue
 HomeCard.defaultProps = {
-  commentList: null,
+  cardInfo: {
+    secondCategoryId: -1,
+    secondCategoryName: "",
+    cardDescription: "",
+    cardCommentary: "",
+    createdAt: "",
+    userProfileImage: "",
+    commentResponseDtoList: [],
+  },
 };
 
 // Typechecking props for the SimpleBlogCard
 HomeCard.propTypes = {
-  image: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  solution: PropTypes.string.isRequired,
-  answer: PropTypes.string.isRequired,
-  commentList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      reply: PropTypes.string.isRequired,
-    }).isRequired
-  ),
+  cardInfo: PropTypes.shape({
+    cardId: PropTypes.number.isRequired,
+    feedType: PropTypes.string.isRequired,
+    cardType: PropTypes.string.isRequired,
+    userId: PropTypes.number.isRequired,
+    userNickname: PropTypes.string.isRequired,
+    firstCategoryId: PropTypes.number.isRequired,
+    firstCategoryName: PropTypes.string.isRequired,
+    feedTitle: PropTypes.string.isRequired,
+    feedContent: PropTypes.string.isRequired,
+    cardScrapCnt: PropTypes.number.isRequired,
+    feedLikeCnt: PropTypes.number.isRequired,
+    feedCommentCnt: PropTypes.number.isRequired,
+    secondCategoryId: PropTypes.number,
+    secondCategoryName: PropTypes.string,
+    cardDescription: PropTypes.string,
+    cardCommentary: PropTypes.string,
+    createdAt: PropTypes.string,
+    userProfileImage: PropTypes.string,
+    commentResponseDtoList: PropTypes.arrayOf(PropTypes.object),
+  }),
 };
 
 export default HomeCard;
+
+// HomeCard.propTypes = {
+//   cardInfo: PropTypes.shape({
+//     cardId: PropTypes.number.isRequired,
+//     cardScrapCnt: PropTypes.number.isRequired,
+//     feedCommentCnt: PropTypes.number.isRequired,
+//     feedLikeCnt: PropTypes.number.isRequired,
+//     feedType: PropTypes.string.isRequired,
+//     cardType: PropTypes.string.isRequired,
+//     createdAt: PropTypes.string.isRequired,
+//     deleted: PropTypes.bool.isRequired,
+//     firstCategoryId: PropTypes.number.isRequired,
+//     firstCategoryName: PropTypes.string.isRequired,
+//     userId: PropTypes.number.isRequired,
+//     userNickname: PropTypes.string.isRequired,
+//     feedTitle: PropTypes.string.isRequired,
+//     feedContent: PropTypes.string.isRequired,
+//     cardCommentary: PropTypes.string,
+//     cardDescription: PropTypes.string,
+//     linkDescription: PropTypes.string,
+//     linkId: PropTypes.number,
+//     linkImage: PropTypes.string,
+//     linkTitle: PropTypes.string,
+//     linkUrl: PropTypes.string,
+//     secondCategoryId: PropTypes.number,
+//     secondCategoryName: PropTypes.string,
+//     userProfileImage: PropTypes.string,
+//   }),
+//   commentList: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       id: PropTypes.number.isRequired,
+//       name: PropTypes.string.isRequired,
+//       reply: PropTypes.string.isRequired,
+//     }).isRequired
+//   ),
+// };

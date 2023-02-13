@@ -1,6 +1,7 @@
 // Import react
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 // @mui material components
 import { Card, Modal } from "@mui/material";
@@ -11,17 +12,28 @@ import MDBox from "components/MDBox";
 // Import Custom
 import DataTable from "pages/home/DataTable";
 import ModalDetail from "pages/home/components/modalDetail";
+import HomeInput from "pages/home/components/homeInput";
+import HomeCommentList from "pages/home/components/homeCommentList";
 
-function ModalCardList({ open, handleCardClose, cardList }) {
+// Import - axios
+import { apiPostComment } from "apis/api/apiHomePage";
+
+function ModalCardList({
+  open,
+  handleCommetList,
+  handleCardClose,
+  bundleId,
+  cardList,
+  commentList,
+}) {
   // Data - global
-  // const { cardList } = useSelector((state) => state.makeReducer);
+  const { loginInfo } = useSelector((state) => state.homeReducer);
 
   // Data - local
   const columnList = [
-    { Header: "아이디", accessor: "id", width: "10%" },
-    { Header: "제목", accessor: "title" },
-    { Header: "내용", accessor: "description" },
-    { Header: "유형", accessor: "category", width: "20%" },
+    { Header: "유형", accessor: "firstCategoryName", width: "20%" },
+    { Header: "제목", accessor: "feedTitle", width: "40%" },
+    { Header: "내용", accessor: "feedContent" },
   ];
 
   // useState - card Detail Information
@@ -29,10 +41,11 @@ function ModalCardList({ open, handleCardClose, cardList }) {
     feedType: "CARD",
     cardId: 0,
     cardImage: "",
-    category: "",
-    id: "",
-    title: "",
-    description: "",
+    firstCategoryName: "",
+    userId: 1,
+    feedTitle: "",
+    feedContent: "",
+    cardDescription: "",
     solution: "",
     answer: "",
     commentList: [{ id: 0, name: "", reply: "" }],
@@ -54,10 +67,29 @@ function ModalCardList({ open, handleCardClose, cardList }) {
     handleDetailCardOpen();
   };
 
+  // 번들 댓글 저장 및 댓글 다시 불러오기
+  const handleComment = async (comment) => {
+    const params = {
+      targetFeedId: bundleId,
+      content: comment.inputData,
+      userId: loginInfo.userId,
+    };
+    console.log(params);
+
+    await apiPostComment(params)
+      .then(async ({ data }) => {
+        console.log(data.message);
+        handleCommetList(); // 댓글 목록 다시 불러오기
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   // custom style
   const style = {
     position: "absolute",
-    top: "40%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "65%",
@@ -69,64 +101,50 @@ function ModalCardList({ open, handleCardClose, cardList }) {
   };
 
   return (
-    <>
-      <ModalDetail
-        open={cardOpenModal}
-        handleClose={handleDetailCardClose}
-        image={cardDetail.category}
-        category={cardDetail.category}
-        id={cardDetail.cardId}
-        title={cardDetail.title}
-        description={cardDetail.description}
-        solution={cardDetail.solution}
-        answer={cardDetail.answer}
-        commentList={cardDetail.commentList}
-      />
-      <Modal open={open} onClose={handleBundleCloseModal}>
-        <Card sx={style}>
-          <MDBox p={3}>
-            <DataTable
-              table={{
-                columns: columnList,
-                rows: cardList,
-              }}
-              handleEdit={handleSelectedCard}
-            />
-          </MDBox>
-        </Card>
-      </Modal>
-    </>
+    cardList !== null && (
+      <>
+        <ModalDetail
+          open={cardOpenModal}
+          handleClose={handleDetailCardClose}
+          cardInfo={cardDetail}
+        />
+        <Modal open={open} onClose={handleBundleCloseModal}>
+          <Card sx={style}>
+            <MDBox p={3}>
+              <DataTable
+                table={{
+                  columns: columnList,
+                  rows: cardList,
+                }}
+                handleEdit={handleSelectedCard}
+                canSearch
+              />
+            </MDBox>
+            <MDBox p={3}>
+              <HomeInput handleComment={handleComment} />
+              <HomeCommentList handleCommetList={handleCommetList} commentList={commentList} />
+            </MDBox>
+          </Card>
+        </Modal>
+      </>
+    )
   );
 }
 
 // Default Vlaue
-// ModalCardList.defaultProps = {
-//   commentList: null,
-// };
+ModalCardList.defaultProps = {
+  cardList: [],
+  commentList: [],
+};
 
 // Typechecking props for the ModalCardList
 ModalCardList.propTypes = {
   open: PropTypes.bool.isRequired,
+  handleCommetList: PropTypes.func.isRequired,
   handleCardClose: PropTypes.func.isRequired,
-  cardList: PropTypes.arrayOf(
-    PropTypes.shape({
-      cardId: PropTypes.number.isRequired,
-      cardImage: PropTypes.string.isRequired,
-      category: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      solution: PropTypes.string.isRequired,
-      answer: PropTypes.string.isRequired,
-      commentList: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
-          reply: PropTypes.string.isRequired,
-        }).isRequired
-      ).isRequired,
-    }).isRequired
-  ).isRequired,
+  bundleId: PropTypes.number.isRequired,
+  cardList: PropTypes.arrayOf(PropTypes.object),
+  commentList: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default ModalCardList;

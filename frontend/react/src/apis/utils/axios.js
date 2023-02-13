@@ -25,8 +25,8 @@ const apiInstance = () => {
   return instance;
 };
 
-useEffect(() => {
-  apiInstance();
-}, [accessToken]);
+// useEffect(() => {
+//   apiInstance();
+// }, [accessToken]);
 
 export { apiInstance };

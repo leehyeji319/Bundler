@@ -18,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ssafy.bundler.config.auth.AuthToken;
 import com.ssafy.bundler.config.auth.AuthTokenProvider;
+import com.ssafy.bundler.config.jwt.JwtTokenProvider;
 import com.ssafy.bundler.config.oauthUserInfo.OAuth2UserInfoFactory;
 import com.ssafy.bundler.config.oauthUserInfo.provider.OAuth2UserInfo;
 import com.ssafy.bundler.config.properties.AppProperties;
@@ -25,6 +26,7 @@ import com.ssafy.bundler.domain.ProviderType;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.domain.UserRefreshToken;
 import com.ssafy.bundler.domain.UserRole;
+import com.ssafy.bundler.exception.UserNotFoundException;
 import com.ssafy.bundler.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
@@ -45,6 +47,8 @@ import lombok.extern.slf4j.Slf4j;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	private final AuthTokenProvider tokenProvider;
+
+	private final JwtTokenProvider jwtTokenProvider;
 	private final AppProperties appProperties;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
 	private final UserRepository userRepository;
@@ -53,24 +57,22 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws IOException, ServletException {
-		// String targetUrl = determineTargetUrl(request, response, authentication);
-		String targetUrl = "http://localhost:3000/";
+		String targetUrl = determineTargetUrl(request, response, authentication);
+		// String targetUrl = "http://127.0.0.1/3000";
+		// String targetUrl = "http://127.0.0.1:5500/success.html";
 
 		///////////////
 
-		log.debug("onAuthenticationSuccess");
+		log.info("onAuthenticationSuccess() !!!");
 		///////////////
 
 		if (response.isCommitted()) {
-			logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+			logger.info("Response has already been committed. Unable to redirect to " + targetUrl);
 			return;
 		}
 
 		clearAuthenticationAttributes(request, response);
 		getRedirectStrategy().sendRedirect(request, response, targetUrl);
-		// setRedirectStrategy((request1, response1, url) -> {
-		// 	response1;
-		// });
 	}
 
 	protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
@@ -87,6 +89,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 		OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken)authentication;
 		ProviderType providerType = ProviderType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
+
+		// log.info("authToken: " + authToken.getPrincipal().);
 
 		OidcUser user = ((OidcUser)authentication.getPrincipal());
 		OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
@@ -110,12 +114,17 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		);
 
 		// DB 저장
-		Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUser_UserEmail(
-			userInfo.getEmail());
-		if (userRefreshToken.isPresent()) {
-			userRefreshToken.get().setRefreshToken(refreshToken.getToken());
+		Optional<UserRefreshToken> userRefreshTokenOptional =
+			userRefreshTokenRepository.findByUser_ProviderTypeAndUser_ProviderId(
+				providerType, userInfo.getId());
+
+		if (userRefreshTokenOptional.isPresent()) {
+			UserRefreshToken userRefreshToken = userRefreshTokenOptional.get();
+			userRefreshToken.setRefreshToken(refreshToken.getToken());
+			userRefreshTokenRepository.saveAndFlush(userRefreshToken);
 		} else {
-			User u = userRepository.findOneByProviderTypeAndProviderId(providerType, userInfo.getId()).orElseThrow();
+			User u = userRepository.findOneByProviderTypeAndProviderId(providerType, userInfo.getId()).orElseThrow(
+				UserNotFoundException::new);
 
 			userRefreshTokenRepository.saveAndFlush(
 				UserRefreshToken.builder()
@@ -131,7 +140,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
 		return UriComponentsBuilder.fromUriString(targetUrl)
-			.queryParam("token", accessToken.getToken())
+			.queryParam("accessToken", accessToken.getToken())
 			.build().toUriString();
 	}
 
