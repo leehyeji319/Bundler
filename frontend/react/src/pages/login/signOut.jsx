@@ -7,26 +7,21 @@ import { logoutUser } from "apis/api/Users";
 function SignOut() {
   // store에 저장된 Access Token 정보를 받아 온다
   const accessToken = useSelector((state) => state.authToken.accessToken);
-  console.log(accessToken);
-  console.log("5555555555555");
-
+  // useDipatch를 dispatch로 선언한다
   const dispatch = useDispatch();
 
   // Cookie에 저장된 Refresh Token 정보를 받아 온다
   const refreshToken = getCookieToken();
   // eslint-disable-next-line
   const logout = async () => {
-    // 백으로부터 받은 응답
+    //  logoutUser를 이용하여 "https://i8a810.p.ssafy.io/api/v1/logout" 요청
     const data = await logoutUser(refreshToken, accessToken);
-
-    if (data.status) {
-      console.log("44444444444444444");
+    if (data.status === 200) {
       // store에 저장된 Access Token 정보를 삭제
       dispatch(DELETE_TOKEN());
       // Cookie에 저장된 Refresh Token 정보를 삭제
       removeCookieToken();
-
-      console.log(accessToken);
+      // login 페이지로 이동한다
       window.open("/login", "_self");
     }
   };
@@ -35,6 +30,7 @@ function SignOut() {
     <div>
       <Button
         onClick={() => logout()}
+        id="bundlerBtn"
         className="learn-more2"
         sx={{
           marginTop: "0%",
@@ -45,7 +41,7 @@ function SignOut() {
         }}
         type="button"
       >
-        logout
+        로그아웃
       </Button>
     </div>
   );

@@ -1,16 +1,14 @@
 import axios from "axios";
 
-// server로 로그인 요청
-// 백으로 유저 정보와 함께 로그인 요청을 보낸다. 받은 응답 코드에 따라 에러 또는 응답 받은 json 정보를 리턴한다.
+// 로그인 요청
 const loginUser = async (info) => {
   const { email, password } = info;
   const response = await axios({
-    url: "http://i8a810.p.ssafy.io:8080/api/v1/login",
-    // url: "http://localhost:8123/login",
+    // 서버용
+    url: "https://i8a810.p.ssafy.io/api/v1/login",
+    // 시험용
+    // url: "http://localhost:8087/api/v1/login",
     method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-    },
     withCredentials: true,
     data: {
       email,
@@ -18,16 +16,15 @@ const loginUser = async (info) => {
     },
   });
   return response;
-  // axios 요청이 성공
-  // .then((result) => {
-  //   console.log(result);
-  // });
 };
 
+// 로그아웃 요청 (헤더에 accessToken 붙여서 요청)
 const logoutUser = async (refreshToken, accessToken) => {
   const response = await axios({
+    // 서버용
     url: "https://i8a810.p.ssafy.io/api/v1/logout",
-    // url: "http://localhost:8123/logout",
+    // 시험용
+    // url: "http://localhost:8087/api/v1/logout",
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -40,14 +37,14 @@ const logoutUser = async (refreshToken, accessToken) => {
   return response;
 };
 
+// 토큰 재요청
 const requestToken = async (refreshToken) => {
   const response = await axios({
-    url: "http://i8a810.p.ssafy.io:8080/api/v1/requestToken",
-    // url: "http://localhost:8123/requestToken",
+    // 서버용
+    url: "https://i8a810.p.ssafy.io/api/v1/refresh",
+    // 시험용
+    // url: "http://localhost:8087/api/v1/refresh",
     method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-    },
     withCredentials: true,
     data: {
       refreshToken,

@@ -4,6 +4,8 @@ import java.util.Map;
 
 public abstract class OAuth2UserInfo {
 
+	public static final String BUNDLER_EMAIL_DOMAIN = "@bundler.com";
+
 	protected Map<String, Object> attributes;
 
 	public OAuth2UserInfo(Map<String, Object> attributes) {

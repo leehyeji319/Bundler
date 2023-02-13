@@ -1,7 +1,7 @@
 // import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-
+import { useNavigate } from "react-router-dom";
 import { HiLockClosed } from "react-icons/hi";
 import { ErrorMessage } from "@hookform/error-message";
 
@@ -12,8 +12,8 @@ import { SET_TOKEN } from "redux/store/Auth";
 import { Button } from "@mui/material/";
 
 function SignIn() {
+  // useDipatch를 dispatch로 선언한다
   const dispatch = useDispatch();
-
   // useForm 사용을 위한 선언
   const {
     register,
@@ -21,32 +21,34 @@ function SignIn() {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const navigate = useNavigate();
 
   // submit 이후 동작할 코드
-  // 백으로 유저 정보 전달
   const onValid = async ({ email, password }) => {
     // input 태그 값 비워주는 코드
     setValue("password", "");
-
-    // 백으로부터 받은 응답
+    // loginUser를 이용하여 "https://i8a810.p.ssafy.io/api/v1/login" 요청
     const response = await loginUser({ email, password });
-    console.log(response.data, 11111111111);
     if (response.status === 200) {
-      // 쿠키에 Refresh Token, store에 Access Token 저장
+      // 쿠키에 Refresh Token 저장
       setRefreshToken(response.data.refreshToken);
+      // store에 Access Token 저장
       dispatch(SET_TOKEN(response.data));
-      // window.open("/home", "_self");
+
+      navigate("/home");
     } else {
       alert("로그인정보가 다릅니다");
     }
   };
 
   return (
+    // 제출 시 이메일과 패스워드가 loginUser이 요청될 때 전송된다
     <form onSubmit={handleSubmit(onValid)}>
       <div>
         <div>
           <label htmlFor="email">
             <input
+              // 아이디 입력창
               {...register("email", { required: "Please Enter Your ID" })}
               className="inputinfo"
               type="text"
@@ -66,6 +68,7 @@ function SignIn() {
         <div className="loginMargin">
           <label htmlFor="password">
             <input
+              // 패스워드 입력창
               {...register("password", { required: "Please Enter Your Password" })}
               className="inputinfo"
               type="password"
@@ -83,6 +86,7 @@ function SignIn() {
         <div>
           <Button
             className="learn-more2"
+            id="bundlerBtn"
             sx={{
               marginTop: "4%",
               bgcolor: "#81D8CF",
@@ -101,6 +105,7 @@ function SignIn() {
           </Button>
         </div>
       </div>
+      {/* 로그인 입력창 위 캐릭터 */}
       <div className="padlock">
         <div className="padlock__hook">
           <div className="padlock__hook-body" />

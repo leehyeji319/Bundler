@@ -32,7 +32,8 @@ public class CookieUtil {
 
 		Cookie cookie = new Cookie(name, value);
 		cookie.setPath("/");
-		cookie.setHttpOnly(true);
+//		cookie.setHttpOnly(true);
+		cookie.setHttpOnly(false);
 		cookie.setMaxAge(maxAge);
 		cookie.setDomain("localhost");
 

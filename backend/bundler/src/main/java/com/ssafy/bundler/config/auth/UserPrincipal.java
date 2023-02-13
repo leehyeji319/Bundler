@@ -26,7 +26,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 	private final Long userId;
 	private final String username;
@@ -101,14 +101,21 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 		// 	Collections.singletonList(new SimpleGrantedAuthority(RoleType.USER.getCode()))
 		// );
 
-		return UserPrincipal.builder()
+		UserPrincipal userPrincipal = UserPrincipal.builder()
 			.userId(user.getUserId())
 			.username(user.getUserNickname())
 			.password(user.getUserPassword())
-			.providerType(user.getProviderType())
 			.userRole(UserRole.USER)
 			.authorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.USER.getCode())))
 			.build();
+
+		if (user.getProviderType() != null) {
+			userPrincipal = userPrincipal.toBuilder()
+					.providerType(user.getProviderType())
+					.build();
+		}
+
+		return userPrincipal;
 	}
 
 	public static UserPrincipal create(User user, Map<String, Object> attributes) {
