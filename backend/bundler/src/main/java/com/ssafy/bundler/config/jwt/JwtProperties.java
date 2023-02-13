@@ -1,4 +1,4 @@
-// package com.ssafy.bundler.config.jwt;
+package com.ssafy.bundler.config.jwt;// package com.ssafy.bundler.config.jwt;
 //
 // public interface JwtProperties {
 //

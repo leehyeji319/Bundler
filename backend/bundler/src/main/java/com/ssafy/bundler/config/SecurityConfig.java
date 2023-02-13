@@ -5,16 +5,12 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.BeanIds;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
@@ -34,6 +30,7 @@ import com.ssafy.bundler.repository.OAuth2AuthorizationRequestBasedOnCookieRepos
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.service.CustomOAuth2UserService;
+import com.ssafy.bundler.service.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,9 +50,10 @@ public class SecurityConfig {
 	////////////////////////////////
 	// private final AuthenticationManager authenticationManager;
 	// private final CorsProperties corsProperties;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final AppProperties appProperties;
 	private final AuthTokenProvider tokenProvider;
-	// private final CustomUserDetailsService userDetailsService;
+	private final CustomUserDetailsService userDetailsService;
 
 	private final CustomOAuth2UserService oAuth2UserService;
 	private final TokenAccessDeniedHandler tokenAccessDeniedHandler;
@@ -102,6 +100,8 @@ public class SecurityConfig {
 					.accessDeniedHandler(tokenAccessDeniedHandler)
 			)
 
+			.userDetailsService(userDetailsService)
+
 			// .apply(new MyCustomDsl()) // 커스텀 필터 등록
 			// .and()
 
@@ -114,8 +114,6 @@ public class SecurityConfig {
 					.requestMatchers("/auth/**").hasAuthority(UserRole.USER.getCode())
 					.anyRequest().permitAll()
 			)
-
-			// .userDetailsService(userDetailsService)
 
 			.logout(httpSecurityLogoutConfigurer ->
 				httpSecurityLogoutConfigurer
@@ -148,19 +146,22 @@ public class SecurityConfig {
 					.failureHandler(oAuth2AuthenticationFailureHandler())
 			)
 
-			.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+			//			.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 
 			.build();
 	}
 
+	//	AuthenticationConfiguration authenticationConfiguration = new AuthenticationConfiguration();
+	//	AuthenticationManagerBuilder authenticationManagerBuilder;
 	/*
 	 * auth 매니저 설정
 	 * */
-	@Bean(BeanIds.AUTHENTICATION_MANAGER)
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws
-		Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
+	//	@Bean
+	//	public AuthenticationManager authenticationManager() throws
+	//		Exception {
+	//
+	//		return authenticationConfiguration.getAuthenticationManager();
+	//	}
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
@@ -178,15 +179,20 @@ public class SecurityConfig {
 		return source;
 	}
 
+	//	@Bean(name = "customAuthenticationManager")
+	//	public AuthenticationManager authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
+	//		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+	//		return auth.build();
+	//	}
+
 	public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
 		@Override
 		public void configure(HttpSecurity http) throws Exception {
-			AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(
-				AuthenticationManagerBuilder.class);
-			AuthenticationManager authenticationManager = authenticationManagerBuilder.getSharedObject(
-				AuthenticationManager.class);
-			// authenticationManagerBuilder
-			// 	.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+			//			authenticationManagerBuilder = http.getSharedObject(
+			//					AuthenticationManagerBuilder.class);
+			//
+			//			 authenticationManagerBuilder
+			//			 	.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 
 			// LogoutConfigurer logoutConfigurer = http.getSharedObject(LogoutConfigurer.class);
 
@@ -194,6 +200,7 @@ public class SecurityConfig {
 			// 	.addFilter(corsConfig.corsFilter());
 			// .addFilter(new JwtAuthenticationFilter(authenticationManager))
 			// .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
+
 		}
 	}
 
@@ -225,7 +232,7 @@ public class SecurityConfig {
 			.tokenProvider(tokenProvider)
 			.appProperties(appProperties)
 			.userRefreshTokenRepository(userRefreshTokenRepository)
-			// .authorizationRequestRepository()
+			.userRepository(userRepository)
 			.authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
 			.build();
 	}

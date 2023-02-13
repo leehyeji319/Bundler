@@ -1,6 +1,7 @@
 package com.ssafy.bundler.config.oauthUserInfo.provider;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class GithubOAuth2UserInfo extends OAuth2UserInfo {
 
@@ -20,6 +21,10 @@ public class GithubOAuth2UserInfo extends OAuth2UserInfo {
 
 	@Override
 	public String getEmail() { //email = khj6354@naver.com
+		if (attributes.get("email") == null) {
+			return UUID.randomUUID().toString() + BUNDLER_EMAIL_DOMAIN;
+		}
+
 		return (String)attributes.get("email");
 	}
 
