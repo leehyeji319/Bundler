@@ -1,5 +1,13 @@
-import { React, useState } from "react";
+// Import - basic
+import { React, useState, useEffect } from "react";
 import axios from "axios";
+
+// Import - js
+import { sortFeedList } from "apis/service/serviceHomePage";
+
+// Import - custom
+import HomeCard from "pages/home/components/homeCard";
+import HomeBundle from "pages/home/components/homeBundle";
 
 const FeedType = [
   { id: null, value: "카드 + 번들" },
@@ -69,6 +77,7 @@ const CategoryIdSmall5 = [
 ];
 
 function CardSearch() {
+  // ========================== Data =======================================
   // input에 검색어를 입력하면 setSearch 사용하여 search 변경
   const [search, setSearch] = useState("");
   // 피드타입 선택
@@ -89,6 +98,10 @@ function CardSearch() {
   const [categoryId, setCategoryId] = useState("");
   const [categoryId2, setcategoryId2] = useState("");
 
+  // api 결과값 저장
+  const [apiList, setApiList] = useState([]);
+
+  // =========================== Function - handler ======================================
   // 대분류
   const categoryIdBigDropbox = (e) => {
     const { value } = e.target;
@@ -124,19 +137,26 @@ function CardSearch() {
 
   // clickSearchBtn 실행시켜 회원검색 진행
   const clickSearchBtn = () => {
+    console.log("카드 or 번들", feedType);
+    console.log("문제/일반/링크", cardType);
+    console.log("카테고리 아이디", categoryId);
+    console.log("검색어", search);
     axios({
-      url: "http://localhost:8080/api/v4/feeds/",
+      url: "http://localhost:8080/api/v1/search",
       method: "get",
-      params: { feedType, cardType, categoryId, search },
+      params: { feedType, categoryId, search },
       withCredentials: true,
-    }).then((result) => {
-      if (result.data) {
-        console.log(result.data);
-        // const resultId = result.data.userInfo;
-        // setResultId(result.data.userInfo);
+    }).then(({ data }) => {
+      if (data.data) {
+        setApiList(sortFeedList(data.data));
       }
     });
   };
+
+  // api 값 바로 불러오기
+  useEffect(() => {
+    console.log(apiList);
+  }, [apiList]);
 
   return (
     <div>
@@ -287,6 +307,17 @@ function CardSearch() {
           </>
         ) : null}
       </div>
+      {apiList.map((post) =>
+        post.feedType === "CARD" ? (
+          <div key={post.cardId}>
+            <HomeCard cardInfo={post} />
+          </div>
+        ) : (
+          <div key={post.cardId}>
+            <HomeBundle bundleInfo={post} />
+          </div>
+        )
+      )}
     </div>
   );
 }

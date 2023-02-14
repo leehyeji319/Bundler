@@ -42,7 +42,7 @@ import lombok.RequiredArgsConstructor;
  * 2023/02/04        modsiw       최초 생성
  * 2023/02/08		 modsiw		  피드 전체조회시에 댓글리스트까지 포함 (번들은 번들댓글만, 카드는 카드 댓글만)
  * 2023/02/09		 modsiw		  검색페이지 메서드들 추가
- * * 2023/02/09		 cfdw011	  피드 좋아요 메서드 추가
+ * 2023/02/09		 cfdw011	  피드 좋아요 메서드 추가
  */
 
 @Service
@@ -94,6 +94,26 @@ public class FeedService {
 		return all;
 	}
 
+	//사용자가 팔로잉하는 사람의 번들 + 카드 리스트
+	//피드 전체조회시에 반환. 번들 + 번들의 댓글, 카드 + 카드의 댓글
+	public List<Object> findCardsAndBundlesByUserIdOnlyFollowing(Long userId) throws Exception {
+		List<CardResponseDto> cardResponseDtoList =
+			userFeedQueryRepository.findCardsByUserIdOnlyFollowing(userId);
+		List<BundleResponseDto> allByDto_optimization =
+			userFeedQueryRepository.findBundlesByUserIdOnlyFollowing(userId);
+
+		List<Object> objects = new ArrayList<>();
+
+		for (CardResponseDto c : cardResponseDtoList) {
+			objects.add(c);
+		}
+		for (BundleResponseDto b : allByDto_optimization) {
+			objects.add(b);
+		}
+
+		return objects;
+	}
+
 	//피드 전체조회시에 반환. 번들 + 번들의 댓글, 카드 + 카드의 댓글
 	public List<Object> getAllFeed() {
 		List<CardResponseDto> cardResponseDtoList = cardQueryRepository.findAllCardByDto_optimization();
@@ -112,6 +132,7 @@ public class FeedService {
 		return objects;
 	}
 
+	//카드 요약 조회
 	public List<CardSummaryResponseDto> getAllCardsFindByUserId(Long userId) {
 
 		List<Card> all = cardRepository.findAllByUserId(userId);
@@ -123,6 +144,7 @@ public class FeedService {
 		return collect;
 	}
 
+	//사용자 피드 번들 리스트 조회 (카드 포함)
 	public List<BundleResponseDto> getBundlesFindByUserIdContainIsBundlePrivate(Long userId) {
 		return userFeedQueryRepository.findBundlesByUserIdContainIsBundlePrivate(userId);
 	}
@@ -130,26 +152,54 @@ public class FeedService {
 	public List<BundleResponseDto> getBundlesFindByUserIdExceptIsBundlePrivate(Long userId) {
 		return userFeedQueryRepository.findBundlesByUserIdExceptIsBundlePrivate(userId);
 	}
+
+	//사용자 피드 번들 리스트 조회 (카드 없이)
+	public List<BundleResponseDto> getBundlesFindByUserIdContainIsBundlePrivateSummary(Long userId) {
+		return userFeedQueryRepository.findBundlesByUserIdContainIsBundlePrivateSummary(userId);
+	}
+
+	public List<BundleResponseDto> getBundlesFindByUserIdExceptIsBundlePrivateSummary(Long userId) {
+		return userFeedQueryRepository.findBundlesByUserIdExceptIsBundlePrivateSummary(userId);
+	}
+
+	// ======= 피드 좋아요 ======= //
 	@Transactional
-	public boolean likeFeed(Long feedId,Long userId){
+	public boolean likeFeed(Long feedId, Long userId) {
 		Feed feed = feedRepository.findById(feedId).orElseThrow();
 		User user = userRepository.findByUserId(userId).orElseThrow();
 
-		FeedLike feedlike = feedLikeRepository.findByFeedAndUserId(feed,user.getUserId());
+		FeedLike feedlike = feedLikeRepository.findByFeedAndUserId(feed, user.getUserId());
 
-		if(feedlike==null){
+		if (feedlike == null) {
 			//좋아요 insert, cnt++
 			FeedLike newFeedLike = FeedLike.builder().userId(userId).feed(feed).build();
 			feedLikeRepository.save(newFeedLike);
 			feed.like(1);
-			System.out.println("feed Like::::::::::::::"+feed.getFeedLikeCnt());
+			System.out.println("feed Like::::::::::::::" + feed.getFeedLikeCnt());
 			return true;
-		}else{
+		} else {
 			//좋아요 취소 delete, cnt--
 			feedLikeRepository.delete(feedlike);
 			feed.like(-1);
-			System.out.println("feed unLike::::::::::::::"+feed.getFeedLikeCnt());
+			System.out.println("feed unLike::::::::::::::" + feed.getFeedLikeCnt());
 			return false;
+		}
+
+	}
+
+	@Transactional
+	public boolean islikeFeed(Long feedId, Long userId) {
+		Feed feed = feedRepository.findById(feedId).orElseThrow();
+		User user = userRepository.findByUserId(userId).orElseThrow();
+
+		FeedLike feedlike = feedLikeRepository.findByFeedAndUserId(feed, user.getUserId());
+
+		if (feedlike == null) {
+			//안 좋아요
+			return false;
+		} else {
+			//좋아요
+			return true;
 		}
 
 	}

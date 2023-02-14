@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+// import { createSlice } from "@reduxjs/toolkit";
 
-// TOKEN_TIME_OUT에 600,000ms(600초)의 시간을 저장하여 선언
-export const TOKEN_TIME_OUT = 600 * 1000;
+// // TOKEN_TIME_OUT에 600,000ms(600초)의 시간을 저장하여 선언
+// export const TOKEN_TIME_OUT = 600 * 1000;
 
 //  createSlice: action과 reducer를 하나의 파일에서 관리
 export const tokenSlice = createSlice({
@@ -63,7 +63,7 @@ export const tokenSlice = createSlice({
   },
 });
 
-// SET_TOKEN, DELETE_TOKEN을 tokenSlice.actions의 변수로 선언하여 export
-export const { SET_TOKEN, DELETE_TOKEN } = tokenSlice.actions;
-// tokenSlice의 state 데이터의 수정이 정의된 함수를 export
-export default tokenSlice.reducer;
+// // SET_TOKEN, DELETE_TOKEN을 tokenSlice.actions의 변수로 선언하여 export
+// export const { SET_TOKEN, DELETE_TOKEN } = tokenSlice.actions;
+// // tokenSlice의 state 데이터의 수정이 정의된 함수를 export
+// export default tokenSlice.reducer;

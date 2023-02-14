@@ -8,10 +8,13 @@ import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.card.reqeust.CardSaveRequestDto;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BundleSaveRequestDto {
 
 	@NotEmpty

@@ -1,5 +1,5 @@
 // Import - react
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 // Import - design @mui/material
@@ -19,12 +19,6 @@ function MakeButton({
   // ======================== Data ===========================
   // Data - global
   const { cardList } = useSelector((state) => state.makeReducer); // state 값 가져오기
-
-  // useEffect
-  useEffect(() => {
-    console.log("rendering");
-    return console.log("unMount");
-  }, []);
 
   // ======================= Return ============================
   return (

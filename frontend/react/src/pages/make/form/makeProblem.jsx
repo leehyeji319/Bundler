@@ -1,7 +1,8 @@
-// [Import - React-Redux]
+// Import - react
 import React from "react";
 import PropTypes from "prop-types";
 
+// Import - design mui
 import { Box, TextField, Typography } from "@mui/material";
 
 function MakeProblem({ handleChangeValues }) {

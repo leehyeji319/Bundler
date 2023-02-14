@@ -1,26 +1,44 @@
+/*
+  App Main 구성
+*/
+
 import { useState, useEffect } from "react";
+// import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+// import Icon from "@mui/material/Icon";
+
+// Material Dashboard 2 React components
+// import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React example components
 import Sidenav from "examples/Sidenav";
+// import Configurator from "examples/Configurator";
 
 // Material Dashboard 2 React themes
 import theme from "assets/theme";
+// import themeRTL from "assets/theme/theme-rtl";
 
 // Material Dashboard 2 React Dark Mode themes
 import themeDark from "assets/theme-dark";
+// import themeDarkRTL from "assets/theme-dark/theme-rtl";
+
+// RTL plugins
+// import rtlPlugin from "stylis-plugin-rtl";
+// import { CacheProvider } from "@emotion/react";
+// import createCache from "@emotion/cache";
 
 // Material Dashboard 2 React routes
-import { routes1, routes2 } from "routes";
+import routes from "routes";
 
 // Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav } from "context";
+// import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
 
 // Images NavBar 브랜드 로고
 import logoImage from "assets/images/bundler/sideLogo.png";
@@ -54,10 +72,19 @@ function App() {
     whiteSidenav,
     darkMode,
   } = controller;
-
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   // const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+
+  // Cache for the rtl
+  // useMemo(() => {
+  //   const cacheRtl = createCache({
+  //     key: "rtl",
+  //     stylisPlugins: [rtlPlugin],
+  //   });
+
+  //   setRtlCache(cacheRtl);
+  // }, []);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -74,6 +101,9 @@ function App() {
       setOnMouseEnter(false);
     }
   };
+
+  // Change the openConfigurator state
+  // const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -107,6 +137,7 @@ function App() {
           onMouseLeave={handleOnMouseLeave}
         />
       )}
+      {/* {layout === "vr" && <Configurator />} */}
       <Routes>
         {/* isAuth가 true일 때 들어갈 수 있는 component false일 땐 login으로 */}
         <Route path="/home" element={isAuth ? <Home /> : <Navigate to="/" />} />
