@@ -46,6 +46,9 @@ public class Bundle extends Feed implements Serializable {
 	@Column(name = "is_bundle_default")
 	private boolean isBundleDefault;
 
+	@Column(name = "bundle_thumbnail_file_name")
+	private String bundleThumbnailFileName;
+
 	@Builder.Default
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "bundle_id")

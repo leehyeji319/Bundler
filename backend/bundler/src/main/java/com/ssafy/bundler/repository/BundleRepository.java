@@ -20,4 +20,6 @@ public interface BundleRepository extends JpaRepository<Bundle, Long> {
 
 	@Query("select b from Bundle b where b.feedTitle = :feedTitle")
 	List<Bundle> findByFeedTitle(@Param("feedTitle") String feedTitle);
+
+	Bundle findByBundleThumbnailFileName(String fileName);
 }
