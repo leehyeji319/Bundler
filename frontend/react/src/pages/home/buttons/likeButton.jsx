@@ -37,9 +37,7 @@ function LikeButton({ isLiked, likeCnt, feedId }) {
     const params = { userId: loginInfo.userId };
     const likeToggle = async () => {
       await apiPostLike(feedId, params)
-        .then((res) => {
-          console.log(res);
-        })
+        .then(() => {})
         .catch((error) => {
           console.log(error);
         });

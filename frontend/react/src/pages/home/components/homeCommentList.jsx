@@ -26,7 +26,6 @@ function HomeCommentList({ handleCommetList, commentList }) {
   // function in component
   // (1) 글 수정 버튼
   const editButton = (reply, commentId) => {
-    console.log("글 수정 시작");
     setEdit({
       id: commentId,
       comment: reply,
@@ -36,15 +35,12 @@ function HomeCommentList({ handleCommetList, commentList }) {
   // (1-2) 글 수정 정보 local data에 저장
   const handleEdit = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
 
     setEdit({ ...edit, comment: event.target.value });
   };
 
   // (2) 글 수정 취소 버튼
   const editCloseButton = () => {
-    console.log("글 수정 취소");
-
     setEdit({
       id: -1,
       comment: "",
@@ -53,13 +49,9 @@ function HomeCommentList({ handleCommetList, commentList }) {
 
   // (3) 글 수정 완료 버튼 -> axios로 db에 update 요청
   const editConfirmButton = async () => {
-    console.log("글 수정 완료");
-
     // axios로 수정 msg 보내기
     await apiPutComment(edit.id, edit.comment)
-      .then(({ data }) => {
-        console.log(data);
-      })
+      .then(() => {})
       .catch((error) => {
         console.log(error);
       });
@@ -74,12 +66,8 @@ function HomeCommentList({ handleCommetList, commentList }) {
 
   // (4) 글 삭제 버튼 -> axios로 db에 delete 요청
   const deleteButton = async (deleteCommentId) => {
-    console.log("글 삭제");
-
     await apiDeleteComment(deleteCommentId)
-      .then(({ data }) => {
-        console.log(data);
-      })
+      .then(() => {})
       .catch((error) => {
         console.log(error);
       });

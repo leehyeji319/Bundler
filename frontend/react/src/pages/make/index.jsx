@@ -147,7 +147,6 @@ function Make() {
 
   // (2-2) cardList 클릭 시, 수정할 카드의 카테고리 역 설정
   const handleSelectedListCategory = (cardType) => {
-    console.log(cardType);
     setForm(cardType);
   };
 
@@ -190,8 +189,6 @@ function Make() {
       } else if (form === "CARD_LINK") {
         // 링크 카드 추가
         setValues({ ...values, cardType: "CARD_LINK", cardno: cardNo });
-      } else {
-        console.log("이딴거 없는데?");
       }
 
       const result = actAddCard(values);
@@ -235,23 +232,19 @@ function Make() {
   // 카드 Form aios Controller
   const createCardController = async () => {
     // main Login
-    console.log(cardList);
     const cardCnt = cardList.length;
     // 카드 일때
     if (!bundleToggle) {
       if (cardCnt === 1) {
         // 개별 생성
-        console.log("카드 개별 생성");
         await apiPostCard(cardList[0]);
       } else {
         // 카드 리스트 생성
-        console.log("카드 리스트 생성");
         await apiPostCardList({ cardSaveRequestDtoList: cardList });
       }
     } else {
       // 카드가 있는 번들 생성
       const bundle = { ...bundleForm, cardSaveRequestDtoList: cardList };
-      console.log(bundle);
       await apiPostBundle(bundle);
 
       initBundleForm(); // 번들 Form 리셋
@@ -286,7 +279,6 @@ function Make() {
 
   // 빈 번들 생성
   const handleEmptyBundleCreate = () => {
-    console.log("빈 번들 생성 form");
     // validation
     if (
       bundleForm.bundleThumbnail.length === 0 ||
@@ -301,7 +293,6 @@ function Make() {
       });
     } else {
       // 빈 번들만 생성
-      console.log("빈 번들 생성", bundleForm);
       apiPostBundle(bundleForm);
 
       // 후속 처리
@@ -345,19 +336,9 @@ function Make() {
     }
   }, [editCardNumber]);
 
-  // test button
-  const testConsoleBtn = () => {
-    console.log(values);
-    console.log(cardList);
-    setForm("CARD_LINK");
-  };
-
   // ==================== Return ==============================
   return (
     <DashboardLayout>
-      <button type="button" onClick={testConsoleBtn}>
-        testConSole
-      </button>
       <DashboardNavbar />
       <FormControl>
         <FormLabel id="card-category-select">

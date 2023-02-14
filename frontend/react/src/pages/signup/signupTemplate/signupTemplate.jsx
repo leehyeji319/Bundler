@@ -27,8 +27,8 @@ function SignUpTemplate() {
     axios({
       // 서버용
       // url: "https://i8a810.p.ssafy.io/api/v1/signup",
-      // 시험용
-      url: "http://localhost:8087/api/v1/signup",
+      // global
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/signup`,
       method: "POST",
       withCredentials: true,
       data: {

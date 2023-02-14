@@ -85,8 +85,7 @@ function ModalCardList({
     };
 
     await apiPostComment(params)
-      .then(async ({ data }) => {
-        console.log(data);
+      .then(async () => {
         handleCommetList(); // 댓글 목록 다시 불러오기
       })
       .catch((error) => {

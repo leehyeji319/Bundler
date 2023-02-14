@@ -38,19 +38,16 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
   // BUNDLE Scrap function
   const handleBundleScrap = () => {
     const params = { userId: loginInfo.userId, bundleId: targetId };
-    console.log(params);
     const added = async () => {
       await apiPostBundleScrap(params)
         .then(({ data }) => {
-          console.log(data);
           setValid({
             isValid: true,
             comment: data,
             state: "info",
           });
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
           setValid({
             isValid: true,
             comment: "번들 스크랩 실패",

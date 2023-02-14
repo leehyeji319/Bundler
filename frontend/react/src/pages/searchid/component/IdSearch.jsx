@@ -19,20 +19,18 @@ function IdSearch() {
     // get 요청으로 검색어를 쿼리에 담아 요청
     await axios({
       // url: "http://localhost:8123/searchId",
-      url: "http://localhost:8087/api/v1/users",
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users`,
       method: "get",
       params: { keyword },
       withCredentials: true,
     })
       // 검색 기록이 있다면 검색 결과를 받아 resultId에 리스트로 저장하고 alert 비움
       .then((result) => {
-        console.log("검색 완료");
         setResultId(result.data);
         setAlert("");
       })
       // 검색 기록이 없다면 alert에 검색 결과 없다는 정보를 저장하고 resultId 리스트 비워줌
       .catch((error) => {
-        console.log("검색 실패");
         setAlert(error.response.data.message);
         setResultId([]);
       });
@@ -42,7 +40,7 @@ function IdSearch() {
   const goProfile = (userId) => {
     // get 요청으로 url에 유저 아이디를 담아 요청
     axios({
-      url: `http://localhost:8087/api/v1/users/${userId}/mypage`,
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${userId}/mypage`,
       method: "get",
       withCredentials: true,
     })

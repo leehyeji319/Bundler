@@ -6,8 +6,8 @@ const loginUser = async (info) => {
   const response = await axios({
     // 서버용
     // url: "https://i8a810.p.ssafy.io/api/v1/login",
-    // 시험용
-    url: "http://localhost:8087/api/v1/login",
+    // global
+    url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/login`,
     method: "POST",
     withCredentials: true,
     data: {
@@ -23,8 +23,8 @@ const logoutUser = async (refreshToken, accessToken) => {
   const response = await axios({
     // 서버용
     // url: "https://i8a810.p.ssafy.io/api/v1/logout",
-    // 시험용
-    url: "http://localhost:8087/api/v1/logout",
+    // global
+    url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/logout`,
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -43,7 +43,7 @@ const requestToken = async (refreshToken) => {
     // 서버용
     // url: "https://i8a810.p.ssafy.io/api/v1/refresh",
     // 시험용
-    url: "http://localhost:8087/api/v1/refresh",
+    url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/refresh`,
     method: "POST",
     withCredentials: true,
     data: {
