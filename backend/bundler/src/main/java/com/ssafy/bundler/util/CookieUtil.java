@@ -37,10 +37,10 @@ public class CookieUtil {
 		cookie.setMaxAge(maxAge);
 
 		//로컬 테스트 용
-		// cookie.setDomain("localhost");
+		cookie.setDomain("localhost");
 
 		//develop 브랜치 용
-		cookie.setDomain("i8a810.p.ssafy.io");
+		// cookie.setDomain("i8a810.p.ssafy.io");
 
 		log.info("cookie의 domain: " + cookie.getDomain());
 
