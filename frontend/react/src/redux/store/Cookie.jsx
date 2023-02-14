@@ -22,7 +22,7 @@ export const setRefreshToken = (refreshToken) => {
 };
 
 // 3. Cookie에 저장된 Refresh Token 값을 갖고 오기 위한 함수
-export const getCookieToken = () => 
+export const getCookieToken = () =>
   // 쿠키 값 가져오기 get(쿠키 이름, [옵션])
   cookies.get("refresh_token");
 
