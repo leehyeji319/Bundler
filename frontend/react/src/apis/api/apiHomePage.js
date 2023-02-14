@@ -47,9 +47,7 @@ const apiGetBundleDetail = async (bundleId) => {
 // 스크랩 버튼 클릭 시 -> 내가 가지고 있는 번들 lsit 목록 불러오기
 const apiGetBundle = async (userId, cardId) => {
   try {
-    const response = await api.get(
-      `${FEED_CONTROLLER}/users/${userId}/bundles/summary?card_id=${cardId}`
-    );
+    const response = await api.get(`api/v5/users/${userId}/bundles/summary?card_id=${cardId}`);
     return response;
   } catch (error) {
     return error;
@@ -136,15 +134,15 @@ const apiGetLike = async (feedId, userId) => {
     const response = await api.get(`${FEED_CONTROLLER}/feeds/like/${feedId}?user_id=${userId}`);
     return response;
   } catch (error) {
-    console.log("error");
     return error;
   }
 };
 
 // 좋아요 누르기 or 취소
 const apiPostLike = async (feedId, userId) => {
+  console.log(userId);
   try {
-    const response = await api.post(`${FEED_CONTROLLER}/feeds/like/${feedId}?`, userId);
+    const response = await api.post(`${FEED_CONTROLLER}/feeds/like/${feedId}`, userId);
     return response;
   } catch (error) {
     return error;

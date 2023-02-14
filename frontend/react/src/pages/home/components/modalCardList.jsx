@@ -31,8 +31,8 @@ function ModalCardList({
 }) {
   // Data - global
   const dispatch = useDispatch();
-  const { loginInfo, bundleCardId } = useSelector((state) => state.homeReducer);
-
+  const { bundleCardId } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
   // Data - local
   const columnList = [
     { Header: "유형", accessor: "firstCategoryName", width: "20%" },
@@ -81,7 +81,7 @@ function ModalCardList({
     const params = {
       targetFeedId: bundleId,
       content: comment.inputData,
-      userId: loginInfo.userId,
+      userId,
     };
 
     await apiPostComment(params)

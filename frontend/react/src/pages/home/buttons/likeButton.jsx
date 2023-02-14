@@ -12,7 +12,7 @@ import { Box, Typography } from "@mui/material";
 import { apiPostLike } from "apis/api/apiHomePage";
 
 function LikeButton({ isLiked, likeCnt, feedId }) {
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
   const [value, setValue] = useState({
     isChecked: false,
     notice: 0,
@@ -34,7 +34,7 @@ function LikeButton({ isLiked, likeCnt, feedId }) {
       });
     }
 
-    const params = { userId: loginInfo.userId };
+    const params = { userId };
     const likeToggle = async () => {
       await apiPostLike(feedId, params)
         .then(() => {})

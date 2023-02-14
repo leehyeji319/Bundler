@@ -26,7 +26,7 @@ import { apiPutCardScrap, apiPostCardScrap, apiDeleteCardScrap } from "apis/api/
 
 function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundleList }) {
   // 해당 유저 정보
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
 
   // 어떤 번들을 선택할지 또는 생성할지 선택
   const [selectedBundle, setSelectedBundle] = useState(0);
@@ -116,7 +116,7 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
       // 새로운 번들 생성 시
       const added = async () => {
         const params = {
-          userId: loginInfo.userId,
+          userId,
           feedTitle: createNewBundle.bundleTitle,
           feedContent: createNewBundle.bundleContent,
         };

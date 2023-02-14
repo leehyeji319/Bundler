@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 // scrap Button 상태 - 활성화/비활성화
 function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
   // Data Global
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
 
   // scrap Button Modal Set
   const [open, setOpen] = useState(false);
@@ -37,7 +37,7 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
 
   // BUNDLE Scrap function
   const handleBundleScrap = () => {
-    const params = { userId: loginInfo.userId, bundleId: targetId };
+    const params = { userId, bundleId: targetId };
     const added = async () => {
       await apiPostBundleScrap(params)
         .then(({ data }) => {

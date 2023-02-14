@@ -27,7 +27,7 @@ import { useSelector } from "react-redux";
 
 function HomeBundle({ bundleInfo }) {
   // 해당 유저 정보
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
 
   // 현재 사용자가 해당 카드를 좋아요 했는지 확인
   const [isLiked, setIsLiked] = useState(false);
@@ -61,7 +61,7 @@ function HomeBundle({ bundleInfo }) {
   // 처음 조회 시, 해당 번들의 좋아요 확인
   useEffect(() => {
     const getIsLiked = async () => {
-      await apiGetLike(bundleInfo.bundleId, loginInfo.userId)
+      await apiGetLike(bundleInfo.bundleId, userId)
         .then(({ data }) => {
           setIsLiked(data.like);
         })
