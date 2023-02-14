@@ -7,10 +7,10 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 function GithubLoginButton() {
   const GithubLoginButtonClick = async () => {
     window.location.assign(
-      // 서버용
-      // "https://i8a810.p.ssafy.io/oauth2/authorization/github?redirect_uri=https://i8a810.p.ssafy.io:3000"
+       // 서버용
+      "https://i8a810.p.ssafy.io/oauth2/authorization/github?redirect_uri=https://i8a810.p.ssafy.io"
       // 시험용
-      `${process.env.REACT_APP_PORT_GLOBAL}/oauth2/authorization/github?redirect_uri=http://localhost:300`
+      // `${process.env.REACT_APP_PORT_GLOBAL}/oauth2/authorization/github?redirect_uri=http://localhost:300`
     );
   };
 
