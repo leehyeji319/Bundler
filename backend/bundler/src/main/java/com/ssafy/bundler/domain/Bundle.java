@@ -1,9 +1,6 @@
 package com.ssafy.bundler.domain;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,12 +31,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 public class Bundle extends Feed implements Serializable {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "bundle_id")
+	@Column(name = "bundle_id", insertable = false, updatable = false)
 	private Long bundleId;
+
 	@Column(name = "bundle_thumbnail")
 	private String bundleThumbnail;
+
 	@Column(name = "bundle_thumbnail_text")
 	private String bundleThumbnailText;
 

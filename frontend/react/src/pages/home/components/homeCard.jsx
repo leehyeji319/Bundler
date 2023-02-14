@@ -5,13 +5,11 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 // @mui material components
-import Card from "@mui/material/Card";
-import MuiLink from "@mui/material/Link";
+import { Card, Button } from "@mui/material";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDButton from "components/MDButton";
 
 // Import Custom
 import ModalDetail from "pages/home/components/modalDetail";
@@ -62,8 +60,6 @@ function HomeCard({ cardInfo }) {
   // 스크랩 클릭 시, 해당 유저가 가지고 있는 번들 리스트 불러오기
   const handleBundleList = () => {
     const initCall = async () => {
-      console.log(cardInfo.cardId);
-      console.log(typeof cardInfo.cardId);
       await apiGetBundle(loginInfo.userId, cardInfo.cardId)
         .then(({ data }) => {
           setBundleList(data);
@@ -151,15 +147,7 @@ function HomeCard({ cardInfo }) {
             {cardInfo.feedContent}
           </MDTypography>
         </MDBox>
-        {action.type === "external" ? (
-          <MuiLink href={action.route} target="_blank" rel="noreferrer">
-            <MDButton color={action.color ? action.color : "dark"}>{action.label}</MDButton>
-          </MuiLink>
-        ) : (
-          <Link to={action.route}>
-            <MDButton color={action.color ? action.color : "dark"}>{action.label}</MDButton>
-          </Link>
-        )}
+        <Button onClick={handleOpen}>카드 상세보기</Button>
       </MDBox>
     </Card>
   );

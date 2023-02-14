@@ -139,7 +139,7 @@ function CardSearch() {
   const clickSearchBtn = () => {
     axios({
       // url: "https://i8a810.p.ssafy.io";
-      url: "http://localhost:8087/api/v1/search",
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/search`,
       method: "get",
       params: { feedType, categoryId, search },
       withCredentials: true,

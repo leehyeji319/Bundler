@@ -39,13 +39,24 @@ public class BundleController {
 	private final S3Uploader s3Uploader;
 
 	//번들을 생성 (빈번들,카드+번들)
+//	@PostMapping
+//	public ResponseEntity<?> saveBundle(@RequestBody BundleSaveRequestDto requestDto,
+//		@RequestParam("bundleThumbnail") MultipartFile multipartFile) throws IOException {
+//		// S3 Bucket 내부에 "/bundleThumbnail"
+//		FileUploadResponse profile =
+//			s3Uploader.uploadBundleThumbnail(requestDto.getUserId(), multipartFile, "bundleThumbnail");
+//		requestDto.setBundleThumbnail(profile.getUrl());
+//		if (requestDto.getCardSaveRequestDtoList() == null) {
+//			bundleService.saveBundle(requestDto);
+//		} else {
+//			bundleService.saveBundleWithCards(requestDto);
+//		}
+//		return ResponseEntity.ok("번들 생성 완료.");
+//	}
+
 	@PostMapping
-	public ResponseEntity<?> saveBundle(@RequestBody BundleSaveRequestDto requestDto,
-		@RequestParam("bundleThumbnail") MultipartFile multipartFile) throws IOException {
-		// S3 Bucket 내부에 "/bundleThumbnail"
-		FileUploadResponse profile =
-			s3Uploader.uploadBundleThumbnail(requestDto.getUserId(), multipartFile, "bundleThumbnail");
-		requestDto.setBundleThumbnail(profile.getUrl());
+	public ResponseEntity<?> saveBundle(@RequestBody BundleSaveRequestDto requestDto) throws IOException {
+
 		if (requestDto.getCardSaveRequestDtoList() == null) {
 			bundleService.saveBundle(requestDto);
 		} else {

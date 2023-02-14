@@ -14,21 +14,23 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static jakarta.persistence.FetchType.LAZY;
-
-@Getter @Setter
+@Getter
+@Setter
 @Entity
-public class CardBundle {
+@Table(name = "CARD_BUNDLE", uniqueConstraints = @UniqueConstraint(columnNames = {"bundle_id", "card_id"}))
+@NoArgsConstructor
+public class CardBundle implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "card_bundle_id")
+	private Long cardBundleId;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "feed_id", nullable = false)
-    private Card card;
+	@Column(name = "bundle_id")
+	private Long bundleId;
 
 	@Column(name = "card_id")
 	private Long cardId;

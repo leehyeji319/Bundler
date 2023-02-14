@@ -6,15 +6,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.NaturalId;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -22,6 +23,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
@@ -34,6 +36,8 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@SuperBuilder(toBuilder = true)
+@NoArgsConstructor
 @Entity
 @Table(name = "FEEDS")
 // jpa 상속 관계 매핑 - join 전략
@@ -43,7 +47,7 @@ import lombok.experimental.SuperBuilder;
 public class Feed extends BaseEntity implements Serializable {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "feed_id")
 	private Long feedId;
 
@@ -71,15 +75,15 @@ public class Feed extends BaseEntity implements Serializable {
 	@JoinColumn(name = "feed_id")
 	private List<Comment> commentList = new ArrayList<>();
 
+	// @Builder.Default
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<Comment> commentList = new ArrayList<>();
-
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<Category> categoryList = new ArrayList<>();
+	@JoinColumn(name = "feed_id")
+	private List<FeedCategory> feedCategoryList;
 
 	//===== 로그인 사용자 =====//
 
 	//사용자가 좋아요한 피드
+	@Transient
 	private boolean isFeedLiked;
 
 	//=== 비즈니스 로직 ===//

@@ -2,6 +2,7 @@ package com.ssafy.bundler.domain;
 
 import static jakarta.persistence.CascadeType.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,9 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
@@ -51,8 +54,6 @@ public class User extends BaseEntity implements Serializable {
 	@Setter
 	@Column(name = "user_profile_image", nullable = true)
 	private String userProfileImage;
-	@Column(name = "user_introduction")
-	private String userIntroduction;
 
 	@Column(name = "is_deleted", nullable = false)
 	@ColumnDefault(value = "0")

@@ -2,6 +2,12 @@ package com.ssafy.bundler.domain;
 
 import java.io.Serializable;
 
+import org.springframework.data.annotation.ReadOnlyProperty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,9 +17,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
@@ -57,5 +66,9 @@ public class Follow extends BaseEntity implements Serializable {
 	// 	this.followTo = followTo;
 	// 	this.followFrom = followFrom;
 	// }
+
+	// @Transient
+	@ReadOnlyProperty
+	private Integer followBackId; //맞팔인 follow_id
 
 }

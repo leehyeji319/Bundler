@@ -14,15 +14,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static jakarta.persistence.FetchType.LAZY;
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-public class FeedLike {
+@Table(name = "FEED_LIKE", uniqueConstraints = @UniqueConstraint(columnNames = {"feed_id", "user_id"}))
+public class FeedLike implements Serializable {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "feed_like_id")
 	private Long feedLikeId;
 
@@ -32,5 +35,11 @@ public class FeedLike {
 
 	@Column(name = "user_id")
 	private Long userId;
+
+	@Builder
+	public FeedLike(Feed feed, Long userId) {
+		this.feed = feed;
+		this.userId = userId;
+	}
 
 }

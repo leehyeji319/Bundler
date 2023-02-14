@@ -50,8 +50,7 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
     };
 
     await apiPostComment(params)
-      .then(async ({ data }) => {
-        console.log(data.message);
+      .then(async () => {
         handleOpen(); // 댓글 목록 다시 불러오기
       })
       .catch((error) => {

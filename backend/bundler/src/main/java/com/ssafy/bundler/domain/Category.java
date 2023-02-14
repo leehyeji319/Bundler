@@ -1,9 +1,8 @@
 package com.ssafy.bundler.domain;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import static jakarta.persistence.FetchType.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,28 +27,30 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder(toBuilder = true)
 @Entity
-public class Category {
+@Table(name = "CATEGORIES")
+public class Category implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	private Long id;
+	@Column(name = "category_id")
+	private Long categoryId;
 
-	private String name;
+	@Column(name = "category_name")
+	private String categoryName;
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
 	@Builder.Default
 	private List<Card> cardList = new ArrayList<>();
 
 	@ManyToOne(fetch = LAZY)
-	@JoinColumn(name = "parent_id")
+	@JoinColumn(name = "category_parent_id", referencedColumnName = "category_id")
 	private Category parent;
 
 	@Builder.Default
 	@OneToMany(mappedBy = "parent") //셀프의 연관관계를 건거라고 생각하면 된다.
 	private List<Category> child = new ArrayList<>();
 
-	//==연관관계 편이 메서드==// parent니까 셀프
+	//==연관관계 편의 메서드==// parent니까 셀프
 	public void addChildCategory(Category child) {
 		this.child.add(child);
 		child.setParent(this);

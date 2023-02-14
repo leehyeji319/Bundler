@@ -1,5 +1,7 @@
 package com.ssafy.bundler.domain;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,10 +13,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "COMMENTS", uniqueConstraints = @UniqueConstraint(columnNames = {"feed_id", "user_id"}))
 @SuperBuilder
@@ -25,8 +30,11 @@ public class Comment extends BaseEntity implements Serializable {
 	@Column(name = "comment_id")
 	private Long commentId;
 
+	@Column(name = "feed_id")
+	private Long feedId;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "writer_id")
+	@JoinColumn(name = "user_id")
 	private User writer;
 
 	@Column(name = "comment_content")

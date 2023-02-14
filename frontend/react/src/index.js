@@ -27,9 +27,11 @@ import { MaterialUIControllerProvider } from "context";
 
 ReactDOM.render(
   <BrowserRouter>
-    <MaterialUIControllerProvider>
-      <App />
-    </MaterialUIControllerProvider>
+    <Provider store={store}>
+      <MaterialUIControllerProvider>
+        <App />
+      </MaterialUIControllerProvider>
+    </Provider>
   </BrowserRouter>,
   document.getElementById("root")
 );
