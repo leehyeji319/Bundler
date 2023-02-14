@@ -19,6 +19,7 @@ import MDBox from "components/MDBox";
 // Material Dashboard 2 React example components
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
+import "./DashboardNavbar.css";
 
 // Custom styles for DashboardNavbar
 import {
@@ -118,29 +119,43 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox color={light ? "white" : "inherit"}>
               {state22.authenticated ? (
-                <MDBox color="white">
-                  {state22.nickname} 님 번들러에 오신것을 환영합니다. <SignOut />{" "}
+                <div id="navRightUp">
+                  <MDBox color="white">{state22.nickname} 님</MDBox>
                   <Link to="/profile">
                     <IconButton sx={navbarIconButton} size="small" disableRipple>
                       <Icon sx={iconsStyle}>account_circle</Icon>
                     </IconButton>
                   </Link>
-                </MDBox>
+                  <SignOut />
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarMobileMenu}
+                    onClick={handleMiniSidenav}
+                  >
+                    <Icon sx={iconsStyle} fontSize="medium">
+                      {miniSidenav ? "menu_open" : "menu"}
+                    </Icon>
+                  </IconButton>
+                </div>
               ) : (
-                <MDBox color="white"> 로그인 해주세요 </MDBox>
+                <MDBox color="white">
+                  {" "}
+                  로그인 해주세요
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarMobileMenu}
+                    onClick={handleMiniSidenav}
+                  >
+                    <Icon sx={iconsStyle} fontSize="medium">
+                      {miniSidenav ? "menu_open" : "menu"}
+                    </Icon>
+                  </IconButton>
+                </MDBox>
               )}
-
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon sx={iconsStyle} fontSize="medium">
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton>
               {renderMenu()}
             </MDBox>
           </MDBox>
