@@ -51,7 +51,7 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "user_introduction", nullable = true)
 	private String userIntroduction;
 
-	@Setter
+
 	@Column(name = "user_profile_image", nullable = true)
 	private String userProfileImage;
 
