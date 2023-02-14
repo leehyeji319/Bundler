@@ -23,6 +23,7 @@ import com.ssafy.bundler.awsS3.S3Uploader;
 import com.ssafy.bundler.common.ApiResponse;
 import com.ssafy.bundler.config.auth.UserPrincipal;
 import com.ssafy.bundler.domain.User;
+import com.ssafy.bundler.dto.user.FollowerListResponseDto;
 import com.ssafy.bundler.dto.user.FollowingListResponseDto;
 import com.ssafy.bundler.dto.user.Profile;
 import com.ssafy.bundler.dto.user.UserCalendarResponseDto;
@@ -116,15 +117,14 @@ public class UserController {
 	@GetMapping("/{userId}/followings")
 	public ResponseEntity<FollowingListResponseDto> getUserFollowingList(@PathVariable Long userId) throws
 		Exception {
-
 		return ResponseEntity.ok(followService.getUserFollowingList(userId));
 	}
 
 	//user의 팔로우 목록 조회
-	// @GetMapping("/{userId}/followers")
-	// public ResponseEntity getUserFollowerList(@PathVariable Long userId) {
-	//
-	// }
+	@GetMapping("/{userId}/followers")
+	public ResponseEntity<FollowerListResponseDto> getUserFollowerList(@PathVariable Long userId) {
+		return ResponseEntity.ok(followService.getUserFollowerList(userId));
+	}
 
 	@GetMapping("/{userId}/mypage")
 	public ResponseEntity<UserMypageResponseDto> mypage(@PathVariable Long userId) {
