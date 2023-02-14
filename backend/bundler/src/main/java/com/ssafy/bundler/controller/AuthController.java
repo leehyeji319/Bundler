@@ -55,7 +55,7 @@ public class AuthController {
 
 //	@Qualifier(value = "customAuthenticationManager")
 
-	private AuthenticationManager customAuthenticationManager;
+	// private AuthenticationManager customAuthenticationManager;
 	private final UserRepository userRepository;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
 	private final AuthService authService;

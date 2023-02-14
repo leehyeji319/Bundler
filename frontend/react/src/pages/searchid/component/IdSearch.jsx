@@ -19,7 +19,7 @@ function IdSearch() {
     // get 요청으로 검색어를 쿼리에 담아 요청
     await axios({
       // url: "http://localhost:8123/searchId",
-      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users`,
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/list`,
       method: "get",
       params: { keyword },
       withCredentials: true,

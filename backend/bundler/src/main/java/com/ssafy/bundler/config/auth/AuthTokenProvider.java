@@ -6,19 +6,26 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import com.ssafy.bundler.dto.user.AuthResponseDto;
 import com.ssafy.bundler.exception.TokenValidFailedException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.ClassUtils;
 
 @Slf4j
@@ -47,7 +54,6 @@ public class AuthTokenProvider {
 	public Authentication getAuthentication(AuthToken authToken) {
 
 		if (authToken.validate()) {
-
 			Claims claims = authToken.getTokenClaims();
 			Collection<? extends GrantedAuthority> authorities =
 				Arrays.stream(new String[] {claims.get(AUTHORITIES_KEY).toString()})
@@ -63,30 +69,30 @@ public class AuthTokenProvider {
 		}
 	}
 
-//	@Override
-//	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//		try {
-//			// 로그인 인증 전
-//			UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) authentication;
-//			String principal = (String) authenticationToken.getPrincipal();
-//			String credential = (String) authenticationToken.getCredentials();
-//			AuthResponseDto authResponseDto = userService.login(new AuthRequestDto(principal, credential));
-//			// 로그인 인증 후
-//			UsernamePasswordAuthenticationToken authenticated
-//					= new UsernamePasswordAuthenticationToken(authResponseDto.getUser().getId(), null, AuthorityUtils.createAuthorityList("ROLE_USER"));
-//			authenticated.setDetails(authResponseDto);
-//			return authenticated;
-//		} catch(DoNotExistException e) {
-//			throw new UsernameNotFoundException(e.getMessage());
-//		} catch(IllegalArgumentException e) {
-//			throw new BadCredentialsException(e.getMessage());
-//		} catch(DataAccessException e) {
-//			throw new AuthenticationServiceException(e.getMessage());
-//		}
-//	}
-//
-//	@Override
-//	public boolean supports(Class<?> authentication) {
-//		return ClassUtils.isAssignable(JwtAuthenticationToken.class, authentication);
-//	}
+	// @Override
+	// public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+	// 	try {
+	// 		// 로그인 인증 전
+	// 		UsernamePasswordAuthenticationToken authenticationToken = (UsernamePasswordAuthenticationToken) authentication;
+	// 		String principal = (String) authenticationToken.getPrincipal();
+	// 		String credential = (String) authenticationToken.getCredentials();
+	// 		AuthResponseDto authResponseDto = userService.login(new AuthRequestDto(principal, credential));
+	// 		// 로그인 인증 후
+	// 		UsernamePasswordAuthenticationToken authenticated
+	// 				= new UsernamePasswordAuthenticationToken(authResponseDto.getUser().getId(), null, AuthorityUtils.createAuthorityList("ROLE_USER"));
+	// 		authenticated.setDetails(authResponseDto);
+	// 		return authenticated;
+	// 	} catch(DoNotExistException e) {
+	// 		throw new UsernameNotFoundException(e.getMessage());
+	// 	} catch(IllegalArgumentException e) {
+	// 		throw new BadCredentialsException(e.getMessage());
+	// 	} catch(DataAccessException e) {
+	// 		throw new AuthenticationServiceException(e.getMessage());
+	// 	}
+	// }
+	//
+	// @Override
+	// public boolean supports(Class<?> authentication) {
+	// 	return ClassUtils.isAssignable(JwtAuthenticationToken.class, authentication);
+	// }
 }
