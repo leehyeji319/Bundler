@@ -38,17 +38,22 @@ public class UserFeedController {
 
 	//해당 사용자의 홈으로 갔을 때 보여주는 번들 리스트
 	//번들에 속하는 카드 포함
-	@GetMapping("/v5/users/{user_id}/feeds/bundles")
-	public List<BundleResponseDto> getBundlesFindByUserId(@PathVariable("user_id") Long userId,
-		Authentication authentication) {
-		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
+//	@GetMapping("/v5/users/{user_id}/feeds/bundles")
+//	public List<BundleResponseDto> getBundlesFindByUserId(@PathVariable("user_id") Long userId,
+//		Authentication authentication) {
+//		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
+//
+//		if (principal.getUserId().equals(userId)) {
+//			return feedService.getBundlesFindByUserIdContainIsBundlePrivate(
+//				userId);
+//		} else {
+//			return feedService.getBundlesFindByUserIdExceptIsBundlePrivate(userId);
+//		}
+//	}
 
-		if (principal.getUserId().equals(userId)) {
-			return feedService.getBundlesFindByUserIdContainIsBundlePrivate(
-				userId);
-		} else {
-			return feedService.getBundlesFindByUserIdExceptIsBundlePrivate(userId);
-		}
+	@GetMapping("/v5/users/{user_id}/feeds/bundles")
+	public List<BundleResponseDto> getBundlesFindByUserId(@PathVariable("user_id") Long userId) {
+		return feedService.getBundlesFindByUserIdExceptIsBundlePrivate(userId);
 	}
 
 	//번들만 카드 없이
