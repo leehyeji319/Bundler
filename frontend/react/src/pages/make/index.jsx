@@ -69,7 +69,7 @@ function Make() {
     feedType: "CARD",
     feedTitle: "",
     feedContent: "",
-    categoryId: 1,
+    categoryId: 6,
     cardType: "CARD_PROBLEM",
     cardDescription: "",
     cardCommentary: "",

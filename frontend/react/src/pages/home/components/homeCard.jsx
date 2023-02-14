@@ -60,6 +60,8 @@ function HomeCard({ cardInfo }) {
   // 스크랩 클릭 시, 해당 유저가 가지고 있는 번들 리스트 불러오기
   const handleBundleList = () => {
     const initCall = async () => {
+      console.log(cardInfo.cardId);
+      console.log(typeof cardInfo.cardId);
       await apiGetBundle(loginInfo.userId, cardInfo.cardId)
         .then(({ data }) => {
           setBundleList(data);
@@ -75,8 +77,7 @@ function HomeCard({ cardInfo }) {
   // 처음 조회 시, 가지고 있는 번들 리스트 불러오기 + 좋아요 확인
   useEffect(() => {
     const getNewComment = async () => {
-      const params = { userId: loginInfo.userId };
-      await apiGetBundle(cardInfo.cardId, params)
+      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
         .then(({ data }) => {
           setBundleList(data.like);
         })

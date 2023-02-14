@@ -15,7 +15,6 @@ const FEED_CONTROLLER = "/api/v1";
 const apiGetFeeds = async () => {
   try {
     const response = await api.get(`${FEED_CONTROLLER}/feeds`);
-    console.log(response);
     const sorted = sortFeedList(response.data);
     const feedIdList = listId(sorted);
     return { sorted, feedIdList };

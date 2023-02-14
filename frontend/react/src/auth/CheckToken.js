@@ -10,7 +10,6 @@ function CheckToken(key) {
   const { authenticated, expireTime } = useSelector((state) => state.authToken);
   const refreshToken = getCookieToken();
   const dispatch = useDispatch();
-  console.log(refreshToken);
 
   useEffect(() => {
     const checkAuthToken = async () => {

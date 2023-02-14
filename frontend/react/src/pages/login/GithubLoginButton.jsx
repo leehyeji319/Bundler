@@ -8,9 +8,9 @@ function GithubLoginButton() {
   const GithubLoginButtonClick = async () => {
     window.location.assign(
       // 서버용
-      "https://i8a810.p.ssafy.io/oauth2/authorization/github?redirect_uri=https://i8a810.p.ssafy.io:3000"
+      // "https://i8a810.p.ssafy.io/oauth2/authorization/github?redirect_uri=https://i8a810.p.ssafy.io:3000"
       // 시험용
-      // "http://localhost:8087/oauth2/authorization/github?redirect_uri=http://localhost:3000"
+      "http://localhost:8087/oauth2/authorization/github?redirect_uri=http://localhost:3000"
     );
   };
 

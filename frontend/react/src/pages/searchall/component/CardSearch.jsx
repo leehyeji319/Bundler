@@ -137,12 +137,9 @@ function CardSearch() {
 
   // clickSearchBtn 실행시켜 회원검색 진행
   const clickSearchBtn = () => {
-    console.log("카드 or 번들", feedType);
-    console.log("문제/일반/링크", cardType);
-    console.log("카테고리 아이디", categoryId);
-    console.log("검색어", search);
     axios({
-      url: "http://localhost:8080/api/v1/search",
+      // url: "https://i8a810.p.ssafy.io";
+      url: "http://localhost:8087/api/v1/search",
       method: "get",
       params: { feedType, categoryId, search },
       withCredentials: true,
@@ -154,9 +151,7 @@ function CardSearch() {
   };
 
   // api 값 바로 불러오기
-  useEffect(() => {
-    console.log(apiList);
-  }, [apiList]);
+  useEffect(() => {}, [apiList]);
 
   return (
     <div>

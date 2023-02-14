@@ -4,12 +4,13 @@ import Search from "pages/searchall";
 import SearchId from "pages/searchid";
 import Make from "pages/make";
 import Profile from "pages/profile";
+import AuthLogin from "pages/login";
 import SignUp from "pages/signup";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
 
-const routes = [
+const routes1 = [
   {
     type: "collapse",
     name: "홈",
@@ -50,6 +51,16 @@ const routes = [
     route: "/profile",
     component: <Profile />,
   },
+];
+const routes2 = [
+  {
+    type: "collapse",
+    name: "로그인",
+    key: "login",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/login",
+    component: <AuthLogin />,
+  },
   {
     type: "collapse",
     name: "회원가입",
@@ -60,4 +71,4 @@ const routes = [
   },
 ];
 
-export default routes;
+export { routes1, routes2 };
