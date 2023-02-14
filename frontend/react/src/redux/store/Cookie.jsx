@@ -22,18 +22,16 @@ export const setRefreshToken = (refreshToken) => {
 };
 
 // 3. Cookie에 저장된 Refresh Token 값을 갖고 오기 위한 함수
-export const getCookieToken = () => {
+export const getCookieToken = () => 
   // 쿠키 값 가져오기 get(쿠키 이름, [옵션])
-  return cookies.get("refresh_token");
-};
+  cookies.get("refresh_token");
 
 // 4. Cookie 삭제를 위한 함수. 로그아웃 시 사용
-export const removeCookieToken = () => {
+export const removeCookieToken = () =>
   // remove(쿠키 이름, [옵션])
-  return cookies.remove("refresh_token", {
+  cookies.remove("refreshToken", {
     // 엄격하거나 느슨한 적용
     sameSite: "strict",
     // 모든 페이지에서 쿠키에 액세스할 수 있도록 하려면 경로로 사용
     path: "/",
   });
-};
