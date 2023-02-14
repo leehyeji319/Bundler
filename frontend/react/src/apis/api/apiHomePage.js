@@ -1,5 +1,5 @@
 // [Import] api instance
-import { apiInstance } from "apis/utils/axios";
+import apiInstance from "apis/utils/axios";
 
 // Import - service
 import { sortFeedList, listId } from "apis/service/serviceHomePage";
@@ -15,6 +15,7 @@ const FEED_CONTROLLER = "/api/v1";
 const apiGetFeeds = async () => {
   try {
     const response = await api.get(`${FEED_CONTROLLER}/feeds`);
+    console.log(response);
     const sorted = sortFeedList(response.data);
     const feedIdList = listId(sorted);
     return { sorted, feedIdList };

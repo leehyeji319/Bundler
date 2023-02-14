@@ -71,14 +71,6 @@ function HomeInfiniteScroll() {
         });
     };
     initCall();
-
-    // timer 작동 -> feeds update 확인
-    // const timer = setTimeout(() => {
-    //   console.log("5초 마다 작동");
-    //   timer;
-    // }, 5000);
-
-    // return () => clearTimeout(timer);
   }, []);
 
   // ================= RETURN =========================
