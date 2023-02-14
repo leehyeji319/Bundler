@@ -108,9 +108,9 @@ public class FeedController {
 
 	@GetMapping("/v1/feeds/like/{feed_id}")
 	public ResponseEntity<?> islikeFeed(@PathVariable("feed_id") Long feedId,
-		@RequestBody FeedLikeRequestDto feedLikeRequestDto) {
+		@RequestParam("user_id") Long userId) {
 		FeedLikeResponseDto responseDto = new FeedLikeResponseDto(
-			feedService.islikeFeed(feedId, Long.parseLong(String.valueOf(feedLikeRequestDto.getUserId())))
+			feedService.islikeFeed(feedId, userId)
 		);
 		return new ResponseEntity<FeedLikeResponseDto>(responseDto, HttpStatus.OK);
 	}

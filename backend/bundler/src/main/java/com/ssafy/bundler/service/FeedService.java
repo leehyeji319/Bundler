@@ -120,6 +120,7 @@ public class FeedService {
 		// List<CardSummaryResponseDto> cardSummanryList = findCardSummanryList();
 		List<BundleResponseDto> allByDto_optimization = budnleQueryRepository.findAllBundleByDto_optimization();
 
+		System.out.println(allByDto_optimization.size());
 		List<Object> objects = new ArrayList<>();
 
 		for (CardResponseDto c : cardResponseDtoList) {

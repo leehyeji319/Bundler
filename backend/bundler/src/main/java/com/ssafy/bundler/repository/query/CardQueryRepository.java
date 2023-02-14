@@ -39,7 +39,8 @@ public class CardQueryRepository {
 	//카드 리스트 다 가져오기
 	public List<CardResponseDto> findAllCardByDto_optimization() {
 		List<CardResponseDto> result = findCards();
-
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		System.out.println(result.size());
 		Map<Long, List<CommentResponseDto>> cardCommentMap = findCardCommentMap(toCardIds(result));
 
 		result.forEach(c -> c.setCommentResponseDtoList(cardCommentMap.get(c.getCardId())));
