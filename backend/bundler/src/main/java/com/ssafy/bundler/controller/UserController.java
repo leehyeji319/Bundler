@@ -56,6 +56,7 @@ public class UserController {
 		return ApiResponse.success("user", user);
 	}
 
+	@GetMapping("/list")
 	public ResponseEntity<List<Profile>> getUserList(@RequestParam String keyword) {
 		// PrincipalDetails principal = (PrincipalDetails)authentication.getPrincipal();
 		// System.out.println("principal : " + principal.getUser().getUserId());
