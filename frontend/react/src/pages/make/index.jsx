@@ -51,7 +51,7 @@ function Make() {
   // ==================== Data =================================
   // Data - global
   const { cardNo, cardList, editCardNumber } = useSelector((state) => state.makeReducer); // state 값 가져오기
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
 
   // Data - local
   // (1) 유형 선택 - 어떤 값은 선택햇는지 저장하는 state 값
@@ -65,7 +65,7 @@ function Make() {
 
   // (3) form value 저장 CARD BUNDLE
   const [values, setValues] = useState({
-    userId: loginInfo.userId,
+    userId,
     feedType: "CARD",
     feedTitle: "",
     feedContent: "",
@@ -180,6 +180,7 @@ function Make() {
     if (feedTitle.length === 0 || feedContent.length === 0) {
       setValid({ isValid: true, comment: "카드 입력 값을 확인해 주세요", state: "error" });
     } else {
+      console.log(values);
       if (form === "CARD_PROBLEM") {
         // 문제 카드 추가
         setValues({ ...values, cardType: "CARD_PROBLEM", cardno: cardNo });

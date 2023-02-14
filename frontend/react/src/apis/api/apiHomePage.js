@@ -136,15 +136,15 @@ const apiGetLike = async (feedId, userId) => {
     const response = await api.get(`${FEED_CONTROLLER}/feeds/like/${feedId}?user_id=${userId}`);
     return response;
   } catch (error) {
-    console.log("error");
     return error;
   }
 };
 
 // 좋아요 누르기 or 취소
 const apiPostLike = async (feedId, userId) => {
+  console.log(userId);
   try {
-    const response = await api.post(`${FEED_CONTROLLER}/feeds/like/${feedId}?`, userId);
+    const response = await api.post(`${FEED_CONTROLLER}/feeds/like/${feedId}`, userId);
     return response;
   } catch (error) {
     return error;

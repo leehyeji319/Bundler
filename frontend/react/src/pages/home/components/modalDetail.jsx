@@ -22,7 +22,7 @@ import { apiPostComment } from "apis/api/apiHomePage";
 // import { apiGetCardDetail, apiPostComment } from "apis/api/apiHomePage";
 
 function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
   // 토글 버튼
   const [solutionToggle, setSolutionToggle] = useState(false);
   const [mySolutionToggle, setMySolutionToggle] = useState(false);
@@ -46,7 +46,7 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
     const params = {
       targetFeedId: cardInfo.cardId,
       content: comment.inputData,
-      userId: loginInfo.userId,
+      userId,
     };
 
     await apiPostComment(params)

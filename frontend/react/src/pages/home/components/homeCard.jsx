@@ -28,7 +28,7 @@ import { useSelector } from "react-redux";
 // const cardInfo
 function HomeCard({ cardInfo }) {
   // 해당 유저 정보
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
 
   // 현재 사용자가 해당 카드를 좋아요 했는지 확인
   const [isLiked, setIsLiked] = useState(false);
@@ -60,8 +60,9 @@ function HomeCard({ cardInfo }) {
   // 스크랩 클릭 시, 해당 유저가 가지고 있는 번들 리스트 불러오기
   const handleBundleList = () => {
     const initCall = async () => {
-      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
+      await apiGetBundle(userId, cardInfo.cardId)
         .then(({ data }) => {
+          console.log(data);
           setBundleList(data);
         })
         .catch((error) => {
@@ -75,7 +76,7 @@ function HomeCard({ cardInfo }) {
   // 처음 조회 시, 가지고 있는 번들 리스트 불러오기 + 좋아요 확인
   useEffect(() => {
     const getNewComment = async () => {
-      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
+      await apiGetBundle(userId, cardInfo.cardId)
         .then(({ data }) => {
           setBundleList(data.like);
         })
@@ -86,7 +87,7 @@ function HomeCard({ cardInfo }) {
     getNewComment();
 
     const getIsLiked = async () => {
-      await apiGetLike(cardInfo.cardId, loginInfo.userId)
+      await apiGetLike(cardInfo.cardId, userId)
         .then(({ data }) => {
           setIsLiked(data.like);
         })
