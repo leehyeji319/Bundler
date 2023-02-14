@@ -1,29 +1,18 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+/*
+기본 홈 Page 구성  
 */
-
+// // Mui-Material components
+// import { FormControl, FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
 // @mui material components
 import Grid from "@mui/material/Grid";
-import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
+import PropTypes from "prop-types";
 
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
+// [Import - React Basic] react && props && mui
+import React from "react";
 
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
+// import MDAvatar from "components/MDAvatar";
 import MDTypography from "components/MDTypography";
 
 // Material Dashboard 2 React example components
@@ -34,168 +23,211 @@ import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 import ProfilesList from "examples/Lists/ProfilesList";
 import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 
-// Overview page components
-import Header from "layouts/profile/components/Header";
-import PlatformSettings from "layouts/profile/components/PlatformSettings";
+import { ResponsiveCalendar } from "@nivo/calendar";
+import ProfileCard from "./components/ProfileCard/ProfileCard";
+import strickdata from "./components/Statistic/stricktemp.json";
+// import CardThumbnailCard from "./components/thumCard/ThumnailCard";
 
-// Data
-import profilesListData from "layouts/profile/data/profilesListData";
+// import BundleThumbnail2 from 'pages/profile/components/thumBundle/BundleCard';
 
 // Images
-import homeDecor1 from "assets/images/home-decor-1.jpg";
-import homeDecor2 from "assets/images/home-decor-2.jpg";
-import homeDecor3 from "assets/images/home-decor-3.jpg";
-import homeDecor4 from "assets/images/home-decor-4.jpeg";
-import team1 from "assets/images/team-1.jpg";
-import team2 from "assets/images/team-2.jpg";
-import team3 from "assets/images/team-3.jpg";
-import team4 from "assets/images/team-4.jpg";
+// import trendimg from "../../assets/images/trend.jpg"
+// import itimg from "../../assets/images/ai-icons.jpeg"
+// import bundlerRabbit from "../../assets/images/bundler_rabbit_6.png"
+import Catimage from "../../assets/images/cat.jpg";
 
-function Overview() {
+// 각 탭 form들을 import
+import BundleListTab from "./Form/BundleListForm";
+import CardListTab from "./Form/CardListForm";
+import StatTab from "./Form/StatForm";
+
+// import { ResponsiveCalendar } from '@nivo/calendar'
+
+// import strickdata2 from "../searchall/strickdata.json"
+
+function SelectedTab({ selected }) {
+  switch (selected) {
+    case "bundleTab":
+      return <BundleListTab />;
+    case "statTab":
+      return <StatTab />;
+    default:
+      return <CardListTab />;
+  }
+}
+
+SelectedTab.propTypes = {
+  selected: PropTypes.string.isRequired,
+};
+
+function Profile() {
+  const data1 = strickdata;
+  const thisyear = "2023";
+  const [tabvalue, setTabValue] = React.useState("cardTab");
+
+  const handleChangeTab = (tabevent) => {
+    setTabValue(tabevent.target.value);
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox mb={2} />
-      <Header>
-        <MDBox mt={5} mb={3}>
+      <MDBox mb={2}>
+        <MDTypography variant="h2" color="white">
+          프로필
+        </MDTypography>
+      </MDBox>
+      <MDBox position="relative" mb={5}>
+        <MDBox // 프로필 카드 + 스트릭 (3개 버튼 상단)
+        >
           <Grid container spacing={1}>
-            <Grid item xs={12} md={6} xl={4}>
-              <PlatformSettings />
-            </Grid>
-            <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
-              <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
-              <ProfileInfoCard
-                title="profile information"
-                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
-                info={{
-                  fullName: "Alec M. Thompson",
-                  mobile: "(44) 123 1234 123",
-                  email: "alecthompson@mail.com",
-                  location: "USA",
+            <Grid item md={12} lg={4}>
+              <ProfileCard
+                profileImage={Catimage}
+                nickname="dellojoon2"
+                email="dellojoon7@gmail.com"
+                introduction="많은 분들의 니즈를 충족시키는 프론트엔드 개발자가 되고 싶습니다."
+                group="싸피 8기"
+                sx={{
+                  float: "left",
                 }}
-                social={[
-                  {
-                    link: "https://www.facebook.com/CreativeTim/",
-                    icon: <FacebookIcon />,
-                    color: "facebook",
-                  },
-                  {
-                    link: "https://twitter.com/creativetim",
-                    icon: <TwitterIcon />,
-                    color: "twitter",
-                  },
-                  {
-                    link: "https://www.instagram.com/creativetimofficial/",
-                    icon: <InstagramIcon />,
-                    color: "instagram",
-                  },
-                ]}
-                action={{ route: "", tooltip: "Edit Profile" }}
-                shadow={false}
               />
-              <Divider orientation="vertical" sx={{ mx: 0 }} />
             </Grid>
-            <Grid item xs={12} xl={4}>
-              <ProfilesList title="conversations" profiles={profilesListData} shadow={false} />
+            <Grid item md={12} lg={8}>
+              <MDBox
+                style={{
+                  width: "600px",
+                  height: "300px",
+                  backgroundColor: "#1C1A25",
+                  marginTop: "30px",
+                  marginLeft: "30px",
+                  border: "1px solid #ffffff",
+                  borderRadius: "21px",
+                  float: "left",
+                  position: "relative",
+                }}
+              >
+                <MDBox style={{ width: "auto", height: "300px", margin: "0 auto" }}>
+                  <MDTypography
+                    sx={{
+                      fontSize: "20px",
+                      marginTop: "2%",
+                      marginLeft: "2%",
+                    }}
+                  >
+                    {thisyear}년도 카드 작성일
+                  </MDTypography>
+                  <ResponsiveCalendar
+                    data={data1}
+                    from="2016-01-01"
+                    to="2016-07-12"
+                    emptyColor="#eeeeee"
+                    colors={["#61cdbb", "#97e3d5", "#e8c1a0", "#f47560"]}
+                    margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+                    yearSpacing={40}
+                    monthBorderColor="#f7c0c0"
+                    dayBorderWidth={2}
+                    dayBorderColor="#ffffff"
+                    legends={[
+                      {
+                        anchor: "bottom-right",
+                        direction: "row",
+                        translateY: 36,
+                        itemCount: 4,
+                        itemWidth: 42,
+                        itemHeight: 36,
+                        itemsSpacing: 14,
+                        itemDirection: "right-to-left",
+                      },
+                    ]}
+                  />
+                </MDBox>
+              </MDBox>
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox pt={2} px={2} lineHeight={1.25}>
-          <MDTypography variant="h6" fontWeight="medium">
-            Projects
-          </MDTypography>
-          <MDBox mb={1}>
-            <MDTypography variant="button" color="text">
-              Architects design houses
-            </MDTypography>
-          </MDBox>
-        </MDBox>
-        <MDBox p={2}>
-          <Grid container spacing={6}>
-            <Grid item xs={12} md={6} xl={3}>
-              <DefaultProjectCard
-                image={homeDecor1}
-                label="project #2"
-                title="modern"
-                description="As Uber works through a huge amount of internal management turmoil."
-                action={{
-                  type: "internal",
-                  route: "/pages/profile/profile-overview",
-                  color: "info",
-                  label: "view project",
+      </MDBox>
+      <MDBox py={3} sx={{ marginTop: "30px" }}>
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={4}>
+            <MDBox
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                value="cardTab"
+                variant="outlined"
+                onClick={handleChangeTab}
+                sx={{
+                  fontSize: "20px",
+                  width: "50%",
+                  backgroundColor: "#81D8C3",
+                  color: "#000000",
                 }}
-                authors={[
-                  { image: team1, name: "Elena Morison" },
-                  { image: team2, name: "Ryan Milly" },
-                  { image: team3, name: "Nick Daniel" },
-                  { image: team4, name: "Peterson" },
-                ]}
-              />
-            </Grid>
-            <Grid item xs={12} md={6} xl={3}>
-              <DefaultProjectCard
-                image={homeDecor2}
-                label="project #1"
-                title="scandinavian"
-                description="Music is something that everyone has their own specific opinion about."
-                action={{
-                  type: "internal",
-                  route: "/pages/profile/profile-overview",
-                  color: "info",
-                  label: "view project",
-                }}
-                authors={[
-                  { image: team3, name: "Nick Daniel" },
-                  { image: team4, name: "Peterson" },
-                  { image: team1, name: "Elena Morison" },
-                  { image: team2, name: "Ryan Milly" },
-                ]}
-              />
-            </Grid>
-            <Grid item xs={12} md={6} xl={3}>
-              <DefaultProjectCard
-                image={homeDecor3}
-                label="project #3"
-                title="minimalist"
-                description="Different people have different taste, and various types of music."
-                action={{
-                  type: "internal",
-                  route: "/pages/profile/profile-overview",
-                  color: "info",
-                  label: "view project",
-                }}
-                authors={[
-                  { image: team4, name: "Peterson" },
-                  { image: team3, name: "Nick Daniel" },
-                  { image: team2, name: "Ryan Milly" },
-                  { image: team1, name: "Elena Morison" },
-                ]}
-              />
-            </Grid>
-            <Grid item xs={12} md={6} xl={3}>
-              <DefaultProjectCard
-                image={homeDecor4}
-                label="project #4"
-                title="gothic"
-                description="Why would anyone pick blue over pink? Pink is obviously a better color."
-                action={{
-                  type: "internal",
-                  route: "/pages/profile/profile-overview",
-                  color: "info",
-                  label: "view project",
-                }}
-                authors={[
-                  { image: team4, name: "Peterson" },
-                  { image: team3, name: "Nick Daniel" },
-                  { image: team2, name: "Ryan Milly" },
-                  { image: team1, name: "Elena Morison" },
-                ]}
-              />
-            </Grid>
+              >
+                내가 작성한 카드
+              </Button>
+            </MDBox>
           </Grid>
+          <Grid item xs={12} md={4}>
+            <MDBox
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                value="bundleTab"
+                variant="outlined"
+                onClick={handleChangeTab}
+                sx={{
+                  marginLeft: "30px",
+                  fontSize: "20px",
+                  width: "50%",
+                  backgroundColor: "#81D8C3",
+                  color: "#000000",
+                }}
+              >
+                번들 리스트
+              </Button>
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <MDBox
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                value="statTab"
+                variant="outlined"
+                onClick={handleChangeTab}
+                sx={{
+                  marginLeft: "30px",
+                  fontSize: "20px",
+                  width: "50%",
+                  backgroundColor: "#81D8C3",
+                  color: "#000000",
+                }}
+              >
+                통계
+              </Button>
+            </MDBox>
+          </Grid>
+        </Grid>
+        <MDBox // 카드 및 번들을 렌더링
+          sx={{
+            backgroundColor: "#282535",
+            marginTop: "5%",
+            borderRadius: "40px",
+          }}
+        >
+          <SelectedTab selected={tabvalue} />
         </MDBox>
-      </Header>
-      <Footer />
+      </MDBox>
     </DashboardLayout>
   );
 }

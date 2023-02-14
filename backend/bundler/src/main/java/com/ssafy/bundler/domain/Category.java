@@ -7,9 +7,26 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.FetchType.LAZY;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
+@SuperBuilder(toBuilder = true)
 @Entity
 public class Category {
 
@@ -20,10 +37,15 @@ public class Category {
 
 	private String name;
 
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+	@Builder.Default
+	private List<Card> cardList = new ArrayList<>();
+
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "parent_id")
 	private Category parent;
 
+	@Builder.Default
 	@OneToMany(mappedBy = "parent") //셀프의 연관관계를 건거라고 생각하면 된다.
 	private List<Category> child = new ArrayList<>();
 

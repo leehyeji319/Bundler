@@ -6,8 +6,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -29,9 +27,12 @@ public abstract class BaseEntity {
 	// protected Long id;
 
 	@CreatedDate
-	@Column(nullable = false)
+	@Column(name = "created_at")
+	// @Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime createdAt;
 
 	@LastModifiedDate
+	@Column(name = "updated_at")
+	// @Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime updatedAt;
 }
