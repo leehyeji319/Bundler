@@ -37,7 +37,7 @@ public class CookieUtil {
 		cookie.setMaxAge(maxAge);
 
 		//로컬 테스트 용
-		cookie.setDomain("localhost");
+		cookie.setDomain("i8a810.p.ssafy.io");
 
 		//develop 브랜치 용
 		// cookie.setDomain("i8a810.p.ssafy.io");
@@ -63,6 +63,11 @@ public class CookieUtil {
 
 		if (cookies != null && cookies.length > 0) {
 			for (Cookie cookie : cookies) {
+
+				log.info("삭제하려는 Cookie name : " + cookie.getName());
+				log.info("삭제하려는 Cookie value : " + cookie.getValue());
+				log.info("삭제하려는 Cookie domain : " + cookie.getDomain());
+
 				if (name.equals(cookie.getName())) {
 					cookie.setValue("");
 					cookie.setPath("/");
