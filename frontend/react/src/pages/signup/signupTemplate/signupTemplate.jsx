@@ -25,9 +25,6 @@ function SignUpTemplate() {
   const signUp = () => {
     // 아래와 같은 조건으로 axios 보냄
     axios({
-      // 서버용
-      // url: "https://i8a810.p.ssafy.io/api/v1/signup",
-      // global
       url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/signup`,
       method: "POST",
       withCredentials: true,
@@ -76,10 +73,7 @@ function SignUpTemplate() {
         {/* 닉네임 받기 */}
         <div className="signupMargin">
           <label htmlFor="nickname">
-            &nbsp;닉네임
-            <p>
-              (영문)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </p>
+            &nbsp;닉네임(영문)
             <input
               className="inputinfo"
               type="text"
@@ -95,11 +89,7 @@ function SignUpTemplate() {
         {/* 비밀번호 받기 */}
         <div className="signupMargin">
           <label htmlFor="password">
-            &nbsp;비밀번호
-            <p>
-              (8자 이상 특수문자 1개
-              이상)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </p>
+            &nbsp;비밀번호(8자 이상 특수문자 1개 이상)
             <input
               className="inputinfo"
               type="password"

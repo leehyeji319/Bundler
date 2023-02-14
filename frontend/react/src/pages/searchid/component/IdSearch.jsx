@@ -18,8 +18,7 @@ function IdSearch() {
   const searchId = async () => {
     // get 요청으로 검색어를 쿼리에 담아 요청
     await axios({
-      // url: "http://localhost:8123/searchId",
-      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users`,
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/list`,
       method: "get",
       params: { keyword },
       withCredentials: true,
@@ -104,13 +103,13 @@ function IdSearch() {
           paddingTop: "2%",
         }}
       >
-        <h1
+        <h4
           style={{
             color: "#FFFFFF",
           }}
         >
           {alert}
-        </h1>
+        </h4>
       </div>
       {/* 검색 결과를 받아 리스트에 담긴 유저정보를 반복해서 보여줌 */}
       {resultId.map((item) => (
@@ -168,11 +167,12 @@ function IdSearch() {
             {/* 사진 이외의 추가 정보 */}
             <div
               style={{
+                paddingTop: "20px",
                 paddingLeft: "20px",
               }}
             >
               {/* 유저 닉네임 */}
-              <h3>{item.userNickname}</h3>
+              <h3 id="searchfont">{item.userNickname}</h3>
               {/* 유저 소개 */}
               <p>{item.userIntroduction}</p>
             </div>
