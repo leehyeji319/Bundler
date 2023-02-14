@@ -143,11 +143,6 @@ figure .image-2:nth-child(10) {
   display: flex;
 }
 
-span {
-  margin: auto;
-  font-size: 2rem;
-}
-
 .carousel__face:nth-child(1) {
   background-image: url(../../assets/images/bundler/main1.png);
   transform: rotateY(0deg) translateZ(300px);

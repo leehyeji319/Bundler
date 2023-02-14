@@ -95,6 +95,8 @@
   padding: 0 2em 2em;
   margin: 0;
   color: #d7bdca;
+  text-align: center;
+  font-size: 0.6em;
   font-family: "MockFlowFont";
   display: -webkit-box;
   -webkit-box-orient: vertical;
