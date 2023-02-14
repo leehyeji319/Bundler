@@ -2,7 +2,12 @@ package com.ssafy.bundler.controller;
 
 import java.util.List;
 
+import com.ssafy.bundler.config.auth.CurrentUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,38 +37,45 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Slf4j
 public class UserFeedController {
 
 	private final FeedService feedService;
 
 	//해당 사용자의 홈으로 갔을 때 보여주는 번들 리스트
 	//번들에 속하는 카드 포함
-//	@GetMapping("/v5/users/{user_id}/feeds/bundles")
-//	public List<BundleResponseDto> getBundlesFindByUserId(@PathVariable("user_id") Long userId,
-//		Authentication authentication) {
-//		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
-//
-//		if (principal.getUserId().equals(userId)) {
-//			return feedService.getBundlesFindByUserIdContainIsBundlePrivate(
-//				userId);
-//		} else {
-//			return feedService.getBundlesFindByUserIdExceptIsBundlePrivate(userId);
-//		}
-//	}
-
 	@GetMapping("/v5/users/{user_id}/feeds/bundles")
 	public List<BundleResponseDto> getBundlesFindByUserId(@PathVariable("user_id") Long userId) {
-		return feedService.getBundlesFindByUserIdExceptIsBundlePrivate(userId);
+//		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
+
+//		log.info("principal.getUserId : " + principal.getUserId());
+
+//		log.info(principal.getUsername());
+//		log.info(String.valueOf(principal.getUserId()));
+
+		log.info("getBundlesFindByUserId() - " + SecurityContextHolder.getContext().getAuthentication().toString());
+
+		User principal1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		Long userPrincipal = Long.parseLong(principal1.getUsername());
+
+		if (userId == userPrincipal) {
+			return feedService.getBundlesFindByUserIdContainIsBundlePrivate(userId);
+		} else {
+			return feedService.getBundlesFindByUserIdExceptIsBundlePrivate(userId);
+		}
 	}
+
 
 	//번들만 카드 없이
 	@GetMapping("/v4/users/{user_id}/feeds/bundles")
-	public List<BundleResponseDto> getBundleFindByUserIdSummary(@PathVariable("user_id") Long userId,
-		Authentication authentication) {
+	public List<BundleResponseDto> getBundleFindByUserIdSummary(@PathVariable("user_id") Long userId) {
 
-		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
 
-		if (principal.getUserId().equals(userId)) {
+		User principal1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long userPrincipal = Long.parseLong(principal1.getUsername());
+
+		if (userPrincipal == userId) {
 			return feedService.getBundlesFindByUserIdContainIsBundlePrivateSummary(
 				userId);
 		} else {
@@ -79,9 +91,11 @@ public class UserFeedController {
 
 	@GetMapping("/v5/users/main")
 	public Result getFeedUserMain(Authentication authentication) throws Exception {
-		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
 
-		return new Result(feedService.findCardsAndBundlesByUserIdOnlyFollowing(principal.getUserId()));
+		User principal1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long userPrincipal = Long.parseLong(principal1.getUsername());
+
+		return new Result(feedService.findCardsAndBundlesByUserIdOnlyFollowing(userPrincipal));
 	}
 
 	@Data

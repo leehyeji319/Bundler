@@ -11,14 +11,15 @@ const api = apiInstance();
 const FEED_CONTROLLER = "/api/v1";
 
 // ================================= Feed ================================================
-// Feed List 가져오기
+// Feed List 가져오기 - 팔로우 팔로워 유저들만 /api/v5/users/main / ${FEED_CONTROLLER}/feeds전체 조회
 const apiGetFeeds = async () => {
   try {
-    const response = await api.get(`${FEED_CONTROLLER}/feeds`);
+    const response = await api.get(`/api/v5/users/main`);
     const sorted = sortFeedList(response.data);
     const feedIdList = listId(sorted);
     return { sorted, feedIdList };
   } catch (error) {
+    console.log(error);
     return error;
   }
 };
