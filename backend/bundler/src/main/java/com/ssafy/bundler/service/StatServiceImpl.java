@@ -120,7 +120,7 @@ public class StatServiceImpl implements StatService{
 
 		StatMostMakeCategoryDto categoryDto = statQueryRepository.findMostMakeCategory(user.getUserId());
 		if(categoryDto!=null){
-			Category category = categoryRepository.findById(categoryDto.getCategoryId()).orElseThrow(
+			Category category = categoryRepository.findById(categoryDto.getCategoryParentId()).orElseThrow(
 				()->new IllegalArgumentException("카테고리 조회중 오류가 발생햇습니다.")
 			);
 			categories[0] = category;
