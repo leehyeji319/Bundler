@@ -62,7 +62,6 @@ function HomeCard({ cardInfo }) {
     const initCall = async () => {
       await apiGetBundle(userId, cardInfo.cardId)
         .then(({ data }) => {
-          console.log(data);
           setBundleList(data);
         })
         .catch((error) => {
@@ -120,7 +119,12 @@ function HomeCard({ cardInfo }) {
               zIndex={1}
             />
             <MDBox mx={2} width="70%">
-              <MDTypography variant="h4" textTransform="capitalize" fontWeight="bold">
+              <MDTypography
+                variant="h4"
+                textTransform="capitalize"
+                fontWeight="bold"
+                sx={{ textAlign: "left" }}
+              >
                 [카드]&nbsp;{cardInfo.firstCategoryName}
               </MDTypography>
               <MDTypography variant="overline" mt={1}>

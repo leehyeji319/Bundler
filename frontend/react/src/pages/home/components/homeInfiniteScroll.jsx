@@ -11,15 +11,16 @@ import HomeCard from "pages/home/components/homeCard";
 import HomeBundle from "pages/home/components/homeBundle";
 
 // Import - Api
+import axios from "axios";
 import { apiGetFeeds } from "apis/api/apiHomePage";
+import { useSelector } from "react-redux";
 
 function HomeInfiniteScroll() {
   // ============== INIT 선언 ========================
-  // Init declare
-  // const dispatch = useDispatch();
+  const { accessToken } = useSelector((state) => state.authToken);
+  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
   // ================= DATA ===========================
-
   // component - local 데이터
   const [value, setValue] = useState({
     start: 0,

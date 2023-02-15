@@ -33,6 +33,7 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
   const handleToggle = (e) => {
     e.preventDefault();
     handleOpen(); // modal은 무조건 열리게
+    handleBundleList();
   };
 
   // BUNDLE Scrap function

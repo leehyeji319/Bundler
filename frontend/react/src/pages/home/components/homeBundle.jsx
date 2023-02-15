@@ -96,7 +96,12 @@ function HomeBundle({ bundleInfo }) {
               zIndex={1}
             />
             <MDBox mx={2} width="70%">
-              <MDTypography variant="h4" textTransform="capitalize" fontWeight="bold">
+              <MDTypography
+                variant="h4"
+                textTransform="capitalize"
+                fontWeight="bold"
+                sx={{ textAlign: "left" }}
+              >
                 [번들]
               </MDTypography>
               <MDTypography variant="overline" mt={1}>

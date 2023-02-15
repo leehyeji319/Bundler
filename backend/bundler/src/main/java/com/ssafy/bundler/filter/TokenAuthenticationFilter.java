@@ -35,8 +35,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 		if (token.validate()) {
 			log.info("유효한 토큰입니다");
 
+
 			Authentication authentication = tokenProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
+
+			log.info(SecurityContextHolder.getContext().getAuthentication().toString());
 		}
 //		else {
 //			throw new TokenValidFailedException();

@@ -180,7 +180,6 @@ function Make() {
     if (feedTitle.length === 0 || feedContent.length === 0) {
       setValid({ isValid: true, comment: "카드 입력 값을 확인해 주세요", state: "error" });
     } else {
-      console.log(values);
       if (form === "CARD_PROBLEM") {
         // 문제 카드 추가
         setValues({ ...values, cardType: "CARD_PROBLEM", cardno: cardNo });
@@ -385,7 +384,7 @@ function Make() {
         content={valid.comment}
         // dateTime="11 mins ago"
         open={valid.isValid}
-        close={() => setValid({ valid: false, comment: "", state: "" })}
+        close={() => setValid({ valid: false, comment: "", state: "info" })}
       />
     </DashboardLayout>
   );
