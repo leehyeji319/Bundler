@@ -12,7 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 
-function HomeCommentList({ handleCommetList, commentList }) {
+function HomeCommentList({ isCommentListOpen, handleCommetList, commentList }) {
   // =============================== Data ===============================
   const { userId } = useSelector((state) => state.authToken);
 
@@ -88,6 +88,7 @@ function HomeCommentList({ handleCommetList, commentList }) {
       }}
     >
       {commentList !== null &&
+        isCommentListOpen === true &&
         commentList.map((comment) => (
           <li key={comment.commentId}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -155,6 +156,7 @@ HomeCommentList.defaultProps = {
 };
 
 HomeCommentList.propTypes = {
+  isCommentListOpen: PropTypes.bool.isRequired,
   handleCommetList: PropTypes.func.isRequired,
   commentList: PropTypes.arrayOf(PropTypes.object),
 };

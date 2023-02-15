@@ -47,6 +47,14 @@ function ModalCardList({
   const handleDetailCardOpen = () => setCardOpenModal(true);
   const handleDetailCardClose = () => setCardOpenModal(false);
 
+  // 댓글 저장
+  const [isCommentListOpen, setIsCommentListOpen] = useState(false);
+
+  // 댓글 이모티콘 클릭 시, commentList 설정
+  const isCommentOpen = (onoff) => {
+    setIsCommentListOpen(onoff);
+  };
+
   // Function
   const handleBundleCloseModal = (e) => {
     e.preventDefault();
@@ -135,8 +143,16 @@ function ModalCardList({
               />
             </MDBox>
             <MDBox p={3}>
-              <HomeInput handleComment={handleComment} />
-              <HomeCommentList handleCommetList={handleCommetList} commentList={commentList} />
+              <HomeInput
+                feedCommentCnt={commentList}
+                handleComment={handleComment}
+                isCommentOpen={isCommentOpen}
+              />
+              <HomeCommentList
+                isCommentListOpen={isCommentListOpen}
+                handleCommetList={handleCommetList}
+                commentList={commentList}
+              />
             </MDBox>
           </Card>
         </Modal>
