@@ -272,33 +272,23 @@ function CardSearch() {
         ) : null}
       </div>
       <br />
-      <div>
-        {apiList.map((post) =>
-          post.feedType === "CARD" ? (
-            <div
-              key={post.cardId}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <HomeCard cardInfo={post} />
-            </div>
-          ) : (
-            <div
-              key={post.cardId}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <HomeBundle bundleInfo={post} />
-            </div>
-          )
-        )}
-      </div>
+      {apiList.map((post) =>
+        post.feedType === "CARD" ? (
+          <HomeCard
+            cardInfo={post}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          />
+        ) : (
+          <HomeBundle
+            sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+            bundleInfo={post}
+          />
+        )
+      )}
     </div>
   );
 }

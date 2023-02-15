@@ -1,5 +1,5 @@
 // Import React
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 // Import mui/style
@@ -13,9 +13,12 @@ import { apiPostBundleScrap } from "apis/api/apiHomePage";
 import { useSelector } from "react-redux";
 
 // scrap Button 상태 - 활성화/비활성화
-function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
+function ScrapButton({ cardScrapCnt, feedType, targetId, bundleList, handleBundleList }) {
   // Data Global
   const { userId } = useSelector((state) => state.authToken);
+
+  // scrap 수 확인
+  const [stateScrapCnt, setStateScarpCnt] = useState(0);
 
   // scrap Button Modal Set
   const [open, setOpen] = useState(false);
@@ -34,6 +37,15 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
     e.preventDefault();
     handleOpen(); // modal은 무조건 열리게
     handleBundleList();
+  };
+
+  // isBundleAdded
+  const isBundleAdded = (isAdded) => {
+    if (isAdded) {
+      setStateScarpCnt(stateScrapCnt + 1);
+    } else {
+      setStateScarpCnt(stateScrapCnt - 1);
+    }
   };
 
   // BUNDLE Scrap function
@@ -59,6 +71,11 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
     added();
   };
 
+  // scrapCnt 확인
+  useEffect(() => {
+    setStateScarpCnt(cardScrapCnt);
+  }, [cardScrapCnt]);
+
   return (
     <Box className="icons-list">
       <ScrapButtonModal
@@ -67,6 +84,7 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
         targetId={targetId}
         bundleList={bundleList}
         handleBundleList={handleBundleList}
+        isBundleAdded={isBundleAdded}
       />
       {feedType === "CARD" && (
         <>
@@ -77,7 +95,7 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
             onClick={handleToggle}
           />
           <Typography variant="h6" align="center">
-            &nbsp;
+            {stateScrapCnt}
           </Typography>
         </>
       )}
@@ -108,6 +126,7 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
 }
 
 ScrapButton.defaultProps = {
+  cardScrapCnt: 0,
   bundleList: [],
   handleBundleList: function async() {},
 };
@@ -117,6 +136,7 @@ ScrapButton.propTypes = {
   targetId: PropTypes.number.isRequired,
   bundleList: PropTypes.arrayOf(PropTypes.object),
   handleBundleList: PropTypes.func,
+  cardScrapCnt: PropTypes.number,
 };
 
 export default ScrapButton;
