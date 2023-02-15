@@ -82,18 +82,21 @@ public class CookieUtil {
 		refreshToken.setValue("");
 		refreshToken.setPath("/");
 		refreshToken.setMaxAge(0);
+		refreshToken.setDomain("i8a810.p.ssafy.io");
 		response.addCookie(refreshToken);
 
 		Cookie redirect_uri = new Cookie("redirect_uri", null);
 		redirect_uri.setValue("");
 		redirect_uri.setPath("/");
 		redirect_uri.setMaxAge(0);
+		redirect_uri.setDomain("i8a810.p.ssafy.io");
 		response.addCookie(redirect_uri);
 
 		Cookie oauth2_auth_request = new Cookie("oauth2_auth_request", null);
 		oauth2_auth_request.setValue("");
 		oauth2_auth_request.setPath("/");
 		oauth2_auth_request.setMaxAge(0);
+		oauth2_auth_request.setDomain("i8a810.p.ssafy.io");
 		response.addCookie(oauth2_auth_request);
 	}
 
