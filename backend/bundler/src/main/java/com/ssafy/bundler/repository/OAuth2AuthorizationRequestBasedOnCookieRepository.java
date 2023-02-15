@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import com.ssafy.bundler.util.CookieUtil;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -84,5 +85,19 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository
 		CookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
 		CookieUtil.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
 		CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+
+		Cookie redirect_uri = new Cookie("redirect_uri", null);
+		redirect_uri.setValue("");
+		redirect_uri.setPath("/");
+		redirect_uri.setMaxAge(0);
+		redirect_uri.setDomain("i8a810.p.ssafy.io");
+		response.addCookie(redirect_uri);
+
+		Cookie oauth2_auth_request = new Cookie("oauth2_auth_request", null);
+		oauth2_auth_request.setValue("");
+		oauth2_auth_request.setPath("/");
+		oauth2_auth_request.setMaxAge(0);
+		oauth2_auth_request.setDomain("i8a810.p.ssafy.io");
+		response.addCookie(oauth2_auth_request);
 	}
 }

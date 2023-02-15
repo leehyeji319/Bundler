@@ -35,7 +35,12 @@ public class CookieUtil {
 //		cookie.setHttpOnly(true);
 		cookie.setHttpOnly(false);
 		cookie.setMaxAge(maxAge);
-		cookie.setDomain("localhost");
+
+		//로컬 테스트 용
+		// cookie.setDomain("localhost");
+
+		//develop 브랜치 용
+		cookie.setDomain("i8a810.p.ssafy.io");
 
 		log.info("cookie의 domain: " + cookie.getDomain());
 
@@ -58,6 +63,11 @@ public class CookieUtil {
 
 		if (cookies != null && cookies.length > 0) {
 			for (Cookie cookie : cookies) {
+
+				log.info("삭제하려는 Cookie name : " + cookie.getName());
+				log.info("삭제하려는 Cookie value : " + cookie.getValue());
+				log.info("삭제하려는 Cookie domain : " + cookie.getDomain());
+
 				if (name.equals(cookie.getName())) {
 					cookie.setValue("");
 					cookie.setPath("/");
@@ -66,6 +76,28 @@ public class CookieUtil {
 				}
 			}
 		}
+
+
+		// Cookie refreshToken = new Cookie("refreshToken", null);
+		// refreshToken.setValue("");
+		// refreshToken.setPath("/");
+		// refreshToken.setMaxAge(0);
+		// refreshToken.setDomain("i8a810.p.ssafy.io");
+		// response.addCookie(refreshToken);
+
+		// Cookie redirect_uri = new Cookie("redirect_uri", null);
+		// redirect_uri.setValue("");
+		// redirect_uri.setPath("/");
+		// redirect_uri.setMaxAge(0);
+		// redirect_uri.setDomain("i8a810.p.ssafy.io");
+		// response.addCookie(redirect_uri);
+		//
+		// Cookie oauth2_auth_request = new Cookie("oauth2_auth_request", null);
+		// oauth2_auth_request.setValue("");
+		// oauth2_auth_request.setPath("/");
+		// oauth2_auth_request.setMaxAge(0);
+		// oauth2_auth_request.setDomain("i8a810.p.ssafy.io");
+		// response.addCookie(oauth2_auth_request);
 	}
 
 	public static String serialize(Object obj) {
