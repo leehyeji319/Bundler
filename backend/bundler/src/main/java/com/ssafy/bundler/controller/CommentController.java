@@ -1,7 +1,6 @@
 package com.ssafy.bundler.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,28 +30,28 @@ public class CommentController {
 	public ResponseEntity<?> saveComment(@RequestBody CommentSaveRequestDto commentDto) {
 		Comment comment = commentService.saveComment(commentDto);
 		if (comment == null) {
-			return ResponseEntity.ok(new CommentCreateResponseDto(false, "댓글 등록에 실해했습니다."));
+			return ResponseEntity.ok(new CommentCreateResponseDto(false, "댓글 등록에 실패했습니다.",null));
 		}
-		return ResponseEntity.ok(new CommentCreateResponseDto(true, "댓글이 성공적으로 등록됐습니다."));
+		return ResponseEntity.ok(new CommentCreateResponseDto(true, "댓글이 성공적으로 등록됐습니다.", comment.getCommentId()));
 	}
 
 	@PutMapping("/api/v1/comment/{comment_id}")
-	public ResponseEntity<Long> updateComment(@PathVariable("comment_id") long commentId,
+	public ResponseEntity<?> updateComment(@PathVariable("comment_id") long commentId,
 		@RequestBody CommentUpdateRequestDto commentDto) {
 
 		Comment comment = commentService.updateComment(commentId, commentDto);
 		if (comment == null) {
-			return new ResponseEntity<>(0L, HttpStatus.BAD_REQUEST);
+			return ResponseEntity.ok(new CommentCreateResponseDto(false, "댓글 수정에 실패했습니다.", null));
 		}
-		return new ResponseEntity<>(comment.getCommentId(), HttpStatus.OK);
+		return ResponseEntity.ok(new CommentCreateResponseDto(true, "댓글이 성공적으로 수정됐습니다.", comment.getCommentId()));
 	}
 
 	@DeleteMapping("/api/v1/comment/{comment_id}")
-	public ResponseEntity<Long> deleteComment(@PathVariable("comment_id") long commentId) {
+	public ResponseEntity<?> deleteComment(@PathVariable("comment_id") long commentId) {
 		boolean result = commentService.deleteComment(commentId);
 		if (!result) {
-			return new ResponseEntity<>(commentId, HttpStatus.BAD_REQUEST);
+			return ResponseEntity.ok(new CommentCreateResponseDto(false, "댓글 삭제에 실패했습니다.",commentId));
 		}
-		return new ResponseEntity<>(commentId, HttpStatus.OK);
+		return ResponseEntity.ok(new CommentCreateResponseDto(false, "댓글이 삭제 됐습니다.",commentId));
 	}
 }
