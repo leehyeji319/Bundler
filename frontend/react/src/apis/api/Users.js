@@ -11,7 +11,10 @@ const loginUser = async (info) => {
       email,
       password,
     },
-  });
+  })
+    .then((result) => result)
+    .catch((err) => err);
+  console.log(response);
   return response;
 };
 
