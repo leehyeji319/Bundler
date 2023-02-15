@@ -76,6 +76,25 @@ public class CookieUtil {
 				}
 			}
 		}
+
+
+		Cookie refreshToken = new Cookie("refreshToken", null);
+		refreshToken.setValue("");
+		refreshToken.setPath("/");
+		refreshToken.setMaxAge(0);
+		response.addCookie(refreshToken);
+
+		Cookie redirect_uri = new Cookie("redirect_uri", null);
+		redirect_uri.setValue("");
+		redirect_uri.setPath("/");
+		redirect_uri.setMaxAge(0);
+		response.addCookie(redirect_uri);
+
+		Cookie oauth2_auth_request = new Cookie("oauth2_auth_request", null);
+		oauth2_auth_request.setValue("");
+		oauth2_auth_request.setPath("/");
+		oauth2_auth_request.setMaxAge(0);
+		response.addCookie(oauth2_auth_request);
 	}
 
 	public static String serialize(Object obj) {
