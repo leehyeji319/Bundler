@@ -17,6 +17,7 @@ import com.ssafy.bundler.exception.UserAlreadyExistsException;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
 
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -141,6 +142,7 @@ public class AuthService {
 		if (userRefreshTokenRepository.deleteByUserId(authToken.getUserId()) <= 0) {
 			throw new RefreshTokenNotFoundException();
 		}
+
 	}
 
 }
