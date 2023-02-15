@@ -40,6 +40,7 @@ export const tokenSlice = createSlice({
       newState.accessToken = action.payload.accessToken;
       // Access Token의 만료 시간을 현재시간에 TOKEN_TIME_OUT을 더해서 저장
       newState.expireTime = new Date().getTime() + TOKEN_TIME_OUT;
+
       return newState;
     },
     // 값을 모두 초기화함으로써 Access Token에 대한 정보도 삭제

@@ -20,7 +20,8 @@ import ScrapButton from "pages/home/buttons/scrapButton";
 import { apiGetCardDetail, apiGetBundle, apiGetLike } from "apis/api/apiHomePage";
 
 // Card Image
-import CardImg from "assets/images/bundler/bundlerRabbit.png";
+import CardImg from "assets/images/bundler/main7.png";
+// import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
 // Import - redux store
 import { useSelector } from "react-redux";
@@ -28,7 +29,7 @@ import { useSelector } from "react-redux";
 // const cardInfo
 function HomeCard({ cardInfo }) {
   // 해당 유저 정보
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
 
   // 현재 사용자가 해당 카드를 좋아요 했는지 확인
   const [isLiked, setIsLiked] = useState(false);
@@ -60,7 +61,7 @@ function HomeCard({ cardInfo }) {
   // 스크랩 클릭 시, 해당 유저가 가지고 있는 번들 리스트 불러오기
   const handleBundleList = () => {
     const initCall = async () => {
-      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
+      await apiGetBundle(userId, cardInfo.cardId)
         .then(({ data }) => {
           setBundleList(data);
         })
@@ -75,7 +76,7 @@ function HomeCard({ cardInfo }) {
   // 처음 조회 시, 가지고 있는 번들 리스트 불러오기 + 좋아요 확인
   useEffect(() => {
     const getNewComment = async () => {
-      await apiGetBundle(loginInfo.userId, cardInfo.cardId)
+      await apiGetBundle(userId, cardInfo.cardId)
         .then(({ data }) => {
           setBundleList(data.like);
         })
@@ -86,7 +87,7 @@ function HomeCard({ cardInfo }) {
     getNewComment();
 
     const getIsLiked = async () => {
-      await apiGetLike(cardInfo.cardId, loginInfo.userId)
+      await apiGetLike(cardInfo.cardId, userId)
         .then(({ data }) => {
           setIsLiked(data.like);
         })
@@ -105,7 +106,7 @@ function HomeCard({ cardInfo }) {
         handleClose={handleClose}
         cardInfo={cardDetailInfo}
       />
-      <MDBox mx={3}>
+      <MDBox m={3}>
         <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
           <MDBox display="flex" sx={{ alignItems: "center", width: "80%" }}>
             <MDBox
@@ -115,15 +116,23 @@ function HomeCard({ cardInfo }) {
               borderRadius="lg"
               shadow="md"
               width="70px"
-              height="70px"
+              height="100px"
               zIndex={1}
             />
             <MDBox mx={2} width="70%">
-              <MDTypography variant="h4" textTransform="capitalize" fontWeight="bold">
-                [카드]&nbsp;{cardInfo.firstCategoryName}
+              <MDTypography
+                variant="h4"
+                textTransform="capitalize"
+                fontWeight="bold"
+                sx={{ textAlign: "left" }}
+              >
+                [카드]&nbsp;&nbsp;&nbsp;{cardInfo.firstCategoryName}
+              </MDTypography>
+              <MDTypography variant="h6" textTransform="capitalize" sx={{ textAlign: "left" }}>
+                {cardInfo.secondCategoryName}
               </MDTypography>
               <MDTypography variant="overline" mt={1}>
-                {cardInfo.userId}
+                출제자 :&nbsp;&nbsp;{cardInfo.userNickname}
               </MDTypography>
             </MDBox>
           </MDBox>
@@ -143,9 +152,17 @@ function HomeCard({ cardInfo }) {
           </MDTypography>
         </MDBox>
         <MDBox mt={2} mb={3}>
-          <MDTypography variant="body2" component="p" color="text">
-            {cardInfo.feedContent}
-          </MDTypography>
+          <pre
+            style={{
+              maxHeight: "100px",
+              overflow: "auto",
+              overflowX: "hidden",
+            }}
+          >
+            <MDTypography display="inline" variant="body2" component="p" color="text">
+              {cardInfo.feedContent}
+            </MDTypography>
+          </pre>
         </MDBox>
         <Button onClick={handleOpen}>카드 상세보기</Button>
       </MDBox>

@@ -14,7 +14,7 @@ import CheckIcon from "@mui/icons-material/Check";
 
 function HomeCommentList({ handleCommetList, commentList }) {
   // =============================== Data ===============================
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
 
   // 댓글 수정 boolean 값
   const [edit, setEdit] = useState({
@@ -112,7 +112,7 @@ function HomeCommentList({ handleCommetList, commentList }) {
                   </MDTypography>
                 )}
               </Box>
-              {loginInfo.userId === comment.commentWriterId && (
+              {userId === comment.commentWriterId && (
                 <Box>
                   {edit.id === comment.commentId ? (
                     <Box>

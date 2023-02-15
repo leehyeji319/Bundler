@@ -1,10 +1,11 @@
 // Import - basic
 import { React, useState, useEffect } from "react";
 import axios from "axios";
+import "./CardSearch.css";
 
 // Import - js
 import { sortFeedList } from "apis/service/serviceHomePage";
-
+import { Button } from "@mui/material";
 // Import - custom
 import HomeCard from "pages/home/components/homeCard";
 import HomeBundle from "pages/home/components/homeBundle";
@@ -13,13 +14,6 @@ const FeedType = [
   { id: null, value: "카드 + 번들" },
   { id: "CARD", value: "카드" },
   { id: "BUNDLE", value: "번들" },
-];
-
-const CardType = [
-  { id: null, value: "모두검색" },
-  { id: "CARD_PROBLEM", value: "문제" },
-  { id: "CARD_GENERAL", value: "일반" },
-  { id: "CARD_LINK", value: "링크" },
 ];
 
 const CategoryIdBig = [
@@ -87,13 +81,6 @@ function CardSearch() {
     setFeedType(FeedType.filter((el) => el.value === value)[0].id);
   };
 
-  // 카드타입 선택
-  const [cardType, setCardType] = useState("");
-  const cardTypeDropbox = (e) => {
-    const { value } = e.target;
-    setCardType(CardType.filter((el) => el.value === value)[0].id);
-  };
-
   // 카테고리 선택
   const [categoryId, setCategoryId] = useState("");
   const [categoryId2, setcategoryId2] = useState("");
@@ -138,7 +125,6 @@ function CardSearch() {
   // clickSearchBtn 실행시켜 회원검색 진행
   const clickSearchBtn = () => {
     axios({
-      // url: "https://i8a810.p.ssafy.io";
       url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/search`,
       method: "get",
       params: { feedType, categoryId, search },
@@ -179,57 +165,44 @@ function CardSearch() {
           }}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button
-          type="button"
+        <Button
           onClick={clickSearchBtn}
+          id="bundlerBtn"
+          className="learn-more2"
           sx={{
             bgcolor: "#81D8CF",
             color: "#000000",
-            fontSize: "midium",
+            fontSize: "medium",
             fontWeight: "bold",
+            width: "100px",
           }}
-          variant="contained"
-          fullWidth
+          type="submit"
         >
-          검색하기
-        </button>
+          검색
+        </Button>
       </div>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         {/* 피드타입 */}
         <select onChange={feedTypeDropbox}>
           {FeedType.map((el) => (
             <option key={el.id}>{el.value}</option>
           ))}
         </select>
-        {/* 피드타입별 저장값 */}
-        <div>
-          <p>{feedType}</p>
-        </div>
-
         {feedType === "CARD" ? (
           <>
-            {/* 카드타입 */}
-            <select onChange={cardTypeDropbox}>
-              {CardType.map((el) => (
-                <option key={el.id}>{el.value}</option>
-              ))}
-            </select>
-            {/* 카드타입별 저장값 */}
-            <div>
-              <p>{cardType}</p>
-            </div>
-
             {/* 카테고리 대 */}
             <select onChange={categoryIdBigDropbox}>
               {CategoryIdBig.map((el) => (
                 <option key={el.id}>{el.value}</option>
               ))}
             </select>
-            {/* 카테고리별 저장값 */}
-            <div>
-              <p>{categoryId2}</p>
-            </div>
-            {/*  eslint-disable-next-line */}
+            {/* eslint-disable-next-line */}
             {categoryId2 === "1" ? (
               <>
                 {/* 카테고리 중1 */}
@@ -238,10 +211,6 @@ function CardSearch() {
                     <option key={el.id}>{el.value}</option>
                   ))}
                 </select>
-                {/* 카테고리별 저장값1 */}
-                <div>
-                  <p>{categoryId}</p>
-                </div>
               </>
             ) : // eslint-disable-next-line
             categoryId2 === "2" ? (
@@ -302,17 +271,34 @@ function CardSearch() {
           </>
         ) : null}
       </div>
-      {apiList.map((post) =>
-        post.feedType === "CARD" ? (
-          <div key={post.cardId}>
-            <HomeCard cardInfo={post} />
-          </div>
-        ) : (
-          <div key={post.cardId}>
-            <HomeBundle bundleInfo={post} />
-          </div>
-        )
-      )}
+      <br />
+      <div>
+        {apiList.map((post) =>
+          post.feedType === "CARD" ? (
+            <div
+              key={post.cardId}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <HomeCard cardInfo={post} />
+            </div>
+          ) : (
+            <div
+              key={post.cardId}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <HomeBundle bundleInfo={post} />
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 }

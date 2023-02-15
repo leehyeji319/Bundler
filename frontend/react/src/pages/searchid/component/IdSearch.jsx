@@ -18,8 +18,7 @@ function IdSearch() {
   const searchId = async () => {
     // get 요청으로 검색어를 쿼리에 담아 요청
     await axios({
-      // url: "http://localhost:8123/searchId",
-      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users`,
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/list`,
       method: "get",
       params: { keyword },
       withCredentials: true,
@@ -38,18 +37,7 @@ function IdSearch() {
 
   // 검색한 유저의 프로필로 이동하기 위한 요청
   const goProfile = (userId) => {
-    // get 요청으로 url에 유저 아이디를 담아 요청
-    axios({
-      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${userId}/mypage`,
-      method: "get",
-      withCredentials: true,
-    })
-      // 유저 정보 이동이 성공했다면 profile 창으로 이동
-      .then((result) => {
-        if (result.status === 200) {
-          window.open("/profile", "_self");
-        }
-      });
+    window.open(`/profile/${userId}`, "_self");
   };
 
   // 검색창(input 태그)에 입력값이 들어올 때마다 onchange로 실행되는 함수
@@ -104,13 +92,13 @@ function IdSearch() {
           paddingTop: "2%",
         }}
       >
-        <h1
+        <h4
           style={{
             color: "#FFFFFF",
           }}
         >
           {alert}
-        </h1>
+        </h4>
       </div>
       {/* 검색 결과를 받아 리스트에 담긴 유저정보를 반복해서 보여줌 */}
       {resultId.map((item) => (
@@ -168,11 +156,12 @@ function IdSearch() {
             {/* 사진 이외의 추가 정보 */}
             <div
               style={{
+                paddingTop: "20px",
                 paddingLeft: "20px",
               }}
             >
               {/* 유저 닉네임 */}
-              <h3>{item.userNickname}</h3>
+              <h3 id="searchfont">{item.userNickname}</h3>
               {/* 유저 소개 */}
               <p>{item.userIntroduction}</p>
             </div>

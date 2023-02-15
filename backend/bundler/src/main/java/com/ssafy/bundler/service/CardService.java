@@ -62,7 +62,8 @@ public class CardService {
 
 		Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 카테고리 아이디가 존재하지 않습니다. categoryId= " + requestDto.getCategory()));
-
+		String lineBreak = requestDto.getFeedContent().replace("\r\n", "<br>");
+		requestDto.setFeedContent(lineBreak);
 		Long savedFeedId = cardRepository.save(requestDto.toEntity(writerUser, category)).getFeedId();
 
 		// if (requestDto.getCardType() == "CARD_LINK") {

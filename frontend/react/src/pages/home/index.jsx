@@ -3,20 +3,20 @@
  */
 
 // Import - layout
-import HomeLayout from "pages/home/layout";
+// import HomeLayout from "pages/home/layout";
+// import HomeNavbar from "pages/home/components/HomeNavbar";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-
-// Import - custom
-import HomeNavbar from "pages/home/components/HomeNavbar";
 import HomeInfiniteScroll from "pages/home/components/homeInfiniteScroll";
 
 function Home() {
   return (
-    <HomeLayout>
-      <HomeNavbar />
+    <DashboardLayout>
+      <DashboardNavbar />
       <HomeInfiniteScroll />
       <Footer />
-    </HomeLayout>
+    </DashboardLayout>
   );
 }
 
