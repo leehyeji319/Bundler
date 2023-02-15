@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,9 @@ import com.ssafy.bundler.dto.JwtTokenDto;
 import com.ssafy.bundler.dto.UserDto;
 import com.ssafy.bundler.dto.user.LoginRequestDto;
 import com.ssafy.bundler.dto.user.SignupRequestDto;
+import com.ssafy.bundler.exception.EntityNotFoundException;
+import com.ssafy.bundler.exception.ErrorCode;
+import com.ssafy.bundler.exception.LoginFailedException;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.service.AuthService;
@@ -50,6 +54,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthController {
 
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	private final AppProperties appProperties;
 	private final AuthTokenProvider authTokenProvider;
 
@@ -58,6 +64,7 @@ public class AuthController {
 	// private AuthenticationManager customAuthenticationManager;
 	private final UserRepository userRepository;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
+
 	private final AuthService authService;
 
 	// @Autowired
@@ -81,14 +88,17 @@ public class AuthController {
 		log.info(authRequestDto.getEmail());
 
 		User user = userRepository.findOneByUserEmail(authRequestDto.getEmail())
-			.orElseThrow(() -> new UsernameNotFoundException("유저가 존재하지 않습니다."));
+			.orElseThrow(() -> new LoginFailedException("해당 email을 가진 유저가 없음."));
 
-		log.info("1111111");
 
-//		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//			authRequestDto.getEmail(),
-//			authRequestDto.getPassword()
-//		));
+		if (!user.getUserPassword().equals(bCryptPasswordEncoder.encode(authRequestDto.getPassword()))) {
+			throw new LoginFailedException("비밀번호가 일치하지 않음.");
+		}
+
+		//		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+		//			authRequestDto.getEmail(),
+		//			authRequestDto.getPassword()
+		//		));
 
 		UserPrincipal userPrincipal = UserPrincipal.create(user);
 
@@ -99,13 +109,9 @@ public class AuthController {
 //		));
 //		authentication.setAuthenticated(true);
 
-		log.info("22222222");
-
 		String userEmail = authRequestDto.getEmail();
 //		SecurityContextHolder.getContext().setAuthentication(authentication);
 //		authentication.setAuthenticated(true);
-
-		log.info("333333");
 
 		Date now = new Date();
 		AuthToken accessToken = authTokenProvider.createAuthToken(
@@ -114,16 +120,12 @@ public class AuthController {
 			new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
 		);
 
-		log.info("4444444444");
-
 		long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 		AuthToken refreshToken = authTokenProvider.createAuthToken(
 //			appProperties.getAuth().getTokenSecret(),
 			String.valueOf(user.getUserId()),
 			new Date(now.getTime() + refreshTokenExpiry)
 		);
-
-		log.info("55555555");
 
 		// userEmail refresh token 으로 DB 확인
 		Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUser_UserEmail(userEmail);
@@ -142,13 +144,9 @@ public class AuthController {
 			userRefreshTokenRepository.saveAndFlush(newRefreshToken);
 		}
 
-		log.info("66666666666");
-
-		int cookieMaxAge = (int)refreshTokenExpiry / 60;
+		// int cookieMaxAge = (int)refreshTokenExpiry / 60;
 		// CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
 		// CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
-
-		log.info("77777777");
 
 		return ResponseEntity.ok(JwtTokenDto.builder()
 			.userId(user.getUserId())
@@ -156,7 +154,8 @@ public class AuthController {
 			.nickname(user.getUserNickname())
 			.accessToken(accessToken.getToken())
 			.refreshToken(refreshToken.getToken())
-			.build());
+			.build()
+		);
 	}
 
 	// @GetMapping("/refresh")
