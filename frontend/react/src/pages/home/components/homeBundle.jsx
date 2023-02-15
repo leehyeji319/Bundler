@@ -82,7 +82,7 @@ function HomeBundle({ bundleInfo }) {
         cardList={bundleDetail.cardBundleQueryDtoList}
         commentList={bundleDetail.bundleCommentResponseList}
       />
-      <MDBox mx={3} sx={{ position: "realative" }}>
+      <MDBox m={3} sx={{ position: "realative" }}>
         <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
           <MDBox display="flex" sx={{ alignItems: "center", width: "80%" }}>
             <MDBox

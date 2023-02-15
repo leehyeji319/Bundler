@@ -86,7 +86,7 @@ function HomeInfiniteScroll() {
           <Box sx={{ textAlign: "center" }}>
             <Button type="button" onClick={() => window.location.replace("/home")}>
               <RestartAltIcon fontSize="large" />
-              <Typography>Reloading</Typography>
+              <Typography variant="h6">REFRESH</Typography>
             </Button>
           </Box>
         }
@@ -97,7 +97,7 @@ function HomeInfiniteScroll() {
               <HomeCard cardInfo={post} />
             </div>
           ) : (
-            <div key={post.cardId}>
+            <div key={post.bundleId}>
               <HomeBundle bundleInfo={post} />
             </div>
           )

@@ -105,7 +105,7 @@ function HomeCard({ cardInfo }) {
         handleClose={handleClose}
         cardInfo={cardDetailInfo}
       />
-      <MDBox mx={3}>
+      <MDBox m={3}>
         <MDBox display="flex" sx={{ flexWrap: "wrap", justifyContent: "space-between" }}>
           <MDBox display="flex" sx={{ alignItems: "center", width: "80%" }}>
             <MDBox

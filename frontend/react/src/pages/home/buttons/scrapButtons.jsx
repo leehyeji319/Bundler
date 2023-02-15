@@ -13,7 +13,7 @@ import { apiPostBundleScrap } from "apis/api/apiHomePage";
 import { useSelector } from "react-redux";
 
 // scrap Button 상태 - 활성화/비활성화
-function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
+function ScrapButtons({ feedType, targetId, bundleList, handleBundleList }) {
   // Data Global
   const { userId } = useSelector((state) => state.authToken);
 
@@ -68,20 +68,19 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
         bundleList={bundleList}
         handleBundleList={handleBundleList}
       />
-      {feedType === "CARD" && (
+      {feedType === "CARD" ? (
         <>
           <BookmarkBorderIcon
-            sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
+            sx={{ color: "red", cursor: "pointer", transition: { transform: "300ms ease" } }}
             fontSize="large"
             className="button"
             onClick={handleToggle}
           />
-          <Typography variant="h6" align="center">
+          <Typography variant="h2" align="center">
             &nbsp;
           </Typography>
         </>
-      )}
-      {feedType === "BUNDLE" && (
+      ) : (
         <>
           <BookmarkBorderIcon
             sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
@@ -89,7 +88,7 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
             className="button"
             onClick={handleBundleScrap}
           />
-          <Typography variant="h6" align="center">
+          <Typography variant="h2" align="center">
             &nbsp;
           </Typography>
         </>
@@ -107,16 +106,16 @@ function ScrapButton({ feedType, targetId, bundleList, handleBundleList }) {
   );
 }
 
-ScrapButton.defaultProps = {
+ScrapButtons.defaultProps = {
   bundleList: [],
   handleBundleList: function async() {},
 };
 
-ScrapButton.propTypes = {
+ScrapButtons.propTypes = {
   feedType: PropTypes.string.isRequired,
   targetId: PropTypes.number.isRequired,
   bundleList: PropTypes.arrayOf(PropTypes.object),
   handleBundleList: PropTypes.func,
 };
 
-export default ScrapButton;
+export default ScrapButtons;

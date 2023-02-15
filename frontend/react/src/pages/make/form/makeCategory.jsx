@@ -194,8 +194,8 @@ function MakeCategory({ handleCategory }) {
           >
             <MenuItem value={31}>기업 분석</MenuItem>
             <MenuItem value={32}>IT기사/트렌드</MenuItem>
-            <MenuItem value={33}>기타</MenuItem>
-            <MenuItem value={34}>자격증</MenuItem>
+            <MenuItem value={33}>자격증</MenuItem>
+            <MenuItem value={34}>기타</MenuItem>
           </Select>
         </FormControl>
       )}

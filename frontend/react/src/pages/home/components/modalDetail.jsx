@@ -64,13 +64,16 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "75%",
-    bgcolor: "#152744",
+    bgcolor: "transparent",
+    border: "none",
     boxShadow: 24,
-    outline: 10,
+    outline: 0,
     borderRadius: 5,
+    mb: 3,
+    maxWidth: 800,
   };
   return (
-    <Card sx={{ ml: 10, mb: 3, maxWidth: 800 }}>
+    <Card>
       <Modal open={open} onClose={handleCloseModal}>
         <Card sx={style}>
           <MDBox p={3} bgColor="#152744">
@@ -174,6 +177,8 @@ ModalDetail.defaultProps = {
   cardInfo: {
     cardId: -1,
     cardType: "",
+    feedTitle: "",
+    feedContent: "",
     firstCategoryId: -1,
     firstCategoryName: "",
     secondCategoryId: -1,
@@ -186,6 +191,9 @@ ModalDetail.defaultProps = {
     userProfileImage: "",
     commentResponseDtoList: [],
     userId: -1,
+    cardScrapCnt: 0,
+    feedLikeCnt: 0,
+    feedCommentCnt: 0,
   },
 };
 
@@ -199,12 +207,12 @@ ModalDetail.propTypes = {
     cardType: PropTypes.string,
     firstCategoryId: PropTypes.number,
     firstCategoryName: PropTypes.string,
-    feedTitle: PropTypes.string.isRequired,
-    feedContent: PropTypes.string.isRequired,
-    cardScrapCnt: PropTypes.number.isRequired,
-    feedLikeCnt: PropTypes.number.isRequired,
-    feedCommentCnt: PropTypes.number.isRequired,
+    feedCommentCnt: PropTypes.number,
+    feedContent: PropTypes.string,
+    feedTitle: PropTypes.string,
+    feedLikeCnt: PropTypes.number,
     userId: PropTypes.number,
+    cardScrapCnt: PropTypes.number,
     feedType: PropTypes.string,
     secondCategoryId: PropTypes.number,
     userNickname: PropTypes.string,

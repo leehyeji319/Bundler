@@ -170,20 +170,23 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
   };
 
   const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "50%",
-    bgcolor: "#152744",
-    boxShadow: 24,
-    outline: 10,
-    borderRadius: 5,
+    width: "70%",
+    bgcolor: "transparent",
+    // borderRadius: 5,
+    borderRadius: "none",
   };
   return (
-    <Card sx={{ ml: 10, mb: 3, minWidth: 200, maxWidth: 800 }}>
+    <Card sx={style}>
       <Modal open={open} onClose={handleCloseModal}>
-        <Card sx={style}>
+        <Card
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "50%",
+          }}
+        >
           <MDBox
             p={3}
             bgColor="#152744"
