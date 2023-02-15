@@ -109,11 +109,11 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
             <MDBox mt={2} mb={3}>
               <MDTypography
                 display="inline"
-                variant="h6"
+                variant="h5"
                 textTransform="capitalize"
                 fontWeight="bold"
               >
-                {cardInfo.feedTitle}
+                문제&nbsp;&gt;&nbsp;&nbsp;{cardInfo.feedTitle}
               </MDTypography>
             </MDBox>
             <MDBox mt={2} mb={3}>
@@ -125,6 +125,8 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
                 }}
               >
                 <MDTypography variant="body2" component="p" color="text">
+                  지문
+                  <br />
                   {cardInfo.feedContent}
                 </MDTypography>
               </pre>
