@@ -41,6 +41,10 @@ function SignIn() {
     }
   };
 
+  // const handleFocus = (event) => {
+  //   console.log("Input element focused");
+  // };
+
   return (
     // 제출 시 이메일과 패스워드가 loginUser이 요청될 때 전송된다
     <form onSubmit={handleSubmit(onValid)}>
@@ -54,6 +58,10 @@ function SignIn() {
               type="text"
               pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]"
               placeholder="이메일을 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "이메일을 입력해주세요")}
               required="required"
             />
             <ErrorMessage
@@ -74,6 +82,10 @@ function SignIn() {
               type="password"
               pattern="^([A-Za-z0-9])(?=.*[!@#$%^&*()]).{8,20}$"
               placeholder="비밀번호를 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "비밀번호를 입력해주세요")}
               required="required"
             />
           </label>

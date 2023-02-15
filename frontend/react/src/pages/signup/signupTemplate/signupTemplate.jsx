@@ -63,6 +63,10 @@ function SignUpTemplate() {
               type="text"
               pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]"
               placeholder="이메일을 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "이메일을 입력해주세요")}
               required="required"
               id="Email"
               value={userEmail}
@@ -79,6 +83,10 @@ function SignUpTemplate() {
               type="text"
               pattern="^([A-Za-z0-9]).{1,20}$"
               placeholder="닉네임을 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "닉네임을 입력해주세요")}
               required="required"
               id="nickname"
               value={userNickname}
@@ -95,6 +103,10 @@ function SignUpTemplate() {
               type="password"
               pattern="^([A-Za-z0-9])(?=.*[!@#$%^&*()]).{7,20}$"
               placeholder="비밀번호를 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "비밀번호를 입력해주세요")}
               required="required"
               id="password"
               value={userPassword}
@@ -111,6 +123,10 @@ function SignUpTemplate() {
               type="password"
               pattern={userPassword}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "비밀번호를 다시 한 번 입력해주세요")}
               required="required"
               id="confirmPassword"
               value={confirmPassword}
@@ -126,6 +142,10 @@ function SignUpTemplate() {
               className="inputinfo"
               type="text"
               placeholder="한 줄 소개를 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "한 줄 소개를 입력해주세요")}
               id="oneline"
               value={userIntroduction}
               onChange={(e) => setOneline(e.target.value)}

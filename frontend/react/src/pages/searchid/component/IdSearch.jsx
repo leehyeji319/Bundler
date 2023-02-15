@@ -37,18 +37,7 @@ function IdSearch() {
 
   // 검색한 유저의 프로필로 이동하기 위한 요청
   const goProfile = (userId) => {
-    // get 요청으로 url에 유저 아이디를 담아 요청
-    axios({
-      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${userId}/mypage`,
-      method: "get",
-      withCredentials: true,
-    })
-      // 유저 정보 이동이 성공했다면 profile 창으로 이동
-      .then((result) => {
-        if (result.status === 200) {
-          window.open("/profile", "_self");
-        }
-      });
+    window.open(`/profile/${userId}`, "_self");
   };
 
   // 검색창(input 태그)에 입력값이 들어올 때마다 onchange로 실행되는 함수
