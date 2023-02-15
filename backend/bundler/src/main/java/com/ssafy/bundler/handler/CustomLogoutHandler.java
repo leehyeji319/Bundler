@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.bundler.service.AuthService;
 import com.ssafy.bundler.util.HeaderUtil;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,13 @@ public class CustomLogoutHandler implements LogoutHandler {
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 		log.info("request header의 Authorization: " + request.getHeader("Authorization"));
 		authService.logout(HeaderUtil.getAccessToken(request));
+
+		Cookie refreshToken = new Cookie("refreshToken", null);
+		refreshToken.setValue("");
+		refreshToken.setPath("/");
+		refreshToken.setMaxAge(0);
+		refreshToken.setDomain("i8a810.p.ssafy.io");
+		response.addCookie(refreshToken);
 	}
 
 }
