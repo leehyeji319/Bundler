@@ -142,7 +142,6 @@ public class AuthService {
 		if (userRefreshTokenRepository.deleteByUserId(authToken.getUserId()) <= 0) {
 			throw new RefreshTokenNotFoundException();
 		}
-
 	}
 
 }
