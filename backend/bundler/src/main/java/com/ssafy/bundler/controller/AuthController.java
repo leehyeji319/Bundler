@@ -90,8 +90,11 @@ public class AuthController {
 		User user = userRepository.findOneByUserEmail(authRequestDto.getEmail())
 			.orElseThrow(() -> new LoginFailedException("해당 email을 가진 유저가 없음."));
 
+		log.info("user.getUserPassword() : " + user.getUserPassword());
+		log.info("bCryptPasswordEncoder.encode(authRequestDto.getPassword()) : " + bCryptPasswordEncoder.encode(authRequestDto.getPassword()));
+		log.info("authRequestDto.getPassword() : " + authRequestDto.getPassword());
 
-		if (!user.getUserPassword().equals(bCryptPasswordEncoder.encode(authRequestDto.getPassword()))) {
+		if (!bCryptPasswordEncoder.matches(authRequestDto.getPassword(), user.getUserPassword())) {
 			throw new LoginFailedException("비밀번호가 일치하지 않음.");
 		}
 
