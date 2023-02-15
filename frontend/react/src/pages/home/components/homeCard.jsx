@@ -20,7 +20,8 @@ import ScrapButton from "pages/home/buttons/scrapButton";
 import { apiGetCardDetail, apiGetBundle, apiGetLike } from "apis/api/apiHomePage";
 
 // Card Image
-import CardImg from "assets/images/bundler/bundlerRabbit.png";
+import CardImg from "assets/images/bundler/main7.png";
+// import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
 // Import - redux store
 import { useSelector } from "react-redux";
@@ -115,7 +116,7 @@ function HomeCard({ cardInfo }) {
               borderRadius="lg"
               shadow="md"
               width="70px"
-              height="70px"
+              height="100px"
               zIndex={1}
             />
             <MDBox mx={2} width="70%">
@@ -125,10 +126,13 @@ function HomeCard({ cardInfo }) {
                 fontWeight="bold"
                 sx={{ textAlign: "left" }}
               >
-                [카드]&nbsp;{cardInfo.firstCategoryName}
+                [카드]&nbsp;&nbsp;&nbsp;{cardInfo.firstCategoryName}
+              </MDTypography>
+              <MDTypography variant="h6" textTransform="capitalize" sx={{ textAlign: "left" }}>
+                {cardInfo.secondCategoryName}
               </MDTypography>
               <MDTypography variant="overline" mt={1}>
-                {cardInfo.userId}
+                출제자 :&nbsp;&nbsp;{cardInfo.userNickname}
               </MDTypography>
             </MDBox>
           </MDBox>
@@ -148,9 +152,17 @@ function HomeCard({ cardInfo }) {
           </MDTypography>
         </MDBox>
         <MDBox mt={2} mb={3}>
-          <MDTypography variant="body2" component="p" color="text">
-            {cardInfo.feedContent}
-          </MDTypography>
+          <pre
+            style={{
+              maxHeight: "100px",
+              overflow: "auto",
+              overflowX: "hidden",
+            }}
+          >
+            <MDTypography display="inline" variant="body2" component="p" color="text">
+              {cardInfo.feedContent}
+            </MDTypography>
+          </pre>
         </MDBox>
         <Button onClick={handleOpen}>카드 상세보기</Button>
       </MDBox>

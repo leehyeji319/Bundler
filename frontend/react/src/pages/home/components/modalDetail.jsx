@@ -15,7 +15,7 @@ import MDTypography from "components/MDTypography";
 // Import Custom Component
 import HomeInput from "pages/home/components/homeInput";
 import HomeCommentList from "pages/home/components/homeCommentList";
-import CardImg from "assets/images/bundler/bundler_rabbit_3.png";
+import CardImg from "assets/images/bundler/main4.png";
 
 // Import - axios
 import { apiPostComment } from "apis/api/apiHomePage";
@@ -84,18 +84,25 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
                 alt={CardImg}
                 borderRadius="lg"
                 shadow="md"
-                width="10%"
-                height="10%"
+                width="8%"
                 position="relative"
                 display="inline-block"
                 zIndex={1}
               />
               <MDBox display="inline-block" mx={2}>
-                <MDTypography variant="h3" textTransform="capitalize" fontWeight="bold">
-                  {cardInfo.firstCategoryName}
+                <MDTypography
+                  variant="h4"
+                  textTransform="capitalize"
+                  fontWeight="bold"
+                  sx={{ textAlign: "left" }}
+                >
+                  [카드]&nbsp;&nbsp;&nbsp;{cardInfo.firstCategoryName}
+                </MDTypography>
+                <MDTypography variant="h6" textTransform="capitalize" sx={{ textAlign: "left" }}>
+                  {cardInfo.secondCategoryName}
                 </MDTypography>
                 <MDTypography variant="overline" mt={1}>
-                  {cardInfo.userId}
+                  출제자 :&nbsp;&nbsp;{cardInfo.userNickname}
                 </MDTypography>
               </MDBox>
             </MDBox>
@@ -110,9 +117,17 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
               </MDTypography>
             </MDBox>
             <MDBox mt={2} mb={3}>
-              <MDTypography variant="body2" component="p" color="text">
-                {cardInfo.feedContent}
-              </MDTypography>
+              <pre
+                style={{
+                  maxHeight: "100px",
+                  overflow: "auto",
+                  overflowX: "hidden",
+                }}
+              >
+                <MDTypography variant="body2" component="p" color="text">
+                  {cardInfo.feedContent}
+                </MDTypography>
+              </pre>
             </MDBox>
             <MDBox mt={2} mb={3}>
               <MDBox display="flex" alignItems="center" mt={3} lineHeight={1}>
@@ -123,9 +138,17 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
                 />
               </MDBox>
               {solutionToggle === true && (
-                <MDTypography variant="body2" component="p" color="text">
-                  {cardInfo.cardCommentary}
-                </MDTypography>
+                <pre
+                  style={{
+                    maxHeight: "100px",
+                    overflow: "auto",
+                    overflowX: "hidden",
+                  }}
+                >
+                  <MDTypography variant="body2" component="p" color="text">
+                    {cardInfo.cardCommentary}
+                  </MDTypography>
+                </pre>
               )}
             </MDBox>
             <MDBox mt={2} mb={3}>

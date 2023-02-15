@@ -20,7 +20,8 @@ import ScrapButton from "pages/home/buttons/scrapButton";
 import { apiGetBundleDetail, apiGetLike } from "apis/api/apiHomePage";
 
 // Card Image
-import CardImg from "assets/images/bundler/bundlerRabbit.png";
+import CardImg from "assets/images/bundler/main1.png";
+// import CardImg from "assets/images/bundler/bundlerRabbit.png";
 
 // Import - redux store
 import { useSelector } from "react-redux";
@@ -92,7 +93,7 @@ function HomeBundle({ bundleInfo }) {
               borderRadius="lg"
               shadow="md"
               width="70px"
-              height="70px"
+              height="100px"
               zIndex={1}
             />
             <MDBox mx={2} width="70%">
@@ -102,10 +103,12 @@ function HomeBundle({ bundleInfo }) {
                 fontWeight="bold"
                 sx={{ textAlign: "left" }}
               >
-                [번들]
+                [번들]&nbsp;&nbsp;&nbsp;
+                {bundleInfo.cardBundleQueryDtoList !== null &&
+                  `${bundleInfo.cardBundleQueryDtoList.length}개의 카드 포함`}
               </MDTypography>
               <MDTypography variant="overline" mt={1}>
-                {bundleInfo.bundleWriterNickname}
+                출제자 :&nbsp;&nbsp;{bundleInfo.bundleWriterNickname}
               </MDTypography>
             </MDBox>
           </MDBox>
@@ -124,9 +127,17 @@ function HomeBundle({ bundleInfo }) {
           </MDTypography>
         </MDBox>
         <MDBox mt={2} mb={3}>
-          <MDTypography variant="body2" component="p" color="text">
-            {bundleInfo.feedContent}
-          </MDTypography>
+          <pre
+            style={{
+              maxHeight: "100px",
+              overflow: "auto",
+              overflowX: "hidden",
+            }}
+          >
+            <MDTypography variant="body2" component="p" color="text">
+              {bundleInfo.feedContent}
+            </MDTypography>
+          </pre>
         </MDBox>
         {bundleInfo.cardBundleQueryDtoList !== null && (
           <Button onClick={handleCardListOpen}>번들 상세보기</Button>

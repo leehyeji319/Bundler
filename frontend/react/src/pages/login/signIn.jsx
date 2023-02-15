@@ -1,4 +1,5 @@
-// import { useNavigate } from "react-router";
+// Import - react
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -10,10 +11,19 @@ import { setRefreshToken } from "redux/store/Cookie";
 import { SET_TOKEN } from "redux/store/Auth";
 
 import { Button } from "@mui/material/";
+import MDSnackbar from "components/MDSnackbar";
 
 function SignIn() {
   // useDipatch를 dispatch로 선언한다
   const dispatch = useDispatch();
+
+  // (*) Validation
+  const [valid, setValid] = useState({
+    isValid: false,
+    comment: "",
+    state: "",
+  });
+
   // useForm 사용을 위한 선언
   const {
     register,
@@ -37,13 +47,13 @@ function SignIn() {
 
       navigate("/home");
     } else {
-      alert("로그인정보가 다릅니다");
+      setValid({
+        isValid: true,
+        comment: "로그인 정보를 다시 확인해 주세요",
+        state: "error",
+      });
     }
   };
-
-  // const handleFocus = (event) => {
-  //   console.log("Input element focused");
-  // };
 
   return (
     // 제출 시 이메일과 패스워드가 loginUser이 요청될 때 전송된다
@@ -133,6 +143,15 @@ function SignIn() {
           </div>
         </div>
       </div>
+      <MDSnackbar
+        color={valid.state}
+        icon="notifications"
+        title="알람"
+        content={valid.comment}
+        // dateTime="11 mins ago"
+        open={valid.isValid}
+        close={() => setValid({ valid: false, comment: "", state: "error" })}
+      />
     </form>
   );
 }

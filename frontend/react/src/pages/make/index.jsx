@@ -57,12 +57,6 @@ function Make() {
   // (1) 유형 선택 - 어떤 값은 선택햇는지 저장하는 state 값
   const [form, setForm] = useState("CARD_PROBLEM");
 
-  // (2) category 선택
-  // const [category, setCategory] = useState({
-  //   type_1: "",
-  //   type_2: "",
-  // });
-
   // (3) form value 저장 CARD BUNDLE
   const [values, setValues] = useState({
     userId,
@@ -153,7 +147,14 @@ function Make() {
   // (3) form value 저장 함수
   const handleChangeValues = (event, name, value) => {
     event.preventDefault();
+
+    // let str = "";
+    // str = value.replace(/\r\n/gi, "\n");
+    // str = value.replace(/\\n/gi, "\n");
+    // str = value.replace(/\n/gi, "\n");
+
     setValues({ ...values, [name]: value });
+    // setValues({ ...values, [name]: value });
   };
 
   // (4-1) bundle form 함수
