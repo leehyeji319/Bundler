@@ -145,8 +145,8 @@ public class AuthController {
 		log.info("66666666666");
 
 		int cookieMaxAge = (int)refreshTokenExpiry / 60;
-		CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-		CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
+		// CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+		// CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
 		log.info("77777777");
 
@@ -155,7 +155,7 @@ public class AuthController {
 			.userEmail(user.getUserEmail())
 			.nickname(user.getUserNickname())
 			.accessToken(accessToken.getToken())
-						.refreshToken(refreshToken.getToken())
+			.refreshToken(refreshToken.getToken())
 			.build());
 	}
 
@@ -226,24 +226,24 @@ public class AuthController {
 		long validTime = authRefreshToken.getTokenClaims().getExpiration().getTime() - now.getTime();
 
 		// refresh 토큰 기간이 3일 이하로 남은 경우, refresh 토큰 갱신
-		if (validTime <= THREE_DAYS_MSEC) {
-			// refresh 토큰 설정
-			long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
-
-			authRefreshToken = authTokenProvider.createAuthToken(
-//				appProperties.getAuth().getTokenSecret(),
-				String.valueOf(userId),
-				new Date(now.getTime() + refreshTokenExpiry)
-			);
-
-			// DB에 refresh 토큰 업데이트
-			userRefreshToken.setRefreshToken(authRefreshToken.getToken());
-			userRefreshToken = userRefreshTokenRepository.save(userRefreshToken);
-
-			int cookieMaxAge = (int)refreshTokenExpiry / 60;
-			CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-			CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
-		}
+// 		if (validTime <= THREE_DAYS_MSEC) {
+// 			// refresh 토큰 설정
+// 			long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
+//
+// 			authRefreshToken = authTokenProvider.createAuthToken(
+// //				appProperties.getAuth().getTokenSecret(),
+// 				String.valueOf(userId),
+// 				new Date(now.getTime() + refreshTokenExpiry)
+// 			);
+//
+// 			// DB에 refresh 토큰 업데이트
+// 			userRefreshToken.setRefreshToken(authRefreshToken.getToken());
+// 			userRefreshToken = userRefreshTokenRepository.save(userRefreshToken);
+//
+// 			int cookieMaxAge = (int)refreshTokenExpiry / 60;
+// 			CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+// 			CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
+// 		}
 
 		User u = userRepository.findByUserId(userId).orElseThrow();
 
