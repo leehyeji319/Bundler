@@ -51,6 +51,9 @@ public class BundleService {
 		User writerUser = userRepository.findById(requestDto.getUserId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 유저가 존재하지 않습니다. userId= " + requestDto.getUserId()));
 
+		String lineBreak = requestDto.getFeedContent().replace("\r\n", "<br>");
+		requestDto.setFeedContent(lineBreak);
+
 		// Integer size = validateFeedTitleAlreadyExistInUserBundle(requestDto.getFeedTitle());
 		// if (size > 0) {
 		// 	requestDto.setFeedTitle(requestDto.getFeedTitle() + "+" + size);
