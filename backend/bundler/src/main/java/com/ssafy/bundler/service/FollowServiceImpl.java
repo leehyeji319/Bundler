@@ -55,6 +55,7 @@ public class FollowServiceImpl implements FollowService {
 						.userProfileImageUrl(f.getFollowTo().getUserProfileImage())
 						.userIntroduction(f.getFollowTo().getUserIntroduction())
 						.userId(f.getFollowToId())
+						.isFollowBack(true)
 						.build());
 			});
 

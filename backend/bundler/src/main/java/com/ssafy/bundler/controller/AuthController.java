@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,9 @@ import com.ssafy.bundler.dto.JwtTokenDto;
 import com.ssafy.bundler.dto.UserDto;
 import com.ssafy.bundler.dto.user.LoginRequestDto;
 import com.ssafy.bundler.dto.user.SignupRequestDto;
+import com.ssafy.bundler.exception.EntityNotFoundException;
+import com.ssafy.bundler.exception.ErrorCode;
+import com.ssafy.bundler.exception.LoginFailedException;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.service.AuthService;
@@ -50,14 +54,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthController {
 
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 	private final AppProperties appProperties;
 	private final AuthTokenProvider authTokenProvider;
 
 //	@Qualifier(value = "customAuthenticationManager")
 
-	private AuthenticationManager customAuthenticationManager;
+	// private AuthenticationManager customAuthenticationManager;
 	private final UserRepository userRepository;
 	private final UserRefreshTokenRepository userRefreshTokenRepository;
+
 	private final AuthService authService;
 
 	// @Autowired
@@ -81,14 +88,20 @@ public class AuthController {
 		log.info(authRequestDto.getEmail());
 
 		User user = userRepository.findOneByUserEmail(authRequestDto.getEmail())
-			.orElseThrow(() -> new UsernameNotFoundException("유저가 존재하지 않습니다."));
+			.orElseThrow(() -> new LoginFailedException("해당 email을 가진 유저가 없음."));
 
-		log.info("1111111");
+		log.info("user.getUserPassword() : " + user.getUserPassword());
+		log.info("bCryptPasswordEncoder.encode(authRequestDto.getPassword()) : " + bCryptPasswordEncoder.encode(authRequestDto.getPassword()));
+		log.info("authRequestDto.getPassword() : " + authRequestDto.getPassword());
 
-//		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//			authRequestDto.getEmail(),
-//			authRequestDto.getPassword()
-//		));
+		if (!bCryptPasswordEncoder.matches(authRequestDto.getPassword(), user.getUserPassword())) {
+			throw new LoginFailedException("비밀번호가 일치하지 않음.");
+		}
+
+		//		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+		//			authRequestDto.getEmail(),
+		//			authRequestDto.getPassword()
+		//		));
 
 		UserPrincipal userPrincipal = UserPrincipal.create(user);
 
@@ -99,13 +112,9 @@ public class AuthController {
 //		));
 //		authentication.setAuthenticated(true);
 
-		log.info("22222222");
-
 		String userEmail = authRequestDto.getEmail();
 //		SecurityContextHolder.getContext().setAuthentication(authentication);
 //		authentication.setAuthenticated(true);
-
-		log.info("333333");
 
 		Date now = new Date();
 		AuthToken accessToken = authTokenProvider.createAuthToken(
@@ -114,16 +123,12 @@ public class AuthController {
 			new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
 		);
 
-		log.info("4444444444");
-
 		long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 		AuthToken refreshToken = authTokenProvider.createAuthToken(
 //			appProperties.getAuth().getTokenSecret(),
 			String.valueOf(user.getUserId()),
 			new Date(now.getTime() + refreshTokenExpiry)
 		);
-
-		log.info("55555555");
 
 		// userEmail refresh token 으로 DB 확인
 		Optional<UserRefreshToken> userRefreshToken = userRefreshTokenRepository.findByUser_UserEmail(userEmail);
@@ -142,21 +147,18 @@ public class AuthController {
 			userRefreshTokenRepository.saveAndFlush(newRefreshToken);
 		}
 
-		log.info("66666666666");
-
-		int cookieMaxAge = (int)refreshTokenExpiry / 60;
-		CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-		CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
-
-		log.info("77777777");
+		// int cookieMaxAge = (int)refreshTokenExpiry / 60;
+		// CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+		// CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
 
 		return ResponseEntity.ok(JwtTokenDto.builder()
 			.userId(user.getUserId())
 			.userEmail(user.getUserEmail())
 			.nickname(user.getUserNickname())
 			.accessToken(accessToken.getToken())
-						.refreshToken(refreshToken.getToken())
-			.build());
+			.refreshToken(refreshToken.getToken())
+			.build()
+		);
 	}
 
 	// @GetMapping("/refresh")
@@ -226,24 +228,24 @@ public class AuthController {
 		long validTime = authRefreshToken.getTokenClaims().getExpiration().getTime() - now.getTime();
 
 		// refresh 토큰 기간이 3일 이하로 남은 경우, refresh 토큰 갱신
-		if (validTime <= THREE_DAYS_MSEC) {
-			// refresh 토큰 설정
-			long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
-
-			authRefreshToken = authTokenProvider.createAuthToken(
-//				appProperties.getAuth().getTokenSecret(),
-				String.valueOf(userId),
-				new Date(now.getTime() + refreshTokenExpiry)
-			);
-
-			// DB에 refresh 토큰 업데이트
-			userRefreshToken.setRefreshToken(authRefreshToken.getToken());
-			userRefreshToken = userRefreshTokenRepository.save(userRefreshToken);
-
-			int cookieMaxAge = (int)refreshTokenExpiry / 60;
-			CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-			CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
-		}
+// 		if (validTime <= THREE_DAYS_MSEC) {
+// 			// refresh 토큰 설정
+// 			long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
+//
+// 			authRefreshToken = authTokenProvider.createAuthToken(
+// //				appProperties.getAuth().getTokenSecret(),
+// 				String.valueOf(userId),
+// 				new Date(now.getTime() + refreshTokenExpiry)
+// 			);
+//
+// 			// DB에 refresh 토큰 업데이트
+// 			userRefreshToken.setRefreshToken(authRefreshToken.getToken());
+// 			userRefreshToken = userRefreshTokenRepository.save(userRefreshToken);
+//
+// 			int cookieMaxAge = (int)refreshTokenExpiry / 60;
+// 			CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+// 			CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
+// 		}
 
 		User u = userRepository.findByUserId(userId).orElseThrow();
 
