@@ -113,7 +113,7 @@ const apiPostComment = async (params) => {
 // 댓글 Update
 const apiPutComment = async (commentId, comment) => {
   try {
-    const response = await api.put(`${FEED_CONTROLLER}/comment/${commentId}`, comment);
+    const response = await api.put(`${FEED_CONTROLLER}/comment/${commentId}`, { content: comment });
     return response;
   } catch (error) {
     return error;
