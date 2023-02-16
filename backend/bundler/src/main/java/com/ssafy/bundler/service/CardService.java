@@ -87,6 +87,10 @@ public class CardService {
 		Card saveCard = cardRepository.save(requestDto.toEntity(writerUser, category));
 		Long savedFeedId = saveCard.getFeedId();
 
+		// String lineBreak = requestDto.getFeedContent().replace("\r\n", "<br>");
+		// requestDto.setFeedContent(lineBreak);
+
+
 		// if (requestDto.getCardType() == "CARD_LINK") {
 		// 	saveLinkCard(savedFeedId);
 		// }

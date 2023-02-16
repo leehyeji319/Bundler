@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import axios from "axios";
 
 // @mui material components
@@ -20,15 +20,18 @@ function SignUpTemplate() {
   const [confirmPassword, setConfirmPassword] = useState("");
   // setOneline 함수로 oneline 대응 하는 값을 변경할 수 있게 useState 생성
   const [userIntroduction, setOneline] = useState("");
+  // setAsterisk 함수로 비밀번호 확인시 *을 \*로 바꾸어 확인하기 위한 값을 변경할 수 있게 useState 생성
+  const [asterisk, setAsterisk] = useState("");
+
+  useEffect(() => {
+    setAsterisk(userPassword.replace(/\*/g, "\\*"));
+  }, [userPassword]);
 
   // signUp 함수를 실행하면
   const signUp = () => {
     // 아래와 같은 조건으로 axios 보냄
     axios({
-      // 서버용
-      url: "https://i8a810.p.ssafy.io/api/v1/signup",
-      // 시험용
-      // url: "http://localhost:8087/api/v1/signup",
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/signup`,
       method: "POST",
       withCredentials: true,
       data: {
@@ -66,6 +69,10 @@ function SignUpTemplate() {
               type="text"
               pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]"
               placeholder="이메일을 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "이메일을 입력해주세요")}
               required="required"
               id="Email"
               value={userEmail}
@@ -76,15 +83,16 @@ function SignUpTemplate() {
         {/* 닉네임 받기 */}
         <div className="signupMargin">
           <label htmlFor="nickname">
-            &nbsp;닉네임
-            <p>
-              (영문)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </p>
+            &nbsp;닉네임(영문)
             <input
               className="inputinfo"
               type="text"
               pattern="^([A-Za-z0-9]).{1,20}$"
               placeholder="닉네임을 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "닉네임을 입력해주세요")}
               required="required"
               id="nickname"
               value={userNickname}
@@ -95,16 +103,16 @@ function SignUpTemplate() {
         {/* 비밀번호 받기 */}
         <div className="signupMargin">
           <label htmlFor="password">
-            &nbsp;비밀번호
-            <p>
-              (8자 이상 특수문자 1개
-              이상)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </p>
+            &nbsp;비밀번호(8자 이상 특수문자 1개 이상)
             <input
               className="inputinfo"
               type="password"
               pattern="^([A-Za-z0-9])(?=.*[!@#$%^&*()]).{7,20}$"
               placeholder="비밀번호를 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "비밀번호를 입력해주세요")}
               required="required"
               id="password"
               value={userPassword}
@@ -119,8 +127,12 @@ function SignUpTemplate() {
             <input
               className="inputinfo"
               type="password"
-              pattern={userPassword}
+              pattern={asterisk}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "비밀번호를 다시 한 번 입력해주세요")}
               required="required"
               id="confirmPassword"
               value={confirmPassword}
@@ -136,6 +148,10 @@ function SignUpTemplate() {
               className="inputinfo"
               type="text"
               placeholder="한 줄 소개를 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "한 줄 소개를 입력해주세요")}
               id="oneline"
               value={userIntroduction}
               onChange={(e) => setOneline(e.target.value)}

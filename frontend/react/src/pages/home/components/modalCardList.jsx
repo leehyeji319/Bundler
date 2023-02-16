@@ -1,7 +1,7 @@
 // Import react
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 // @mui material components
 import { Card, Modal } from "@mui/material";
@@ -16,7 +16,10 @@ import HomeInput from "pages/home/components/homeInput";
 import HomeCommentList from "pages/home/components/homeCommentList";
 
 // Import - axios
-import { apiPostComment } from "apis/api/apiHomePage";
+import { apiGetCardDetail, apiPostComment } from "apis/api/apiHomePage";
+
+// Import - redux action
+import actBundleCardId from "redux/actions/actionFeed";
 
 function ModalCardList({
   open,
@@ -27,8 +30,9 @@ function ModalCardList({
   commentList,
 }) {
   // Data - global
-  const { loginInfo } = useSelector((state) => state.homeReducer);
-
+  const dispatch = useDispatch();
+  const { bundleCardId } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
   // Data - local
   const columnList = [
     { Header: "유형", accessor: "firstCategoryName", width: "20%" },
@@ -37,22 +41,19 @@ function ModalCardList({
   ];
 
   // useState - card Detail Information
-  const [cardDetail, setCardDetail] = useState({
-    feedType: "CARD",
-    cardId: 0,
-    cardImage: "",
-    firstCategoryName: "",
-    userId: 1,
-    feedTitle: "",
-    feedContent: "",
-    cardDescription: "",
-    solution: "",
-    answer: "",
-    commentList: [{ id: 0, name: "", reply: "" }],
-  });
+  // const [targetCardId, setTargetCardId] = useState(-1);
+  const [cardDetail, setCardDetail] = useState({});
   const [cardOpenModal, setCardOpenModal] = useState(false);
   const handleDetailCardOpen = () => setCardOpenModal(true);
   const handleDetailCardClose = () => setCardOpenModal(false);
+
+  // 댓글 저장
+  const [isCommentListOpen, setIsCommentListOpen] = useState(false);
+
+  // 댓글 이모티콘 클릭 시, commentList 설정
+  const isCommentOpen = (onoff) => {
+    setIsCommentListOpen(onoff);
+  };
 
   // Function
   const handleBundleCloseModal = (e) => {
@@ -60,10 +61,32 @@ function ModalCardList({
     handleCardClose();
   };
 
-  // function
-  const handleSelectedCard = (item) => {
-    console.log(item);
-    setCardDetail(item);
+  // api로 카드 detail 정보 가져오기
+  const handleOpen = async () => {
+    // console.log(bundleCardId);
+    await apiGetCardDetail(bundleCardId)
+      .then(({ data }) => {
+        setCardDetail(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    handleDetailCardOpen(); // 카드 모달 상세 페이지 열기
+  };
+
+  // List 클릭 시, 해당 카드의 상세정보 가져오고 모달 창으로 띄우기
+  const handleSelectedCard = async (item) => {
+    dispatch(actBundleCardId(item.cardId));
+
+    await apiGetCardDetail(item.cardId)
+      .then(({ data }) => {
+        setCardDetail(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     handleDetailCardOpen();
   };
 
@@ -72,13 +95,11 @@ function ModalCardList({
     const params = {
       targetFeedId: bundleId,
       content: comment.inputData,
-      userId: loginInfo.userId,
+      userId,
     };
-    console.log(params);
 
     await apiPostComment(params)
-      .then(async ({ data }) => {
-        console.log(data.message);
+      .then(async () => {
         handleCommetList(); // 댓글 목록 다시 불러오기
       })
       .catch((error) => {
@@ -105,6 +126,7 @@ function ModalCardList({
       <>
         <ModalDetail
           open={cardOpenModal}
+          handleOpen={handleOpen}
           handleClose={handleDetailCardClose}
           cardInfo={cardDetail}
         />
@@ -121,8 +143,16 @@ function ModalCardList({
               />
             </MDBox>
             <MDBox p={3}>
-              <HomeInput handleComment={handleComment} />
-              <HomeCommentList handleCommetList={handleCommetList} commentList={commentList} />
+              <HomeInput
+                feedCommentCnt={commentList}
+                handleComment={handleComment}
+                isCommentOpen={isCommentOpen}
+              />
+              <HomeCommentList
+                isCommentListOpen={isCommentListOpen}
+                handleCommetList={handleCommetList}
+                commentList={commentList}
+              />
             </MDBox>
           </Card>
         </Modal>

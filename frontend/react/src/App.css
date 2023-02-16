@@ -40,9 +40,12 @@ input {
 p {
   font-style: var(--font-NanumSquareRsoundB);
   font-family: var(--font-NanumSquareRoundB);
-  color: white;
+  color: rgb(48, 48, 48);
 }
 #bundlerBtn {
   font-style: var(--font-NanumSquareRsoundB);
   font-family: var(--font-NanumSquareRoundB);
+}
+#searchfont {
+  color: rgb(57, 57, 57);
 }

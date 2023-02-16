@@ -15,21 +15,21 @@ import MDTypography from "components/MDTypography";
 // Import Custom Component
 import HomeInput from "pages/home/components/homeInput";
 import HomeCommentList from "pages/home/components/homeCommentList";
-import CardImg from "assets/images/bundler/bundler_rabbit_3.png";
+import CardImg from "assets/images/bundler/main4.png";
 
 // Import - axios
 import { apiPostComment } from "apis/api/apiHomePage";
 // import { apiGetCardDetail, apiPostComment } from "apis/api/apiHomePage";
 
 function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
   // 토글 버튼
   const [solutionToggle, setSolutionToggle] = useState(false);
   const [mySolutionToggle, setMySolutionToggle] = useState(false);
   const [mySolution, setMySolution] = useState("");
 
   // 댓글 저장
-  // const [commentList, setCommentList] = useState([]);
+  const [isCommentListOpen, setIsCommentListOpen] = useState(false);
 
   const handleMyAnswerChange = (e) => {
     e.preventDefault();
@@ -46,18 +46,21 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
     const params = {
       targetFeedId: cardInfo.cardId,
       content: comment.inputData,
-      userId: loginInfo.userId,
+      userId,
     };
-    console.log(params);
 
     await apiPostComment(params)
-      .then(async ({ data }) => {
-        console.log(data.message);
+      .then(async () => {
         handleOpen(); // 댓글 목록 다시 불러오기
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  // 댓글 이모티콘 클릭 시, commentList 설정
+  const isCommentOpen = (onoff) => {
+    setIsCommentListOpen(onoff);
   };
 
   const style = {
@@ -66,13 +69,16 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "75%",
-    bgcolor: "#152744",
+    bgcolor: "transparent",
+    border: "none",
     boxShadow: 24,
-    outline: 10,
+    outline: 0,
     borderRadius: 5,
+    mb: 3,
+    maxWidth: 800,
   };
   return (
-    <Card sx={{ ml: 10, mb: 3, maxWidth: 800 }}>
+    <Card>
       <Modal open={open} onClose={handleCloseModal}>
         <Card sx={style}>
           <MDBox p={3} bgColor="#152744">
@@ -83,35 +89,52 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
                 alt={CardImg}
                 borderRadius="lg"
                 shadow="md"
-                width="10%"
-                height="10%"
+                width="8%"
                 position="relative"
                 display="inline-block"
                 zIndex={1}
               />
               <MDBox display="inline-block" mx={2}>
-                <MDTypography variant="h3" textTransform="capitalize" fontWeight="bold">
-                  {cardInfo.firstCategoryName}
+                <MDTypography
+                  variant="h4"
+                  textTransform="capitalize"
+                  fontWeight="bold"
+                  sx={{ textAlign: "left" }}
+                >
+                  [카드]&nbsp;&nbsp;&nbsp;{cardInfo.firstCategoryName}
+                </MDTypography>
+                <MDTypography variant="h6" textTransform="capitalize" sx={{ textAlign: "left" }}>
+                  {cardInfo.secondCategoryName}
                 </MDTypography>
                 <MDTypography variant="overline" mt={1}>
-                  {cardInfo.userId}
+                  출제자 :&nbsp;&nbsp;{cardInfo.userNickname}
                 </MDTypography>
               </MDBox>
             </MDBox>
             <MDBox mt={2} mb={3}>
               <MDTypography
                 display="inline"
-                variant="h6"
+                variant="h5"
                 textTransform="capitalize"
                 fontWeight="bold"
               >
-                {cardInfo.feedTitle}
+                문제&nbsp;&gt;&nbsp;&nbsp;{cardInfo.feedTitle}
               </MDTypography>
             </MDBox>
             <MDBox mt={2} mb={3}>
-              <MDTypography variant="body2" component="p" color="text">
-                {cardInfo.feedContent}
-              </MDTypography>
+              <pre
+                style={{
+                  maxHeight: "100px",
+                  overflow: "auto",
+                  overflowX: "hidden",
+                }}
+              >
+                <MDTypography variant="body2" component="p" color="text">
+                  지문
+                  <br />
+                  {cardInfo.feedContent}
+                </MDTypography>
+              </pre>
             </MDBox>
             <MDBox mt={2} mb={3}>
               <MDBox display="flex" alignItems="center" mt={3} lineHeight={1}>
@@ -122,9 +145,17 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
                 />
               </MDBox>
               {solutionToggle === true && (
-                <MDTypography variant="body2" component="p" color="text">
-                  {cardInfo.cardCommentary}
-                </MDTypography>
+                <pre
+                  style={{
+                    maxHeight: "100px",
+                    overflow: "auto",
+                    overflowX: "hidden",
+                  }}
+                >
+                  <MDTypography variant="body2" component="p" color="text">
+                    {cardInfo.cardCommentary}
+                  </MDTypography>
+                </pre>
               )}
             </MDBox>
             <MDBox mt={2} mb={3}>
@@ -159,8 +190,14 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
               )}
             </MDBox>
             <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
-              <HomeInput handleOpen={handleOpen} handleComment={handleComment} />
+              <HomeInput
+                feedCommentCnt={cardInfo.commentResponseDtoList}
+                handleOpen={handleOpen}
+                handleComment={handleComment}
+                isCommentOpen={isCommentOpen}
+              />
               <HomeCommentList
+                isCommentListOpen={isCommentListOpen}
                 handleCommetList={handleOpen}
                 commentList={cardInfo.commentResponseDtoList}
               />
@@ -176,7 +213,10 @@ ModalDetail.defaultProps = {
   cardInfo: {
     cardId: -1,
     cardType: "",
+    feedTitle: "",
+    feedContent: "",
     firstCategoryId: -1,
+    firstCategoryName: "",
     secondCategoryId: -1,
     secondCategoryName: "",
     cardDescription: "",
@@ -186,6 +226,10 @@ ModalDetail.defaultProps = {
     userNickname: "",
     userProfileImage: "",
     commentResponseDtoList: [],
+    userId: -1,
+    cardScrapCnt: 0,
+    feedLikeCnt: 0,
+    feedCommentCnt: 0,
   },
 };
 
@@ -197,14 +241,14 @@ ModalDetail.propTypes = {
   cardInfo: PropTypes.shape({
     cardId: PropTypes.number,
     cardType: PropTypes.string,
-    userId: PropTypes.number.isRequired,
     firstCategoryId: PropTypes.number,
-    firstCategoryName: PropTypes.string.isRequired,
-    feedTitle: PropTypes.string.isRequired,
-    feedContent: PropTypes.string.isRequired,
-    cardScrapCnt: PropTypes.number.isRequired,
-    feedLikeCnt: PropTypes.number.isRequired,
-    feedCommentCnt: PropTypes.number.isRequired,
+    firstCategoryName: PropTypes.string,
+    feedCommentCnt: PropTypes.number,
+    feedContent: PropTypes.string,
+    feedTitle: PropTypes.string,
+    feedLikeCnt: PropTypes.number,
+    userId: PropTypes.number,
+    cardScrapCnt: PropTypes.number,
     feedType: PropTypes.string,
     secondCategoryId: PropTypes.number,
     userNickname: PropTypes.string,

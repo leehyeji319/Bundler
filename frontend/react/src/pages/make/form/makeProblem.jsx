@@ -1,7 +1,8 @@
-// [Import - React-Redux]
+// Import - react
 import React from "react";
 import PropTypes from "prop-types";
 
+// Import - design mui
 import { Box, TextField, Typography } from "@mui/material";
 
 function MakeProblem({ handleChangeValues }) {
@@ -50,10 +51,8 @@ function MakeProblem({ handleChangeValues }) {
           <Box sx={{ textAlign: "center", mt: 3 }}>내용</Box>
         </Typography>
         <TextField
-          // {...(valid.isFeedContent ? { error: true } : {})}
-          // helperText="필수 입력란"
           multiline
-          rows={4}
+          rows={5}
           required
           id="problem-content"
           type="text"

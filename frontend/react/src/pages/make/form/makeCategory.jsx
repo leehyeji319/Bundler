@@ -1,60 +1,36 @@
-/*
-- 알고리즘 1
-    - 그래프 탐색 (DFS/BFS/MST..) / 트리 / 힙 6
-    - 스택 / 큐 / 정렬 7
-    - 완전탐색 / 이분탐색 8
-    - 탐욕 / 동적계획법 / 해시 9
-    - 기타 (해시 .. 등) 10
-- CS 2
-    - 수학 11
-    - 컴구 12
-    - 운체 13
-    - 자구 14
-    - 넷웤 15
-    - 데베 16
-    - 기타 17
-
-- 직무 3
-    - 면접 18
-    - 백엔드 19
-    - 프론트엔드 20
-    - 인프라 21
-    - DBA 22
-    - 기타 23
-    
-- 언어 4
-    - C / C++ 24
-    - JAVA 25
-    - Python 26
-    - Kotlin 27
-    - JS / HTML / CSS 28
-    - SQL 29
-    - 기타 30
-
-- 기타 5
-    - 기업 분석 31
-    - IT기사 / 트렌드 32
-    - 기타 33
-    - 자격증 34
-*/
-
 // Import - react
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 // Import - @mui/material
 import { Box, Typography, MenuItem, FormControl, Select } from "@mui/material";
+// import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 function MakeCategory({ handleCategory }) {
   const [value, setValue] = useState({
     first: 1,
-    second: 1,
+    second: 6,
   });
 
   const handleChangeOne = (event) => {
     event.preventDefault();
-    handleCategory(event, event.target.value);
-    setValue({ ...value, first: event.target.value, second: event.target.value });
+    const firstCat = event.target.value;
+    let secondCat = 0;
+    if (firstCat === 1) {
+      secondCat = 6;
+    } else if (firstCat === 2) {
+      secondCat = 11;
+    } else if (firstCat === 3) {
+      secondCat = 18;
+    } else if (firstCat === 4) {
+      secondCat = 24;
+    } else if (firstCat === 5) {
+      secondCat = 31;
+    }
+    setValue({
+      first: firstCat,
+      second: secondCat,
+    });
   };
 
   const handleChangeTwo = (event) => {
@@ -77,6 +53,7 @@ function MakeCategory({ handleCategory }) {
           onChange={handleChangeOne}
           autoWidth
           sx={{ height: "50px" }}
+          // IconComponent={<ArrowDropDownIcon />}
         >
           <MenuItem value={1}>알고리즘</MenuItem>
           <MenuItem value={2}>CS</MenuItem>
@@ -96,9 +73,6 @@ function MakeCategory({ handleCategory }) {
             displayEmpty
             sx={{ height: "50px" }}
           >
-            <MenuItem value={1}>
-              <em>None</em>
-            </MenuItem>
             <MenuItem value={6}>그래프 탐색</MenuItem>
             <MenuItem value={7}>스택/큐/정렬</MenuItem>
             <MenuItem value={8}>완전탐색/이분탐색</MenuItem>
@@ -118,9 +92,6 @@ function MakeCategory({ handleCategory }) {
             displayEmpty
             sx={{ height: "50px" }}
           >
-            <MenuItem value={2}>
-              <em>None</em>
-            </MenuItem>
             <MenuItem value={11}>수학</MenuItem>
             <MenuItem value={12}>컴구</MenuItem>
             <MenuItem value={13}>운영체제</MenuItem>
@@ -142,9 +113,6 @@ function MakeCategory({ handleCategory }) {
             displayEmpty
             sx={{ height: "50px" }}
           >
-            <MenuItem value={3}>
-              <em>None</em>
-            </MenuItem>
             <MenuItem value={18}>면접</MenuItem>
             <MenuItem value={19}>백엔드</MenuItem>
             <MenuItem value={20}>프론트엔드</MenuItem>
@@ -165,9 +133,6 @@ function MakeCategory({ handleCategory }) {
             displayEmpty
             sx={{ height: "50px" }}
           >
-            <MenuItem value={4}>
-              <em>None</em>
-            </MenuItem>
             <MenuItem value={24}>C/C++</MenuItem>
             <MenuItem value={25}>JAVA</MenuItem>
             <MenuItem value={26}>Python</MenuItem>
@@ -189,13 +154,10 @@ function MakeCategory({ handleCategory }) {
             displayEmpty
             sx={{ height: "50px" }}
           >
-            <MenuItem value={5}>
-              <em>None</em>
-            </MenuItem>
             <MenuItem value={31}>기업 분석</MenuItem>
             <MenuItem value={32}>IT기사/트렌드</MenuItem>
-            <MenuItem value={33}>기타</MenuItem>
-            <MenuItem value={34}>자격증</MenuItem>
+            <MenuItem value={33}>자격증</MenuItem>
+            <MenuItem value={34}>기타</MenuItem>
           </Select>
         </FormControl>
       )}

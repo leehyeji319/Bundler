@@ -24,9 +24,16 @@ import MDSnackbar from "components/MDSnackbar";
 // Import Custom Component
 import { apiPutCardScrap, apiPostCardScrap, apiDeleteCardScrap } from "apis/api/apiHomePage";
 
-function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundleList }) {
+function ScrapButtonModal({
+  open,
+  handleClose,
+  targetId,
+  bundleList,
+  handleBundleList,
+  isBundleAdded,
+}) {
   // 해당 유저 정보
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
 
   // 어떤 번들을 선택할지 또는 생성할지 선택
   const [selectedBundle, setSelectedBundle] = useState(0);
@@ -87,6 +94,7 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
       await apiDeleteCardScrap(selectedBundle, targetId)
         .then((success) => {
           handleBundleList();
+          isBundleAdded(false);
           setValid({
             isValid: true,
             comment: success.data,
@@ -94,10 +102,11 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
           });
         })
         .catch((error) => {
+          console.log(error);
           setValid({
             isValid: true,
             comment: "카드 삭제 실패",
-            state: error,
+            state: "error",
           });
         });
     };
@@ -115,13 +124,14 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
       // 새로운 번들 생성 시
       const added = async () => {
         const params = {
-          userId: loginInfo.userId,
+          userId,
           feedTitle: createNewBundle.bundleTitle,
           feedContent: createNewBundle.bundleContent,
         };
         await apiPostCardScrap(targetId, params)
           .then((success) => {
             handleBundleList();
+            isBundleAdded(true);
             setValid({
               isValid: true,
               comment: success.data,
@@ -129,10 +139,11 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
             });
           })
           .catch((error) => {
+            console.log(error);
             setValid({
               isValid: true,
               comment: error,
-              state: error,
+              state: "error",
             });
           });
       };
@@ -146,6 +157,7 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
         })
           .then((success) => {
             handleBundleList();
+            isBundleAdded(true);
             setValid({
               isValid: true,
               comment: success.data,
@@ -168,20 +180,23 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
   };
 
   const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "50%",
-    bgcolor: "#152744",
-    boxShadow: 24,
-    outline: 10,
-    borderRadius: 5,
+    width: "70%",
+    bgcolor: "transparent",
+    // borderRadius: 5,
+    borderRadius: "none",
   };
   return (
-    <Card sx={{ ml: 10, mb: 3, minWidth: 200, maxWidth: 800 }}>
+    <Card sx={style}>
       <Modal open={open} onClose={handleCloseModal}>
-        <Card sx={style}>
+        <Card
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "50%",
+          }}
+        >
           <MDBox
             p={3}
             bgColor="#152744"
@@ -269,6 +284,7 @@ ScrapButtonModal.propTypes = {
   targetId: PropTypes.number.isRequired,
   bundleList: PropTypes.arrayOf(PropTypes.object),
   handleBundleList: PropTypes.func.isRequired,
+  isBundleAdded: PropTypes.func.isRequired,
 };
 
 export default ScrapButtonModal;

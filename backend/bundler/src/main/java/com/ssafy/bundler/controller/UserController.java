@@ -1,5 +1,6 @@
 package com.ssafy.bundler.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.bundler.awsS3.FileUploadResponse;
+import com.ssafy.bundler.awsS3.S3Uploader;
+import com.ssafy.bundler.common.ApiResponse;
 import com.ssafy.bundler.config.auth.UserPrincipal;
 import com.ssafy.bundler.domain.User;
+import com.ssafy.bundler.dto.user.FollowerListResponseDto;
 import com.ssafy.bundler.dto.user.FollowingListResponseDto;
 import com.ssafy.bundler.dto.user.Profile;
 import com.ssafy.bundler.dto.user.UserCalendarResponseDto;
@@ -33,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
+	private final S3Uploader s3Uploader;
 
 	@Autowired
 	private FollowService followService;
@@ -48,6 +55,7 @@ public class UserController {
 	// 	return ApiResponse.success("user", user);
 	// }
 
+	@GetMapping("/list")
 	public ResponseEntity<List<Profile>> getUserList(@RequestParam String keyword) {
 		// PrincipalDetails principal = (PrincipalDetails)authentication.getPrincipal();
 		// System.out.println("principal : " + principal.getUser().getUserId());
@@ -109,15 +117,14 @@ public class UserController {
 	@GetMapping("/{userId}/followings")
 	public ResponseEntity<FollowingListResponseDto> getUserFollowingList(@PathVariable Long userId) throws
 		Exception {
-
 		return ResponseEntity.ok(followService.getUserFollowingList(userId));
 	}
 
 	//user의 팔로우 목록 조회
-	// @GetMapping("/{userId}/followers")
-	// public ResponseEntity getUserFollowerList(@PathVariable Long userId) {
-	//
-	// }
+	@GetMapping("/{userId}/followers")
+	public ResponseEntity<FollowerListResponseDto> getUserFollowerList(@PathVariable Long userId) {
+		return ResponseEntity.ok(followService.getUserFollowerList(userId));
+	}
 
 	@GetMapping("/{userId}/mypage")
 	public ResponseEntity<UserMypageResponseDto> mypage(@PathVariable Long userId) {
@@ -129,5 +136,25 @@ public class UserController {
 		mypageResponseDto.userInit(user);
 
 		return ResponseEntity.ok(mypageResponseDto);
+	}
+
+	// ===== 회원 프로필 컨트롤러 ===== //
+	//유저 프로필 업로드
+	@PostMapping("/{user_id}/profilePhoto")
+	public ResponseEntity<?> uploadProfilePhoto(@PathVariable("user_id") Long userId,
+		@RequestParam("profilePhoto") MultipartFile multipartFile) throws
+		IOException {
+		//S3 Bucket 내부에 "/profile"
+
+		FileUploadResponse profile = s3Uploader.uploadProfile(userId, multipartFile, "profile");
+		return ResponseEntity.ok(profile);
+	}
+
+	//유저 프로필 삭제
+	@DeleteMapping("/{user_id}/profilePhoto")
+	public ResponseEntity<?> deleteProfilePhoto(@PathVariable("user_id") Long userId) {
+		s3Uploader.userFileDelete(userId);
+
+		return ResponseEntity.ok("delete success!");
 	}
 }

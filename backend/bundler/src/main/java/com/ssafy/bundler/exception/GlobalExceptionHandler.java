@@ -75,6 +75,7 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ErrorResponse> handleBusinessException(final BusinessException e) {
 		log.error("handleBusinessException", e);
 		e.printStackTrace();
+
 		final ErrorCode errorCode = e.getErrorCode();
 		final ErrorResponse response = ErrorResponse.of(errorCode);
 		return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));

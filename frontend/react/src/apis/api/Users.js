@@ -4,27 +4,24 @@ import axios from "axios";
 const loginUser = async (info) => {
   const { email, password } = info;
   const response = await axios({
-    // 서버용
-    url: "https://i8a810.p.ssafy.io/api/v1/login",
-    // 시험용
-    // url: "http://localhost:8087/api/v1/login",
+    url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/login`,
     method: "POST",
     withCredentials: true,
     data: {
       email,
       password,
     },
-  });
+  })
+    .then((result) => result)
+    .catch((err) => err);
+  console.log(response);
   return response;
 };
 
 // 로그아웃 요청 (헤더에 accessToken 붙여서 요청)
 const logoutUser = async (refreshToken, accessToken) => {
   const response = await axios({
-    // 서버용
-    url: "https://i8a810.p.ssafy.io/api/v1/logout",
-    // 시험용
-    // url: "http://localhost:8087/api/v1/logout",
+    url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/logout`,
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -40,10 +37,7 @@ const logoutUser = async (refreshToken, accessToken) => {
 // 토큰 재요청
 const requestToken = async (refreshToken) => {
   const response = await axios({
-    // 서버용
-    url: "https://i8a810.p.ssafy.io/api/v1/refresh",
-    // 시험용
-    // url: "http://localhost:8087/api/v1/refresh",
+    url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/refresh`,
     method: "POST",
     withCredentials: true,
     data: {

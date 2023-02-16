@@ -132,4 +132,9 @@ public class User extends BaseEntity implements Serializable {
 	// @Builder.Default
 	// private List<Follow> followFromList = new ArrayList<>();
 
+	//==== 비즈니스 로직 ====//
+	public void setUserProfileImage(String userProfileImage) {
+		this.userProfileImage = userProfileImage;
+	}
+
 }

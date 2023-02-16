@@ -11,15 +11,16 @@ import HomeCard from "pages/home/components/homeCard";
 import HomeBundle from "pages/home/components/homeBundle";
 
 // Import - Api
+import axios from "axios";
 import { apiGetFeeds } from "apis/api/apiHomePage";
+import { useSelector } from "react-redux";
 
 function HomeInfiniteScroll() {
   // ============== INIT 선언 ========================
-  // Init declare
-  // const dispatch = useDispatch();
+  const { accessToken } = useSelector((state) => state.authToken);
+  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
   // ================= DATA ===========================
-
   // component - local 데이터
   const [value, setValue] = useState({
     start: 0,
@@ -34,8 +35,8 @@ function HomeInfiniteScroll() {
     // 추가 POST가 true인 경우만 함수 실행
     if (morePosts) {
       await apiGetFeeds()
-        .then((res) => {
-          const nextPosts = res.data.slice(value.start, value.start + value.range);
+        .then(({ sorted }) => {
+          const nextPosts = sorted.slice(value.start, value.start + value.range);
           if (nextPosts.length < value.range) {
             setMorePosts(false);
           }
@@ -55,9 +56,8 @@ function HomeInfiniteScroll() {
   useEffect(() => {
     const initCall = async () => {
       await apiGetFeeds()
-        .then(({ data }) => {
-          console.log(data);
-          const firstPosts = data.slice(value.start, value.start + value.range);
+        .then(({ sorted }) => {
+          const firstPosts = sorted.slice(value.start, value.start + value.range);
           if (firstPosts.length < value.range) {
             setMorePosts(false);
           }
@@ -86,7 +86,7 @@ function HomeInfiniteScroll() {
           <Box sx={{ textAlign: "center" }}>
             <Button type="button" onClick={() => window.location.replace("/home")}>
               <RestartAltIcon fontSize="large" />
-              <Typography>Reloading</Typography>
+              <Typography variant="h6">REFRESH</Typography>
             </Button>
           </Box>
         }
@@ -97,7 +97,7 @@ function HomeInfiniteScroll() {
               <HomeCard cardInfo={post} />
             </div>
           ) : (
-            <div key={post.cardId}>
+            <div key={post.bundleId}>
               <HomeBundle bundleInfo={post} />
             </div>
           )

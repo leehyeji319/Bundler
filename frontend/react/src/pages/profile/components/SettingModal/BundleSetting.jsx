@@ -1,52 +1,63 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-*/
-
-// react-router components
-// import { Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
+import { useState } from "react";
+import axios from "axios";
 
-// @mui material components
-// import Card from "@mui/material/Card";
-// import MuiLink from "@mui/material/Link";
 import Button from "@mui/material/Button";
-// import Modal from "@mui/material/Modal";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-// import MDAvatar from "components/MDAvatar";
 import MDInput from "components/MDInput";
 import { FormControl, Select, InputLabel, MenuItem } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import CardMedia from "@mui/material/CardMedia";
-// import MDButton from "components/MDButton";
 
-// Modal
-// import { useState } from "react";
-// import { Box } from "@mui/material";
-
-// Image
-// import imgty from "../../../../assets/images/Profile/안태윤.png";
-// import imghj from "../../../../assets/images/Profile/이혜지.jpg";
-// import imglion from "../../../../assets/images/Profile/라이언.png";
-// import imgdnk from "../../../../assets/images/Profile/다나카.jpeg";
-// import bunny from "../../../../assets/images/bundler/bundlerRabbit.png";
-
-// Icon
-
-// function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
-// function BundleSetBox({ bundlePrivate, SelectBundleId, bundleTitle, bundleImage, bundleThumtext }) {
-function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
-  // const [bundlePublic, setBundlePublic] = useState("public");
-
-  // const BundleChange = (bundlePub) => {
-  //   setBundlePublic(bundlePub.target.value);
-  // };
+function BundleSetBox({
+  SelectBundleId,
+  bundleTitle,
+  bundleImage,
+  bundleThumtext,
+  bundleThumbnail,
+  bundlePrivate,
+}) {
+  // console.log(SelectBundleId);
+  const [inputValue, setInputValue] = useState(bundleTitle);
+  const [inputValue2, setInputValue2] = useState(bundleThumtext);
+  const [inputValue3, setInputValue3] = useState(bundleThumbnail);
+  const [inputValue4, setInputValue4] = useState(bundlePrivate);
+  const handleChange = (event) => {
+    setInputValue4(event.target.value);
+  };
+  // console.log(bundlePrivate);
+  // console.log(inputValue4);
+  const accessToken =
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ4MTIyM30.NzqeedTY9kzxmcUCRe8S6XjhLIbUB0S4TIY14pbY7LI";
+  const BundleFinish = () => {
+    axios({
+      // url: "http://i8a810.p.ssafy.io:8080/api/v1/bundles/15",
+      url: `http://localhost:8087/api/v1/bundles/${SelectBundleId}`,
+      method: "PUT",
+      withCredentials: true,
+      headers: {
+        // "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data: {
+        bundleThumbnail: inputValue3,
+        bundleThumbnailText: inputValue2,
+        feedTitle: inputValue,
+        feedContent: "찐정보만수정",
+        bundlePrivate: inputValue4,
+      },
+    })
+      .then((result) => {
+        console.log(result);
+        console.log("bundle data fix good");
+        // window.open("/profile");
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log("bundle data fix error");
+      });
+  };
 
   return (
     <MDBox // 전체 외부 설정페이지 박스
@@ -73,8 +84,8 @@ function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
         <MDTypography
           sx={{
             fontSize: "30px",
-            marginLeft: "10%",
-            marginTop: "5%",
+            marginLeft: "5%",
+            marginTop: "2%",
           }}
         >
           번들 상세 설정
@@ -189,6 +200,9 @@ function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
                     width: "600px",
                     marginTop: "10px",
                   }}
+                  defaultValue={bundleTitle}
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
                 >
                   dellojoon
                 </MDInput>
@@ -204,6 +218,25 @@ function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
                     width: "600px",
                     marginTop: "10px",
                   }}
+                  defaultValue={bundleThumtext}
+                  value={inputValue2}
+                  onChange={(e) => setInputValue2(e.target.value)}
+                />
+              </MDBox>
+              <MDBox
+                sx={{
+                  marginTop: "20px",
+                }}
+              >
+                <MDTypography>번들 썸네일 URL</MDTypography>
+                <MDInput
+                  sx={{
+                    width: "600px",
+                    marginTop: "10px",
+                  }}
+                  defaultValue={bundleThumbnail}
+                  value={inputValue3}
+                  onChange={(e) => setInputValue3(e.target.value)}
                 />
               </MDBox>
               <MDBox
@@ -218,15 +251,18 @@ function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     // value={bundlePrivate}
-                    label="public/private"
+                    label={null}
                     // onChange={BundleChange}
                     style={{
                       width: "200px",
                       height: "50px",
                     }}
+                    onChange={handleChange}
+                    value={inputValue4}
                   >
-                    <MenuItem value="public">공개</MenuItem>
-                    <MenuItem value="private">비공개</MenuItem>
+                    <MenuItem value={false}>공개</MenuItem>
+                    {/* <MenuItem value={true}>비공개</MenuItem> */}
+                    <MenuItem>비공개</MenuItem>
                   </Select>
                 </FormControl>
               </MDBox>
@@ -269,6 +305,7 @@ function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
             color: "#000000",
             backgroundColor: "#81D8C3",
           }}
+          onClick={BundleFinish}
         >
           설정 완료
         </Button>
@@ -278,12 +315,14 @@ function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
 }
 
 BundleSetBox.propTypes = {
-  // SelectBundleId: PropTypes.number.isRequired,
+  SelectBundleId: PropTypes.number.isRequired,
   bundleTitle: PropTypes.string.isRequired,
   // bundlePrivate: PropTypes.oneOf(["public", "private"]),
+  bundlePrivate: PropTypes.bool.isRequired,
   // bundleDefault : PropTypes.oneOf(["non", "default"]),
   bundleImage: PropTypes.string.isRequired,
   bundleThumtext: PropTypes.string.isRequired,
+  bundleThumbnail: PropTypes.string.isRequired,
 };
 
 export default BundleSetBox;

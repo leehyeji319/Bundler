@@ -96,13 +96,23 @@ public class FeedController {
 		List<Object> allByKeyword = feedService.findAllByKeyword(keyword);
 		return new ResponseEntity<List<Object>>(allByKeyword, HttpStatus.OK);
 	}
+
 	@PostMapping("/v1/feeds/like/{feed_id}")
-	public ResponseEntity<?> likeFeed(@PathVariable("feed_id") Long feedId,@RequestBody FeedLikeRequestDto feedLikeRequestDto){
+	public ResponseEntity<?> likeFeed(@PathVariable("feed_id") Long feedId,
+		@RequestBody FeedLikeRequestDto feedLikeRequestDto) {
 		FeedLikeResponseDto responseDto = new FeedLikeResponseDto(
-			feedService.likeFeed(feedId,Long.parseLong(String.valueOf(feedLikeRequestDto.getUserId())))
+			feedService.likeFeed(feedId, Long.parseLong(String.valueOf(feedLikeRequestDto.getUserId())))
 		);
-		return new ResponseEntity<FeedLikeResponseDto>(responseDto,HttpStatus.OK);
+		return new ResponseEntity<FeedLikeResponseDto>(responseDto, HttpStatus.OK);
 	}
 
+	@GetMapping("/v1/feeds/like/{feed_id}")
+	public ResponseEntity<?> islikeFeed(@PathVariable("feed_id") Long feedId,
+		@RequestParam("user_id") Long userId) {
+		FeedLikeResponseDto responseDto = new FeedLikeResponseDto(
+			feedService.islikeFeed(feedId, userId)
+		);
+		return new ResponseEntity<FeedLikeResponseDto>(responseDto, HttpStatus.OK);
+	}
 
 }

@@ -7,17 +7,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.bundler.domain.Follow;
 import com.ssafy.bundler.dto.user.FollowProfileDto;
+import com.ssafy.bundler.dto.user.FollowerListResponseDto;
 import com.ssafy.bundler.dto.user.FollowingListResponseDto;
 import com.ssafy.bundler.repository.FollowRepository;
+import com.ssafy.bundler.repository.query.FollowQueryRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class FollowServiceImpl implements FollowService {
 
 	private final FollowRepository followRepository;
+	private final FollowQueryRepository followQueryRepository;
 
 	@Override
 	public void followUser(Long fromUserId, Long toUserId) {
@@ -42,7 +47,7 @@ public class FollowServiceImpl implements FollowService {
 				.userId(follow.get(0).getFollowFromId())
 				.build();
 
-			follow.stream().forEach(f -> {
+			follow.forEach(f -> {
 				followingListResponseDto.addFollowingList(
 					FollowProfileDto.builder()
 						.followId(f.getFollowId())
@@ -50,6 +55,7 @@ public class FollowServiceImpl implements FollowService {
 						.userProfileImageUrl(f.getFollowTo().getUserProfileImage())
 						.userIntroduction(f.getFollowTo().getUserIntroduction())
 						.userId(f.getFollowToId())
+						.isFollowBack(true)
 						.build());
 			});
 
@@ -60,9 +66,34 @@ public class FollowServiceImpl implements FollowService {
 	}
 
 	@Override
-	public Follow getUserFollowerList(Long userId) {
-		// return followRepository.findByFollowToId(userId);
-		return null;
+	public FollowerListResponseDto getUserFollowerList(Long userId) {
+		List<Follow> follow = followQueryRepository.findByFollowToId(userId);
+
+		if (follow != null && follow.size() > 0) {
+			FollowerListResponseDto followerListResponseDto = FollowerListResponseDto.builder()
+				.userId(follow.get(0).getFollowToId())
+				.build();
+
+			follow.forEach(f -> {
+				FollowProfileDto followProfileDto = FollowProfileDto.builder()
+					.followId(f.getFollowId())
+					.userNickname(f.getFollowFrom().getUserNickname())
+					.userProfileImageUrl(f.getFollowFrom().getUserProfileImage())
+					.userIntroduction(f.getFollowFrom().getUserIntroduction())
+					.userId(f.getFollowFromId())
+					.build();
+
+				if (f.getFollowBackId() != null) { //맞팔이면
+					followProfileDto.setFollowBack(true);
+				}
+
+				followerListResponseDto.addFollowerList(followProfileDto);
+			});
+
+			return followerListResponseDto;
+		}
+
+		throw new NullPointerException();
 	}
 
 }
