@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { Box, TextField, Typography } from "@mui/material";
 
 // Imort - custom
-import MakeBundleImageUpload from "pages/make/form/makeBundleImageUpload";
+// import MakeBundleImageUpload from "pages/make/form/makeBundleImageUpload";
 
 function MakeBundle({ selected, handleBundle }) {
   // 부모로 데이터 넘기기
@@ -113,7 +113,7 @@ function MakeBundle({ selected, handleBundle }) {
             />
           </Box>
 
-          <MakeBundleImageUpload />
+          {/* <MakeBundleImageUpload /> */}
         </>
       )}
     </Box>

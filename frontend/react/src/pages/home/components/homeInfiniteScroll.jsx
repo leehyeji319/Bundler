@@ -11,15 +11,16 @@ import HomeCard from "pages/home/components/homeCard";
 import HomeBundle from "pages/home/components/homeBundle";
 
 // Import - Api
+import axios from "axios";
 import { apiGetFeeds } from "apis/api/apiHomePage";
+import { useSelector } from "react-redux";
 
 function HomeInfiniteScroll() {
   // ============== INIT 선언 ========================
-  // Init declare
-  // const dispatch = useDispatch();
+  const { accessToken } = useSelector((state) => state.authToken);
+  axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
   // ================= DATA ===========================
-
   // component - local 데이터
   const [value, setValue] = useState({
     start: 0,
@@ -85,7 +86,7 @@ function HomeInfiniteScroll() {
           <Box sx={{ textAlign: "center" }}>
             <Button type="button" onClick={() => window.location.replace("/home")}>
               <RestartAltIcon fontSize="large" />
-              <Typography>Reloading</Typography>
+              <Typography variant="h6">REFRESH</Typography>
             </Button>
           </Box>
         }
@@ -96,7 +97,7 @@ function HomeInfiniteScroll() {
               <HomeCard cardInfo={post} />
             </div>
           ) : (
-            <div key={post.cardId}>
+            <div key={post.bundleId}>
               <HomeBundle bundleInfo={post} />
             </div>
           )

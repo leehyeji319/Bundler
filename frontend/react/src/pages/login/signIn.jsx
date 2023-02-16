@@ -1,4 +1,5 @@
-// import { useNavigate } from "react-router";
+// Import - react
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -10,10 +11,19 @@ import { setRefreshToken } from "redux/store/Cookie";
 import { SET_TOKEN } from "redux/store/Auth";
 
 import { Button } from "@mui/material/";
+import MDSnackbar from "components/MDSnackbar";
 
 function SignIn() {
   // useDipatch를 dispatch로 선언한다
   const dispatch = useDispatch();
+
+  // (*) Validation
+  const [valid, setValid] = useState({
+    isValid: false,
+    comment: "",
+    state: "",
+  });
+
   // useForm 사용을 위한 선언
   const {
     register,
@@ -37,7 +47,11 @@ function SignIn() {
 
       navigate("/home");
     } else {
-      alert("로그인정보가 다릅니다");
+      setValid({
+        isValid: true,
+        comment: "로그인 정보를 다시 확인해 주세요",
+        state: "error",
+      });
     }
   };
 
@@ -54,6 +68,10 @@ function SignIn() {
               type="text"
               pattern="[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.]+[a-zA-Z]+[.]*[a-zA-Z]"
               placeholder="이메일을 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "이메일을 입력해주세요")}
               required="required"
             />
             <ErrorMessage
@@ -74,6 +92,10 @@ function SignIn() {
               type="password"
               pattern="^([A-Za-z0-9])(?=.*[!@#$%^&*()]).{8,20}$"
               placeholder="비밀번호를 입력해주세요"
+              // eslint-disable-next-line
+              onFocus={(event) => (event.target.placeholder = "")}
+              // eslint-disable-next-line
+              onBlur={(event) => (event.target.placeholder = "비밀번호를 입력해주세요")}
               required="required"
             />
           </label>
@@ -121,6 +143,15 @@ function SignIn() {
           </div>
         </div>
       </div>
+      <MDSnackbar
+        color={valid.state}
+        icon="notifications"
+        title="알람"
+        content={valid.comment}
+        // dateTime="11 mins ago"
+        open={valid.isValid}
+        close={() => setValid({ valid: false, comment: "", state: "error" })}
+      />
     </form>
   );
 }

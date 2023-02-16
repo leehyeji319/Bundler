@@ -31,13 +31,13 @@ function SignOut() {
       <Button
         onClick={() => logout()}
         id="bundlerBtn"
-        className="learn-more2"
+        className="learn-more7"
         sx={{
-          marginTop: "0%",
           bgcolor: "#81D8CF",
           color: "#000000",
           fontSize: "medium",
           fontWeight: "bold",
+          width: "150px",
         }}
         type="button"
       >

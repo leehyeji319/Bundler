@@ -1,5 +1,5 @@
 // Import React
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 // Import mui/style
@@ -13,12 +13,9 @@ import { apiPostBundleScrap } from "apis/api/apiHomePage";
 import { useSelector } from "react-redux";
 
 // scrap Button 상태 - 활성화/비활성화
-function ScrapButton({ cardScrapCnt, feedType, targetId, bundleList, handleBundleList }) {
+function ScrapButtons({ feedType, targetId, bundleList, handleBundleList }) {
   // Data Global
   const { userId } = useSelector((state) => state.authToken);
-
-  // scrap 수 확인
-  const [stateScrapCnt, setStateScarpCnt] = useState(0);
 
   // scrap Button Modal Set
   const [open, setOpen] = useState(false);
@@ -37,15 +34,6 @@ function ScrapButton({ cardScrapCnt, feedType, targetId, bundleList, handleBundl
     e.preventDefault();
     handleOpen(); // modal은 무조건 열리게
     handleBundleList();
-  };
-
-  // isBundleAdded
-  const isBundleAdded = (isAdded) => {
-    if (isAdded) {
-      setStateScarpCnt(stateScrapCnt + 1);
-    } else {
-      setStateScarpCnt(stateScrapCnt - 1);
-    }
   };
 
   // BUNDLE Scrap function
@@ -71,11 +59,6 @@ function ScrapButton({ cardScrapCnt, feedType, targetId, bundleList, handleBundl
     added();
   };
 
-  // scrapCnt 확인
-  useEffect(() => {
-    setStateScarpCnt(cardScrapCnt);
-  }, [cardScrapCnt]);
-
   return (
     <Box className="icons-list">
       <ScrapButtonModal
@@ -84,22 +67,20 @@ function ScrapButton({ cardScrapCnt, feedType, targetId, bundleList, handleBundl
         targetId={targetId}
         bundleList={bundleList}
         handleBundleList={handleBundleList}
-        isBundleAdded={isBundleAdded}
       />
-      {feedType === "CARD" && (
+      {feedType === "CARD" ? (
         <>
           <BookmarkBorderIcon
-            sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
+            sx={{ color: "red", cursor: "pointer", transition: { transform: "300ms ease" } }}
             fontSize="large"
             className="button"
             onClick={handleToggle}
           />
-          <Typography variant="h6" align="center">
-            {stateScrapCnt}
+          <Typography variant="h2" align="center">
+            &nbsp;
           </Typography>
         </>
-      )}
-      {feedType === "BUNDLE" && (
+      ) : (
         <>
           <BookmarkBorderIcon
             sx={{ cursor: "pointer", "&:hover": { transform: "scale(1.2)" } }}
@@ -107,7 +88,7 @@ function ScrapButton({ cardScrapCnt, feedType, targetId, bundleList, handleBundl
             className="button"
             onClick={handleBundleScrap}
           />
-          <Typography variant="h6" align="center">
+          <Typography variant="h2" align="center">
             &nbsp;
           </Typography>
         </>
@@ -125,18 +106,16 @@ function ScrapButton({ cardScrapCnt, feedType, targetId, bundleList, handleBundl
   );
 }
 
-ScrapButton.defaultProps = {
-  cardScrapCnt: 0,
+ScrapButtons.defaultProps = {
   bundleList: [],
   handleBundleList: function async() {},
 };
 
-ScrapButton.propTypes = {
+ScrapButtons.propTypes = {
   feedType: PropTypes.string.isRequired,
   targetId: PropTypes.number.isRequired,
   bundleList: PropTypes.arrayOf(PropTypes.object),
   handleBundleList: PropTypes.func,
-  cardScrapCnt: PropTypes.number,
 };
 
-export default ScrapButton;
+export default ScrapButtons;

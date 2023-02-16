@@ -1,5 +1,5 @@
 // Import react
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -31,8 +31,8 @@ function ModalCardList({
 }) {
   // Data - global
   const dispatch = useDispatch();
-  const { loginInfo, bundleCardId } = useSelector((state) => state.homeReducer);
-
+  const { bundleCardId } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
   // Data - local
   const columnList = [
     { Header: "유형", accessor: "firstCategoryName", width: "20%" },
@@ -47,6 +47,14 @@ function ModalCardList({
   const handleDetailCardOpen = () => setCardOpenModal(true);
   const handleDetailCardClose = () => setCardOpenModal(false);
 
+  // 댓글 저장
+  const [isCommentListOpen, setIsCommentListOpen] = useState(false);
+
+  // 댓글 이모티콘 클릭 시, commentList 설정
+  const isCommentOpen = (onoff) => {
+    setIsCommentListOpen(onoff);
+  };
+
   // Function
   const handleBundleCloseModal = (e) => {
     e.preventDefault();
@@ -55,6 +63,7 @@ function ModalCardList({
 
   // api로 카드 detail 정보 가져오기
   const handleOpen = async () => {
+    // console.log(bundleCardId);
     await apiGetCardDetail(bundleCardId)
       .then(({ data }) => {
         setCardDetail(data);
@@ -67,11 +76,16 @@ function ModalCardList({
   };
 
   // List 클릭 시, 해당 카드의 상세정보 가져오고 모달 창으로 띄우기
-  const handleSelectedCard = (item) => {
+  const handleSelectedCard = async (item) => {
     dispatch(actBundleCardId(item.cardId));
-    // const call = () => setTargetCardId(item.cardId);
-    // call();
-    handleOpen();
+
+    await apiGetCardDetail(item.cardId)
+      .then(({ data }) => {
+        setCardDetail(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     handleDetailCardOpen();
   };
@@ -81,7 +95,7 @@ function ModalCardList({
     const params = {
       targetFeedId: bundleId,
       content: comment.inputData,
-      userId: loginInfo.userId,
+      userId,
     };
 
     await apiPostComment(params)
@@ -92,8 +106,6 @@ function ModalCardList({
         console.log(error);
       });
   };
-
-  useEffect(() => {}, [bundleCardId]);
 
   // custom style
   const style = {
@@ -131,8 +143,16 @@ function ModalCardList({
               />
             </MDBox>
             <MDBox p={3}>
-              <HomeInput handleComment={handleComment} />
-              <HomeCommentList handleCommetList={handleCommetList} commentList={commentList} />
+              <HomeInput
+                feedCommentCnt={commentList}
+                handleComment={handleComment}
+                isCommentOpen={isCommentOpen}
+              />
+              <HomeCommentList
+                isCommentListOpen={isCommentListOpen}
+                handleCommetList={handleCommetList}
+                commentList={commentList}
+              />
             </MDBox>
           </Card>
         </Modal>

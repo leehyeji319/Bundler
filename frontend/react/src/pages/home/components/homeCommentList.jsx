@@ -12,9 +12,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 
-function HomeCommentList({ handleCommetList, commentList }) {
+function HomeCommentList({ isCommentListOpen, handleCommetList, commentList }) {
   // =============================== Data ===============================
-  const { loginInfo } = useSelector((state) => state.homeReducer);
+  const { userId } = useSelector((state) => state.authToken);
 
   // 댓글 수정 boolean 값
   const [edit, setEdit] = useState({
@@ -88,6 +88,7 @@ function HomeCommentList({ handleCommetList, commentList }) {
       }}
     >
       {commentList !== null &&
+        isCommentListOpen === true &&
         commentList.map((comment) => (
           <li key={comment.commentId}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -112,7 +113,7 @@ function HomeCommentList({ handleCommetList, commentList }) {
                   </MDTypography>
                 )}
               </Box>
-              {loginInfo.userId === comment.commentWriterId && (
+              {userId === comment.commentWriterId && (
                 <Box>
                   {edit.id === comment.commentId ? (
                     <Box>
@@ -155,6 +156,7 @@ HomeCommentList.defaultProps = {
 };
 
 HomeCommentList.propTypes = {
+  isCommentListOpen: PropTypes.bool.isRequired,
   handleCommetList: PropTypes.func.isRequired,
   commentList: PropTypes.arrayOf(PropTypes.object),
 };

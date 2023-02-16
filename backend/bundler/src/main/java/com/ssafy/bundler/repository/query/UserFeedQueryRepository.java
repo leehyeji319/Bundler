@@ -46,7 +46,7 @@ public class UserFeedQueryRepository {
 		FollowingListResponseDto userFollowingList = followService.getUserFollowingList(userId);
 		List<FollowProfileDto> followingList = userFollowingList.getFollowingList();
 
-		List<Long> collect = followingList.stream().map(f -> f.getFollowId()).collect(Collectors.toList());
+		List<Long> collect = followingList.stream().map(f -> f.getUserId()).collect(Collectors.toList());
 
 		List<CardResponseDto> result = findCards(collect);
 
@@ -74,7 +74,7 @@ public class UserFeedQueryRepository {
 					+ " c.cardScrapCnt, c.feedLikeCnt, c.feedCommentCnt)"
 					+ " from Card c"
 					+ " join c.writer w"
-					+ " where c.writer in :followingUserIds", CardResponseDto.class)
+					+ " where w.userId in :followingUserIds", CardResponseDto.class)
 			.setParameter("followingUserIds", followingUserIds)
 			.getResultList();
 	}
@@ -129,7 +129,7 @@ public class UserFeedQueryRepository {
 					+ " from Bundle b"
 					+ " join b.writer w"
 					+ " where b.isBundlePrivate = :isBundlePrivate"
-					+ " and b.writer in :followingUserIds", BundleResponseDto.class)
+					+ " and w.userId in :followingUserIds", BundleResponseDto.class)
 			.setParameter("isBundlePrivate", false)
 			.setParameter("followingUserIds", followingUserIds)
 			.getResultList();
@@ -216,7 +216,7 @@ public class UserFeedQueryRepository {
 					+ " join b.writer w"
 					+ " where b.isBundlePrivate = :isBundlePrivate"
 					+ " and w.userId = :userId ", BundleResponseDto.class)
-			.setParameter("isBundlePrivate", 0)
+			.setParameter("isBundlePrivate", false)
 			.setParameter("userId", userId)
 			.getResultList();
 	}
