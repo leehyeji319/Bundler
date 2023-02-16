@@ -50,8 +50,9 @@ function Profile() {
   // 프로필 axios를 통해 먼저 렌더링
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/mypage`, {
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/mypage`, , {
         headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((res) => {
         setProfileData(res.data);
         setCalendar(res.data.userCalendar);
@@ -112,7 +113,9 @@ function Profile() {
   // const [StatError, setStatError] = useState();
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/stats`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/stats`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((res2) => {
         setStatisticData(res2.data);
         // setStatError("");
