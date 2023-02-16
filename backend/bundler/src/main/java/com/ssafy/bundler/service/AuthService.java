@@ -1,10 +1,10 @@
 package com.ssafy.bundler.service;
 
-import com.ssafy.bundler.config.auth.AuthToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.bundler.config.auth.AuthToken;
 import com.ssafy.bundler.config.auth.AuthTokenProvider;
 import com.ssafy.bundler.config.jwt.JwtTokenProvider;
 import com.ssafy.bundler.config.properties.AppProperties;
@@ -17,7 +17,6 @@ import com.ssafy.bundler.exception.UserAlreadyExistsException;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
 
-import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +34,8 @@ public class AuthService {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final static long THREE_DAYS_MSEC = 259200000;
 	private final static String REFRESH_TOKEN = "refreshToken";
+
+	private final FollowService followService;
 
 	// 요청한 리프레시 토큰만 정상적인 토큰이라면, 엑세스 토큰만 새로 발급하여 클라이언트에게 돌려준다.
 	// 이 때, 리프레시 토큰은 추가적으로 DB에 저장한다.
@@ -86,8 +87,10 @@ public class AuthService {
 			.userRole(UserRole.USER)
 			.build();
 
-		userRepository.save(user);
+		User save = userRepository.save(user);
 
+		followService.followUser(save.getUserId(), 1L);
+		
 		// 캐시에 저장
 		UserDto userDto = UserDto.toEntity(user);
 
