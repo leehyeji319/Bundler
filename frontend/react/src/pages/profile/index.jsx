@@ -1,14 +1,7 @@
-/*
-기본 홈 Page 구성  
-*/
-// // Mui-Material components
-// import { FormControl, FormControlLabel, FormLabel, RadioGroup, Radio } from "@mui/material";
-// @mui material components
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 // import PropTypes from "prop-types";
 
-// [Import - React Basic] react && props && mui
 // import React from "react";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -34,8 +27,8 @@ import SelectedTab from "./Form/TabSelect";
 function Profile() {
   const { user } = useParams();
   const userId = useSelector((state) => state.authToken.userId);
-
-  console.log("USER", user);
+  // console.log(userId);
+  // console.log("USER", user);
   // const pageUser = 1;
   // const pageUser = user2.user;
   const pageUser = user !== undefined ? user : userId;
@@ -46,7 +39,7 @@ function Profile() {
     setTabValue(tabevent.target.value);
   };
 
-  console.log(userId);
+  // console.log(userId);
 
   const [profileDataGet, setProfileData] = useState([]);
   const [CalendarData, setCalendar] = useState([]);
@@ -54,8 +47,7 @@ function Profile() {
   // 프로필 axios를 통해 먼저 렌더링
   useEffect(() => {
     axios
-      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/mypage")
-      .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/mypage`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/mypage`)
       .then((res) => {
         setProfileData(res.data);
         setCalendar(res.data.userCalendar);
@@ -72,14 +64,16 @@ function Profile() {
   const [BundleData, setBundleData] = useState([]);
 
   // 어세스토큰 5분마다 리셋
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ5MDkzNn0.S9flvhHYhCknKjABviz_CspCYGFQ2jTTlMWWh5fMPMw";
+  const accessToken = useSelector((state) => state.authToken.accessToken);
+  console.log(accessToken);
+  // console.log(typeof accessToken);
+  // "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ5MDkzNn0.S9flvhHYhCknKjABviz_CspCYGFQ2jTTlMWWh5fMPMw";
   // -----------------------------------------------------------------
   useEffect(() => {
     axios
       // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
       // .get(`http://i8a810.p.ssafy.io:8080/api/v4/users/${pageUser}/feeds/bundles`, {
-      .get(`http://localhost:8087/api/v4/users/${pageUser}/feeds/bundles`, {
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v4/users/${pageUser}/feeds/bundles`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res3) => {
@@ -92,7 +86,7 @@ function Profile() {
       });
   }, []);
 
-  console.log(BundleData);
+  // console.log(BundleData);
 
   // -------------------- 카드탭 Axios ----------------------------
   const [CardData, setCardData] = useState([]);
@@ -100,7 +94,7 @@ function Profile() {
     axios
       // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
       // .get(`http://i8a810.p.ssafy.io:8080/api/v4/users/${pageUser}/feeds/bundles`, {
-      .get(`http://localhost:8087/api/v5/users/${pageUser}/feeds/cards`, {
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v5/users/${pageUser}/feeds/cards`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res4) => {
@@ -115,7 +109,7 @@ function Profile() {
       });
   }, []);
 
-  console.log(CardData);
+  // console.log(CardData);
 
   // ------------------- 통계탭 Axios -------------------------------
   // -----stat만 axios 하나로 받고, 프로필이 json 파일 일때의 axios (23.02.09)-----
@@ -123,8 +117,7 @@ function Profile() {
   // const [StatError, setStatError] = useState();
   useEffect(() => {
     axios
-      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
-      .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/stats`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/stats`)
       .then((res2) => {
         setStatisticData(res2.data);
         // setStatError("");
