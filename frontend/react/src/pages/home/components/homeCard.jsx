@@ -210,39 +210,3 @@ HomeCard.propTypes = {
 };
 
 export default HomeCard;
-
-// HomeCard.propTypes = {
-//   cardInfo: PropTypes.shape({
-//     cardId: PropTypes.number.isRequired,
-//     cardScrapCnt: PropTypes.number.isRequired,
-//     feedCommentCnt: PropTypes.number.isRequired,
-//     feedLikeCnt: PropTypes.number.isRequired,
-//     feedType: PropTypes.string.isRequired,
-//     cardType: PropTypes.string.isRequired,
-//     createdAt: PropTypes.string.isRequired,
-//     deleted: PropTypes.bool.isRequired,
-//     firstCategoryId: PropTypes.number.isRequired,
-//     firstCategoryName: PropTypes.string.isRequired,
-//     userId: PropTypes.number.isRequired,
-//     userNickname: PropTypes.string.isRequired,
-//     feedTitle: PropTypes.string.isRequired,
-//     feedContent: PropTypes.string.isRequired,
-//     cardCommentary: PropTypes.string,
-//     cardDescription: PropTypes.string,
-//     linkDescription: PropTypes.string,
-//     linkId: PropTypes.number,
-//     linkImage: PropTypes.string,
-//     linkTitle: PropTypes.string,
-//     linkUrl: PropTypes.string,
-//     secondCategoryId: PropTypes.number,
-//     secondCategoryName: PropTypes.string,
-//     userProfileImage: PropTypes.string,
-//   }),
-//   commentList: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       id: PropTypes.number.isRequired,
-//       name: PropTypes.string.isRequired,
-//       reply: PropTypes.string.isRequired,
-//     }).isRequired
-//   ),
-// };

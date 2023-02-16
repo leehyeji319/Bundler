@@ -28,6 +28,7 @@ import MDTypography from "components/MDTypography";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Modal } from "@mui/material";
+import { useSelector } from "react-redux";
 // import { Box } from "@mui/material";
 
 // Icon
@@ -50,10 +51,13 @@ function MySkill(pageUser) {
   const SkillpageUser = pageUser.pageUser;
   // console.log(pageUser);
   // console.log(SkillpageUser);
+  const accessToken = useSelector((state) => state.authToken.accessToken);
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/area/${SkillpageUser}`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/area/${SkillpageUser}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((res) => {
         // setSkillJobData(res.data);
         setJobData(res.data.job);
@@ -68,10 +72,10 @@ function MySkill(pageUser) {
   }, []);
 
   // console.log(JobDataGet);
-  const userJobNum = JobDataGet.length;
-  console.log(userJobNum);
-  const userSkillNum = SkillDataGet.length;
-  console.log(userSkillNum);
+  // const userJobNum = JobDataGet.length;
+  // console.log(userJobNum);
+  // const userSkillNum = SkillDataGet.length;
+  // console.log(userSkillNum);
 
   return (
     <MDBox
