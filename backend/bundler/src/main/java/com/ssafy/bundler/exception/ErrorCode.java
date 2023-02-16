@@ -14,17 +14,14 @@ public enum ErrorCode {
 	HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 	USER_NOT_FOUND(400, "C007", "검색 결과가 없습니다."),
 
-
-
 	// Member
 	EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
 	LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
+	GITHUB_AUTHENTICATION_TOKEN_INVALID(400, "M003", "오류가 발생했습니다."),
 
 	// Coupon
 	COUPON_ALREADY_USE(400, "CO001", "Coupon was already used"),
-	COUPON_EXPIRE(400, "CO002", "Coupon was already expired")
-
-	;
+	COUPON_EXPIRE(400, "CO002", "Coupon was already expired");
 	private final String code;
 	private final String message;
 	private int status;
@@ -46,6 +43,5 @@ public enum ErrorCode {
 	public int getStatus() {
 		return status;
 	}
-
 
 }

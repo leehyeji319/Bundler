@@ -94,6 +94,14 @@ public class User extends BaseEntity implements Serializable {
 	private String providerEmail;
 
 	@Setter
+	@Column(name = "provider_access_token", nullable = true)
+	private String providerAccessToken;
+
+	@Setter
+	@Column(name = "github_login_name", nullable = true)
+	private String githubLoginName;
+
+	@Setter
 	@Column(name = "github_url", nullable = true)
 	private String githubUrl;
 
