@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import axios from "axios";
 
 // @mui material components
@@ -20,6 +20,12 @@ function SignUpTemplate() {
   const [confirmPassword, setConfirmPassword] = useState("");
   // setOneline 함수로 oneline 대응 하는 값을 변경할 수 있게 useState 생성
   const [userIntroduction, setOneline] = useState("");
+  // setAsterisk 함수로 비밀번호 확인시 *을 \*로 바꾸어 확인하기 위한 값을 변경할 수 있게 useState 생성
+  const [asterisk, setAsterisk] = useState("");
+
+  useEffect(() => {
+    setAsterisk(userPassword.replace(/\*/g, "\\*"));
+  }, [userPassword]);
 
   // signUp 함수를 실행하면
   const signUp = () => {
@@ -121,7 +127,7 @@ function SignUpTemplate() {
             <input
               className="inputinfo"
               type="password"
-              pattern={userPassword}
+              pattern={asterisk}
               placeholder="비밀번호를 다시 한 번 입력해주세요"
               // eslint-disable-next-line
               onFocus={(event) => (event.target.placeholder = "")}
