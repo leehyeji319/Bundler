@@ -90,16 +90,17 @@ public class CardService {
 		// String lineBreak = requestDto.getFeedContent().replace("\r\n", "<br>");
 		// requestDto.setFeedContent(lineBreak);
 
-
 		// if (requestDto.getCardType() == "CARD_LINK") {
 		// 	saveLinkCard(savedFeedId);
 		// }
 
 		//Github push 로직 추가
-		try {
-			fileUploadToGithub(writerUser, saveCard);
-		} catch (IOException e) {
-			throw new BusinessException("Github에서 오류남", ErrorCode.INTERNAL_SERVER_ERROR);
+		if (writerUser.getProviderType() != null) {
+			try {
+				fileUploadToGithub(writerUser, saveCard);
+			} catch (IOException e) {
+				throw new BusinessException("Github에서 오류남", ErrorCode.INTERNAL_SERVER_ERROR);
+			}
 		}
 
 		return savedFeedId;
