@@ -3,6 +3,7 @@ import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -55,6 +56,7 @@ function ProfileCard({
   const [FollowingDataGet, setFollowingData] = useState([]);
   const [FollowerDataGet, setFollowerData] = useState([]);
 
+  const accessToken = useSelector((state) => state.authToken.accessToken);
   // 팔로잉 Axios
   useEffect(() => {
     axios

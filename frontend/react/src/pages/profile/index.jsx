@@ -34,13 +34,13 @@ function Profile() {
   const pageUser = user !== undefined ? user : userId;
   console.log("실제 아이디 : ", pageUser);
   const [tabvalue, setTabValue] = useState("cardTab");
-  
+
   const handleChangeTab = (tabevent) => {
     setTabValue(tabevent.target.value);
   };
 
   // console.log(userId);
-  
+
   const [profileDataGet, setProfileData] = useState([]);
   const [CalendarData, setCalendar] = useState([]);
   const [CalendarDate, setDate] = useState([]);
@@ -50,7 +50,7 @@ function Profile() {
   // 프로필 axios를 통해 먼저 렌더링
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/mypage`, , {
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/mypage`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res) => {
