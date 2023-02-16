@@ -26,12 +26,14 @@ import SelectedTab from "./Form/TabSelect";
 // ---------------------------------------------------------------------------------------------------------------------
 function Profile() {
   const { user } = useParams();
-  const userId = useSelector((state) => state.authToken.userId);
-  // console.log(userId);
+  const userId2 = useSelector((state) => state.authToken.userId);
+  console.log("userId", userId2);
+  console.log("user", user)
   // console.log("USER", user);
   // const pageUser = 1;
   // const pageUser = user2.user;
-  const pageUser = user !== undefined ? user : userId;
+  const pageUser = user !== undefined ? user : userId2;
+  console.log("pageUser", pageUser)
   const [tabvalue, setTabValue] = useState("cardTab");
 
   const handleChangeTab = (tabevent) => {
