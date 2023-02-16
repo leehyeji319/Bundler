@@ -129,7 +129,9 @@ public class UserController {
 
 	@GetMapping("/{userId}/mypage")
 	public ResponseEntity<UserMypageResponseDto> mypage(@PathVariable Long userId) {
-		UserPrincipal userPrincipal = (UserPrincipal)SecurityContextHolder.getContext().getAuthentication();
+		org.springframework.security.core.userdetails.User userPrincipal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
+			.getAuthentication()
+			.getPrincipal();
 
 		UserCalendarResponseDto calendar = userService.getDayFeedCount(userId);
 		UserMypageResponseDto mypageResponseDto = UserMypageResponseDto.builder().userCalendar(calendar).build();
@@ -137,8 +139,8 @@ public class UserController {
 		User user = userService.getUserByUserId(userId);
 		mypageResponseDto.userInit(user);
 
-		if (!userPrincipal.getUserId().equals(userId)) {
-			Long myId = userPrincipal.getUserId();
+		if (!userPrincipal.getUsername().equals(userId)) {
+			Long myId = Long.valueOf(userPrincipal.getUsername());
 			mypageResponseDto.setFollowing(followService.isFollowing(myId, userId));
 		}
 
