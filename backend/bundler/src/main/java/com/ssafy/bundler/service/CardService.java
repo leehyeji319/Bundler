@@ -1,11 +1,18 @@
 package com.ssafy.bundler.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.kohsuke.github.GHAuthorization;
+import org.kohsuke.github.GHContent;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+import org.kohsuke.github.GitHubBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +25,16 @@ import com.ssafy.bundler.dto.bundle.request.BundleScrapRequestDto;
 import com.ssafy.bundler.dto.card.reqeust.CardListSaveRequestDto;
 import com.ssafy.bundler.dto.card.reqeust.CardSaveRequestDto;
 import com.ssafy.bundler.dto.card.reqeust.CardUpdateRequestDto;
+import com.ssafy.bundler.exception.BusinessException;
+import com.ssafy.bundler.exception.ErrorCode;
 import com.ssafy.bundler.repository.CardBundleRepository;
 import com.ssafy.bundler.repository.CardRepository;
 import com.ssafy.bundler.repository.CategoryRepository;
+import com.ssafy.bundler.repository.FeedCategoryRepository;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.LinkRepository;
 import com.ssafy.bundler.repository.UserRepository;
+import com.ssafy.bundler.util.FileUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,12 +50,22 @@ import lombok.extern.slf4j.Slf4j;
  * -----------------------------------------------------------
  * 2023/02/06        modsiw       삭제 리팩토링
  * 2023/02/10		 modsiw		  Jsoup 라이브러리 추가
+ * 2023/02/15		 hyojin		  fileUploadToGithub() 추가
+ * 2023/02/16 		 hyojin		  Card save하는 로직에 fileUploadToGithub() 추가
  */
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class CardService {
+	private final FeedCategoryRepository feedCategoryRepository;
+
+	// public static final String MD_FILE_SAVE_DIRECTORY = "c:" + File.separator + "bundler" + File.separator;
+	public static final String REPOSITORY_NAME = "Bundler";
+	public static final String REPOSITORY_DESCRIPTION = "Bundler 카드 모음집";
+	public static final String BRANCH_NAME_MAIN = "main";
+	// @Value("${spring.security.oauth2.client.registration.github.client-id}")
+	private final String CLIENT_ID = "d747a562f5f038b5b11f";
 
 	private final CardRepository cardRepository;
 	private final FeedRepository feedRepository;
@@ -62,13 +83,24 @@ public class CardService {
 
 		Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 카테고리 아이디가 존재하지 않습니다. categoryId= " + requestDto.getCategory()));
-		String lineBreak = requestDto.getFeedContent().replace("\r\n", "<br>");
-		requestDto.setFeedContent(lineBreak);
-		Long savedFeedId = cardRepository.save(requestDto.toEntity(writerUser, category)).getFeedId();
+
+		Card saveCard = cardRepository.save(requestDto.toEntity(writerUser, category));
+		Long savedFeedId = saveCard.getFeedId();
+
+		// String lineBreak = requestDto.getFeedContent().replace("\r\n", "<br>");
+		// requestDto.setFeedContent(lineBreak);
+
 
 		// if (requestDto.getCardType() == "CARD_LINK") {
 		// 	saveLinkCard(savedFeedId);
 		// }
+
+		//Github push 로직 추가
+		try {
+			fileUploadToGithub(writerUser, saveCard);
+		} catch (IOException e) {
+			throw new BusinessException("Github에서 오류남", ErrorCode.INTERNAL_SERVER_ERROR);
+		}
 
 		return savedFeedId;
 	}
@@ -131,7 +163,6 @@ public class CardService {
 				saveCard(cardSaveRequestDto);
 			} else {
 				saveCard(cardSaveRequestDto);
-
 			}
 		}
 	}
@@ -164,13 +195,20 @@ public class CardService {
 		Card findCard = cardRepository.findById(feedId).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드를 찾을 수 없습니다. cardId(feedId)= " + feedId));
 
-		cardRepository.save(findCard.toBuilder().feedId(feedId)
+		Card newCard = cardRepository.save(findCard.toBuilder().feedId(feedId)
 			.feedTitle(requestDto.getFeedTitle())
 			.feedContent(requestDto.getFeedContent())
 			.cardDescription(requestDto.getCardDescription())
 			.cardCommentary(requestDto.getCardCommentary())
 			.category(categoryRepository.findById(requestDto.getCategoryId()).get())
 			.build());
+
+		//Github push 로직 추가
+		try {
+			fileUploadToGithub(newCard.getWriter(), newCard);
+		} catch (IOException e) {
+			throw new BusinessException("Github에서 오류남", ErrorCode.INTERNAL_SERVER_ERROR);
+		}
 
 		return feedId;
 	}
@@ -237,6 +275,133 @@ public class CardService {
 		if (cardBundleRepository.findCardBundleByBundleIdWithCardId(bundleId, cardId) != null) {
 			throw new IllegalArgumentException("이미 해당 번들에 존재하는 카드입니다.");
 		}
+	}
+
+	public void fileUploadToGithub(User user, Card card) throws IOException {
+		String accessToken = user.getProviderAccessToken();
+		String loginName = user.getGithubLoginName();
+
+		String commitMessage = String.format("[%s-%s] %s",
+			card.getCategory().getParent().getCategoryName(),
+			card.getCategory().getCategoryName(),
+			card.getFeedTitle());
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd");
+		LocalDate cardCreatedDay = LocalDate.from(card.getCreatedAt());
+
+		String commitPath = formatter.format(cardCreatedDay) + "/" + card.getFeedTitle() + ".md";
+
+		///////////////////////////////////////////////////////////////
+
+		/* 인증을 통해 github 정보 가져오기 */
+		//	1. accessToken 갱신
+		try { // 404 error
+			GHAuthorization auth = new GitHubBuilder()
+				.withOAuthToken(accessToken, loginName)
+				.build()
+				.resetAuth(CLIENT_ID, accessToken);
+
+			log.info(auth.getToken());
+
+			user.setProviderAccessToken(auth.getToken());
+			userRepository.save(user);
+		} catch (Exception e) {
+			log.info(e.getMessage());
+			// throw new GithubHttpRequestException("Github 404 에러", ErrorCode.GITHUB_AUTHENTICATION_TOKEN_INVALID);
+		}
+
+		// try { // 404 error
+		// 	// POST 메소드 URL 생성 & header setting
+		// 	HttpClient client = HttpClientBuilder.create().build();
+		// 	HttpPatch patchRequest = new HttpPatch("https://api.github.com/applications/" + cliendId + "/token");
+		// 	patchRequest.setHeader("Accept", "application/vnd.github+json");
+		// 	patchRequest.setHeader("X-GitHub-Api-Version", "2022-11-28");
+		//
+		// 	// post body setting
+		// 	ObjectMapper mapper = new ObjectMapper();
+		// 	String jsonMessage = "{\"access_token\": \"" + user.getProviderAccessToken() + "\"}";
+		// 	patchRequest.setEntity(new StringEntity(mapper.writeValueAsString(jsonMessage)));
+		//
+		// 	// CURL execute
+		// 	HttpResponse response = client.execute(patchRequest);
+		//
+		// 	//Response 출력
+		// 	if (response.getStatusLine().getStatusCode() == 200) {
+		// 		ResponseHandler<String> handler = new BasicResponseHandler();
+		// 		String body = handler.handleResponse(response);
+		// 		log.info("response 받아옴");
+		// 		log.info(body);
+		// 		System.out.println(body);
+		// 	} else {
+		// 		log.info("response is error : " + response.getStatusLine().getReasonPhrase());
+		// 		System.out.println("response is error : " + response.getStatusLine().getStatusCode());
+		// 		log.info("response is error : " + response.toString());
+		//
+		// 	}
+		// } catch (Exception e) {
+		// 	e.printStackTrace();
+		// 	System.err.println(e.toString());
+		// }
+
+		// accessToken = auth.getToken();
+
+		//	2. 갱신된 토큰으로 github 정보 가져오기
+		GitHub github = new GitHubBuilder()
+			.withOAuthToken(accessToken, loginName)
+			.build();
+
+		/* repository 생성 */
+		GHRepository repo = null;
+		try {
+			repo = github.getRepository(loginName + "/" + REPOSITORY_NAME);
+		} catch (Exception e) { //기존 Bundler repository가 없으면 생성
+			repo = github.createRepository(REPOSITORY_NAME)
+				.autoInit(true)
+				.owner(loginName) //github login name으로 repository의 owner 설정
+				.private_(false)
+				.description(REPOSITORY_DESCRIPTION)
+				.defaultBranch(BRANCH_NAME_MAIN)
+				.create();
+		}
+
+		/* 이전 커밋의 해시 얻어오기 */
+		// GHRepository getRepo = github.getRepository("Bundler");
+		// String sha1 = getRepo.getBranch("main").getSHA1();
+		String sha1 = repo.getBranch(BRANCH_NAME_MAIN).getSHA1();
+
+		/* 파일 생성 (굳이 파일을 I/O 할 필요 없어서 생략) */
+		// String directory = "c:" + File.separator + "bundler" + File.separator;
+		// File file = new File(MD_FILE_SAVE_DIRECTORY + "tmp_file13.md");
+		// File file = File.createTempFile("temp", ".md", directory);
+
+		// String str = "# Hello world!";
+		// try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+		// 	writer.write(str);
+		// } catch (IOException e) {
+		// 	e.printStackTrace();
+		// }
+		//
+		// byte[] fileContent = FileUtils.readFileToByteArray(file);
+
+		/* repository에 파일 커밋 */
+		try {
+			GHContent content = repo.getFileContent(commitPath);
+
+			content.update( //이미 존재하면 기존 파일 수정
+				new FileUtil().write(card.getFeedTitle(), card.getFeedContent()),
+				commitMessage + " 수정",
+				BRANCH_NAME_MAIN
+			);
+		} catch (Exception e) { //존재하지 않으면 파일 새로 생성
+			repo.createContent()
+				.branch(BRANCH_NAME_MAIN)
+				.content(new FileUtil().write(card.getFeedTitle(), card.getFeedContent()))
+				.message(commitMessage)
+				.path(commitPath)
+				.sha(sha1)
+				.commit();
+		}
+
 	}
 
 }

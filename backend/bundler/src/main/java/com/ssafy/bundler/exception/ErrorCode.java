@@ -17,12 +17,16 @@ public enum ErrorCode { // Response body에 담기는 값. 프론트에 보여�
 
 	// Member
 	EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
+	LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
 	LOGIN_INPUT_INVALID(400, "M002", "아이디나 비밀번호가 일치하지 않습니다."),
+	GITHUB_AUTHENTICATION_TOKEN_INVALID(400, "M003", "오류가 발생했습니다."),
+
 
 	// Coupon
 	COUPON_ALREADY_USE(400, "CO001", "Coupon was already used"),
 	COUPON_EXPIRE(400, "CO002", "Coupon was already expired")
 	;
+
 
 	private final String code;
 	private final String message;
