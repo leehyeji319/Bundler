@@ -32,7 +32,6 @@ function Profile() {
   // const pageUser = 1;
   // const pageUser = user2.user;
   const pageUser = user !== undefined ? user : userId;
-  console.log("실제 아이디 : ", pageUser);
   const [tabvalue, setTabValue] = useState("cardTab");
 
   const handleChangeTab = (tabevent) => {
@@ -52,11 +51,9 @@ function Profile() {
         setProfileData(res.data);
         setCalendar(res.data.userCalendar);
         setDate(res.data.userCalendar.dates);
-        console.log("Profile DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("Profile DATA ERROR");
       });
   }, []);
 
@@ -65,7 +62,6 @@ function Profile() {
 
   // 어세스토큰 5분마다 리셋
   const accessToken = useSelector((state) => state.authToken.accessToken);
-  console.log(accessToken);
   // console.log(typeof accessToken);
   // "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ5MDkzNn0.S9flvhHYhCknKjABviz_CspCYGFQ2jTTlMWWh5fMPMw";
   // -----------------------------------------------------------------
@@ -73,7 +69,7 @@ function Profile() {
     axios
       // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
       // .get(`http://i8a810.p.ssafy.io:8080/api/v4/users/${pageUser}/feeds/bundles`, {
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v4/users/${pageUser}/feeds/bundles`, {
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v5/users/${pageUser}/feeds/bundles`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res3) => {
@@ -100,12 +96,10 @@ function Profile() {
       .then((res4) => {
         setCardData(res4.data);
         // setStatError("");
-        console.log("Card DATA OK");
       })
       .catch((error) => {
         console.error(error);
         // setStatError("error_stat");
-        console.log("Card DATA ERROR");
       });
   }, []);
 
@@ -121,12 +115,10 @@ function Profile() {
       .then((res2) => {
         setStatisticData(res2.data);
         // setStatError("");
-        console.log("Stat DATA OK");
       })
       .catch((error) => {
         console.error(error);
         // setStatError("error_stat");
-        console.log("Stat DATA ERROR");
       });
   }, []);
 
@@ -140,8 +132,7 @@ function Profile() {
   const startDate = `${thisyear}-01-01`;
   const endDate = `${thisyear}-12-31`;
 
-  const cal2 = CalendarData.dates;
-  console.log(cal2);
+  // const cal2 = CalendarData.dates;
   const calendarData = CalendarDate;
 
   return (
