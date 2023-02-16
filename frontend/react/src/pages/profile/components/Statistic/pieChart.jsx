@@ -4,12 +4,6 @@ import { ResponsivePie } from "@nivo/pie";
 
 // import { PropTypes } from '@mui/material';
 
-// make sure parent container have a defined height when using
-// responsive component, otherwise height will be 0 and
-// no chart will be rendered.
-// website examples showcase many properties,
-// you'll often use just a few of them.
-
 // eslint-disable-next-line
 const MyResponsivePie = ({ data /* see data tab */ }) => (
   <ResponsivePie

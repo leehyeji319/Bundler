@@ -4,17 +4,13 @@ import PropTypes from "prop-types";
 // import Card from "@mui/material/Card";
 // import MuiLink from "@mui/material/Link";
 import Button from "@mui/material/Button";
-// import Modal from "@mui/material/Modal";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 // import MDAvatar from "components/MDAvatar";
 import MDInput from "components/MDInput";
-// import { FormControl, Select, InputLabel, MenuItem } from "@mui/material";
-// import Grid from "@mui/material/Grid";
-// import { Chip, Input, makeStyles } from "@material-ui/core";
-// import MDButton from "components/MDButton";
+
 import Chip from "@mui/material/Chip";
 // import Input from "@mui/material/Input";
 import { makeStyles } from "@mui/styles";
@@ -22,12 +18,7 @@ import { makeStyles } from "@mui/styles";
 // Modal
 import { useState } from "react";
 import axios from "axios";
-// import { Box } from "@mui/material";
-
-// Icon
-
-// function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
-// function BundleSetBox({ bundlePrivate, SelectBundleId, bundleTitle, bundleImage, bundleThumtext }) {
+// ---------------------------------------------------------------------------------------------------------
 function SkillSetBox({ pageUser }) {
   const skillSetUser = pageUser;
 
@@ -73,7 +64,7 @@ function SkillSetBox({ pageUser }) {
   // 스킬박스 세팅 완료
   const SkillFinish = () => {
     axios({
-      url: "http://i8a810.p.ssafy.io:8080/api/v1/area",
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/area`,
       method: "POST",
       withCredentials: true,
       data: {
