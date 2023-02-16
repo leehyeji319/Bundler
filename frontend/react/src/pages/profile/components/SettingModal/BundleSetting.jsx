@@ -18,7 +18,7 @@ function BundleSetBox({
   bundleThumbnail,
   bundlePrivate,
 }) {
-  console.log(SelectBundleId);
+  // console.log(SelectBundleId);
   const [inputValue, setInputValue] = useState(bundleTitle);
   const [inputValue2, setInputValue2] = useState(bundleThumtext);
   const [inputValue3, setInputValue3] = useState(bundleThumbnail);
@@ -26,8 +26,8 @@ function BundleSetBox({
   const handleChange = (event) => {
     setInputValue4(event.target.value);
   };
-  console.log(bundlePrivate);
-  console.log(inputValue4);
+  // console.log(bundlePrivate);
+  // console.log(inputValue4);
   const accessToken =
     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ4MTIyM30.NzqeedTY9kzxmcUCRe8S6XjhLIbUB0S4TIY14pbY7LI";
   const BundleFinish = () => {

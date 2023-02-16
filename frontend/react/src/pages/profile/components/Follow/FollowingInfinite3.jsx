@@ -6,14 +6,7 @@ import MDTypography from "components/MDTypography";
 import Button from "@mui/material/Button";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 // import PropTypes from "prop-types";
-import followRabbit from "assets/images/bundler/bundler_rabbit_2-removebg-preview.png";
-
-// Image
-// import imgty from "../../../../assets/images/Profile/안태윤.png";
-// import imghj from "../../../../assets/images/Profile/이혜지.jpg";
-// import imglion from "../../../../assets/images/Profile/라이언.png";
-// import imgdnk from "../../../../assets/images/Profile/다나카.jpeg";
-// import bunny from "../../../../assets/images/bundler/bundlerRabbit.png";
+import followRabbit from "assets/images/bundler/bundler_rabbit_2.png";
 
 function FollowingModal(props) {
   const [data, setData] = useState([]);
@@ -21,14 +14,19 @@ function FollowingModal(props) {
   const [hasMore, setHasMore] = useState(true);
 
   // const nickname = nickname;
-  const followingdata = props.data;
-  console.log(followingdata);
+  // eslint-disable-next-line
+  const followprop1 = props;
+  const followingdata = followprop1.data;
+  // console.log(followingdata);
+  const pageUser = followingdata.userId;
 
   useEffect(() => {
     async function fetchData() {
       // const response = await fetch(`https://api.example.com/data?page=${page}`);
       // const response = await fetch(`http://localhost:8080/api/v1/users/${userId}/followings`);
-      const response = await fetch(`http://i8a810.p.ssafy.io:8080/api/v1/users/1/followings`);
+      const response = await fetch(
+        `http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/followings`
+      );
       const newData = await response.json();
 
       if (!newData.length) {
@@ -48,8 +46,9 @@ function FollowingModal(props) {
       setPage(page + 1);
     }
   };
+  // eslint-disable-next-line
   const followingList = followingdata.followingList;
-  console.log(followingList);
+  // console.log(followingList);
 
   const goProfile = (event, userId) => {
     event.preventDefault();

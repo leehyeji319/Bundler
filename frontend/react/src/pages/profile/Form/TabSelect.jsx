@@ -6,7 +6,6 @@ import CardListTab from "./CardListForm";
 import StatTab from "./StatForm";
 
 function SelectedTab({ selected, data1, data2, data3 }) {
-  // const statdata = data;
   console.log(data1);
   console.log(data2);
   console.log(data3);

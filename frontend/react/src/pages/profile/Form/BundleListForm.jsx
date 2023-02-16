@@ -2,29 +2,21 @@
 // import Switch from "@mui/material/Switch";
 import MDBox from "components/MDBox";
 import Grid from "@mui/material/Grid";
-// import MDTypography from "components/MDTypography";
-
-// [Import - React Basic] react && props && mui
 import React from "react";
 // import PropTypes from "prop-types";
 
 import bundlerRabbit from "assets/images/bundler/bundler_rabbit_6.png";
-import sorryRabbit from "assets/images/bundler/bundler_rabbit_8-removebg-preview.png";
+import sorryRabbit from "assets/images/bundler/bundler_rabbit_8.png";
 import MDTypography from "components/MDTypography";
 import BundleThumbnail2 from "../components/thumBundle/BundleCard";
 
-// import bundleTemp from "../data/bundleTemp0213.json";
-// import bundleInfinite from "../data/bundleInfinite.json";
 // BundlelistTabForm Template
 function BundleListTab(props) {
   // const tempBundleData = bundleInfinite;
+  // eslint-disable-next-line
   const dataprop = props.data;
   const BundleLastData = dataprop;
-  console.log(BundleLastData);
-  // console.log(BundleLastData[0]);
-  // const fbd = BundleLastData[0].bundleDefault;
-  // console.log(fbd);
-  // console.log(typeof fbd);
+  // console.log(BundleLastData);
 
   return (
     <MDBox
@@ -99,5 +91,8 @@ function BundleListTab(props) {
     </MDBox>
   );
 }
+// BundleListTab.propTypes = {
+//   props: PropTypes.node.isRequired,
+// };
 
 export default BundleListTab;

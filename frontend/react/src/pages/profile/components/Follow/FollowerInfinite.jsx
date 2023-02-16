@@ -4,29 +4,30 @@ import MDAvatar from "components/MDAvatar";
 import MDTypography from "components/MDTypography";
 import Button from "@mui/material/Button";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import PropTypes from "prop-types";
-import followRabbit from "assets/images/bundler/bundler_rabbit_2-removebg-preview.png";
+// import PropTypes from "prop-types";
+import followRabbit from "assets/images/bundler/bundler_rabbit_2.png";
 
 //------------------------------------------------------------------------------------------------------
 function FollowerModal(props) {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-
-  const followerData = props.data;
-  console.log(followerData);
+  const foldat = props;
+  // console.log(foldat);
+  // eslint-disable-next-line
+  const followerData = foldat.data;
+  // console.log(followerData);
+  // eslint-disable-next-line
   const followerList = followerData.followerList;
-  console.log(followerList);
+  // console.log(followerList);
+  // eslint-disable-next-line
   const pageUser = followerData.userId;
-  console.log(pageUser);
+  // console.log(pageUser);
 
   useEffect(() => {
     async function fetchData() {
-      // const response = await fetch(`https://api.example.com/data?page=${page}`);
-      // const response = await fetch(`http://i8a810.p.ssafy.io:8080/api/v1/users/1/followers`);
       const response = await fetch(
         `http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/followers`
-        // "http://i8a810.p.ssafy.io:8080/api/v1/users/1/followers"
       );
       const newData = await response.json();
 
@@ -48,23 +49,7 @@ function FollowerModal(props) {
     }
   };
 
-  // const movePage = (who) => {
-  //   MoveBtnOn();
-  //   if (BtnOn === true) {
-  //     console.log(who);
-  //     console.log(BtnOn);
-  //     navigate(`/profile/${who}`);
-  //     window.location.reload();
-  //     MoveBtnOff();
-  //   }
-  // };
-  // const goProfile = (userId) => {
-  //   window.open(`/profile/${userId}`, "_self");
-  // };
-
-  console.log(followerList);
-
-  // console.log(followerList[0].followBack);
+  // console.log(followerList);
   const goProfile = (event, userId) => {
     event.preventDefault();
     window.open(`/profile/${userId}`, "_self");
@@ -277,10 +262,10 @@ function FollowerModal(props) {
     </MDBox>
   );
 }
-FollowerModal.propTypes = {
-  // nickname: PropTypes.string.isRequired,
-  // userId: PropTypes.number.isRequired,
-  // followerData: PropTypes.arrayOf(PropTypes.object).isRequired,
-  pageUser: PropTypes.number.isRequired,
-};
+// FollowerModal.propTypes = {
+// nickname: PropTypes.string.isRequired,
+// userId: PropTypes.number.isRequired,
+// followerData: PropTypes.arrayOf(PropTypes.object).isRequired,
+// pageUser: PropTypes.number.isRequired,
+// };
 export default FollowerModal;

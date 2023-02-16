@@ -55,47 +55,38 @@ function ProfileCard({
   const [FollowingDataGet, setFollowingData] = useState([]);
   const [FollowerDataGet, setFollowerData] = useState([]);
 
-  // const user = userId;
-  // console.log(typeof user);
-  // console.log(user);
-
   // 팔로잉 Axios
   useEffect(() => {
-    console.log("test011");
     axios
-      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/2/followings")
       .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${user}/followings`)
       .then((res) => {
         setFollowingData(res.data);
-        console.log(res);
-        console.log("hi55-YOUR DATA OK");
+        console.log("Following DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("hi66-YOUR DATA ERROR");
+        console.log("Following DATA ERROR");
       });
   }, []);
 
   // 팔로워 Axios
   useEffect(() => {
-    console.log("test018");
     axios
-      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/followers")
       .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${user}/followers`)
       .then((res) => {
         setFollowerData(res.data);
-        console.log("hi999-YOUR DATA OK");
+        console.log("Follower DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("hi98-YOUR DATA ERROR");
+        console.log("Follower DATA ERROR");
       });
   }, []);
 
   const FollowingData = FollowingDataGet;
-  console.log(FollowingDataGet);
+  // console.log(FollowingDataGet);
   const FollowerData = FollowerDataGet;
-  console.log(FollowerData);
+  // console.log(FollowerData);
 
   return (
     <MDBox

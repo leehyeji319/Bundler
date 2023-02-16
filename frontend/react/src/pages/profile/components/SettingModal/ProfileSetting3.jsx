@@ -16,10 +16,10 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
   const profileNowImg = SetImage;
   const [inputValue, setInputValue] = useState(nickname);
   const [inputValue2, setInputValue2] = useState(introduction);
-  console.log(inputValue);
-  console.log(inputValue2);
+  // console.log(inputValue);
+  // console.log(inputValue2);
   // const [inputValue3, setInputValue3] = useState(bundleTitle);
-  console.log(profileNowImg);
+  // console.log(profileNowImg);
   // -------------- 어세스 토큰 --------------------------------------
   const accessToken =
     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ4NTc0NH0.7R-y_MmW8YJw8qaFdbV-ekdj2PbNL1ioyFE9TKq2VkE";
