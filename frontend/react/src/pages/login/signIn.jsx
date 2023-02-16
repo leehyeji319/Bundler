@@ -21,7 +21,7 @@ function SignIn() {
   const [valid, setValid] = useState({
     isValid: false,
     comment: "",
-    state: "",
+    state: "info",
   });
 
   // useForm 사용을 위한 선언

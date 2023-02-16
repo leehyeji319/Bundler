@@ -119,25 +119,32 @@ function DashboardNavbar({ absolute, light, isMini }) {
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
             <MDBox color={light ? "white" : "inherit"}>
               {state22.authenticated ? (
-                <div id="navRightUp">
-                  <MDBox color="white">{state22.nickname} 님</MDBox>
-                  <Link to="/profile">
-                    <IconButton sx={navbarIconButton} size="small" disableRipple>
-                      <Icon sx={iconsStyle}>account_circle</Icon>
+                <div
+                  id="navRightUp"
+                  style={{ width: "300px", display: "flex", justifyContent: "space-between" }}
+                >
+                  <MDBox sx={{ display: "flex" }}>
+                    <MDBox color="white">{state22.nickname} 님</MDBox>
+                    <Link to="/profile">
+                      <IconButton sx={navbarIconButton} size="small" disableRipple>
+                        <Icon sx={iconsStyle}>account_circle</Icon>
+                      </IconButton>
+                    </Link>
+                  </MDBox>
+                  <MDBox sx={{ display: "flex" }}>
+                    <SignOut />
+                    <IconButton
+                      size="small"
+                      disableRipple
+                      color="inherit"
+                      sx={navbarMobileMenu}
+                      onClick={handleMiniSidenav}
+                    >
+                      <Icon sx={iconsStyle} fontSize="medium">
+                        {miniSidenav ? "menu_open" : "menu"}
+                      </Icon>
                     </IconButton>
-                  </Link>
-                  <SignOut />
-                  <IconButton
-                    size="small"
-                    disableRipple
-                    color="inherit"
-                    sx={navbarMobileMenu}
-                    onClick={handleMiniSidenav}
-                  >
-                    <Icon sx={iconsStyle} fontSize="medium">
-                      {miniSidenav ? "menu_open" : "menu"}
-                    </Icon>
-                  </IconButton>
+                  </MDBox>
                 </div>
               ) : (
                 <MDBox color="white">
