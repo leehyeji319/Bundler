@@ -150,6 +150,7 @@ MDSnackbar.defaultProps = {
   bgWhite: false,
   color: "info",
   dateTime: "",
+  content: "",
 };
 
 // Typechecking props for MDSnackbar
@@ -167,7 +168,7 @@ MDSnackbar.propTypes = {
   icon: PropTypes.node.isRequired,
   title: PropTypes.string.isRequired,
   dateTime: PropTypes.string,
-  content: PropTypes.node.isRequired,
+  content: PropTypes.node,
   close: PropTypes.func.isRequired,
   bgWhite: PropTypes.bool,
 };

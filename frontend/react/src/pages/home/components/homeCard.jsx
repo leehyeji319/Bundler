@@ -73,19 +73,21 @@ function HomeCard({ cardInfo }) {
     initCall();
   };
 
-  // 처음 조회 시, 가지고 있는 번들 리스트 불러오기 + 좋아요 확인
+  // 처음 조회 시, 가지고 있는 번들 리스트 불러오기
   useEffect(() => {
-    const getNewComment = async () => {
+    const getBundleList = async () => {
       await apiGetBundle(userId, cardInfo.cardId)
         .then(({ data }) => {
-          setBundleList(data.like);
+          console.log(data);
+          setBundleList(data);
         })
         .catch((error) => {
           console.log(error);
         });
     };
-    getNewComment();
+    getBundleList();
 
+    // 처음 조회 시, 가지고 있는 좋아요 확인
     const getIsLiked = async () => {
       await apiGetLike(cardInfo.cardId, userId)
         .then(({ data }) => {
