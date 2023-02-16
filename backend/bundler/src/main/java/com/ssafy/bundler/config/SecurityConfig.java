@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -137,6 +136,11 @@ public class SecurityConfig {
 							.baseUri("/login/oauth2/code/*")
 					)
 
+					// .tokenEndpoint(tokenEndpointConfig ->
+					// 	tokenEndpointConfig
+					// 		.accessTokenResponseClient(authorizationGrantRequest ->
+					// 			))
+
 					.userInfoEndpoint(userInfoEndpointConfig ->
 						userInfoEndpointConfig
 							.userService(oAuth2UserService)
@@ -185,24 +189,24 @@ public class SecurityConfig {
 	//		return auth.build();
 	//	}
 
-	public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
-		@Override
-		public void configure(HttpSecurity http) throws Exception {
-			//			authenticationManagerBuilder = http.getSharedObject(
-			//					AuthenticationManagerBuilder.class);
-			//
-			//			 authenticationManagerBuilder
-			//			 	.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
-			// LogoutConfigurer logoutConfigurer = http.getSharedObject(LogoutConfigurer.class);
-
-			// http
-			// 	.addFilter(corsConfig.corsFilter());
-			// .addFilter(new JwtAuthenticationFilter(authenticationManager))
-			// .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
-
-		}
-	}
+	// public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
+	// 	@Override
+	// 	public void configure(HttpSecurity http) throws Exception {
+	// 		//			authenticationManagerBuilder = http.getSharedObject(
+	// 		//					AuthenticationManagerBuilder.class);
+	// 		//
+	// 		//			 authenticationManagerBuilder
+	// 		//			 	.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	//
+	// 		// LogoutConfigurer logoutConfigurer = http.getSharedObject(LogoutConfigurer.class);
+	//
+	// 		// http
+	// 		// 	.addFilter(corsConfig.corsFilter());
+	// 		// .addFilter(new JwtAuthenticationFilter(authenticationManager))
+	// 		// .addFilter(new JwtAuthorizationFilter(authenticationManager, userRepository));
+	//
+	// 	}
+	// }
 
 	/*
 	 * 토큰 필터 설정

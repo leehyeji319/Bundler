@@ -9,15 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.dto.user.AuthResponseDto;
 import com.ssafy.bundler.dto.user.Profile;
 import com.ssafy.bundler.dto.user.SearchUserListResponseDto;
-import com.ssafy.bundler.dto.user.SignupRequestDto;
 import com.ssafy.bundler.dto.user.UserCalendarDto;
 import com.ssafy.bundler.dto.user.UserCalendarResponseDto;
 import com.ssafy.bundler.dto.user.UserUpdateRequestDto;
-import com.ssafy.bundler.exception.EntityNotFoundException;
 import com.ssafy.bundler.exception.ErrorCode;
+import com.ssafy.bundler.exception.business.EntityNotFoundException;
 import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.repository.query.UserQueryRepository;
 
@@ -108,19 +106,18 @@ public class UserServiceImpl implements UserService {
 	// 	return null;
 	// }
 	@Transactional
-	public UserCalendarResponseDto getDayFeedCount(Long userId){
+	public UserCalendarResponseDto getDayFeedCount(Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(
-			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
+			() -> new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
 		);
 		List<UserCalendarDto> dates = userQueryRepository.findDayFeedCount(user.getUserId());
 		Integer year = LocalDate.now().getYear();
 		return UserCalendarResponseDto.builder().dates(dates).year(year).build();
 	}
+
 	@Transactional
-	public User getUserByUserId(Long userId){
+	public User getUserByUserId(Long userId) {
 		return userRepository.findByUserId(userId).orElseThrow();
 	}
-
-
 
 }

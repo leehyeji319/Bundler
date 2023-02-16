@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,16 +44,16 @@ public class UserController {
 	@Autowired
 	private FollowService followService;
 
-	@GetMapping
-	public ApiResponse getUser() {
-		org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
-			.getAuthentication()
-			.getPrincipal();
-
-		User user = userService.getUser(principal.getUsername());
-
-		return ApiResponse.success("user", user);
-	}
+	// @GetMapping
+	// public ApiResponse getUser() {
+	// 	org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
+	// 		.getAuthentication()
+	// 		.getPrincipal();
+	//
+	// 	User user = userService.getUser(principal.getUsername());
+	//
+	// 	return ApiResponse.success("user", user);
+	// }
 
 	@GetMapping("/list")
 	public ResponseEntity<List<Profile>> getUserList(@RequestParam String keyword) {
