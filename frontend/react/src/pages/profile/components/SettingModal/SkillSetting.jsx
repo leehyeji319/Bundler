@@ -34,8 +34,6 @@ function SkillSetBox({ pageUser }) {
   const settingwho = skillSetUser.pageUser;
   // console.log(settingwho);
   const pagemove2 = Number(settingwho);
-  // console.log(typeof pagemove);
-  // console.log(pagemove);
 
   const useStyles = makeStyles({
     input: {
@@ -95,8 +93,8 @@ function SkillSetBox({ pageUser }) {
       });
   };
 
-  console.log(items);
-  console.log(items2);
+  // console.log(items);
+  // console.log(items2);
   // -------------- 취소 버튼 ---------------------
   const cancelBtn = (event) => {
     event.preventDefault();

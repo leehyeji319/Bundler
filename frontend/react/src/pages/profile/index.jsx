@@ -33,19 +33,19 @@ import SelectedTab from "./Form/TabSelect";
 // ---------------------------------------------------------------------------------------------------------------------
 function Profile() {
   const { user } = useParams();
+  const userId = useSelector((state) => state.authToken.userId);
 
-  console.log(user);
+  console.log("USER", user);
   // const pageUser = 1;
   // const pageUser = user2.user;
-  const pageUser = user;
-  console.log(pageUser);
+  const pageUser = user !== undefined ? user : userId;
+  console.log("실제 아이디 : ", pageUser);
   const [tabvalue, setTabValue] = useState("cardTab");
 
   const handleChangeTab = (tabevent) => {
     setTabValue(tabevent.target.value);
   };
 
-  const userId = useSelector((state) => state.authToken.userId);
   console.log(userId);
 
   const [profileDataGet, setProfileData] = useState([]);
@@ -53,7 +53,6 @@ function Profile() {
   const [CalendarDate, setDate] = useState([]);
   // 프로필 axios를 통해 먼저 렌더링
   useEffect(() => {
-    console.log("test011");
     axios
       // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/mypage")
       .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/mypage`)
@@ -61,15 +60,13 @@ function Profile() {
         setProfileData(res.data);
         setCalendar(res.data.userCalendar);
         setDate(res.data.userCalendar.dates);
-        console.log("hi11-YOUR DATA OK");
+        console.log("Profile DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("hi22-YOUR DATA ERROR");
+        console.log("Profile DATA ERROR");
       });
   }, []);
-
-  console.log(profileDataGet);
 
   // ---------------- 번들탭 Axios ------------------------------
   const [BundleData, setBundleData] = useState([]);
@@ -77,9 +74,8 @@ function Profile() {
   // 어세스토큰 5분마다 리셋
   const accessToken =
     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ5MDkzNn0.S9flvhHYhCknKjABviz_CspCYGFQ2jTTlMWWh5fMPMw";
-  // const [StatError, setStatError] = useState();
+  // -----------------------------------------------------------------
   useEffect(() => {
-    console.log("test012");
     axios
       // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
       // .get(`http://i8a810.p.ssafy.io:8080/api/v4/users/${pageUser}/feeds/bundles`, {
@@ -88,13 +84,11 @@ function Profile() {
       })
       .then((res3) => {
         setBundleData(res3.data);
-        // setStatError("");
-        console.log("hi9999-YOUR DATA OK");
+        console.log("Your Bundle DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        // setStatError("error_stat");
-        console.log("hi8888-YOUR DATA ERROR");
+        console.log("Your Bundle DATA ERROR");
       });
   }, []);
 
@@ -103,7 +97,6 @@ function Profile() {
   // -------------------- 카드탭 Axios ----------------------------
   const [CardData, setCardData] = useState([]);
   useEffect(() => {
-    console.log("test0215");
     axios
       // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
       // .get(`http://i8a810.p.ssafy.io:8080/api/v4/users/${pageUser}/feeds/bundles`, {
@@ -129,28 +122,26 @@ function Profile() {
   const [StatData, setStatisticData] = useState([]);
   // const [StatError, setStatError] = useState();
   useEffect(() => {
-    console.log("test012");
     axios
       // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
       .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/stats`)
       .then((res2) => {
         setStatisticData(res2.data);
         // setStatError("");
-        console.log("hi33-YOUR DATA OK");
+        console.log("Stat DATA OK");
       })
       .catch((error) => {
         console.error(error);
         // setStatError("error_stat");
-        console.log("hi44-YOUR DATA ERROR");
+        console.log("Stat DATA ERROR");
       });
   }, []);
 
-  // console.log(profileDataGet);
   const profiledata = profileDataGet;
 
-  console.log(BundleData);
-  console.log(StatData);
-  console.log(profiledata);
+  // console.log(BundleData);
+  // console.log(StatData);
+  // console.log(profiledata);
 
   const thisyear = CalendarData.year;
   const startDate = `${thisyear}-01-01`;
@@ -159,33 +150,6 @@ function Profile() {
   const cal2 = CalendarData.dates;
   console.log(cal2);
   const calendarData = CalendarDate;
-
-  // const cardData = [];
-  // // ------------ 탭 셀렉 시 데이터 고르기
-  // const SelectData(tabvalue)
-  // if (tabvalue === "bundleTab") {
-  //   const SelectData = BundleData;
-  //   return SelectData;
-  // } else if (tabvalue === "statTab") {
-  //   const SelectData = StatData;
-  //   return SelectData;
-  // } else if (tabvalue === "cardTab") {
-  //   const SelectData = cardData;
-  //   return SelectData;
-  // }
-  // console.log(SelectData)
-  // const choosePage = () => {
-  //   switch (tabvalue) {
-  //     case "bundleTab":
-  //       return <SelectedTab selected={tabvalue} data={BundleData} />;
-  //     case "statTab":
-  //       return <SelectedTab selected={tabvalue} data={StatData} />;
-  //     case "cardTab":
-  //       return <SelectedTab selected={tabvalue} data={StatData} />;
-  //     default:
-  //       return <SelectedTab selected={tabvalue} data={StatData} />;
-  //   }
-  // };
 
   return (
     <DashboardLayout>

@@ -42,6 +42,7 @@ import CheckToken from "auth/CheckToken";
 
 // font
 import "./App.css";
+import { useSelector } from "react-redux";
 
 function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -92,6 +93,8 @@ function App() {
   // 로그인 여부 확인해서 isAuth에 저장
   const { isAuth } = CheckToken(location.key);
   // ------------로그인 여부 확인-----------------------------
+  const userId = useSelector((state) => state.authToken.userId);
+  console.log(userId);
 
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
@@ -112,6 +115,7 @@ function App() {
         <Route path="/searchid" element={isAuth ? <SearchId /> : <Navigate to="/login" />} />
         <Route path="/make" element={isAuth ? <Make /> : <Navigate to="/login" />} />
         <Route path="/profile" element={isAuth ? <Profile /> : <Navigate to="/login" />} />
+        <Route path="/profile/:user" element={isAuth ? <Profile /> : <Navigate to="/login" />} />
         <Route path="/A810" element={<A810 />} />
         <Route path="/*" element={<Notfound />} />
         {/* isAuth가 false일 때 들어갈 수 있는 component true일 땐 home으로 */}

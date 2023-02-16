@@ -46,12 +46,12 @@ function MySkill(pageUser) {
   const [JobDataGet, setJobData] = useState([]);
   const [SkillDataGet, setSkillData] = useState([]);
 
+  // eslint-disable-next-line
   const SkillpageUser = pageUser.pageUser;
+  // console.log(pageUser);
+  // console.log(SkillpageUser);
 
-  // console.log("testSkill");
   useEffect(() => {
-    console.log("test077");
-    // .get("http://i8a810.p.ssafy.io:8080/api/v1/area/3")
     axios
       .get(`http://i8a810.p.ssafy.io:8080/api/v1/area/${SkillpageUser}`)
       .then((res) => {
@@ -59,25 +59,15 @@ function MySkill(pageUser) {
         setJobData(res.data.job);
         setSkillData(res.data.skill);
         console.log(res.data);
-        console.log("hi88-YOUR DATA OK");
+        console.log("SkillJob DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("hi99-YOUR DATA ERROR");
+        console.log("SkillJob DATA ERROR");
       });
   }, []);
-  // console.log(SkillJobDataGet);
-  // console.log(typeof SkillDataGet);
-  // console.log(SkillDataGet);
-  // var SkillData = JSON.parse(SkillDataGet);
-  // console.log(SkillData);
-  // skilldatajson = JSON.parse(SkillDataGet);
-  // console.log(skilldatajson);
 
-  // const userSkill = SkillDataGet.skill;
-  // const userJob = SkillDataGet.job;
-  // console.log(userSkill);
-  console.log(JobDataGet);
+  // console.log(JobDataGet);
   const userJobNum = JobDataGet.length;
   console.log(userJobNum);
   const userSkillNum = SkillDataGet.length;
@@ -221,6 +211,7 @@ function MySkill(pageUser) {
 // };
 
 MySkill.propTypes = {
+  // eslint-disable-next-line
   pageUser: PropTypes.number.isRequired,
   // profileImage: PropTypes.string.isRequired,
   // nickname: PropTypes.string.isRequired,
