@@ -80,14 +80,13 @@ public class FileUtil {
 	public byte[] write(String title, String content) {
 		StringBuilder stringBuilder = new StringBuilder();
 
-		stringBuilder.append("# ").append(title).append(" :file_folder: \n\n<br/>\n\n")
-			.append(content);
+		stringBuilder.append("# ").append(title).append(" :file_folder: ");
 
-		// StringTokenizer st = new StringTokenizer(content, "\n");
-		//
-		// while (st.hasMoreTokens()) {
-		// 	stringBuilder.append("\n <br/> ").append(st.nextToken());
-		// }
+		StringTokenizer st = new StringTokenizer(content, "\n");
+
+		while (st.hasMoreTokens()) {
+			stringBuilder.append("\n<br/>\n").append(st.nextToken());
+		}
 
 		return stringBuilder.toString().getBytes(StandardCharsets.UTF_8);
 	}

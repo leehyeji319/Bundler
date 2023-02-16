@@ -1,6 +1,5 @@
 package com.ssafy.bundler.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,8 +25,8 @@ import com.ssafy.bundler.dto.bundle.request.BundleScrapRequestDto;
 import com.ssafy.bundler.dto.card.reqeust.CardListSaveRequestDto;
 import com.ssafy.bundler.dto.card.reqeust.CardSaveRequestDto;
 import com.ssafy.bundler.dto.card.reqeust.CardUpdateRequestDto;
+import com.ssafy.bundler.exception.BusinessException;
 import com.ssafy.bundler.exception.ErrorCode;
-import com.ssafy.bundler.exception.business.GithubHttpRequestException;
 import com.ssafy.bundler.repository.CardBundleRepository;
 import com.ssafy.bundler.repository.CardRepository;
 import com.ssafy.bundler.repository.CategoryRepository;
@@ -52,6 +51,7 @@ import lombok.extern.slf4j.Slf4j;
  * 2023/02/06        modsiw       삭제 리팩토링
  * 2023/02/10		 modsiw		  Jsoup 라이브러리 추가
  * 2023/02/15		 hyojin		  fileUploadToGithub() 추가
+ * 2023/02/16 		 hyojin		  Card save하는 로직에 fileUploadToGithub() 추가
  */
 @Service
 @Transactional(readOnly = true)
@@ -60,12 +60,12 @@ import lombok.extern.slf4j.Slf4j;
 public class CardService {
 	private final FeedCategoryRepository feedCategoryRepository;
 
-	public static final String MD_FILE_SAVE_DIRECTORY = "c:" + File.separator + "bundler" + File.separator;
+	// public static final String MD_FILE_SAVE_DIRECTORY = "c:" + File.separator + "bundler" + File.separator;
 	public static final String REPOSITORY_NAME = "Bundler";
 	public static final String REPOSITORY_DESCRIPTION = "Bundler 카드 모음집";
 	public static final String BRANCH_NAME_MAIN = "main";
 	// @Value("${spring.security.oauth2.client.registration.github.client-id}")
-	private final String cliendId = "d747a562f5f038b5b11f";
+	private final String CLIENT_ID = "d747a562f5f038b5b11f";
 
 	private final CardRepository cardRepository;
 	private final FeedRepository feedRepository;
@@ -84,11 +84,19 @@ public class CardService {
 		Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 카테고리 아이디가 존재하지 않습니다. categoryId= " + requestDto.getCategory()));
 
-		Long savedFeedId = cardRepository.save(requestDto.toEntity(writerUser, category)).getFeedId();
+		Card saveCard = cardRepository.save(requestDto.toEntity(writerUser, category));
+		Long savedFeedId = saveCard.getFeedId();
 
 		// if (requestDto.getCardType() == "CARD_LINK") {
 		// 	saveLinkCard(savedFeedId);
 		// }
+
+		//Github push 로직 추가
+		try {
+			fileUploadToGithub(writerUser, saveCard);
+		} catch (IOException e) {
+			throw new BusinessException("Github에서 오류남", ErrorCode.INTERNAL_SERVER_ERROR);
+		}
 
 		return savedFeedId;
 	}
@@ -151,7 +159,6 @@ public class CardService {
 				saveCard(cardSaveRequestDto);
 			} else {
 				saveCard(cardSaveRequestDto);
-
 			}
 		}
 	}
@@ -184,13 +191,20 @@ public class CardService {
 		Card findCard = cardRepository.findById(feedId).orElseThrow(() ->
 			new IllegalArgumentException("해당 카드를 찾을 수 없습니다. cardId(feedId)= " + feedId));
 
-		cardRepository.save(findCard.toBuilder().feedId(feedId)
+		Card newCard = cardRepository.save(findCard.toBuilder().feedId(feedId)
 			.feedTitle(requestDto.getFeedTitle())
 			.feedContent(requestDto.getFeedContent())
 			.cardDescription(requestDto.getCardDescription())
 			.cardCommentary(requestDto.getCardCommentary())
 			.category(categoryRepository.findById(requestDto.getCategoryId()).get())
 			.build());
+
+		//Github push 로직 추가
+		try {
+			fileUploadToGithub(newCard.getWriter(), newCard);
+		} catch (IOException e) {
+			throw new BusinessException("Github에서 오류남", ErrorCode.INTERNAL_SERVER_ERROR);
+		}
 
 		return feedId;
 	}
@@ -281,7 +295,7 @@ public class CardService {
 			GHAuthorization auth = new GitHubBuilder()
 				.withOAuthToken(accessToken, loginName)
 				.build()
-				.resetAuth(cliendId, accessToken);
+				.resetAuth(CLIENT_ID, accessToken);
 
 			log.info(auth.getToken());
 
@@ -289,7 +303,7 @@ public class CardService {
 			userRepository.save(user);
 		} catch (Exception e) {
 			log.info(e.getMessage());
-			throw new GithubHttpRequestException("Github 404 에러", ErrorCode.GITHUB_AUTHENTICATION_TOKEN_INVALID);
+			// throw new GithubHttpRequestException("Github 404 에러", ErrorCode.GITHUB_AUTHENTICATION_TOKEN_INVALID);
 		}
 
 		// try { // 404 error
