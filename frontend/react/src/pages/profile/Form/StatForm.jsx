@@ -1,152 +1,59 @@
 // [Import - Design]
-// import { Button, Box, TextField, Typography } from "@mui/material";
-// import Switch from "@mui/material/Switch";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Grid from "@mui/material/Grid";
 
-// [Import - React Basic] react && props && mui
-// import React, { useState, useEffect } from "react";
-// import PropTypes from "prop-types";
-
-// [Import - React-Redux]
-// import { useSelector, useDispatch } from "react-redux";
-
-// [Import - Redux-action] redux-action 함수
-// import { actAddCard } from "redux/actions/makeCardAction";
-
-import piedata3 from "pages/profile/components/Statistic/piedata3.json";
+// import ChartData from "pages/pr  ofile/components/Statistic/ChartData230206.json";
 import MyResponsivePie from "pages/profile/components/Statistic/pieChart";
+// import tempfull from "../components/Statistic/tempFullStat.json";
 
 import ActivityStat from "../components/Statistic/ActivityStat";
-import ActivityBadge from "../components/Statistic/ActivityBadge";
+// import ActivityBadge from "../components/Statistic/ActivityBadge";
 
 import CompareStat from "../components/Statistic/CompareStat";
 
 // BundlelistTabForm Template
-function StatTab() {
-  const piedata = piedata3;
-  const StatusList = [
+// function StatTab(userId) {
+function StatTab(statdata) {
+  // console.log(data);
+  const propstatdata = statdata;
+  const fullStatData = propstatdata.data;
+  console.log(fullStatData);
+
+  const fullstatCategory = fullStatData.statCategory;
+  const dataForPie = [
     {
-      categoryName: "알고리즘",
-      proportion: 29,
-      subCategories: [
-        {
-          categoryName: "DP",
-          proportion: 29,
-        },
-        {
-          categoryName: "완전탐색",
-          proportion: 22,
-        },
-        {
-          categoryName: "DFS",
-          proportion: 20,
-        },
-        {
-          categoryName: "트리",
-          proportion: 17,
-        },
-        {
-          categoryName: "위상정렬",
-          proportion: 12,
-        },
-      ],
+      id: fullstatCategory[0].categoryName,
+      label: fullstatCategory[0].categoryName,
+      value: fullstatCategory[0].categoryMakeCount,
+      color: "hsl(317, 70%, 50%)",
     },
     {
-      categoryName: "CS",
-      proportion: 22,
-      subCategories: [
-        {
-          categoryName: "네트워크",
-          proportion: 40,
-        },
-        {
-          categoryName: "운영체제",
-          proportion: 30,
-        },
-        {
-          categoryName: "자료구조",
-          proportion: 20,
-        },
-        {
-          categoryName: "데이터베이스",
-          proportion: 10,
-        },
-      ],
+      id: fullstatCategory[1].categoryName,
+      label: fullstatCategory[1].categoryName,
+      value: fullstatCategory[1].categoryMakeCount,
+      color: "hsl(27, 70%, 50%)",
     },
     {
-      categoryName: "언어",
-      proportion: 20,
-      subCategories: [
-        {
-          categoryName: "Python",
-          proportion: 40,
-        },
-        {
-          categoryName: "JAVA",
-          proportion: 30,
-        },
-        {
-          categoryName: "JavaScript",
-          proportion: 17,
-        },
-        {
-          categoryName: "C++",
-          proportion: 10,
-        },
-        {
-          categoryName: "Kotlin",
-          proportion: 3,
-        },
-      ],
+      id: fullstatCategory[2].categoryName,
+      label: fullstatCategory[2].categoryName,
+      value: fullstatCategory[2].categoryMakeCount,
+      color: "hsl(90, 70%, 50%)",
     },
     {
-      categoryName: "정보",
-      proportion: 17,
-      subCategories: [
-        {
-          categoryName: "기업분석",
-          proportion: 30,
-        },
-        {
-          categoryName: "트렌드",
-          proportion: 40,
-        },
-        {
-          categoryName: "정보",
-          proportion: 30,
-        },
-      ],
+      id: fullstatCategory[3].categoryName,
+      label: fullstatCategory[3].categoryName,
+      value: fullstatCategory[3].categoryMakeCount,
+      color: "hsl(173, 70%, 50%)",
     },
     {
-      categoryName: "직무",
-      proportion: 12,
-      subCategories: [
-        {
-          categoryName: "프론트엔드",
-          proportion: 80,
-        },
-        {
-          categoryName: "백엔드",
-          proportion: 11,
-        },
-        {
-          categoryName: "임베디드",
-          proportion: 0,
-        },
-        {
-          categoryName: "기타",
-          proportion: 1,
-        },
-        {
-          categoryName: "DB",
-          proportion: 5,
-        },
-      ],
+      id: fullstatCategory[4].categoryName,
+      label: fullstatCategory[4].categoryName,
+      value: fullstatCategory[4].categoryMakeCount,
+      color: "hsl(11, 70%, 50%)",
     },
   ];
-
+  console.log(fullStatData);
   return (
     <MDBox // 전체 통계탭 박스
       sx={{
@@ -198,15 +105,15 @@ function StatTab() {
               <MDBox // 역량 통계 - 차트
               >
                 <MDBox style={{ width: "auto", height: "500px", margin: "0 auto" }}>
-                  <MyResponsivePie data={piedata} />
+                  <MyResponsivePie data={dataForPie} />
                 </MDBox>
               </MDBox>
             </Grid>
             <Grid item xs={12} md={6}>
               <MDBox // 역량 통계 - 통계치
               >
-                <Grid container spacing={3}>
-                  {StatusList.map((category) => (
+                <Grid container spacing={1}>
+                  {fullstatCategory.map((category) => (
                     <Grid item xs={12} md={6}>
                       <MDBox // 역량 통계 - 통계치 5개 개별
                         sx={{
@@ -219,55 +126,90 @@ function StatTab() {
                         }}
                         position="relative"
                       >
-                        <MDBox // 역량 통계 - 통계치 - 대분류
+                        <MDBox // 역량 통계 - 개별 통계치 - 내용 (대분류 + 중분류)
                           sx={{
-                            marginTop: "30px",
-                            marginLeft: "30px",
-                            marginBottom: "10px",
-                            width: "100%",
-                            height: "40px",
-                            justifyContent: "row",
+                            paddingRight: "5px",
+                            paddingBottom: "15px",
                           }}
                         >
-                          <MDTypography
+                          <MDBox // 역량 통계 - 통계치 - 대분류
                             sx={{
-                              marginTop: "10px",
-                              fontSize: "20px",
-                              float: "left",
+                              marginTop: "30px",
+                              marginLeft: "30px",
+                              marginBottom: "10px",
+                              width: "100%",
+                              height: "auto",
+                              justifyContent: "row",
                             }}
                           >
-                            {category.categoryName}
-                          </MDTypography>
-                          <MDTypography
+                            <Grid container>
+                              <Grid item xs={12}>
+                                <MDBox
+                                  sx={{
+                                    width: "auto",
+                                  }}
+                                >
+                                  <MDTypography
+                                    sx={{
+                                      marginTop: "10px",
+                                      fontSize: "20px",
+                                      float: "left",
+                                    }}
+                                  >
+                                    {category.categoryName}
+                                  </MDTypography>
+                                  <MDTypography
+                                    sx={{
+                                      marginLeft: "10px",
+                                      marginTop: "15px",
+                                      fontSize: "18px",
+                                      color: "white",
+                                      float: "left",
+                                    }}
+                                  >
+                                    ({category.proportion}%)
+                                  </MDTypography>
+                                </MDBox>
+                              </Grid>
+                              <Grid item xs={12}>
+                                <MDTypography
+                                  sx={{
+                                    marginLeft: "2px",
+                                    marginTop: "5px",
+                                    fontSize: "18px",
+                                    color: "gray",
+                                    float: "left",
+                                  }}
+                                >
+                                  작성 카드 {category.categoryMakeCount}개
+                                </MDTypography>
+                              </Grid>
+                            </Grid>
+                          </MDBox>
+                          <MDBox // 역량 통계 - 통계치 - 중분류 하위
                             sx={{
-                              marginLeft: "10px",
-                              marginTop: "15px",
-                              fontSize: "18px",
-                              color: "gray",
-                              float: "left",
+                              flexDirection: "column",
+                              marginTop: "5px",
+                              marginLeft: "30px",
+                              marginBottom: "10px",
                             }}
                           >
-                            ({category.proportion}%)
-                          </MDTypography>
-                        </MDBox>
-                        <MDBox // 역량 통계 - 통계치 - 중분류 하위
-                          sx={{
-                            flexDirection: "column",
-                            marginTop: "5px",
-                            marginLeft: "30px",
-                            marginBottom: "10px",
-                          }}
-                        >
-                          {category.subCategories.map((subcategory) => (
-                            <MDTypography
-                              sx={{
-                                marginTop: "10px",
-                                fontSize: "14px",
-                              }}
-                            >
-                              - {subcategory.categoryName} ({subcategory.proportion}%)
-                            </MDTypography>
-                          ))}
+                            {category.subCategories.map((subcategory) => (
+                              <MDBox>
+                                <MDTypography
+                                  sx={{
+                                    marginTop: "10px",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  - {subcategory.categoryName} ({subcategory.proportion}%)
+                                  <span style={{ color: "gray", marginLeft: "5px" }}>
+                                    ({subcategory.categoryMakeCount}개)
+                                  </span>
+                                </MDTypography>
+                              </MDBox>
+                            ))}
+                          </MDBox>
                         </MDBox>
                       </MDBox>
                     </Grid>
@@ -318,18 +260,26 @@ function StatTab() {
         <MDBox // 활동 통계 - 내용 (수치 + 뱃지)
         >
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={12}>
               <MDBox // 활동 통계 - 수치
               >
-                <ActivityStat />
+                <ActivityStat
+                  registerDate={fullStatData.registerDate}
+                  mutualFollows={fullStatData.mutualFollows}
+                  continuousCardMakeCnt={fullStatData.continuousCardMakeCnt}
+                  totalFeedLikeCnt={fullStatData.totalFeedLikeCnt}
+                  totalCardScrapCnt={fullStatData.totalCardScrapCnt}
+                  mostMakeCategory={fullStatData.mostMakeCategory}
+                  mostMakeSubCategory={fullStatData.mostMakeSubCategory}
+                />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6}>
+            {/* <Grid item xs={12} md={6}>
               <MDBox // 활동 통계 - 뱃지
               >
                 <ActivityBadge />
               </MDBox>
-            </Grid>
+            </Grid> */}
           </Grid>
         </MDBox>
       </MDBox>
@@ -373,12 +323,23 @@ function StatTab() {
         </MDBox>
         <MDBox // 비교 통계 - 내용
         >
-          <CompareStat />
+          <CompareStat
+            feedLikeRankingTotal={fullStatData.feedLikeRankingTotal}
+            feedLikeRankingFollowing={fullStatData.feedLikeRankingFollowing}
+            cardScrapRankingTotal={fullStatData.cardScrapRankingTotal}
+            cardScrapRankingFollowing={fullStatData.cardScrapRankingFollowing}
+            cardMakeRankingTotal={fullStatData.cardMakeRankingTotal}
+          />
         </MDBox>
       </MDBox>
     </MDBox>
   );
 }
+
+// StatTab.propTypes = {
+//   // userId: PropTypes.number.isRequired,
+//   data: PropTypes.object.isRequired,
+// };
 
 export default StatTab;
 
