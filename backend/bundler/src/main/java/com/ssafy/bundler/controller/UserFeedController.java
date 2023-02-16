@@ -2,10 +2,6 @@ package com.ssafy.bundler.controller;
 
 import java.util.List;
 
-import com.ssafy.bundler.config.auth.CurrentUser;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.bundler.config.auth.UserPrincipal;
 import com.ssafy.bundler.dto.bundle.response.BundleResponseDto;
 import com.ssafy.bundler.dto.card.response.CardSummaryResponseDto;
 import com.ssafy.bundler.service.FeedService;
@@ -21,6 +16,7 @@ import com.ssafy.bundler.service.FeedService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *packageName    : com.ssafy.bundler.controller
@@ -46,16 +42,16 @@ public class UserFeedController {
 	//번들에 속하는 카드 포함
 	@GetMapping("/v5/users/{user_id}/feeds/bundles")
 	public List<BundleResponseDto> getBundlesFindByUserId(@PathVariable("user_id") Long userId) {
-//		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
+		//		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
 
-//		log.info("principal.getUserId : " + principal.getUserId());
+		//		log.info("principal.getUserId : " + principal.getUserId());
 
-//		log.info(principal.getUsername());
-//		log.info(String.valueOf(principal.getUserId()));
+		//		log.info(principal.getUsername());
+		//		log.info(String.valueOf(principal.getUserId()));
 
 		log.info("getBundlesFindByUserId() - " + SecurityContextHolder.getContext().getAuthentication().toString());
 
-		User principal1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User principal1 = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		Long userPrincipal = Long.parseLong(principal1.getUsername());
 
@@ -66,13 +62,11 @@ public class UserFeedController {
 		}
 	}
 
-
 	//번들만 카드 없이
 	@GetMapping("/v4/users/{user_id}/feeds/bundles")
 	public List<BundleResponseDto> getBundleFindByUserIdSummary(@PathVariable("user_id") Long userId) {
 
-
-		User principal1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User principal1 = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long userPrincipal = Long.parseLong(principal1.getUsername());
 
 		if (userPrincipal == userId) {
@@ -90,12 +84,14 @@ public class UserFeedController {
 	}
 
 	@GetMapping("/v5/users/main")
-	public Result getFeedUserMain(Authentication authentication) throws Exception {
+	public Result getFeedUserMain() throws Exception {
+		org.springframework.security.core.userdetails.User userPrincipal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
+			.getAuthentication()
+			.getPrincipal();
 
-		User principal1 = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long userPrincipal = Long.parseLong(principal1.getUsername());
+		Long userId = Long.parseLong(userPrincipal.getUsername());
 
-		return new Result(feedService.findCardsAndBundlesByUserIdOnlyFollowing(userPrincipal));
+		return new Result(feedService.findCardsAndBundlesByUserIdOnlyFollowing(userId));
 	}
 
 	@Data
