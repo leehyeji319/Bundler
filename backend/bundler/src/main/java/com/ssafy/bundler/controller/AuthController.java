@@ -86,10 +86,12 @@ public class AuthController {
 			throw new LoginFailedException("비밀번호가 일치하지 않음.");
 		}
 
-		//		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-		//			authRequestDto.getEmail(),
-		//			authRequestDto.getPassword()
-		//		));
+		// Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+		// 	authRequestDto.getEmail(),
+		// 	authRequestDto.getPassword()
+		// ));
+
+		// SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		UserPrincipal userPrincipal = UserPrincipal.create(user);
 

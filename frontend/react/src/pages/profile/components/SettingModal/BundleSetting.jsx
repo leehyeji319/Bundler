@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import axios from "axios";
-
+import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -28,12 +28,11 @@ function BundleSetBox({
   };
   // console.log(bundlePrivate);
   // console.log(inputValue4);
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ4MTIyM30.NzqeedTY9kzxmcUCRe8S6XjhLIbUB0S4TIY14pbY7LI";
+  const accessToken = useSelector((state) => state.authToken.accessToken);
   const BundleFinish = () => {
     axios({
       // url: "http://i8a810.p.ssafy.io:8080/api/v1/bundles/15",
-      url: `http://localhost:8087/api/v1/bundles/${SelectBundleId}`,
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/bundles/${SelectBundleId}`,
       method: "PUT",
       withCredentials: true,
       headers: {

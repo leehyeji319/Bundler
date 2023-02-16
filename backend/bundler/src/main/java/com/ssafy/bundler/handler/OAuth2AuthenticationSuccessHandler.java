@@ -8,8 +8,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
-import jakarta.annotation.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -28,7 +26,7 @@ import com.ssafy.bundler.domain.ProviderType;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.domain.UserRefreshToken;
 import com.ssafy.bundler.domain.UserRole;
-import com.ssafy.bundler.exception.UserNotFoundException;
+import com.ssafy.bundler.exception.business.UserNotFoundException;
 import com.ssafy.bundler.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
@@ -103,7 +101,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 		Date now = new Date();
 		AuthToken accessToken = tokenProvider.createAuthToken(
-//			userInfo.getId(),
+			//			userInfo.getId(),
 			String.valueOf(u.getUserId()),
 			userRole.getCode(),
 			new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
@@ -113,8 +111,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 		long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 
 		AuthToken refreshToken = tokenProvider.createAuthToken(
-//			appProperties.getAuth().getTokenSecret(),
-				String.valueOf(u.getUserId()),
+			//			appProperties.getAuth().getTokenSecret(),
+			String.valueOf(u.getUserId()),
 			new Date(now.getTime() + refreshTokenExpiry)
 		);
 
@@ -129,7 +127,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			userRefreshTokenRepository.saveAndFlush(userRefreshToken);
 		} else {
 			User user1 = userRepository.findOneByProviderTypeAndProviderId(providerType, userInfo.getId()).orElseThrow(
-				UserNotFoundException::new);
+				() -> new UserNotFoundException(
+					"해당 (providerType, providerId) = " + providerType + ", " + userInfo.getId() + " 를 가지는 사용자 없음"));
 
 			userRefreshTokenRepository.saveAndFlush(
 				UserRefreshToken.builder()

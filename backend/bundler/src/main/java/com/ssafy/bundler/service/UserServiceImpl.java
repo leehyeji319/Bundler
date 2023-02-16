@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 		List<User> userList = userRepository.findByUserNicknameContains(userNickname);
 
 		if (userList == null || userList.size() == 0) {
-			throw new EntityNotFoundException("검색 결과가 없습니다.", ErrorCode.USER_NOT_FOUND);
+			throw new EntityNotFoundException("검색 결과가 없습니다.", ErrorCode.SEARCH_USER_NOT_FOUND);
 		}
 
 		List<Profile> response = new ArrayList<>(userList.size());
@@ -81,13 +81,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(UserUpdateRequestDto user) {
-		User u = userRepository.findByUserId(user.getUserId()).orElseThrow();
+	public void updateUser(UserUpdateRequestDto userUpdateRequestDto) {
+		User user = userRepository.findByUserId(userUpdateRequestDto.getUserId()).orElseThrow();
 
-		userRepository.save(u.toBuilder()
-			.userIntroduction(user.getUserIntroduction())
-			.userProfileImage(user.getUserProfileImageUrl())
-			.userNickname(user.getUserNickname())
+		userRepository.save(user.toBuilder()
+			.userIntroduction(userUpdateRequestDto.getUserIntroduction())
+			.userNickname(userUpdateRequestDto.getUserNickname())
 			.build()
 		);
 	}

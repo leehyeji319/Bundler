@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,10 +33,12 @@ import com.ssafy.bundler.service.FollowService;
 import com.ssafy.bundler.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
 	private final UserService userService;
@@ -44,16 +47,16 @@ public class UserController {
 	@Autowired
 	private FollowService followService;
 
-	// @GetMapping
-	// public ApiResponse getUser() {
-	// 	org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
-	// 		.getAuthentication()
-	// 		.getPrincipal();
-	//
-	// 	User user = userService.getUser(principal.getUsername());
-	//
-	// 	return ApiResponse.success("user", user);
-	// }
+	@GetMapping
+	public ApiResponse getUser() {
+		org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
+			.getAuthentication()
+			.getPrincipal();
+
+		User user = userService.getUser(principal.getUsername());
+
+		return ApiResponse.success("user", user);
+	}
 
 	@GetMapping("/list")
 	public ResponseEntity<List<Profile>> getUserList(@RequestParam String keyword) {
@@ -85,16 +88,14 @@ public class UserController {
 	//회원 정보 삭제
 	@DeleteMapping("/{userId}")
 	public ResponseEntity deleteUser(Authentication authentication, @PathVariable Long userId) {
-
 		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
 
 		if (principal.getUserId().equals(userId)) {
-			System.out.println("성공");
+			log.info("성공");
 			userService.deleteUser(userId);
 		}
 
 		return ResponseEntity.ok().build();
-
 	}
 
 	//fromUserId가 toUserId를 팔로잉
@@ -128,12 +129,20 @@ public class UserController {
 
 	@GetMapping("/{userId}/mypage")
 	public ResponseEntity<UserMypageResponseDto> mypage(@PathVariable Long userId) {
+		org.springframework.security.core.userdetails.User userPrincipal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
+			.getAuthentication()
+			.getPrincipal();
 
 		UserCalendarResponseDto calendar = userService.getDayFeedCount(userId);
 		UserMypageResponseDto mypageResponseDto = UserMypageResponseDto.builder().userCalendar(calendar).build();
 
 		User user = userService.getUserByUserId(userId);
 		mypageResponseDto.userInit(user);
+
+		if (!userPrincipal.getUsername().equals(userId)) {
+			Long myId = Long.valueOf(userPrincipal.getUsername());
+			mypageResponseDto.setFollowing(followService.isFollowing(myId, userId));
+		}
 
 		return ResponseEntity.ok(mypageResponseDto);
 	}

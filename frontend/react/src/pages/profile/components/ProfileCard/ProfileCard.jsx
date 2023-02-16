@@ -58,7 +58,7 @@ function ProfileCard({
   // 팔로잉 Axios
   useEffect(() => {
     axios
-      .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${user}/followings`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followings`)
       .then((res) => {
         setFollowingData(res.data);
         console.log("Following DATA OK");
@@ -72,7 +72,7 @@ function ProfileCard({
   // 팔로워 Axios
   useEffect(() => {
     axios
-      .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${user}/followers`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followers`)
       .then((res) => {
         setFollowerData(res.data);
         console.log("Follower DATA OK");
@@ -87,6 +87,8 @@ function ProfileCard({
   // console.log(FollowingDataGet);
   const FollowerData = FollowerDataGet;
   // console.log(FollowerData);
+  // console.log(email);
+  // console.log(typeof email);
 
   return (
     <MDBox

@@ -53,7 +53,7 @@ function MySkill(pageUser) {
 
   useEffect(() => {
     axios
-      .get(`http://i8a810.p.ssafy.io:8080/api/v1/area/${SkillpageUser}`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/area/${SkillpageUser}`)
       .then((res) => {
         // setSkillJobData(res.data);
         setJobData(res.data.job);

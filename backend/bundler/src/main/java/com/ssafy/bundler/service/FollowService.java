@@ -13,4 +13,6 @@ public interface FollowService {
 
 	public FollowerListResponseDto getUserFollowerList(Long userId); //user의 팔로워 목록 조회
 
+	public boolean isFollowing(Long fromUserId, Long toUserId); //fromUserId가 toUserId를 팔로잉하고 있는지 여부
+
 }

@@ -123,11 +123,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 						.providerAccessToken(userRequest.getAccessToken().getTokenValue())
 						.build();
 
-					if (providerType == ProviderType.GITHUB) { //Provider가 Github이면 githubUrl 추가
+					if (String.valueOf(providerType)
+						.equals(ProviderType.GITHUB.toString())) { //Provider가 Github이면 githubUrl 추가
+						log.info("ProviderType.GITHUB 에 들어옴");
 						GithubOAuth2UserInfo githubOAuth2UserInfo = (GithubOAuth2UserInfo)oAuthUserInfo;
 
 						newOAuthUser.setGithubUrl(githubOAuth2UserInfo.getGithubUrl());
 						newOAuthUser.setGithubLoginName(oAuthUserInfo.getName());
+
+						log.info("oAuthUserInfo.getName() : " + oAuthUserInfo.getName());
+						log.info("githubOAuth2UserInfo.getName() : " + githubOAuth2UserInfo.getName());
 					}
 
 					loginUser = userRepository.save(newOAuthUser);
@@ -164,11 +169,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 						.providerAccessToken(userRequest.getAccessToken().getTokenValue())
 						.build();
 
-					if (providerType == ProviderType.GITHUB) { //Provider가 Github이면 githubUrl 추가
+					log.info(String.valueOf(providerType));
+
+					if (String.valueOf(providerType)
+						.equals(ProviderType.GITHUB.toString())) { //Provider가 Github이면 githubUrl 추가
+						log.info("ProviderType.GITHUB 에 들어옴");
+
 						GithubOAuth2UserInfo githubOAuth2UserInfo = (GithubOAuth2UserInfo)oAuthUserInfo;
 
 						newOAuthUser.setGithubUrl(githubOAuth2UserInfo.getGithubUrl());
 						newOAuthUser.setGithubLoginName(oAuthUserInfo.getName());
+
+						log.info("oAuthUserInfo.getName() : " + oAuthUserInfo.getName());
+						log.info("githubOAuth2UserInfo.getName() : " + githubOAuth2UserInfo.getName());
 					}
 
 					loginUser = userRepository.saveAndFlush(newOAuthUser);
@@ -191,12 +204,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 						.providerAccessToken(userRequest.getAccessToken().getTokenValue())
 						.build();
 
-					if (providerType == ProviderType.GITHUB) { //Provider가 Github이면 githubUrl 추가
+					if (String.valueOf(providerType)
+						.equals(ProviderType.GITHUB.toString())) { //Provider가 Github이면 githubUrl 추가
+						log.info("ProviderType.GITHUB 에 들어옴");
+
 						GithubOAuth2UserInfo githubOAuth2UserInfo = (GithubOAuth2UserInfo)oAuthUserInfo;
 
 						newOAuthUser.setUserProfileImage(githubOAuth2UserInfo.getImageUrl());
 						newOAuthUser.setGithubUrl(githubOAuth2UserInfo.getGithubUrl());
 						newOAuthUser.setGithubLoginName(oAuthUserInfo.getName());
+
+						log.info("oAuthUserInfo.getName() : " + oAuthUserInfo.getName());
+						log.info("githubOAuth2UserInfo.getName() : " + githubOAuth2UserInfo.getName());
 					}
 
 					loginUser = userRepository.save(newOAuthUser);
