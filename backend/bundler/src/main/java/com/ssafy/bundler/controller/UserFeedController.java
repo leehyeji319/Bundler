@@ -3,7 +3,6 @@ package com.ssafy.bundler.controller;
 import java.util.List;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,11 +50,13 @@ public class UserFeedController {
 
 		log.info("getBundlesFindByUserId() - " + SecurityContextHolder.getContext().getAuthentication().toString());
 
-		User principal1 = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		org.springframework.security.core.userdetails.User userPrincipal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
+			.getAuthentication()
+			.getPrincipal();
 
-		Long userPrincipal = Long.parseLong(principal1.getUsername());
+		Long currentUserId = Long.parseLong(userPrincipal.getUsername());
 
-		if (userId == userPrincipal) {
+		if (currentUserId.equals(userId)) {
 			return feedService.getBundlesFindByUserIdContainIsBundlePrivate(userId);
 		} else {
 			return feedService.getBundlesFindByUserIdExceptIsBundlePrivate(userId);
@@ -66,10 +67,13 @@ public class UserFeedController {
 	@GetMapping("/v4/users/{user_id}/feeds/bundles")
 	public List<BundleResponseDto> getBundleFindByUserIdSummary(@PathVariable("user_id") Long userId) {
 
-		User principal1 = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long userPrincipal = Long.parseLong(principal1.getUsername());
+		org.springframework.security.core.userdetails.User userPrincipal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
+			.getAuthentication()
+			.getPrincipal();
 
-		if (userPrincipal == userId) {
+		Long currentUserId = Long.parseLong(userPrincipal.getUsername());
+
+		if (currentUserId.equals(userId)) {
 			return feedService.getBundlesFindByUserIdContainIsBundlePrivateSummary(
 				userId);
 		} else {
