@@ -34,20 +34,24 @@ function Profile() {
   const pageUser = user !== undefined ? user : userId;
   console.log("실제 아이디 : ", pageUser);
   const [tabvalue, setTabValue] = useState("cardTab");
-
+  
   const handleChangeTab = (tabevent) => {
     setTabValue(tabevent.target.value);
   };
 
   // console.log(userId);
-
+  
   const [profileDataGet, setProfileData] = useState([]);
   const [CalendarData, setCalendar] = useState([]);
   const [CalendarDate, setDate] = useState([]);
+  // 어세스토큰 5분마다 리셋
+  const accessToken = useSelector((state) => state.authToken.accessToken);
+  console.log(accessToken);
   // 프로필 axios를 통해 먼저 렌더링
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/mypage`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/mypage`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
       .then((res) => {
         setProfileData(res.data);
         setCalendar(res.data.userCalendar);
@@ -63,16 +67,9 @@ function Profile() {
   // ---------------- 번들탭 Axios ------------------------------
   const [BundleData, setBundleData] = useState([]);
 
-  // 어세스토큰 5분마다 리셋
-  const accessToken = useSelector((state) => state.authToken.accessToken);
-  console.log(accessToken);
-  // console.log(typeof accessToken);
-  // "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ5MDkzNn0.S9flvhHYhCknKjABviz_CspCYGFQ2jTTlMWWh5fMPMw";
   // -----------------------------------------------------------------
   useEffect(() => {
     axios
-      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
-      // .get(`http://i8a810.p.ssafy.io:8080/api/v4/users/${pageUser}/feeds/bundles`, {
       .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v4/users/${pageUser}/feeds/bundles`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
@@ -92,8 +89,6 @@ function Profile() {
   const [CardData, setCardData] = useState([]);
   useEffect(() => {
     axios
-      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
-      // .get(`http://i8a810.p.ssafy.io:8080/api/v4/users/${pageUser}/feeds/bundles`, {
       .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v5/users/${pageUser}/feeds/cards`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
