@@ -50,12 +50,9 @@ function BundleSetBox({
     })
       .then((result) => {
         console.log(result);
-        console.log("bundle data fix good");
-        // window.open("/profile");
       })
       .catch((error) => {
         console.error(error);
-        console.log("bundle data fix error");
       });
   };
 

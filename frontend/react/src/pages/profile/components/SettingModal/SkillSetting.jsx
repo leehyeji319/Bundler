@@ -84,12 +84,10 @@ function SkillSetBox({ pageUser }) {
     })
       .then((result) => {
         console.log(result);
-        console.log("skill data good");
         // window.open("/profile");
       })
       .catch((error) => {
         console.error(error);
-        console.log("skill data error");
       });
   };
 

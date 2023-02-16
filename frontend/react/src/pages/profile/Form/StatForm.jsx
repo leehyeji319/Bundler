@@ -15,10 +15,8 @@ import CompareStat from "../components/Statistic/CompareStat";
 // BundlelistTabForm Template
 // function StatTab(userId) {
 function StatTab(statdata) {
-  // console.log(data);
   const propstatdata = statdata;
   const fullStatData = propstatdata.data;
-  console.log(fullStatData);
 
   const fullstatCategory = fullStatData.statCategory;
   const dataForPie = [
@@ -53,7 +51,6 @@ function StatTab(statdata) {
       color: "hsl(11, 70%, 50%)",
     },
   ];
-  console.log(fullStatData);
   return (
     <MDBox // 전체 통계탭 박스
       sx={{

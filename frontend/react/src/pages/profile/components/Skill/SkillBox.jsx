@@ -58,20 +58,17 @@ function MySkill(pageUser) {
         // setSkillJobData(res.data);
         setJobData(res.data.job);
         setSkillData(res.data.skill);
-        console.log(res.data);
-        console.log("SkillJob DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("SkillJob DATA ERROR");
       });
   }, []);
 
   // console.log(JobDataGet);
-  const userJobNum = JobDataGet.length;
-  console.log(userJobNum);
-  const userSkillNum = SkillDataGet.length;
-  console.log(userSkillNum);
+  // const userJobNum = JobDataGet.length;
+  // console.log(userJobNum);
+  // const userSkillNum = SkillDataGet.length;
+  // console.log(userSkillNum);
 
   return (
     <MDBox

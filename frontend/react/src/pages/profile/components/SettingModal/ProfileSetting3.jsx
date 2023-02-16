@@ -42,12 +42,10 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
     })
       .then((result) => {
         console.log(result);
-        console.log("profile data fix good");
         // window.open("/profile");
       })
       .catch((error) => {
         console.error(error);
-        console.log("profile data fix error");
       });
   };
   // ------------------- 취소 버튼 ----------------------

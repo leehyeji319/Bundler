@@ -13,16 +13,9 @@ function FollowerModal(props) {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const foldat = props;
-  // console.log(foldat);
-  // eslint-disable-next-line
   const followerData = foldat.data;
-  // console.log(followerData);
-  // eslint-disable-next-line
   const followerList = followerData.followerList;
-  // console.log(followerList);
-  // eslint-disable-next-line
   const pageUser = followerData.userId;
-  // console.log(pageUser);
 
   useEffect(() => {
     async function fetchData() {
@@ -49,7 +42,6 @@ function FollowerModal(props) {
     }
   };
 
-  // console.log(followerList);
   const goProfile = (event, userId) => {
     event.preventDefault();
     window.open(`/profile/${userId}`, "_self");
