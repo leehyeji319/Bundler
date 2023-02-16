@@ -28,12 +28,12 @@ function Profile() {
   const { user } = useParams();
   const userId2 = useSelector((state) => state.authToken.userId);
   console.log("userId", userId2);
-  console.log("user", user)
+  console.log("user", user);
   // console.log("USER", user);
   // const pageUser = 1;
   // const pageUser = user2.user;
   const pageUser = user !== undefined ? user : userId2;
-  console.log("pageUser", pageUser)
+  console.log("pageUser", pageUser);
   const [tabvalue, setTabValue] = useState("cardTab");
 
   const handleChangeTab = (tabevent) => {
@@ -50,11 +50,13 @@ function Profile() {
   console.log(accessToken);
   // 프로필 axios를 통해 먼저 렌더링
   useEffect(() => {
+    console.log("프로필 axios를 통해 먼저 렌더링");
     axios
       .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/mypage`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res) => {
+        console.log("프로필 axios를 통해 먼저 렌더링 then res",res);
         setProfileData(res.data);
         setCalendar(res.data.userCalendar);
         setDate(res.data.userCalendar.dates);
