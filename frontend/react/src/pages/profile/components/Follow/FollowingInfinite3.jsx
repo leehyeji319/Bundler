@@ -13,11 +13,8 @@ function FollowingModal(props) {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  // const nickname = nickname;
-  // eslint-disable-next-line
   const followprop1 = props;
   const followingdata = followprop1.data;
-  // console.log(followingdata);
   const pageUser = followingdata.userId;
 
   useEffect(() => {
@@ -48,7 +45,6 @@ function FollowingModal(props) {
   };
   // eslint-disable-next-line
   const followingList = followingdata.followingList;
-  // console.log(followingList);
 
   const goProfile = (event, userId) => {
     event.preventDefault();

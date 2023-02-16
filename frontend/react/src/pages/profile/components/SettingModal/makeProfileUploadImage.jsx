@@ -14,10 +14,8 @@ function MakeProfileImageUpload() {
     // data for submit
     const formData = new FormData();
     formData.append("file", imageList);
-    console.log(formData);
-
-    console.log(imageList, addUpdateIndex);
     setProfileImages(imageList);
+    console.log(addUpdateIndex);
   };
 
   return (

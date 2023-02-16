@@ -10,7 +10,6 @@ function CardListTab(props) {
   // eslint-disable-next-line
   const dataprop = props.data;
   const CardLastData = dataprop;
-  console.log(CardLastData);
   return (
     <MDBox
       sx={{

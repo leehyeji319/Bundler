@@ -35,18 +35,13 @@ function Profile() {
   const { user } = useParams();
   const userId = useSelector((state) => state.authToken.userId);
 
-  console.log("USER", user);
-  // const pageUser = 1;
-  // const pageUser = user2.user;
+  // userId 판별
   const pageUser = user !== undefined ? user : userId;
-  console.log("실제 아이디 : ", pageUser);
   const [tabvalue, setTabValue] = useState("cardTab");
 
   const handleChangeTab = (tabevent) => {
     setTabValue(tabevent.target.value);
   };
-
-  console.log(userId);
 
   const [profileDataGet, setProfileData] = useState([]);
   const [CalendarData, setCalendar] = useState([]);
@@ -60,11 +55,9 @@ function Profile() {
         setProfileData(res.data);
         setCalendar(res.data.userCalendar);
         setDate(res.data.userCalendar.dates);
-        console.log("Profile DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("Profile DATA ERROR");
       });
   }, []);
 
@@ -84,15 +77,11 @@ function Profile() {
       })
       .then((res3) => {
         setBundleData(res3.data);
-        console.log("Your Bundle DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("Your Bundle DATA ERROR");
       });
   }, []);
-
-  console.log(BundleData);
 
   // -------------------- 카드탭 Axios ----------------------------
   const [CardData, setCardData] = useState([]);
@@ -106,16 +95,11 @@ function Profile() {
       .then((res4) => {
         setCardData(res4.data);
         // setStatError("");
-        console.log("Card DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        // setStatError("error_stat");
-        console.log("Card DATA ERROR");
       });
   }, []);
-
-  console.log(CardData);
 
   // ------------------- 통계탭 Axios -------------------------------
   // -----stat만 axios 하나로 받고, 프로필이 json 파일 일때의 axios (23.02.09)-----
@@ -127,28 +111,18 @@ function Profile() {
       .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/stats`)
       .then((res2) => {
         setStatisticData(res2.data);
-        // setStatError("");
-        console.log("Stat DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        // setStatError("error_stat");
-        console.log("Stat DATA ERROR");
       });
   }, []);
 
   const profiledata = profileDataGet;
 
-  // console.log(BundleData);
-  // console.log(StatData);
-  // console.log(profiledata);
-
   const thisyear = CalendarData.year;
   const startDate = `${thisyear}-01-01`;
   const endDate = `${thisyear}-12-31`;
 
-  const cal2 = CalendarData.dates;
-  console.log(cal2);
   const calendarData = CalendarDate;
 
   return (

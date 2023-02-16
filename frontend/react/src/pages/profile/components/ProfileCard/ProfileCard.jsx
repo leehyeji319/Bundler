@@ -61,11 +61,9 @@ function ProfileCard({
       .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${user}/followings`)
       .then((res) => {
         setFollowingData(res.data);
-        console.log("Following DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("Following DATA ERROR");
       });
   }, []);
 
@@ -75,11 +73,9 @@ function ProfileCard({
       .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${user}/followers`)
       .then((res) => {
         setFollowerData(res.data);
-        console.log("Follower DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("Follower DATA ERROR");
       });
   }, []);
 
