@@ -89,5 +89,5 @@
 
 ## 📁 ERD
 
-<p align="center"> <img width="700" alt="snowman flow" src="https://user-images.githubusercontent.com/50399088/218807807-ae3e9d2e-f347-438c-9f19-227eb985d867.png"></p>
+<p align="center"> <img width="700" alt="snowman flow" src="https://user-images.githubusercontent.com/50399088/219441374-2c69d042-7d39-4494-8387-dfe2d38fbfd8.png"></p>
 <br/>
