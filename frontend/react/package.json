@@ -24,6 +24,7 @@
     "@mui/icons-material": "5.4.1",
     "@mui/material": "5.4.1",
     "@mui/styled-engine": "5.4.1",
+    "@mui/styles": "^5.11.7",
     "@nivo/calendar": "^0.80.0",
     "@nivo/pie": "^0.80.0",
     "@reduxjs/toolkit": "^1.9.2",

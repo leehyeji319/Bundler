@@ -6,10 +6,14 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 // [Import - React Basic] react && props && mui
-import React from "react";
+// import React from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import MDBox from "components/MDBox";
 // import MDAvatar from "components/MDAvatar";
@@ -20,50 +24,132 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import { ResponsiveCalendar } from "@nivo/calendar";
+// import { color } from "@mui/system";
 import ProfileCard from "./components/ProfileCard/ProfileCard";
-import strickdata from "./components/Statistic/stricktemp.json";
-// import CardThumbnailCard from "./components/thumCard/ThumnailCard";
+import MySkill from "./components/Skill/SkillBox";
 
-// import BundleThumbnail2 from 'pages/profile/components/thumBundle/BundleCard';
+import SelectedTab from "./Form/TabSelect";
 
-// Images
-// import trendimg from "../../assets/images/trend.jpg"
-// import itimg from "../../assets/images/ai-icons.jpeg"
-// import bundlerRabbit from "../../assets/images/bundler_rabbit_6.png"
-import Catimage from "../../assets/images/cat.jpg";
-
-// 각 탭 form들을 import
-import BundleListTab from "./Form/BundleListForm";
-import CardListTab from "./Form/CardListForm";
-import StatTab from "./Form/StatForm";
-
-// import { ResponsiveCalendar } from '@nivo/calendar'
-
-// import strickdata2 from "../searchall/strickdata.json"
-
-function SelectedTab({ selected }) {
-  switch (selected) {
-    case "bundleTab":
-      return <BundleListTab />;
-    case "statTab":
-      return <StatTab />;
-    default:
-      return <CardListTab />;
-  }
-}
-
-SelectedTab.propTypes = {
-  selected: PropTypes.string.isRequired,
-};
-
+// ---------------------------------------------------------------------------------------------------------------------
 function Profile() {
-  const data1 = strickdata;
-  const thisyear = "2023";
-  const [tabvalue, setTabValue] = React.useState("cardTab");
+  const { user } = useParams();
+  const userId = useSelector((state) => state.authToken.userId);
+
+  console.log("USER", user);
+  // const pageUser = 1;
+  // const pageUser = user2.user;
+  const pageUser = user !== undefined ? user : userId;
+  console.log("실제 아이디 : ", pageUser);
+  const [tabvalue, setTabValue] = useState("cardTab");
 
   const handleChangeTab = (tabevent) => {
     setTabValue(tabevent.target.value);
   };
+
+  console.log(userId);
+
+  const [profileDataGet, setProfileData] = useState([]);
+  const [CalendarData, setCalendar] = useState([]);
+  const [CalendarDate, setDate] = useState([]);
+  // 프로필 axios를 통해 먼저 렌더링
+  useEffect(() => {
+    axios
+      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/mypage")
+      .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/mypage`)
+      .then((res) => {
+        setProfileData(res.data);
+        setCalendar(res.data.userCalendar);
+        setDate(res.data.userCalendar.dates);
+        console.log("Profile DATA OK");
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log("Profile DATA ERROR");
+      });
+  }, []);
+
+  // ---------------- 번들탭 Axios ------------------------------
+  const [BundleData, setBundleData] = useState([]);
+
+  // 어세스토큰 5분마다 리셋
+  const accessToken =
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ5MDkzNn0.S9flvhHYhCknKjABviz_CspCYGFQ2jTTlMWWh5fMPMw";
+  // -----------------------------------------------------------------
+  useEffect(() => {
+    axios
+      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
+      // .get(`http://i8a810.p.ssafy.io:8080/api/v4/users/${pageUser}/feeds/bundles`, {
+      .get(`http://localhost:8087/api/v4/users/${pageUser}/feeds/bundles`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res3) => {
+        setBundleData(res3.data);
+        console.log("Your Bundle DATA OK");
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log("Your Bundle DATA ERROR");
+      });
+  }, []);
+
+  console.log(BundleData);
+
+  // -------------------- 카드탭 Axios ----------------------------
+  const [CardData, setCardData] = useState([]);
+  useEffect(() => {
+    axios
+      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
+      // .get(`http://i8a810.p.ssafy.io:8080/api/v4/users/${pageUser}/feeds/bundles`, {
+      .get(`http://localhost:8087/api/v5/users/${pageUser}/feeds/cards`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      .then((res4) => {
+        setCardData(res4.data);
+        // setStatError("");
+        console.log("Card DATA OK");
+      })
+      .catch((error) => {
+        console.error(error);
+        // setStatError("error_stat");
+        console.log("Card DATA ERROR");
+      });
+  }, []);
+
+  console.log(CardData);
+
+  // ------------------- 통계탭 Axios -------------------------------
+  // -----stat만 axios 하나로 받고, 프로필이 json 파일 일때의 axios (23.02.09)-----
+  const [StatData, setStatisticData] = useState([]);
+  // const [StatError, setStatError] = useState();
+  useEffect(() => {
+    axios
+      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/stats")
+      .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/stats`)
+      .then((res2) => {
+        setStatisticData(res2.data);
+        // setStatError("");
+        console.log("Stat DATA OK");
+      })
+      .catch((error) => {
+        console.error(error);
+        // setStatError("error_stat");
+        console.log("Stat DATA ERROR");
+      });
+  }, []);
+
+  const profiledata = profileDataGet;
+
+  // console.log(BundleData);
+  // console.log(StatData);
+  // console.log(profiledata);
+
+  const thisyear = CalendarData.year;
+  const startDate = `${thisyear}-01-01`;
+  const endDate = `${thisyear}-12-31`;
+
+  const cal2 = CalendarData.dates;
+  console.log(cal2);
+  const calendarData = CalendarDate;
 
   return (
     <DashboardLayout>
@@ -73,30 +159,39 @@ function Profile() {
           프로필
         </MDTypography>
       </MDBox>
-      <MDBox position="relative" mb={5}>
+      <MDBox position="relative" mb={5} sx={{ width: "auto" }}>
         <MDBox // 프로필 카드 + 스트릭 (3개 버튼 상단)
+          sx={{ width: "auto" }}
         >
           <Grid container spacing={1}>
-            <Grid item md={12} lg={4}>
+            <Grid item xs={12} xl={6}>
               <ProfileCard
-                profileImage={Catimage}
-                nickname="dellojoon2"
-                email="dellojoon7@gmail.com"
-                introduction="많은 분들의 니즈를 충족시키는 프론트엔드 개발자가 되고 싶습니다."
-                group="싸피 8기"
+                // User={pageUser}
+                userId={profiledata.userId}
+                profileImage={profiledata.userProfileImage}
+                nickname={profiledata.userNickName}
+                email={profiledata.userEmail}
+                introduction={profiledata.userIntroduction}
+                group={profiledata.userGithubUrl}
+                FollowingCount={profiledata.userFollowingCount}
+                FollowerCount={profiledata.userFollowerCount}
                 sx={{
                   float: "left",
                 }}
               />
             </Grid>
-            <Grid item md={12} lg={8}>
+            <Grid item xs={12} xl={6}>
+              <MySkill pageUser={pageUser} />
+            </Grid>
+            <Grid item xs={12} xl={12}>
               <MDBox
                 style={{
-                  width: "600px",
-                  height: "300px",
+                  width: "95%",
+                  height: "auto",
                   backgroundColor: "#1C1A25",
                   marginTop: "30px",
-                  marginLeft: "30px",
+                  // marginLeft: "30px",
+                  marginRight: "30px",
                   border: "1px solid #ffffff",
                   borderRadius: "21px",
                   float: "left",
@@ -109,14 +204,16 @@ function Profile() {
                       fontSize: "20px",
                       marginTop: "2%",
                       marginLeft: "2%",
+                      display: "flex",
+                      justifyContent: "center",
                     }}
                   >
                     {thisyear}년도 카드 작성일
                   </MDTypography>
                   <ResponsiveCalendar
-                    data={data1}
-                    from="2016-01-01"
-                    to="2016-07-12"
+                    data={calendarData}
+                    from={startDate}
+                    to={endDate}
                     emptyColor="#eeeeee"
                     colors={["#61cdbb", "#97e3d5", "#e8c1a0", "#f47560"]}
                     margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
@@ -124,6 +221,11 @@ function Profile() {
                     monthBorderColor="#f7c0c0"
                     dayBorderWidth={2}
                     dayBorderColor="#ffffff"
+                    theme={{
+                      textColor: "#ffffff",
+                      // fontSize: "20px",
+                      fontSize: "3vh",
+                    }}
                     legends={[
                       {
                         anchor: "bottom-right",
@@ -221,7 +323,7 @@ function Profile() {
             borderRadius: "40px",
           }}
         >
-          <SelectedTab selected={tabvalue} />
+          <SelectedTab selected={tabvalue} data1={CardData} data2={BundleData} data3={StatData} />
         </MDBox>
       </MDBox>
     </DashboardLayout>

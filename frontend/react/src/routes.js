@@ -7,6 +7,11 @@ import Profile from "pages/profile";
 import AuthLogin from "pages/login";
 import SignUp from "pages/signup";
 
+// import store from "redux/store";
+// const state = store.getState();
+// const userId = state.authToken.userId;
+// console.log(userId);
+
 // @mui icons
 import Icon from "@mui/material/Icon";
 

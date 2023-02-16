@@ -35,6 +35,13 @@ const MyResponsivePie = ({ data /* see data tab */ }) => (
       from: "color",
       modifiers: [["darker", 2]],
     }}
+    theme={{
+      labels: {
+        text: {
+          fontSize: "25px",
+        },
+      },
+    }}
     defs={[
       {
         id: "dots",

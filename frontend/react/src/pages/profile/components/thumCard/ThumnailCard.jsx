@@ -24,21 +24,21 @@ import CardImg from "assets/images/bundler/bundlerRabbit.png";
 import HomeCardModal from "./ThumnailCardModal";
 
 // function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap, CategoryId }) {
-function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryId }) {
-  const CategoryName = () => {
-    switch (CategoryId) {
-      case "1":
-        return "프론트엔드";
-      case "2":
-        return "백엔드";
-      case "3":
-        return "알고리즘";
-      case "7":
-        return "리액트";
-      default:
-        return "카테고리 미정";
-    }
-  };
+function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryName }) {
+  // const CategoryName = () => {
+  //   switch (CategoryId) {
+  //     case "1":
+  //       return "프론트엔드";
+  //     case "2":
+  //       return "백엔드";
+  //     case "3":
+  //       return "알고리즘";
+  //     case "7":
+  //       return "리액트";
+  //     default:
+  //       return "카테고리 미정";
+  //   }
+  // };
 
   return (
     <Card
@@ -81,7 +81,7 @@ function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryI
               fontSize: "30px",
             }}
           >
-            {CategoryName(CategoryId)}
+            {CategoryName.slice(0, 20)}
           </MDTypography>
         </MDBox>
         <MDTypography variant="body2" component="p" color="white" fontSize="25px" mb={3}>
@@ -179,7 +179,8 @@ CardThumbnailCard.propTypes = {
   cardTitle: PropTypes.string.isRequired,
   cardLike: PropTypes.number.isRequired,
   cardScrap: PropTypes.number.isRequired,
-  CategoryId: PropTypes.number.isRequired,
+  CategoryName: PropTypes.string.isRequired,
+  // CategoryId: PropTypes.number.isRequired,
   //   action: PropTypes.shape({
   //     type: PropTypes.oneOf(["external", "internal"]).isRequired,
   //     route: PropTypes.string.isRequired,
