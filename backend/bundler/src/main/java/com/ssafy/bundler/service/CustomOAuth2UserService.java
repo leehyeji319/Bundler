@@ -123,8 +123,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 						.providerAccessToken(userRequest.getAccessToken().getTokenValue())
 						.build();
 
-					if (ProviderType.GITHUB.toString()
-						.equals(providerType.toString())) { //Provider가 Github이면 githubUrl 추가
+					if (String.valueOf(providerType)
+						.equals(ProviderType.GITHUB.toString())) { //Provider가 Github이면 githubUrl 추가
 						log.info("ProviderType.GITHUB 에 들어옴");
 						GithubOAuth2UserInfo githubOAuth2UserInfo = (GithubOAuth2UserInfo)oAuthUserInfo;
 
@@ -169,8 +169,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 						.providerAccessToken(userRequest.getAccessToken().getTokenValue())
 						.build();
 
-					if (ProviderType.GITHUB.toString()
-						.equals(providerType.toString())) { //Provider가 Github이면 githubUrl 추가
+					log.info(String.valueOf(providerType));
+
+					if (String.valueOf(providerType)
+						.equals(ProviderType.GITHUB.toString())) { //Provider가 Github이면 githubUrl 추가
 						log.info("ProviderType.GITHUB 에 들어옴");
 
 						GithubOAuth2UserInfo githubOAuth2UserInfo = (GithubOAuth2UserInfo)oAuthUserInfo;
@@ -202,8 +204,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 						.providerAccessToken(userRequest.getAccessToken().getTokenValue())
 						.build();
 
-					if (ProviderType.GITHUB.toString()
-						.equals(providerType.toString())) { //Provider가 Github이면 githubUrl 추가
+					if (String.valueOf(providerType)
+						.equals(ProviderType.GITHUB.toString())) { //Provider가 Github이면 githubUrl 추가
 						log.info("ProviderType.GITHUB 에 들어옴");
 
 						GithubOAuth2UserInfo githubOAuth2UserInfo = (GithubOAuth2UserInfo)oAuthUserInfo;
