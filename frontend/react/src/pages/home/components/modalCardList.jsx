@@ -165,12 +165,13 @@ function ModalCardList({
 ModalCardList.defaultProps = {
   cardList: [],
   commentList: [],
+  handleCommetList: () => {},
 };
 
 // Typechecking props for the ModalCardList
 ModalCardList.propTypes = {
   open: PropTypes.bool.isRequired,
-  handleCommetList: PropTypes.func.isRequired,
+  handleCommetList: PropTypes.func,
   handleCardClose: PropTypes.func.isRequired,
   bundleId: PropTypes.number.isRequired,
   cardList: PropTypes.arrayOf(PropTypes.object),

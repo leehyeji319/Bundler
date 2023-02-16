@@ -1,16 +1,15 @@
+// Import - react basic
+import React from "react";
+import PropTypes from "prop-types";
+
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Grid from "@mui/material/Grid";
-import React from "react";
 import cardRabbit from "assets/images/bundler/bundler_rabbit_1.png";
 import CardThumbnailCard from "../components/thumCard/ThumnailCard";
 
 // BundlelistTabForm Template
-function CardListTab(props) {
-  // eslint-disable-next-line
-  const dataprop = props.data;
-  const CardLastData = dataprop;
-  console.log(CardLastData);
+function CardListTab({ data }) {
   return (
     <MDBox
       sx={{
@@ -19,7 +18,7 @@ function CardListTab(props) {
         marginRight: "3%",
       }}
     >
-      {CardLastData.length === 0 ? (
+      {data.length === 0 ? (
         <MDBox
           sx={{
             display: "flex",
@@ -47,9 +46,10 @@ function CardListTab(props) {
         </MDBox>
       ) : (
         <Grid container spacing={3}>
-          {CardLastData.map((oneCard) => (
-            <Grid item xs={12} md={6} lg={3}>
-              {oneCard.secondCategoryName === "기타" ? (
+          {data.map((infoCard) => (
+            <Grid item xs={12} md={6} lg={3} key={infoCard.cardId}>
+              <CardThumbnailCard infoCard={infoCard} />
+              {/* {oneCard.secondCategoryName === "기타" ? (
                 <CardThumbnailCard
                   cardId={oneCard.cardId}
                   cardType={oneCard.cardType}
@@ -67,7 +67,7 @@ function CardListTab(props) {
                   cardScrap={oneCard.cardScrapCnt}
                   CategoryName={oneCard.secondCategoryName}
                 />
-              )}
+              )} */}
             </Grid>
           ))}
         </Grid>
@@ -75,5 +75,13 @@ function CardListTab(props) {
     </MDBox>
   );
 }
+
+CardListTab.defaultProps = {
+  data: [],
+};
+
+CardListTab.propTypes = {
+  data: PropTypes.shape(PropTypes.arrayOf),
+};
 
 export default CardListTab;

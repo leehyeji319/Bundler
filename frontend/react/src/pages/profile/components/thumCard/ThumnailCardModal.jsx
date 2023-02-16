@@ -1,151 +1,168 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-*/
-
-// react-router components
-// import { Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props
+// Import React
+import React from "react";
+// import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useState } from "react";
 
 // @mui material components
-import Card from "@mui/material/Card";
-// import MuiLink from "@mui/material/Link";
-// import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
+import { Card, Modal } from "@mui/material";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-// import MDButton from "components/MDButton";
 
-// Modal
-// import { useState } from "react";
-import { Box } from "@mui/material";
+// Import Custom Component
+import CardImg from "assets/images/bundler/main4.png";
 
-function HomeCardModal({ image, category, id, title, description, solution, answer, commentList }) {
-  // const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
+function ProfileCardModal({ open, handleClose, infoCard }) {
+  const handleCloseModal = (e) => {
+    e.preventDefault();
+    handleClose();
+  };
 
   const style = {
     position: "absolute",
-    top: "30%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 800,
-    bgcolor: "background.paper",
+    width: "75%",
+    bgcolor: "transparent",
     border: "none",
     boxShadow: 24,
     outline: 0,
     borderRadius: 5,
+    mb: 3,
+    maxWidth: 800,
   };
-
-  const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Card sx={style}>
-        <MDBox p={3} bgColor="#152744">
-          <MDBox>
-            <MDBox
-              component="img"
-              src={image}
-              alt={image}
-              borderRadius="lg"
-              shadow="md"
-              width="10%"
-              height="10%"
-              position="relative"
-              display="inline-block"
-              zIndex={1}
-            />
-            <MDBox display="inline-block" mx={2}>
-              <MDTypography variant="h3" textTransform="capitalize" fontWeight="bold">
-                {category}
-              </MDTypography>
-              <MDTypography variant="overline" mt={1}>
-                {id}
+    <Card>
+      <Modal open={open} onClose={handleCloseModal}>
+        <Card sx={style}>
+          <MDBox p={3} bgColor="#152744">
+            <MDBox>
+              <MDBox
+                component="img"
+                src={CardImg}
+                alt={CardImg}
+                borderRadius="lg"
+                shadow="md"
+                width="8%"
+                position="relative"
+                display="inline-block"
+                zIndex={1}
+              />
+              <MDBox display="inline-block" mx={2}>
+                <MDTypography
+                  variant="h4"
+                  textTransform="capitalize"
+                  fontWeight="bold"
+                  sx={{ textAlign: "left" }}
+                >
+                  [카드]&nbsp;&nbsp;&nbsp;{infoCard.firstCategoryName}
+                </MDTypography>
+                <MDTypography variant="h6" textTransform="capitalize" sx={{ textAlign: "left" }}>
+                  {infoCard.secondCategoryName}
+                </MDTypography>
+                <MDTypography variant="overline" mt={1}>
+                  출제자 :&nbsp;&nbsp;{infoCard.userNickname}
+                </MDTypography>
+              </MDBox>
+            </MDBox>
+            <MDBox mt={2} mb={3}>
+              <MDTypography
+                display="inline"
+                variant="h5"
+                textTransform="capitalize"
+                fontWeight="bold"
+              >
+                문제&nbsp;&gt;&nbsp;&nbsp;{infoCard.feedTitle}
               </MDTypography>
             </MDBox>
+            <MDBox mt={2} mb={3}>
+              <pre
+                style={{
+                  maxHeight: "100px",
+                  overflow: "auto",
+                  overflowX: "hidden",
+                }}
+              >
+                <MDTypography variant="body2" component="p" color="text">
+                  지문
+                  <br />
+                  {infoCard.feedContent}
+                </MDTypography>
+              </pre>
+            </MDBox>
+            <MDBox mt={2} mb={3}>
+              <MDBox display="flex" alignItems="center" mt={3} lineHeight={1}>
+                <MDTypography variant="h6">해설</MDTypography>
+              </MDBox>
+              <pre
+                style={{
+                  maxHeight: "100px",
+                  overflow: "auto",
+                  overflowX: "hidden",
+                }}
+              >
+                <MDTypography variant="body2" component="p" color="text">
+                  {infoCard.cardCommentary}
+                </MDTypography>
+              </pre>
+            </MDBox>
           </MDBox>
-          <MDBox mt={2} mb={3}>
-            <MDTypography
-              display="inline"
-              variant="h6"
-              textTransform="capitalize"
-              fontWeight="bold"
-            >
-              {title}
-            </MDTypography>
-          </MDBox>
-          <MDBox mt={2} mb={3}>
-            <MDTypography variant="body2" component="p" color="text">
-              {description}
-            </MDTypography>
-          </MDBox>
-          <MDBox mt={2} mb={3}>
-            <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-              해설
-            </MDTypography>
-            <MDTypography variant="body2" component="p" color="text">
-              {solution}
-            </MDTypography>
-          </MDBox>
-          <MDBox mt={2} mb={3}>
-            <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-              내가 쓴 답
-            </MDTypography>
-            <MDTypography variant="body2" component="p" color="text">
-              {answer}
-            </MDTypography>
-          </MDBox>
-          <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
-            <MDTypography variant="h6" textTransform="capitalize" fontWeight="bold">
-              댓글란
-            </MDTypography>
-            <ul>
-              {commentList.map((comment) => (
-                <li>
-                  <MDTypography variant="body2" textTransform="capitalize">
-                    {comment.name} : {comment.reply}
-                  </MDTypography>
-                </li>
-              ))}
-            </ul>
-          </Box>
-        </MDBox>
-      </Card>
-    </Modal>
+        </Card>
+      </Modal>
+    </Card>
   );
 }
 
 // Default Vlaue
-// HomeCard.defaultProps = {
-//   commentList: null,
-// };
-
-// Typechecking props for the SimpleBlogCard
-HomeCardModal.propTypes = {
-  image: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  solution: PropTypes.string.isRequired,
-  answer: PropTypes.string.isRequired,
-  commentList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      reply: PropTypes.string.isRequired,
-    }).isRequired
-  ).isRequired,
+ProfileCardModal.defaultProps = {
+  infoCard: {
+    cardCommentary: "",
+    cardDescription: "",
+    cardId: 0,
+    cardScrapCnt: 0,
+    cardType: "",
+    createdAt: "",
+    feedCommentCnt: 0,
+    feedContent: "",
+    feedLikeCnt: 0,
+    feedTitle: "",
+    feedType: "",
+    firstCategoryId: 1,
+    firstCategoryName: "",
+    secondCategoryId: 6,
+    secondCategoryName: "",
+    userId: 9,
+    userNickname: "",
+    userProfileImage: "",
+  },
 };
 
-export default HomeCardModal;
+// Typechecking props for the SimpleBlogCard
+ProfileCardModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  infoCard: PropTypes.shape({
+    cardCommentary: PropTypes.string,
+    cardDescription: PropTypes.string,
+    cardId: PropTypes.number,
+    cardScrapCnt: PropTypes.number,
+    cardType: PropTypes.string,
+    createdAt: PropTypes.string,
+    feedCommentCnt: PropTypes.number,
+    feedContent: PropTypes.string,
+    feedLikeCnt: PropTypes.number,
+    feedTitle: PropTypes.string,
+    feedType: PropTypes.string,
+    firstCategoryId: PropTypes.number,
+    firstCategoryName: PropTypes.string,
+    secondCategoryId: PropTypes.number,
+    secondCategoryName: PropTypes.string,
+    userId: PropTypes.number,
+    userNickname: PropTypes.string,
+    userProfileImage: PropTypes.string,
+  }),
+};
+
+export default ProfileCardModal;

@@ -1,10 +1,6 @@
-// react-router components
-// import { Link } from "react-router-dom";
-// import MuiLink from "@mui/material/Link";
-// import MDButton from "components/MDButton";
-
 // prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
+import React, { useState } from "react";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -20,48 +16,24 @@ import MobileScreenShareIcon from "@mui/icons-material/MobileScreenShare";
 import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
-import CardImg from "assets/images/bundler/bundlerRabbit.png";
-import HomeCardModal from "./ThumnailCardModal";
+// import CardImg from "assets/images/bundler/bundlerRabbit.png";
+import ProfileCardModal from "./ThumnailCardModal";
 
-// function CardThumbnailCard({ cardId, cardType, cardTitle, cardLike, cardScrap, CategoryId }) {
-function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryName }) {
-  // const CategoryName = () => {
-  //   switch (CategoryId) {
-  //     case "1":
-  //       return "프론트엔드";
-  //     case "2":
-  //       return "백엔드";
-  //     case "3":
-  //       return "알고리즘";
-  //     case "7":
-  //       return "리액트";
-  //     default:
-  //       return "카테고리 미정";
-  //   }
-  // };
+// cardType, cardTitle, cardLike, cardScrap, CategoryName
+function CardThumbnailCard({ infoCard }) {
+  // 카드 상세페이지 모달 open 여부
+  const [isModalOpend, setIsModalOpend] = useState(false);
+
+  const handleClose = () => setIsModalOpend(false); // props 모달 닫기 from 자식 component
 
   return (
     <Card
       sx={{
-        // display: "flex",
         marginBottom: "20px",
         height: "auto",
       }}
     >
-      <HomeCardModal
-        key="1"
-        image={CardImg}
-        category="문제1 > 알고리즘"
-        id="dellojoon7@gmail.com"
-        title="제목인데 json 형식 test 중"
-        description="이 문제에 대해 설명 하시오"
-        solution="정답"
-        answer="내가 쓴 답"
-        commentList={[
-          { cmtId: 1, name: "정세권", reply: "댓글 1" },
-          { cmtId: 2, name: "정둘권", reply: "댓글 2" },
-        ]}
-      />
+      <ProfileCardModal open={isModalOpend} handleClose={handleClose} infoCard={infoCard} />
       <MDBox p={3}>
         <MDBox
           sx={{
@@ -73,7 +45,7 @@ function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryN
           mb={3}
         >
           <MDTypography display="inline" variant="h3" textTransform="capitalize" fontWeight="bold">
-            {cardType}
+            {infoCard.firstCategoryName}
           </MDTypography>
           <MDTypography
             sx={{
@@ -81,11 +53,11 @@ function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryN
               fontSize: "30px",
             }}
           >
-            {CategoryName.slice(0, 20)}
+            {infoCard.secondCategoryName}
           </MDTypography>
         </MDBox>
         <MDTypography variant="body2" component="p" color="white" fontSize="25px" mb={3}>
-          {cardTitle.slice(0, 40)}
+          {infoCard.feedTitle}
         </MDTypography>
         <MDBox
           sx={{
@@ -118,7 +90,7 @@ function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryN
                     float: "left",
                   }}
                 >
-                  {cardLike}
+                  {infoCard.feedLikeCnt}
                 </MDTypography>
               </MDBox>
             </Grid>
@@ -145,7 +117,7 @@ function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryN
                     float: "left",
                   }}
                 >
-                  {cardScrap}
+                  {infoCard.cardScrapCnt}
                 </MDTypography>
               </MDBox>
             </Grid>
@@ -153,13 +125,10 @@ function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryN
               <MDBox // 카드 썸네일 하단 - 상세보기 버튼
               >
                 <MDButton
+                  types="button"
                   variant="outlined"
                   size="small"
-                  style={
-                    {
-                      // marginLeft: "40px",
-                    }
-                  }
+                  onClick={() => setIsModalOpend(!isModalOpend)}
                 >
                   상세 보기
                 </MDButton>
@@ -172,31 +141,51 @@ function CardThumbnailCard({ cardType, cardTitle, cardLike, cardScrap, CategoryN
   );
 }
 
+CardThumbnailCard.defaultProps = {
+  infoCard: {
+    cardCommentary: "",
+    cardDescription: "",
+    cardId: 0,
+    cardScrapCnt: 0,
+    cardType: "",
+    createdAt: "",
+    feedCommentCnt: 0,
+    feedContent: "",
+    feedLikeCnt: 0,
+    feedTitle: "",
+    feedType: "",
+    firstCategoryId: 1,
+    firstCategoryName: "",
+    secondCategoryId: 6,
+    secondCategoryName: "",
+    userId: 9,
+    userNickname: "",
+    userProfileImage: "",
+  },
+};
+
 // 썸네일 카드의 프롭타입 설정
 CardThumbnailCard.propTypes = {
-  // cardId: PropTypes.number.isRequired,
-  cardType: PropTypes.string.isRequired,
-  cardTitle: PropTypes.string.isRequired,
-  cardLike: PropTypes.number.isRequired,
-  cardScrap: PropTypes.number.isRequired,
-  CategoryName: PropTypes.string.isRequired,
-  // CategoryId: PropTypes.number.isRequired,
-  //   action: PropTypes.shape({
-  //     type: PropTypes.oneOf(["external", "internal"]).isRequired,
-  //     route: PropTypes.string.isRequired,
-  //     color: PropTypes.oneOf([
-  //       "primary",
-  //       "secondary",
-  //       "info",
-  //       "success",
-  //       "warning",
-  //       "error",
-  //       "dark",
-  //       "light",
-  //       "default",
-  //     ]),
-  //     label: PropTypes.string.isRequired,
-  //   }).isRequired,
+  infoCard: PropTypes.shape({
+    cardCommentary: PropTypes.string,
+    cardDescription: PropTypes.string,
+    cardId: PropTypes.number,
+    cardScrapCnt: PropTypes.number,
+    cardType: PropTypes.string,
+    createdAt: PropTypes.string,
+    feedCommentCnt: PropTypes.number,
+    feedContent: PropTypes.string,
+    feedLikeCnt: PropTypes.number,
+    feedTitle: PropTypes.string,
+    feedType: PropTypes.string,
+    firstCategoryId: PropTypes.number,
+    firstCategoryName: PropTypes.string,
+    secondCategoryId: PropTypes.number,
+    secondCategoryName: PropTypes.string,
+    userId: PropTypes.number,
+    userNickname: PropTypes.string,
+    userProfileImage: PropTypes.string,
+  }),
 };
 
 export default CardThumbnailCard;

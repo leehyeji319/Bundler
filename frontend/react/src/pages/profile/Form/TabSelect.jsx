@@ -20,12 +20,18 @@ function SelectedTab({ selected, data1, data2, data3 }) {
   }
 }
 
+SelectedTab.defaultProps = {
+  selected: "cardTab",
+  data1: {},
+  data2: {},
+  data3: {},
+};
+
 SelectedTab.propTypes = {
-  selected: PropTypes.string.isRequired,
-  // data: PropTypes.object.isRequired,
-  data1: PropTypes.arrayOf(PropTypes.object).isRequired,
-  data2: PropTypes.arrayOf(PropTypes.object).isRequired,
-  data3: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selected: PropTypes.string,
+  data1: PropTypes.arrayOf(PropTypes.object),
+  data2: PropTypes.arrayOf(PropTypes.object),
+  data3: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default SelectedTab;

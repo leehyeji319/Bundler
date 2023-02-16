@@ -68,10 +68,10 @@ function MySkill(pageUser) {
   }, []);
 
   // console.log(JobDataGet);
-  const userJobNum = JobDataGet.length;
-  console.log(userJobNum);
-  const userSkillNum = SkillDataGet.length;
-  console.log(userSkillNum);
+  // const userJobNum = JobDataGet.length;
+  // console.log(userJobNum);
+  // const userSkillNum = SkillDataGet.length;
+  // console.log(userSkillNum);
 
   return (
     <MDBox

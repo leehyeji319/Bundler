@@ -3,21 +3,15 @@
 import MDBox from "components/MDBox";
 import Grid from "@mui/material/Grid";
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
-import bundlerRabbit from "assets/images/bundler/bundler_rabbit_6.png";
+// import bundlerRabbit from "assets/images/bundler/bundler_rabbit_6.png";
 import sorryRabbit from "assets/images/bundler/bundler_rabbit_8.png";
 import MDTypography from "components/MDTypography";
-import BundleThumbnail2 from "../components/thumBundle/BundleCard";
+import ProfileBundle from "../components/thumBundle/BundleCard";
 
 // BundlelistTabForm Template
-function BundleListTab(props) {
-  // const tempBundleData = bundleInfinite;
-  // eslint-disable-next-line
-  const dataprop = props.data;
-  const BundleLastData = dataprop;
-  // console.log(BundleLastData);
-
+function BundleListTab({ data }) {
   return (
     <MDBox
       sx={{
@@ -26,7 +20,7 @@ function BundleListTab(props) {
         marginRight: "3%",
       }}
     >
-      {BundleLastData.length === 0 ? (
+      {data.length === 0 ? (
         <MDBox
           sx={{
             display: "flex",
@@ -55,35 +49,9 @@ function BundleListTab(props) {
       ) : (
         <Grid container spacing={3}>
           {/* {tempBundleData.map((oneBundle) => ( */}
-          {BundleLastData.map((oneBundle) => (
+          {data.map((oneBundle) => (
             <Grid item xs={12} md={6} lg={3}>
-              {oneBundle.bundleThumbnail === null ? (
-                <BundleThumbnail2
-                  bundleId={oneBundle.bundleId}
-                  feedTitle={oneBundle.feedTitle}
-                  // bundleLike={oneBundle.bundleLike}
-                  bundleLike={oneBundle.feedLikeCnt}
-                  // isBundlePrivate={oneBundle.isBundlePrivate}
-                  isBundlePrivate={oneBundle.bundlePrivate}
-                  bundleThumbnail={bundlerRabbit}
-                  bundleThumbnailText={oneBundle.bundleThumbnailText}
-                  // isBundleDefault={oneBundle.isBundleDefault}
-                  isBundleDefault={oneBundle.bundleDefault}
-                />
-              ) : (
-                <BundleThumbnail2
-                  bundleId={oneBundle.bundleId}
-                  feedTitle={oneBundle.feedTitle}
-                  // bundleLike={oneBundle.bundleLike}
-                  bundleLike={oneBundle.feedLikeCnt}
-                  // isBundlePrivate={oneBundle.isBundlePrivate}
-                  isBundlePrivate={oneBundle.bundlePrivate}
-                  bundleThumbnail={oneBundle.bundleThumbnail}
-                  bundleThumbnailText={oneBundle.bundleThumbnailText}
-                  // isBundleDefault={oneBundle.isBundleDefault}
-                  isBundleDefault={oneBundle.bundleDefault}
-                />
-              )}
+              <ProfileBundle infoBundle={oneBundle} />
             </Grid>
           ))}
         </Grid>
@@ -91,8 +59,13 @@ function BundleListTab(props) {
     </MDBox>
   );
 }
-// BundleListTab.propTypes = {
-//   props: PropTypes.node.isRequired,
-// };
+
+BundleListTab.defaultProps = {
+  data: {},
+};
+
+BundleListTab.propTypes = {
+  data: PropTypes.shape(PropTypes.object),
+};
 
 export default BundleListTab;

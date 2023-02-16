@@ -241,9 +241,13 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
   );
 }
 
+ProfileSetBox3.defaultProps = {
+  SetImage: "",
+};
+
 ProfileSetBox3.propTypes = {
   id: PropTypes.number.isRequired,
-  SetImage: PropTypes.string.isRequired,
+  SetImage: PropTypes.string,
   //   // Image: PropTypes.string.isRequired,
   nickname: PropTypes.string.isRequired,
   // email: PropTypes.string.isRequired,

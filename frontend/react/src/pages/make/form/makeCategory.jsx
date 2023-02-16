@@ -27,6 +27,7 @@ function MakeCategory({ handleCategory }) {
     } else if (firstCat === 5) {
       secondCat = 31;
     }
+    handleCategory(event, secondCat);
     setValue({
       first: firstCat,
       second: secondCat,
