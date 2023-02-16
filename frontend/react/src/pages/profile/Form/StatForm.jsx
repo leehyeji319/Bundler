@@ -1,25 +1,14 @@
 // [Import - Design]
-// import { Button, Box, TextField, Typography } from "@mui/material";
-// import Switch from "@mui/material/Switch";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import Grid from "@mui/material/Grid";
-// import axios from "axios";
-// import PropTypes from "prop-types";
-// import React, { useState, useEffect } from "react";
-
-// [Import - React-Redux]
-// import { useSelector, useDispatch } from "react-redux";
-
-// [Import - Redux-action] redux-action 함수
-// import { actAddCard } from "redux/actions/makeCardAction";
 
 // import ChartData from "pages/pr  ofile/components/Statistic/ChartData230206.json";
 import MyResponsivePie from "pages/profile/components/Statistic/pieChart";
 // import tempfull from "../components/Statistic/tempFullStat.json";
 
 import ActivityStat from "../components/Statistic/ActivityStat";
-import ActivityBadge from "../components/Statistic/ActivityBadge";
+// import ActivityBadge from "../components/Statistic/ActivityBadge";
 
 import CompareStat from "../components/Statistic/CompareStat";
 
@@ -271,7 +260,7 @@ function StatTab(statdata) {
         <MDBox // 활동 통계 - 내용 (수치 + 뱃지)
         >
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={12}>
               <MDBox // 활동 통계 - 수치
               >
                 <ActivityStat
@@ -285,12 +274,12 @@ function StatTab(statdata) {
                 />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6}>
+            {/* <Grid item xs={12} md={6}>
               <MDBox // 활동 통계 - 뱃지
               >
                 <ActivityBadge />
               </MDBox>
-            </Grid>
+            </Grid> */}
           </Grid>
         </MDBox>
       </MDBox>

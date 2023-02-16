@@ -24,7 +24,7 @@ function ActivityStat({
   return (
     <MDBox
       sx={{
-        marginTop: "10px",
+        // marginTop: "10px",
         marginLeft: "10px",
       }}
     >

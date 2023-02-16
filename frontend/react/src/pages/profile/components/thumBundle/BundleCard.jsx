@@ -78,6 +78,8 @@ function BundleThumbnail2({
           bundleImage={bundleThumbnail}
           bundleThumtext={bundleThumbnailText}
           bundleTitle={feedTitle}
+          bundleThumbnail={bundleThumbnail}
+          bundlePrivate={isBundlePrivate}
         />
       </Modal>
       <MDBox
@@ -145,7 +147,8 @@ function BundleThumbnail2({
                   justifyContent: "spaceBetween",
                 }}
               >
-                {isBundleDefault === "false" ? (
+                {/* {isBundleDefault === "false" ? ( */}
+                {isBundleDefault === false ? (
                   <MDBox // 썸네일 번들 하단 - 1. 좋아요와 좋아요 숫자
                     sx={{
                       marginLeft: "10px",
@@ -188,7 +191,8 @@ function BundleThumbnail2({
                     marginLeft: "10px",
                   }}
                 >
-                  {isBundlePrivate === "true" ? (
+                  {/* {isBundlePrivate === "true" ? ( */}
+                  {isBundlePrivate === true ? (
                     <MDBox>
                       <LockIcon
                         sx={{

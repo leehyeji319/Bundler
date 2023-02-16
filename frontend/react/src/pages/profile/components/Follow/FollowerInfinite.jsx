@@ -1,204 +1,33 @@
 import React, { useState, useEffect } from "react";
-
 import MDBox from "components/MDBox";
 import MDAvatar from "components/MDAvatar";
 import MDTypography from "components/MDTypography";
 import Button from "@mui/material/Button";
-// import PropTypes from "prop-types";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PropTypes from "prop-types";
+import followRabbit from "assets/images/bundler/bundler_rabbit_2-removebg-preview.png";
 
-// Image
-import imgty from "../../../../assets/images/Profile/안태윤.png";
-import imghj from "../../../../assets/images/Profile/이혜지.jpg";
-import imglion from "../../../../assets/images/Profile/라이언.png";
-import imgdnk from "../../../../assets/images/Profile/다나카.jpeg";
-import imgppap from "../../../../assets/images/Profile/PPAP.jpg";
-import bunny from "../../../../assets/images/bundler/bundlerRabbit.png";
-
-function FollowerInfiniteScroll() {
+//------------------------------------------------------------------------------------------------------
+function FollowerModal(props) {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  // const nickname = nickname;
-  const dummydata = {
-    userId: 1,
-    followingList: [
-      {
-        userId: 3,
-        userNickname: "khj635400",
-        userProfileImageUrl: bunny,
-        userIntroduction: "강효진2",
-        followId: 2,
-      },
-      {
-        userId: 5,
-        userNickname: "asdfg",
-        userProfileImageUrl: null,
-        userIntroduction: "목목",
-        followId: 5,
-      },
-      {
-        userId: 7,
-        userNickname: "안태윤",
-        userProfileImageUrl: imgty,
-        userIntroduction: "킹갓윤",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "라이언",
-        userProfileImageUrl: imglion,
-        userIntroduction: "카카오",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "이혜지",
-        userProfileImageUrl: imghj,
-        userIntroduction: "백엔드의 신입니다",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: imglion,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "다나카",
-        userProfileImageUrl: imgdnk,
-        userIntroduction: "모에모에 뀽",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "PPAP",
-        userProfileImageUrl: imgppap,
-        userIntroduction: "펜파인애플애플펜",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드 개발자가 되고 싶어요요요요요요요요요요요요요용요요ㅛ요요요용",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-      {
-        userId: 7,
-        userNickname: "트렌드개발자",
-        userProfileImageUrl: bunny,
-        userIntroduction: "트렌드",
-        followId: 99,
-      },
-    ],
-  };
-  const userId = 273;
+  const followerData = props.data;
+  console.log(followerData);
+  const followerList = followerData.followerList;
+  console.log(followerList);
+  const pageUser = followerData.userId;
+  console.log(pageUser);
 
   useEffect(() => {
     async function fetchData() {
       // const response = await fetch(`https://api.example.com/data?page=${page}`);
-      const response = await fetch(`http://localhost:8080/api/v1/users/${userId}/followers`);
+      // const response = await fetch(`http://i8a810.p.ssafy.io:8080/api/v1/users/1/followers`);
+      const response = await fetch(
+        `http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/followers`
+        // "http://i8a810.p.ssafy.io:8080/api/v1/users/1/followers"
+      );
       const newData = await response.json();
 
       if (!newData.length) {
@@ -217,6 +46,28 @@ function FollowerInfiniteScroll() {
     if (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight && hasMore) {
       setPage(page + 1);
     }
+  };
+
+  // const movePage = (who) => {
+  //   MoveBtnOn();
+  //   if (BtnOn === true) {
+  //     console.log(who);
+  //     console.log(BtnOn);
+  //     navigate(`/profile/${who}`);
+  //     window.location.reload();
+  //     MoveBtnOff();
+  //   }
+  // };
+  // const goProfile = (userId) => {
+  //   window.open(`/profile/${userId}`, "_self");
+  // };
+
+  console.log(followerList);
+
+  // console.log(followerList[0].followBack);
+  const goProfile = (event, userId) => {
+    event.preventDefault();
+    window.open(`/profile/${userId}`, "_self");
   };
 
   return (
@@ -267,60 +118,120 @@ function FollowerInfiniteScroll() {
           height: "auto",
         }}
       >
-        <div onScroll={handleScroll} style={{ height: "80vh", overflow: "scroll" }}>
-          {/* {data.map((item) => (
-              <div key={item.id}>{item.name}</div>
-            ))} */}
-          {dummydata.followingList.map((follower) => (
-            <MDBox
-              key={follower.id}
+        {followerData.length === 0 ? (
+          <MDBox
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              height: "150px",
+            }}
+          >
+            <MDBox // 토끼사진과 번들없다는 글자
               sx={{
-                height: "60px",
+                display: "flex",
+                flexDirection: "column",
+                marginTop: "50px",
               }}
             >
-              <MDBox
-                style={{
-                  flexDirection: "row",
-                  // justifyContent: "space-between"
+              <MDBox // 토끼사진만
+                sx={{ display: "flex", justifyContent: "center" }}
+              >
+                <img
+                  src={followRabbit}
+                  alt="noFollow"
+                  style={{ height: "100px", width: "100px" }}
+                />
+              </MDBox>
+              <MDTypography fontSize="25px" mt={1}>
+                팔로워 목록이 비어있어요!
+              </MDTypography>
+            </MDBox>
+          </MDBox>
+        ) : (
+          <div onScroll={handleScroll} style={{ height: "80vh", overflow: "scroll" }}>
+            {/* {data.map((item) => (
+              <div key={item.id}>{item.name}</div>
+            ))} */}
+            {/* {dummydata.followingList.map((follower) => ( */}
+            {followerList.map((follower) => (
+              <MDBox // 1단 - 팔로워 한명당 한줄
+                key={follower.id}
+                sx={{
+                  height: "60px",
                 }}
               >
-                <MDAvatar
-                  src={follower.userProfileImageUrl}
-                  sx={{
-                    width: "46px",
-                    height: "46px",
-                    left: "35px",
-                  }}
+                <MDBox // 2단 - 팔로워 사진 + 팔로워 이름, 자기소개
                   style={{
-                    float: "left",
+                    flexDirection: "row",
+                    // justifyContent: "space-between"
                   }}
-                />
-                <MDBox // 팔로우 이름, 자기소개
+                >
+                  <MDAvatar // 3단 - 팔로우 사진
+                    src={follower.userProfileImageUrl}
+                    sx={{
+                      width: "46px",
+                      height: "46px",
+                      left: "35px",
+                    }}
+                    style={{
+                      float: "left",
+                    }}
+                  />
+                  <MDBox // 3단 - 팔로우 이름, 자기소개
+                    sx={{
+                      marginLeft: "20%",
+                    }}
+                    style={{
+                      flexDirection: "colummn",
+                      float: "left",
+                    }}
+                  >
+                    <MDTypography
+                      sx={{
+                        fontSize: "14px",
+                      }}
+                    >
+                      {follower.userNickname}
+                    </MDTypography>
+                    <MDTypography
+                      sx={{
+                        fontSize: "14px",
+                        color: "gray",
+                      }}
+                    >
+                      {follower.userIntroduction.slice(0, 16)}
+                    </MDTypography>
+                  </MDBox>
+                </MDBox>
+                <MDBox // 2단 - 맞팔 여부 체크할 아이콘 박스
                   sx={{
-                    marginLeft: "20%",
-                  }}
-                  style={{
-                    flexDirection: "colummn",
+                    marginLeft: "25px",
                     float: "left",
                   }}
                 >
-                  <MDTypography
-                    sx={{
-                      fontSize: "14px",
-                    }}
-                  >
-                    {follower.userNickname}
-                  </MDTypography>
-                  <MDTypography
-                    sx={{
-                      fontSize: "14px",
-                      color: "gray",
-                    }}
-                  >
-                    {follower.userIntroduction.slice(0, 16)}
-                  </MDTypography>
+                  {follower.followBack === true ? (
+                    <MDBox
+                      sx={{
+                        marginTop: "10px",
+                      }}
+                    >
+                      <CheckCircleIcon
+                        sx={{
+                          width: "25px",
+                          height: "25px",
+                          color: "#81D8C3",
+                        }}
+                      />
+                    </MDBox>
+                  ) : (
+                    <MDBox>
+                      <MDTypography sx={{ fontSize: "14px" }}>맞팔 아님</MDTypography>
+                    </MDBox>
+                  )}
                 </MDBox>
-                <MDBox>
+                <MDBox // 2단 - 이동 버튼 만들 박스
+                >
                   <Button
                     variant="contained"
                     style={{
@@ -333,15 +244,15 @@ function FollowerInfiniteScroll() {
                       color: "#000000",
                       backgroundColor: "#81D8C3",
                     }}
+                    onClick={(event) => goProfile(event, follower.userId)}
                   >
-                    팔로우
+                    이동하기
                   </Button>
                 </MDBox>
               </MDBox>
-            </MDBox>
-          ))}
-          <style>
-            {`
+            ))}
+            <style>
+              {`
           ::-webkit-scrollbar {
             width: 0.2em;
             background-color: #282535;
@@ -358,15 +269,18 @@ function FollowerInfiniteScroll() {
             background-color: #282535;
           }
         `}
-          </style>
-          {hasMore && <div>Loading...</div>}
-        </div>
+            </style>
+            {hasMore && <div>Loading...</div>}
+          </div>
+        )}
       </MDBox>
     </MDBox>
   );
 }
-FollowerInfiniteScroll.propTypes = {
+FollowerModal.propTypes = {
   // nickname: PropTypes.string.isRequired,
   // userId: PropTypes.number.isRequired,
+  // followerData: PropTypes.arrayOf(PropTypes.object).isRequired,
+  pageUser: PropTypes.number.isRequired,
 };
-export default FollowerInfiniteScroll;
+export default FollowerModal;

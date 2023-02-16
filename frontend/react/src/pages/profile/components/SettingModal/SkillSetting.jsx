@@ -1,14 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-*/
-
-// react-router components
-// import { Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 // @mui material components
 // import Card from "@mui/material/Card";
@@ -38,12 +28,15 @@ import axios from "axios";
 
 // function BundleSetBox({ bundleTitle, bundleImage, bundleThumtext }) {
 // function BundleSetBox({ bundlePrivate, SelectBundleId, bundleTitle, bundleImage, bundleThumtext }) {
-function SkillSetBox() {
-  // const [bundlePublic, setBundlePublic] = useState("public");
+function SkillSetBox({ pageUser }) {
+  const skillSetUser = pageUser;
 
-  // const BundleChange = (bundlePub) => {
-  //   setBundlePublic(bundlePub.target.value);
-  // };
+  const settingwho = skillSetUser.pageUser;
+  // console.log(settingwho);
+  const pagemove2 = Number(settingwho);
+  // console.log(typeof pagemove);
+  // console.log(pagemove);
+
   const useStyles = makeStyles({
     input: {
       marginRight: "10px",
@@ -86,7 +79,7 @@ function SkillSetBox() {
       method: "POST",
       withCredentials: true,
       data: {
-        userId: 3,
+        userId: settingwho,
         job: items2,
         skill: items,
       },
@@ -94,7 +87,7 @@ function SkillSetBox() {
       .then((result) => {
         console.log(result);
         console.log("skill data good");
-        window.open("/profile");
+        // window.open("/profile");
       })
       .catch((error) => {
         console.error(error);
@@ -104,7 +97,12 @@ function SkillSetBox() {
 
   console.log(items);
   console.log(items2);
-
+  // -------------- 취소 버튼 ---------------------
+  const cancelBtn = (event) => {
+    event.preventDefault();
+    window.open(`/profile/${pagemove2}`, "_self");
+  };
+  //-----------------------------------------------------------------------------------------
   return (
     <MDBox // 전체 외부 설정페이지 박스
       sx={{
@@ -234,6 +232,7 @@ function SkillSetBox() {
             color: "#000000",
             backgroundColor: "#81D8C3",
           }}
+          onClick={(event) => cancelBtn(event)}
         >
           취소
         </Button>
@@ -258,13 +257,9 @@ function SkillSetBox() {
   );
 }
 
-// BundleSetBox.propTypes = {
-//   // SelectBundleId: PropTypes.number.isRequired,
-//   bundleTitle: PropTypes.string.isRequired,
-//   // bundlePrivate: PropTypes.oneOf(["public", "private"]),
-//   // bundleDefault : PropTypes.oneOf(["non", "default"]),
-//   bundleImage: PropTypes.string.isRequired,
-//   bundleThumtext: PropTypes.string.isRequired,
-// };
+SkillSetBox.propTypes = {
+  // id: PropTypes.number.isRequired,
+  pageUser: PropTypes.string.isRequired,
+};
 
 export default SkillSetBox;

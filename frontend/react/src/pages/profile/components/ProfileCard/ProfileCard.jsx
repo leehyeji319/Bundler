@@ -1,53 +1,28 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-*/
-
-// react-router components
-// import { Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
-
-// @mui material components
-// import Card from "@mui/material/Card";
-// import MuiLink from "@mui/material/Link";
-// import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import MDButton from "components/MDButton";
 
-// Modal
-// import { useState } from "react";
-// import { Box } from "@mui/material";
-
 // Icon
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
-// import LocationCityIcon from "@mui/icons-material/LocationCity";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import GroupsIcon from "@mui/icons-material/Groups";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GitHubIcon from "@mui/icons-material/GitHub";
-// import HoverableIcon from "../mouseHover/mouseHoverIcon";
+import StarIcon from "@mui/icons-material/Star";
 
-// import FollowingBox from "pages/profile/components/Follow/FollowingBox";
-// import FollowingInfiniteScroll from "../Follow/FollowingInfinite";
-// import FollowingBox2 from "../Follow/FollowingBox2";
-// import FollowerBox from "../Follow/FollowerBox";
-// import ProfileSetBox from "../SettingModal/ProfileSetting";
 import ProfileSetBox3 from "../SettingModal/ProfileSetting3";
-import InfiniteScrollingModal2 from "../Follow/FollowingInfinite3";
-import FollowerInfiniteScroll from "../Follow/FollowerInfinite";
+import FollowingModal from "../Follow/FollowingInfinite3";
+import FollowerModal from "../Follow/FollowerInfinite";
 
 function ProfileCard({
-  // userId,
+  userId,
   profileImage,
   nickname,
   email,
@@ -56,6 +31,8 @@ function ProfileCard({
   FollowingCount,
   FollowerCount,
 }) {
+  const { user } = useParams();
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -68,16 +45,29 @@ function ProfileCard({
   const ProfileSetOpen = () => setOpen3(true);
   const ProfileSetClose = () => setOpen3(false);
 
+  const [isFollowing, setIsFollowing] = useState(false);
   const [IconHovered, setIconHovered] = useState(false);
+  // const [StarIconHovered, setStarIconHovered] = useState(false);
+  const handleStarClick = () => {
+    setIsFollowing(!isFollowing);
+  };
 
   const [FollowingDataGet, setFollowingData] = useState([]);
+  const [FollowerDataGet, setFollowerData] = useState([]);
+
+  // const user = userId;
+  // console.log(typeof user);
+  // console.log(user);
+
   // 팔로잉 Axios
   useEffect(() => {
     console.log("test011");
     axios
-      .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/followings")
+      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/2/followings")
+      .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${user}/followings`)
       .then((res) => {
         setFollowingData(res.data);
+        console.log(res);
         console.log("hi55-YOUR DATA OK");
       })
       .catch((error) => {
@@ -86,7 +76,26 @@ function ProfileCard({
       });
   }, []);
 
+  // 팔로워 Axios
+  useEffect(() => {
+    console.log("test018");
+    axios
+      // .get("http://i8a810.p.ssafy.io:8080/api/v1/users/1/followers")
+      .get(`http://i8a810.p.ssafy.io:8080/api/v1/users/${user}/followers`)
+      .then((res) => {
+        setFollowerData(res.data);
+        console.log("hi999-YOUR DATA OK");
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log("hi98-YOUR DATA ERROR");
+      });
+  }, []);
+
   const FollowingData = FollowingDataGet;
+  console.log(FollowingDataGet);
+  const FollowerData = FollowerDataGet;
+  console.log(FollowerData);
 
   return (
     <MDBox
@@ -106,13 +115,19 @@ function ProfileCard({
       <Modal open={open} onClose={handleClose}>
         {/* <FollowingBox nickname="임성준" /> */}
         {/* <FollowingBox2 nickname="임성준" /> */}
-        <InfiniteScrollingModal2 nickname="임성준" followingData={FollowingData} />
+        <FollowingModal nickname="임성준" data={FollowingData} />
       </Modal>
       <Modal open={open2} onClose={FollowerClose}>
-        <FollowerInfiniteScroll nickname="임성준" />
+        {/* <FollowerModal nickname="임성준" followerData={FollowerData} pageUser={userId} /> */}
+        <FollowerModal nickname="임성준" data={FollowerData} />
       </Modal>
       <Modal open={open3} onClose={ProfileSetClose}>
-        <ProfileSetBox3 SetImage={profileImage} />
+        <ProfileSetBox3
+          SetImage={profileImage}
+          id={userId}
+          nickname={nickname}
+          introduction={introduction}
+        />
       </Modal>
       <MDBox // 이미지와 이름, 이메일, 소속 담을 박스
         sx={{
@@ -148,7 +163,12 @@ function ProfileCard({
             justifyContent: "flex-start",
           }}
         >
-          <MDTypography variant="h4" fontweight="medium" color="white">
+          <MDTypography
+            variant="h4"
+            fontweight="medium"
+            color="white"
+            style={{ textAlign: "left", marginLeft: "5px", marginBottom: "2px" }}
+          >
             {nickname}
           </MDTypography>
           <MDBox sx={{ marginTop: "2px" }}>
@@ -192,6 +212,17 @@ function ProfileCard({
             onMouseEnter={() => setIconHovered(true)}
             onMouseLeave={() => setIconHovered(false)}
             color={IconHovered ? "white" : "gray"}
+          />
+          <StarIcon
+            sx={{
+              marginTop: "10px",
+              width: "30px",
+              height: "30px",
+            }}
+            // onMouseEnter={() => setStarIconHovered(true)}
+            // onMouseLeave={() => setStarIconHovered(false)}
+            color={isFollowing ? "white" : "gray"}
+            onClick={handleStarClick}
           />
         </MDBox>
       </MDBox>
@@ -353,7 +384,7 @@ function ProfileCard({
 
 // Typechecking props for the SimpleBlogCard
 ProfileCard.propTypes = {
-  // userId: PropTypes.number.isRequired,
+  userId: PropTypes.number.isRequired,
   profileImage: PropTypes.string.isRequired,
   nickname: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,

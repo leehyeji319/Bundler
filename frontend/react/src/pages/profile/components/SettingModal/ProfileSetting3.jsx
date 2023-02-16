@@ -1,50 +1,61 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-*/
-
-// react-router components
-// import { Link } from "react-router-dom";
-
-// prop-types is a library for typechecking of props
-// import PropTypes from "prop-types";
-
-// @mui material components
-// import Card from "@mui/material/Card";
-// import MuiLink from "@mui/material/Link";
 import Button from "@mui/material/Button";
-// import Modal from "@mui/material/Modal";
-// import { useState } from "react";
+import PropTypes from "prop-types";
+import { useState } from "react";
+import axios from "axios";
 
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
 import MDInput from "components/MDInput";
-// import MDButton from "components/MDButton";
 
-// Modal
-// import { useState } from "react";
-// import { Box } from "@mui/material";
-
-// Image
-// import ImageUploading from "react-images-uploading";
 import MakeProfileImageUpload from "./makeProfileUploadImage";
-// import imgty from "../../../../assets/images/Profile/안태윤.png";
-// import imghj from "../../../../assets/images/Profile/이혜지.jpg";
-// import imglion from "../../../../assets/images/Profile/라이언.png";
-// import imgdnk from "../../../../assets/images/Profile/다나카.jpeg";
-// import bunny from "../../../../assets/images/bundler/bundlerRabbit.png";
-
-// Icon
 
 // function ProfileSetBox({ userId, profileImage, nickname, email, introduction, group }) {
-function ProfileSetBox3(SetImage) {
-  console.log(SetImage);
-  const ProfileImg = SetImage;
-  const profileNowImg = ProfileImg.SetImage;
+// function ProfileSetBox3(SetImage, id, nickname, introduction) {
+function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
+  const profileNowImg = SetImage;
+  const [inputValue, setInputValue] = useState(nickname);
+  const [inputValue2, setInputValue2] = useState(introduction);
+  console.log(inputValue);
+  console.log(inputValue2);
+  // const [inputValue3, setInputValue3] = useState(bundleTitle);
   console.log(profileNowImg);
+  // -------------- 어세스 토큰 --------------------------------------
+  const accessToken =
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ4NTc0NH0.7R-y_MmW8YJw8qaFdbV-ekdj2PbNL1ioyFE9TKq2VkE";
+  // -------------- 프로필 설정 완료 함수 -----------------------------
+  const ProfileFinish = () => {
+    axios({
+      // url: "http://i8a810.p.ssafy.io:8080/api/v1/bundles/15",
+      url: `http://localhost:8087/api/v1/users/${id}`,
+      method: "PUT",
+      withCredentials: true,
+      headers: {
+        // "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data: {
+        userId: id,
+        userNickname: inputValue,
+        userIntroduction: inputValue2,
+      },
+    })
+      .then((result) => {
+        console.log(result);
+        console.log("profile data fix good");
+        // window.open("/profile");
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log("profile data fix error");
+      });
+  };
+  // ------------------- 취소 버튼 ----------------------
+  const cancelBtn = (event, userId) => {
+    event.preventDefault();
+    window.open(`/profile/${userId}`, "_self");
+  };
+  // --------------------------------------------------------------------------------------------
   return (
     <MDBox // 전체 외부 설정페이지 박스
       sx={{
@@ -143,14 +154,16 @@ function ProfileSetBox3(SetImage) {
           }}
         >
           <MDBox>
-            <MDTypography>닉네임</MDTypography>
+            <MDTypography>닉네임 (영어만 입력 가능)</MDTypography>
             <MDInput
               sx={{
                 width: "600px",
               }}
-            >
-              dellojoon
-            </MDInput>
+              defaultValue={nickname}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              pattern="[a-zA-Z0-9]"
+            />
           </MDBox>
           <MDBox
             sx={{
@@ -162,9 +175,10 @@ function ProfileSetBox3(SetImage) {
               sx={{
                 width: "600px",
               }}
-            >
-              많은 분들의 니즈를 충족시키는 프론트엔드
-            </MDInput>
+              defaultValue={introduction}
+              value={inputValue2}
+              onChange={(e) => setInputValue2(e.target.value)}
+            />
           </MDBox>
           <MDBox
             sx={{
@@ -202,6 +216,7 @@ function ProfileSetBox3(SetImage) {
             color: "#000000",
             backgroundColor: "#81D8C3",
           }}
+          onClick={(event) => cancelBtn(event, id)}
         >
           취소
         </Button>
@@ -217,6 +232,7 @@ function ProfileSetBox3(SetImage) {
             color: "#000000",
             backgroundColor: "#81D8C3",
           }}
+          onClick={ProfileFinish}
         >
           설정 완료
         </Button>
@@ -225,13 +241,14 @@ function ProfileSetBox3(SetImage) {
   );
 }
 
-// ProfileSetBox3.propTypes = {
-//   // userId: PropTypes.string.isRequired,
-//   // Image: PropTypes.string.isRequired,
-//   // nickname: PropTypes.string.isRequired,
-//   // email: PropTypes.string.isRequired,
-//   // introduction: PropTypes.string.isRequired,
-//   // group: PropTypes.string.isRequired,
-// };
+ProfileSetBox3.propTypes = {
+  id: PropTypes.number.isRequired,
+  SetImage: PropTypes.string.isRequired,
+  //   // Image: PropTypes.string.isRequired,
+  nickname: PropTypes.string.isRequired,
+  // email: PropTypes.string.isRequired,
+  introduction: PropTypes.string.isRequired,
+  //   // group: PropTypes.string.isRequired,
+};
 
 export default ProfileSetBox3;

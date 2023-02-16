@@ -8,7 +8,7 @@
 // import { Link } from "react-router-dom";
 
 // prop-types is a library for typechecking of props
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 // @mui material components
 // import Card from "@mui/material/Card";
@@ -36,7 +36,7 @@ import SkillSetBox from "../SettingModal/SkillSetting";
 
 // import { useState } from "react";
 
-function MySkill() {
+function MySkill(pageUser) {
   const [open5, setOpen5] = useState(false);
   const SkillSetOpen = () => setOpen5(true);
   const SkillSetClose = () => setOpen5(false);
@@ -46,10 +46,14 @@ function MySkill() {
   const [JobDataGet, setJobData] = useState([]);
   const [SkillDataGet, setSkillData] = useState([]);
 
+  const SkillpageUser = pageUser.pageUser;
+
+  // console.log("testSkill");
   useEffect(() => {
     console.log("test077");
+    // .get("http://i8a810.p.ssafy.io:8080/api/v1/area/3")
     axios
-      .get("http://i8a810.p.ssafy.io:8080/api/v1/area/3")
+      .get(`http://i8a810.p.ssafy.io:8080/api/v1/area/${SkillpageUser}`)
       .then((res) => {
         // setSkillJobData(res.data);
         setJobData(res.data.job);
@@ -96,7 +100,7 @@ function MySkill() {
       }}
     >
       <Modal open={open5} onClose={SkillSetClose}>
-        <SkillSetBox />
+        <SkillSetBox pageUser={pageUser} />
       </Modal>
       <MDBox // 주요 기술 및 희망 직무 전체 내용 담을 박스
         sx={{ margin: "15px" }}
@@ -216,15 +220,15 @@ function MySkill() {
 //   commentList: null,
 // };
 
-// Typechecking props for the SimpleBlogCard
-// MySkill.propTypes = {
-// profileImage: PropTypes.string.isRequired,
-// nickname: PropTypes.string.isRequired,
-// email: PropTypes.string.isRequired,
-// introduction: PropTypes.string.isRequired,
-// group: PropTypes.string.isRequired,
-// FollowingCount: PropTypes.number.isRequired,
-// FollowerCount: PropTypes.number.isRequired,
-// };
+MySkill.propTypes = {
+  pageUser: PropTypes.number.isRequired,
+  // profileImage: PropTypes.string.isRequired,
+  // nickname: PropTypes.string.isRequired,
+  // email: PropTypes.string.isRequired,
+  // introduction: PropTypes.string.isRequired,
+  // group: PropTypes.string.isRequired,
+  // FollowingCount: PropTypes.number.isRequired,
+  // FollowerCount: PropTypes.number.isRequired,
+};
 
 export default MySkill;
