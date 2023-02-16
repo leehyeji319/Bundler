@@ -1,49 +1,113 @@
-// import { DataThresholding } from "@mui/icons-material";
-import * as React from "react";
-import { useForm } from "react-hook-form";
+// Import - react
+import React from "react";
+import PropTypes from "prop-types";
 
-function MakeLink() {
-  const {
-    register, // required, pattern, minLengh, maxLength...
-    formState: { isSubmitting, errors }, // 중복 제출 방지 -> true: 제출중
-  } = useForm();
+// Import - design mui
+import { Box, TextField, Typography } from "@mui/material";
 
+function MakeLink({ handleChangeValues }) {
+  // ------------ Function ----------------
+  // (Data 1 - Func) Catd Input Data Changed
+  const handleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    handleChangeValues(event, name, value);
+  };
+
+  // ------------ Return ----------------
   return (
-    <form>
-      <label htmlFor="email">링크</label>
-      <input
-        id="email"
-        type="email"
-        name="email"
-        placeholder="email"
-        {...register("email", {
-          required: "이메일은 필수 입력",
-          pattern: {
-            value: /\S+@\S+\.\S+/,
-            message: "이메일 형식에 맞지 않습니다.",
-          },
-        })}
-      />
-      <label htmlFor="password">비밀번호</label>
-      <input
-        id="password"
-        type="password"
-        name="password"
-        placeholder="password"
-        {...register("password", {
-          required: "비밀번호는 필수 입력",
-          minLength: {
-            value: 8,
-            message: "8자리 이상 비밀번호를 사용하시오.",
-          },
-        })}
-      />
-      {errors.password && <small role="alert">{errors.password.message}</small>}
-      <button type="submit" disabled={isSubmitting}>
-        로그인
-      </button>
-    </form>
+    <Box
+      component="form"
+      sx={{
+        "& .MuiTextField-root": { ml: 3, mt: 3, width: "70vw" },
+        mt: 3,
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <Box sx={{ mt: 2, display: "flex" }}>
+        <Typography variant="h6">
+          <Box sx={{ textAlign: "center", mt: 3 }}>제목</Box>
+        </Typography>
+        <TextField
+          // {...(valid.isFeedTitle ? { error: true } : {})}
+          // helperText="필수 입력란"
+          multiline
+          rows={1}
+          required
+          autoFocus
+          id="problem-title"
+          type="text"
+          name="feedTitle"
+          label="Required"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+        />
+      </Box>
+      <Box sx={{ display: "flex" }}>
+        <Typography variant="h6">
+          <Box sx={{ textAlign: "center", mt: 3 }}>링크</Box>
+        </Typography>
+        <TextField
+          // {...(valid.isFeedContent ? { error: true } : {})}
+          // helperText="필수 입력란"
+          multiline
+          rows={1}
+          required
+          id="problem-content"
+          type="text"
+          name="feedContent"
+          label="Required"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+        />
+      </Box>
+      <Box sx={{ display: "none" }}>
+        <Typography variant="h6">
+          <Box sx={{ textAlign: "center", mt: 3 }}>해답</Box>
+        </Typography>
+        <TextField
+          // {...(valid.isCardCommentary ? { error: true } : {})}
+          // helperText="필수 입력란"
+          multiline
+          rows={4}
+          id="problem-cardCommentary"
+          type="text"
+          name="cardCommentary"
+          label="Optional"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+        />
+      </Box>
+      <Box sx={{ display: "flex" }}>
+        <Typography variant="h6">
+          <Box sx={{ textAlign: "center", mt: 3 }}>설명</Box>
+        </Typography>
+        <TextField
+          multiline
+          rows={2}
+          id="problem-description"
+          type="text"
+          name="cardDescription"
+          label="Optional"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+        />
+      </Box>
+    </Box>
   );
 }
+
+MakeLink.propTypes = {
+  handleChangeValues: PropTypes.func.isRequired,
+};
 
 export default MakeLink;

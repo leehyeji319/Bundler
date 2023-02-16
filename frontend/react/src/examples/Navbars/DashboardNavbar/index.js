@@ -1,23 +1,7 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
-
 // react-router components
 import { useLocation, Link } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
 
@@ -30,11 +14,12 @@ import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import MDInput from "components/MDInput";
+// import MDInput from "components/MDInput";
 
 // Material Dashboard 2 React example components
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
+import "./DashboardNavbar.css";
 
 // Custom styles for DashboardNavbar
 import {
@@ -47,6 +32,8 @@ import {
 
 // Material Dashboard 2 React context
 import { useMaterialUIController, setTransparentNavbar, setMiniSidenav } from "context";
+// 로그아웃 버튼
+import SignOut from "pages/login/signOut";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -54,6 +41,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+
+  const state22 = useSelector((state) => state.authToken);
 
   useEffect(() => {
     // Setting the navbar type
@@ -128,26 +117,45 @@ function DashboardNavbar({ absolute, light, isMini }) {
         </MDBox>
         {isMini ? null : (
           <MDBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <MDBox pr={1}>
-              <MDInput label="Search here" />
-            </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/profile">
-                <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle}>account_circle</Icon>
-                </IconButton>
-              </Link>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarMobileMenu}
-                onClick={handleMiniSidenav}
-              >
-                <Icon sx={iconsStyle} fontSize="medium">
-                  {miniSidenav ? "menu_open" : "menu"}
-                </Icon>
-              </IconButton>
+              {state22.authenticated ? (
+                <div id="navRightUp">
+                  <MDBox color="white">{state22.nickname} 님</MDBox>
+                  <Link to="/profile">
+                    <IconButton sx={navbarIconButton} size="small" disableRipple>
+                      <Icon sx={iconsStyle}>account_circle</Icon>
+                    </IconButton>
+                  </Link>
+                  <SignOut />
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarMobileMenu}
+                    onClick={handleMiniSidenav}
+                  >
+                    <Icon sx={iconsStyle} fontSize="medium">
+                      {miniSidenav ? "menu_open" : "menu"}
+                    </Icon>
+                  </IconButton>
+                </div>
+              ) : (
+                <MDBox color="white">
+                  {" "}
+                  로그인 해주세요
+                  <IconButton
+                    size="small"
+                    disableRipple
+                    color="inherit"
+                    sx={navbarMobileMenu}
+                    onClick={handleMiniSidenav}
+                  >
+                    <Icon sx={iconsStyle} fontSize="medium">
+                      {miniSidenav ? "menu_open" : "menu"}
+                    </Icon>
+                  </IconButton>
+                </MDBox>
+              )}
               {renderMenu()}
             </MDBox>
           </MDBox>

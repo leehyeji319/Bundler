@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,10 +20,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@SuperBuilder(toBuilder = true)
 @Entity
 @Table(name = "CATEGORIES")
 public class Category implements Serializable {
@@ -35,10 +38,15 @@ public class Category implements Serializable {
 	@Column(name = "category_name")
 	private String categoryName;
 
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+	@Builder.Default
+	private List<Card> cardList = new ArrayList<>();
+
 	@ManyToOne(fetch = LAZY)
 	@JoinColumn(name = "category_parent_id", referencedColumnName = "category_id")
 	private Category parent;
 
+	@Builder.Default
 	@OneToMany(mappedBy = "parent") //셀프의 연관관계를 건거라고 생각하면 된다.
 	private List<Category> child = new ArrayList<>();
 
@@ -47,11 +55,4 @@ public class Category implements Serializable {
 		this.child.add(child);
 		child.setParent(this);
 	}
-
-	@Builder
-	public Category(String categoryName, Category parent) {
-		this.categoryName = categoryName;
-		this.parent = parent;
-	}
-
 }
