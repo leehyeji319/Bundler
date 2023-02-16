@@ -1,6 +1,7 @@
 import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 import MDBox from "components/MDBox";
@@ -21,13 +22,12 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
   // const [inputValue3, setInputValue3] = useState(bundleTitle);
   // console.log(profileNowImg);
   // -------------- 어세스 토큰 --------------------------------------
-  const accessToken =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZSI6IlJPTEVfVVNFUiIsImV4cCI6MTY3NjQ4NTc0NH0.7R-y_MmW8YJw8qaFdbV-ekdj2PbNL1ioyFE9TKq2VkE";
+  const accessToken = useSelector((state) => state.authToken.accessToken);
   // -------------- 프로필 설정 완료 함수 -----------------------------
   const ProfileFinish = () => {
     axios({
       // url: "http://i8a810.p.ssafy.io:8080/api/v1/bundles/15",
-      url: `http://localhost:8087/api/v1/users/${id}`,
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${id}`,
       method: "PUT",
       withCredentials: true,
       headers: {

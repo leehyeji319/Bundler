@@ -27,7 +27,7 @@ function FollowerModal(props) {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
-        `http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/followers`
+        `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/followers`
       );
       const newData = await response.json();
 

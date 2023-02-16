@@ -25,7 +25,7 @@ function FollowingModal(props) {
       // const response = await fetch(`https://api.example.com/data?page=${page}`);
       // const response = await fetch(`http://localhost:8080/api/v1/users/${userId}/followings`);
       const response = await fetch(
-        `http://i8a810.p.ssafy.io:8080/api/v1/users/${pageUser}/followings`
+        `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/followings`
       );
       const newData = await response.json();
 
