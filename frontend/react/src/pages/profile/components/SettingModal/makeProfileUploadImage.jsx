@@ -6,8 +6,11 @@ import ImageUploading from "react-images-uploading";
 import MDBox from "components/MDBox";
 import { Box, Button, Typography } from "@mui/material";
 
-function MakeProfileImageUpload() {
-  const [images2, setProfileImages] = useState([]);
+// eslint-disable-next-line
+function MakeProfileImageUpload({ parentFunction }) {
+  const [nowProfileimage, setProfileImages] = useState([]);
+  console.log(nowProfileimage);
+  parentFunction(nowProfileimage);
   const maxNumber = 1;
 
   const onChange = (imageList, addUpdateIndex) => {
@@ -24,7 +27,7 @@ function MakeProfileImageUpload() {
     <div className="App">
       <ImageUploading
         multiple
-        value={images2}
+        value={nowProfileimage}
         onChange={onChange}
         maxNumber={maxNumber}
         dataURLKey="data_url"
@@ -55,7 +58,7 @@ function MakeProfileImageUpload() {
                 </Box>
               </Typography>
               <Box sx={{ textAlign: "center", verticalAlign: "center" }}>
-                <Typography variant="h6">Click or Drag & Drop</Typography>
+                <Typography variant="h6">클릭하시거나 이미지를 여기로 끌어주세요!</Typography>
               </Box>
             </Button>
             {/* &nbsp;
@@ -66,10 +69,10 @@ function MakeProfileImageUpload() {
               <MDBox key={image.toString()} className="image-item">
                 <img src={image.data_url} alt="" width="100" />
                 <Box className="image-item-btn-wrapper">
-                  <Button type="button" onClick={() => onImageUpdate(index)}>
+                  <Button type="button" onClick={() => onImageUpdate(index)} color="white">
                     수정
                   </Button>
-                  <Button type="button" onClick={() => onImageRemove(index)}>
+                  <Button type="button" onClick={() => onImageRemove(index)} color="white">
                     제거
                   </Button>
                 </Box>

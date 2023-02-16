@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-
+import { useSelector } from "react-redux";
 // @mui material components
 // import Card from "@mui/material/Card";
 // import MuiLink from "@mui/material/Link";
@@ -21,7 +21,7 @@ import axios from "axios";
 // ---------------------------------------------------------------------------------------------------------
 function SkillSetBox({ pageUser }) {
   const skillSetUser = pageUser;
-
+  const accessToken = useSelector((state) => state.authToken.accessToken);
   const settingwho = skillSetUser.pageUser;
   // console.log(settingwho);
   const pagemove2 = Number(settingwho);
@@ -71,6 +71,10 @@ function SkillSetBox({ pageUser }) {
         userId: settingwho,
         job: items2,
         skill: items,
+      },
+      headers: {
+        // "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
     })
       .then((result) => {

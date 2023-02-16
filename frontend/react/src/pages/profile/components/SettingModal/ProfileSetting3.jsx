@@ -17,10 +17,17 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
   const profileNowImg = SetImage;
   const [inputValue, setInputValue] = useState(nickname);
   const [inputValue2, setInputValue2] = useState(introduction);
+  const [ImageInput, setImageInput] = useState([]);
   // console.log(inputValue);
   // console.log(inputValue2);
   // const [inputValue3, setInputValue3] = useState(bundleTitle);
   // console.log(profileNowImg);
+  // ------------- 프로필 이미지 파일 받아오기 ----------
+  const parentFunction = (x) => {
+    console.log(x);
+    setImageInput(x);
+  };
+
   // -------------- 어세스 토큰 --------------------------------------
   const accessToken = useSelector((state) => state.authToken.accessToken);
   // -------------- 프로필 설정 완료 함수 -----------------------------
@@ -50,6 +57,30 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
         console.log("profile data fix error");
       });
   };
+  // ------------------- 프로필 이미지 설정하기 --------------
+  const PhotoChange = () => {
+    axios({
+      // url: "http://i8a810.p.ssafy.io:8080/api/v1/bundles/15",
+      url: `${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${id}/profilePhoto`,
+      method: "POST",
+      withCredentials: true,
+      headers: {
+        // "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data: ImageInput,
+    })
+      .then((result) => {
+        console.log(result);
+        console.log("profile picture fix good");
+        // window.open("/profile");
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log("profile picture fix error");
+      });
+  };
+
   // ------------------- 취소 버튼 ----------------------
   const cancelBtn = (event, userId) => {
     event.preventDefault();
@@ -137,11 +168,20 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
               color: "white",
               backgroundColor: "#FF6F6F",
             }}
+            onClick={PhotoChange}
           >
             프로필 이미지 변경
           </Button>
-          <MDBox>
-            <MakeProfileImageUpload />
+          <MDBox
+            sx={{
+              marginLeft: "20px",
+              marginTop: "20px",
+              width: "300px",
+              backgroundColor: "#BF9FBA",
+              borderRadius: "10px",
+            }}
+          >
+            <MakeProfileImageUpload parentFunction={parentFunction} />
           </MDBox>
         </MDBox>
         <MDBox // 설정 제목 및 인풋 값이 담길 박스
