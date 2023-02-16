@@ -277,22 +277,22 @@ function CardSearch() {
           post.feedType === "CARD" ? (
             <div
               key={post.cardId}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              // style={{
+              //   display: "flex",
+              //   justifyContent: "center",
+              //   alignItems: "center",
+              // }}
             >
               <HomeCard cardInfo={post} />
             </div>
           ) : (
             <div
               key={post.cardId}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              // style={{
+              //   display: "flex",
+              //   justifyContent: "center",
+              //   alignItems: "center",
+              // }}
             >
               <HomeBundle bundleInfo={post} />
             </div>

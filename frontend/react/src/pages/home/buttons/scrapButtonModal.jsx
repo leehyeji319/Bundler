@@ -24,7 +24,14 @@ import MDSnackbar from "components/MDSnackbar";
 // Import Custom Component
 import { apiPutCardScrap, apiPostCardScrap, apiDeleteCardScrap } from "apis/api/apiHomePage";
 
-function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundleList }) {
+function ScrapButtonModal({
+  open,
+  handleClose,
+  targetId,
+  bundleList,
+  handleBundleList,
+  isBundleAdded,
+}) {
   // 해당 유저 정보
   const { userId } = useSelector((state) => state.authToken);
 
@@ -87,6 +94,7 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
       await apiDeleteCardScrap(selectedBundle, targetId)
         .then((success) => {
           handleBundleList();
+          isBundleAdded(false);
           setValid({
             isValid: true,
             comment: success.data,
@@ -123,6 +131,7 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
         await apiPostCardScrap(targetId, params)
           .then((success) => {
             handleBundleList();
+            isBundleAdded(true);
             setValid({
               isValid: true,
               comment: success.data,
@@ -148,6 +157,7 @@ function ScrapButtonModal({ open, handleClose, targetId, bundleList, handleBundl
         })
           .then((success) => {
             handleBundleList();
+            isBundleAdded(true);
             setValid({
               isValid: true,
               comment: success.data,
@@ -274,6 +284,7 @@ ScrapButtonModal.propTypes = {
   targetId: PropTypes.number.isRequired,
   bundleList: PropTypes.arrayOf(PropTypes.object),
   handleBundleList: PropTypes.func.isRequired,
+  isBundleAdded: PropTypes.func.isRequired,
 };
 
 export default ScrapButtonModal;

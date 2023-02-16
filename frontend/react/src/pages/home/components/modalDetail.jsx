@@ -29,7 +29,7 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
   const [mySolution, setMySolution] = useState("");
 
   // 댓글 저장
-  // const [commentList, setCommentList] = useState([]);
+  const [isCommentListOpen, setIsCommentListOpen] = useState(false);
 
   const handleMyAnswerChange = (e) => {
     e.preventDefault();
@@ -56,6 +56,11 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  // 댓글 이모티콘 클릭 시, commentList 설정
+  const isCommentOpen = (onoff) => {
+    setIsCommentListOpen(onoff);
   };
 
   const style = {
@@ -185,8 +190,14 @@ function ModalDetail({ open, handleOpen, handleClose, cardInfo }) {
               )}
             </MDBox>
             <Box sx={{ borderTop: "solid 1px white", p: 1 }}>
-              <HomeInput handleOpen={handleOpen} handleComment={handleComment} />
+              <HomeInput
+                feedCommentCnt={cardInfo.commentResponseDtoList}
+                handleOpen={handleOpen}
+                handleComment={handleComment}
+                isCommentOpen={isCommentOpen}
+              />
               <HomeCommentList
+                isCommentListOpen={isCommentListOpen}
                 handleCommetList={handleOpen}
                 commentList={cardInfo.commentResponseDtoList}
               />

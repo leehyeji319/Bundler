@@ -139,6 +139,7 @@ function HomeCard({ cardInfo }) {
           <MDBox display="flex" m="1" sx={{ alignItems: "center", width: "20%" }}>
             <LikeButton isLiked={isLiked} likeCnt={cardInfo.feedLikeCnt} feedId={cardInfo.cardId} />
             <ScrapButton
+              cardScrapCnt={cardInfo.cardScrapCnt}
               feedType={cardInfo.feedType}
               targetId={cardInfo.cardId}
               bundleList={bundleList}
