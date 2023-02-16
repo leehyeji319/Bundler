@@ -15,7 +15,6 @@ function MakeBundleImageUpload() {
     const formData = new FormData();
     formData.append("file", imageList);
 
-    console.log(imageList, addUpdateIndex);
     setImages(imageList);
   };
 

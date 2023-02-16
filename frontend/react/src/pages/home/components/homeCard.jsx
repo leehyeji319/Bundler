@@ -78,7 +78,6 @@ function HomeCard({ cardInfo }) {
     const getBundleList = async () => {
       await apiGetBundle(userId, cardInfo.cardId)
         .then(({ data }) => {
-          console.log(data);
           setBundleList(data);
         })
         .catch((error) => {

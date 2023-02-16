@@ -75,7 +75,7 @@ function CardSearch() {
   // input에 검색어를 입력하면 setSearch 사용하여 search 변경
   const [search, setSearch] = useState("");
   // 피드타입 선택
-  const [feedType, setFeedType] = useState("");
+  const [feedType, setFeedType] = useState(null);
   const feedTypeDropbox = (e) => {
     const { value } = e.target;
     setFeedType(FeedType.filter((el) => el.value === value)[0].id);
@@ -275,25 +275,11 @@ function CardSearch() {
       <div>
         {apiList.map((post) =>
           post.feedType === "CARD" ? (
-            <div
-              key={post.cardId}
-              // style={{
-              //   display: "flex",
-              //   justifyContent: "center",
-              //   alignItems: "center",
-              // }}
-            >
+            <div key={post.cardId}>
               <HomeCard cardInfo={post} />
             </div>
           ) : (
-            <div
-              key={post.cardId}
-              // style={{
-              //   display: "flex",
-              //   justifyContent: "center",
-              //   alignItems: "center",
-              // }}
-            >
+            <div key={post.bundleId}>
               <HomeBundle bundleInfo={post} />
             </div>
           )
