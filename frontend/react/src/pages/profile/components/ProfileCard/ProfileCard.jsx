@@ -377,20 +377,20 @@ function ProfileCard({
 }
 
 // Default Vlaue
-// HomeCard.defaultProps = {
-//   commentList: null,
-// };
+ProfileCard.defaultProps = {
+  profileImage: "",
+};
 
 // Typechecking props for the SimpleBlogCard
 ProfileCard.propTypes = {
   userId: PropTypes.number.isRequired,
-  profileImage: PropTypes.string.isRequired,
   nickname: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   introduction: PropTypes.string.isRequired,
   GithubUrl: PropTypes.string.isRequired,
   FollowingCount: PropTypes.number.isRequired,
   FollowerCount: PropTypes.number.isRequired,
+  profileImage: PropTypes.string,
 };
 
 export default ProfileCard;

@@ -42,7 +42,6 @@ import CheckToken from "auth/CheckToken";
 
 // font
 import "./App.css";
-import { useSelector } from "react-redux";
 
 function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -93,8 +92,6 @@ function App() {
   // 로그인 여부 확인해서 isAuth에 저장
   const { isAuth } = CheckToken(location.key);
   // ------------로그인 여부 확인-----------------------------
-  const userId = useSelector((state) => state.authToken.userId);
-  console.log(userId);
 
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>

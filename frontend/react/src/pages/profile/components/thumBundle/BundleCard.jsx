@@ -3,41 +3,34 @@
 // import MuiLink from "@mui/material/Link";
 // import MDButton from "components/MDButton";
 
-// prop-types is a library for typechecking of props
 import PropTypes from "prop-types";
+import { apiGetBundleDetail } from "apis/api/apiHomePage";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 // @mui material components
 import Card from "@mui/material/Card";
 // import Modal from "@mui/material/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import Divider from "@mui/material/Divider";
 // import Icon from "@mui/material/Icon";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 // import MobileScreenShareIcon from '@mui/icons-material/MobileScreenShare';
-import SettingsIcon from "@mui/icons-material/Settings";
 import LockIcon from "@mui/icons-material/Lock";
 
 import CardMedia from "@mui/material/CardMedia";
+
+import ModalCardList from "pages/home/components/modalCardList";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
 import Grid from "@mui/material/Grid";
-import Modal from "@mui/material/Modal";
 import BundleSetBox from "../SettingModal/BundleSetting";
 // import CardImg from "assets/images/bundler/bundlerRabbit.png";
-// import HomeCardModal from "./ThumnailCardModal";
 
-function BundleThumbnail2({
-  bundleId,
-  feedTitle,
-  bundleLike,
-  isBundlePrivate,
-  bundleThumbnail,
-  bundleThumbnailText,
-  isBundleDefault,
-}) {
+// import { NightShelter } from "@mui/icons-material";
+function ProfileBundle({ infoBundle }) {
   // const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
   const [open4, setOpen4] = useState(false);
@@ -45,6 +38,34 @@ function BundleThumbnail2({
   const BundleSetClose = () => setOpen4(false);
   const [IconHovered2, setIconHovered2] = useState(false);
   const [CardImgHover, setCardImgHover] = useState(false);
+
+  // const [bundleCoverImg, setBundleCoverImg] = useState(CardImg);
+
+  // 번들 상세 정보 저장
+  const [bundleDetail, setBundleDetail] = useState([]);
+
+  // 후하...
+  // 번들 상세 조회
+  const handleBundleDetail = () => {
+    const getInfo = async () => {
+      await apiGetBundleDetail(infoBundle.bundleId)
+        .then(({ data }) => {
+          setBundleDetail(data);
+        })
+        .catch((error) => console.log(error));
+    };
+    getInfo();
+  };
+
+  // 번들 상세 조회 모달 클릭
+  const handleCardListOpen = () => {
+    handleBundleDetail(); // api 통신 - 번들 상세 정보 가져오기
+    BundleSetOpen();
+  };
+
+  useEffect(() => {
+    console.log(infoBundle.bundleThumbnail === null);
+  }, []);
 
   const CardStyles = {
     // width: "400px",
@@ -72,16 +93,23 @@ function BundleThumbnail2({
         marginBottom: "20px",
       }}
     >
-      <Modal open={open4} onClose={BundleSetClose}>
+      <ModalCardList
+        open={open4}
+        handleCommetList={handleBundleDetail}
+        handleCardClose={BundleSetClose}
+        bundleId={infoBundle.bundleId}
+        cardList={infoBundle.cardBundleQueryDtoList}
+        commentList={bundleDetail.bundleCommentResponseList}
+      >
         <BundleSetBox
-          SelectBundleId={bundleId}
-          bundleImage={bundleThumbnail}
-          bundleThumtext={bundleThumbnailText}
-          bundleTitle={feedTitle}
-          bundleThumbnail={bundleThumbnail}
-          bundlePrivate={isBundlePrivate}
+          SelectBundleId={infoBundle.bundleId}
+          bundleImage={infoBundle.bundleThumbnail}
+          bundleThumtext={infoBundle.bundleThumbnailText}
+          bundleTitle={infoBundle.feedTitle}
+          bundleThumbnail={infoBundle.bundleThumbnail}
+          bundlePrivate={infoBundle.isBundlePrivate}
         />
-      </Modal>
+      </ModalCardList>
       <MDBox
         position="relative"
         width="100.25%"
@@ -90,9 +118,9 @@ function BundleThumbnail2({
         style={{ overflow: "hidden" }}
       >
         <CardMedia
-          src={bundleThumbnail}
+          src={infoBundle.bundleThumbnail}
           component="img"
-          title={feedTitle}
+          title={infoBundle.feedTitle}
           sx={{
             maxWidth: "100%",
             margin: 0,
@@ -121,7 +149,7 @@ function BundleThumbnail2({
             textAlign: "center",
           }}
         >
-          {bundleThumbnailText}
+          {infoBundle.bundleThumbnailText}
         </MDTypography>
       </MDBox>
       <MDBox mt={1} mx={0.5} mb={1.5}>
@@ -134,7 +162,7 @@ function BundleThumbnail2({
             fontSize="20px"
             sx={{ marginLeft: "10px" }}
           >
-            {feedTitle}
+            {infoBundle.feedTitle}
           </MDTypography>
         </MDBox>
         <MDBox // 번들 썸네일 하단 4개 컴퍼넌트
@@ -148,7 +176,7 @@ function BundleThumbnail2({
                 }}
               >
                 {/* {isBundleDefault === "false" ? ( */}
-                {isBundleDefault === false ? (
+                {infoBundle.isBundleDefault === false ? (
                   <MDBox // 썸네일 번들 하단 - 1. 좋아요와 좋아요 숫자
                     sx={{
                       marginLeft: "10px",
@@ -173,7 +201,7 @@ function BundleThumbnail2({
                         float: "left",
                       }}
                     >
-                      {bundleLike}
+                      {infoBundle.bundleLike}
                     </MDTypography>
                   </MDBox>
                 ) : (
@@ -192,7 +220,7 @@ function BundleThumbnail2({
                   }}
                 >
                   {/* {isBundlePrivate === "true" ? ( */}
-                  {isBundlePrivate === true ? (
+                  {infoBundle.isBundlePrivate === true ? (
                     <MDBox>
                       <LockIcon
                         sx={{
@@ -217,17 +245,16 @@ function BundleThumbnail2({
               >
                 <MDBox // 썸네일 번들 하단  - 3. 상세보기 버튼
                 >
-                  <MDButton
-                    variant="outlined"
-                    size="small"
-                    style={
-                      {
-                        // marginLeft: "40px",
-                      }
-                    }
-                  >
-                    상세 보기
-                  </MDButton>
+                  {infoBundle.cardBundleQueryDtoList !== null && (
+                    <MDButton
+                      variant="outlined"
+                      size="small"
+                      type="button"
+                      onClick={handleCardListOpen}
+                    >
+                      상세 보기
+                    </MDButton>
+                  )}
                 </MDBox>
                 <MDBox // 썸네일 번들 하단 - 4. 썸네일 설정 버튼
                   sx={{
@@ -254,17 +281,31 @@ function BundleThumbnail2({
   );
 }
 
-// 썸네일 카드의 프롭타입 설정
-BundleThumbnail2.propTypes = {
-  bundleId: PropTypes.number.isRequired,
-  feedTitle: PropTypes.string.isRequired,
-  bundleLike: PropTypes.number.isRequired,
-  isBundlePrivate: PropTypes.bool.isRequired,
-  isBundleDefault: PropTypes.bool.isRequired,
-  // bundlePrivate: PropTypes.oneOf(["public", "private"]),
-  // bundleDefault: PropTypes.oneOf(["non", "default"]),
-  bundleThumbnail: PropTypes.string.isRequired,
-  bundleThumbnailText: PropTypes.string.isRequired,
+ProfileBundle.defaultProps = {
+  infoBundle: {
+    bundleId: 0,
+    feedTitle: "",
+    bundleLike: 0,
+    isBundlePrivate: false,
+    isBundleDefault: false,
+    bundleThumbnail: "",
+    bundleThumbnailText: "",
+    cardBundleQueryDtoList: [],
+  },
 };
 
-export default BundleThumbnail2;
+// 썸네일 카드의 프롭타입 설정
+ProfileBundle.propTypes = {
+  infoBundle: PropTypes.shape({
+    bundleId: PropTypes.number.isRequired,
+    feedTitle: PropTypes.string.isRequired,
+    bundleLike: PropTypes.number.isRequired,
+    isBundlePrivate: PropTypes.bool.isRequired,
+    isBundleDefault: PropTypes.bool.isRequired,
+    bundleThumbnail: PropTypes.string.isRequired,
+    bundleThumbnailText: PropTypes.string.isRequired,
+    cardBundleQueryDtoList: PropTypes.shape(PropTypes.array),
+  }),
+};
+
+export default ProfileBundle;
