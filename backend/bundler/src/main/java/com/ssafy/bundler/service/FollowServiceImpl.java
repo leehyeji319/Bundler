@@ -96,4 +96,9 @@ public class FollowServiceImpl implements FollowService {
 		throw new NullPointerException();
 	}
 
+	@Override
+	public boolean isFollowing(Long fromUserId, Long toUserId) {
+		return followRepository.existsByFollowFromIdAndFollowToId(fromUserId, toUserId);
+	}
+
 }
