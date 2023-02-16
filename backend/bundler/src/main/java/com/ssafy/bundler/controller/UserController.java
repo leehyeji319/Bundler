@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.bundler.awsS3.FileUploadResponse;
 import com.ssafy.bundler.awsS3.S3Uploader;
-import com.ssafy.bundler.common.ApiResponse;
 import com.ssafy.bundler.config.auth.UserPrincipal;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.user.FollowerListResponseDto;
@@ -128,12 +128,18 @@ public class UserController {
 
 	@GetMapping("/{userId}/mypage")
 	public ResponseEntity<UserMypageResponseDto> mypage(@PathVariable Long userId) {
+		UserPrincipal userPrincipal = (UserPrincipal)SecurityContextHolder.getContext().getAuthentication();
 
 		UserCalendarResponseDto calendar = userService.getDayFeedCount(userId);
 		UserMypageResponseDto mypageResponseDto = UserMypageResponseDto.builder().userCalendar(calendar).build();
 
 		User user = userService.getUserByUserId(userId);
 		mypageResponseDto.userInit(user);
+
+		if (!userPrincipal.getUserId().equals(userId)) {
+			Long myId = userPrincipal.getUserId();
+			mypageResponseDto.setFollowing(followService.isFollowing(myId, userId));
+		}
 
 		return ResponseEntity.ok(mypageResponseDto);
 	}

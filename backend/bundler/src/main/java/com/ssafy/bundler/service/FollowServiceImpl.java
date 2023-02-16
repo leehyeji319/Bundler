@@ -6,10 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.bundler.domain.Follow;
+import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.user.FollowProfileDto;
 import com.ssafy.bundler.dto.user.FollowerListResponseDto;
 import com.ssafy.bundler.dto.user.FollowingListResponseDto;
+import com.ssafy.bundler.exception.business.UserNotFoundException;
 import com.ssafy.bundler.repository.FollowRepository;
+import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.repository.query.FollowQueryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,21 +23,53 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class FollowServiceImpl implements FollowService {
+	private final UserRepository userRepository;
 
 	private final FollowRepository followRepository;
 	private final FollowQueryRepository followQueryRepository;
 
 	@Override
 	public void followUser(Long fromUserId, Long toUserId) {
+		User followFromUser = userRepository.findOneByUserId(fromUserId)
+			.orElseThrow(() -> new UserNotFoundException("followFromUser 없음"));
+
+		User followToUser = userRepository.findOneByUserId(toUserId)
+			.orElseThrow(() -> new UserNotFoundException("followToUser 없음"));
+
 		followRepository.save(
 			Follow.builder()
 				.followFromId(fromUserId)
 				.followToId(toUserId)
-				.build());
+				.followFrom(followFromUser.toBuilder()
+					.followingCnt(followFromUser.getFollowingCnt() + 1)
+					.build())
+				.followTo(followToUser.toBuilder()
+					.followerCnt(followToUser.getFollowerCnt() + 1)
+					.build())
+				.build()
+		);
 	}
 
 	@Override
 	public boolean unfollowUser(Long fromUserId, Long toUserId) {
+		User followFromUser = userRepository.findOneByUserId(fromUserId)
+			.orElseThrow(() -> new UserNotFoundException("unfollowFromUser 없음"));
+
+		User followToUser = userRepository.findOneByUserId(toUserId)
+			.orElseThrow(() -> new UserNotFoundException("unfollowToUser 없음"));
+
+		userRepository.save(
+			followFromUser.toBuilder()
+				.followingCnt(followFromUser.getFollowingCnt() - 1)
+				.build()
+		);
+
+		userRepository.save(
+			followToUser.toBuilder()
+				.followingCnt(followToUser.getFollowerCnt() - 1)
+				.build()
+		);
+
 		return followRepository.deleteByFollowFromIdAndFollowToId(fromUserId, toUserId) > 0;
 	}
 
@@ -94,6 +129,11 @@ public class FollowServiceImpl implements FollowService {
 		}
 
 		throw new NullPointerException();
+	}
+
+	@Override
+	public boolean isFollowing(Long fromUserId, Long toUserId) {
+		return followRepository.existsByFollowFromIdAndFollowToId(fromUserId, toUserId);
 	}
 
 }
