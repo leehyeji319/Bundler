@@ -3,6 +3,7 @@ import Modal from "@mui/material/Modal";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -55,10 +56,13 @@ function ProfileCard({
   const [FollowingDataGet, setFollowingData] = useState([]);
   const [FollowerDataGet, setFollowerData] = useState([]);
 
+  const accessToken = useSelector((state) => state.authToken.accessToken);
   // 팔로잉 Axios
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followings`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followings`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((res) => {
         setFollowingData(res.data);
         console.log("Following DATA OK");
@@ -72,7 +76,9 @@ function ProfileCard({
   // 팔로워 Axios
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followers`)
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followers`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((res) => {
         setFollowerData(res.data);
         console.log("Follower DATA OK");
