@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.bundler.awsS3.FileUploadResponse;
 import com.ssafy.bundler.awsS3.S3Uploader;
+import com.ssafy.bundler.common.ApiResponse;
 import com.ssafy.bundler.config.auth.UserPrincipal;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.dto.user.FollowerListResponseDto;
@@ -32,10 +33,12 @@ import com.ssafy.bundler.service.FollowService;
 import com.ssafy.bundler.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
 	private final UserService userService;
@@ -44,16 +47,16 @@ public class UserController {
 	@Autowired
 	private FollowService followService;
 
-	// @GetMapping
-	// public ApiResponse getUser() {
-	// 	org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
-	// 		.getAuthentication()
-	// 		.getPrincipal();
-	//
-	// 	User user = userService.getUser(principal.getUsername());
-	//
-	// 	return ApiResponse.success("user", user);
-	// }
+	@GetMapping
+	public ApiResponse getUser() {
+		org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
+			.getAuthentication()
+			.getPrincipal();
+
+		User user = userService.getUser(principal.getUsername());
+
+		return ApiResponse.success("user", user);
+	}
 
 	@GetMapping("/list")
 	public ResponseEntity<List<Profile>> getUserList(@RequestParam String keyword) {
@@ -85,16 +88,14 @@ public class UserController {
 	//회원 정보 삭제
 	@DeleteMapping("/{userId}")
 	public ResponseEntity deleteUser(Authentication authentication, @PathVariable Long userId) {
-
 		UserPrincipal principal = (UserPrincipal)authentication.getPrincipal();
 
 		if (principal.getUserId().equals(userId)) {
-			System.out.println("성공");
+			log.info("성공");
 			userService.deleteUser(userId);
 		}
 
 		return ResponseEntity.ok().build();
-
 	}
 
 	//fromUserId가 toUserId를 팔로잉

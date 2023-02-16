@@ -81,13 +81,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(UserUpdateRequestDto user) {
-		User u = userRepository.findByUserId(user.getUserId()).orElseThrow();
+	public void updateUser(UserUpdateRequestDto userUpdateRequestDto) {
+		User user = userRepository.findByUserId(userUpdateRequestDto.getUserId()).orElseThrow();
 
-		userRepository.save(u.toBuilder()
-			.userIntroduction(user.getUserIntroduction())
-			.userProfileImage(user.getUserProfileImageUrl())
-			.userNickname(user.getUserNickname())
+		userRepository.save(user.toBuilder()
+			.userIntroduction(userUpdateRequestDto.getUserIntroduction())
+			.userNickname(userUpdateRequestDto.getUserNickname())
 			.build()
 		);
 	}
