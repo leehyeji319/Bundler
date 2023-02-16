@@ -3,6 +3,9 @@ package com.ssafy.bundler.config.oauthUserInfo.provider;
 import java.util.Map;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class GithubOAuth2UserInfo extends OAuth2UserInfo {
 
 	public GithubOAuth2UserInfo(Map<String, Object> attributes) {
@@ -16,6 +19,7 @@ public class GithubOAuth2UserInfo extends OAuth2UserInfo {
 
 	@Override
 	public String getName() { //login = KangHyojin1401
+		log.info("login : " + (String)attributes.get("login"));
 		return (String)attributes.get("login");
 	}
 
