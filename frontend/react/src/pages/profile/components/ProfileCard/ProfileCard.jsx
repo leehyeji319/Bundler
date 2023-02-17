@@ -33,6 +33,8 @@ function ProfileCard({
   FollowerCount,
 }) {
   const { user } = useParams();
+  const userId2 = useSelector((state) => state.authToken.userId);
+  const pageUser = user !== undefined ? user : userId2;
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -60,7 +62,8 @@ function ProfileCard({
   // 팔로잉 Axios
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followings`, {
+      // .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followings`, {
+    .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/followings`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res) => {
@@ -76,7 +79,8 @@ function ProfileCard({
   // 팔로워 Axios
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followers`, {
+      // .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followers`, {
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/followers`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res) => {
