@@ -38,7 +38,7 @@ public class UserCardHit implements Serializable {
 	@JoinColumn(name = "card_id", referencedColumnName = "card_id")
 	private Card card;
 
-	@Column(name = "user_submit")
+	@Column(name = "user_submit", length = 3000)
 	private String userSubmit;
 
 	@Builder

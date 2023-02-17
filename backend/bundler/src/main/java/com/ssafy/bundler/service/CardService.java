@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.kohsuke.github.GHAuthorization;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
@@ -296,20 +295,20 @@ public class CardService {
 
 		/* 인증을 통해 github 정보 가져오기 */
 		//	1. accessToken 갱신
-		try { // 404 error
-			GHAuthorization auth = new GitHubBuilder()
-				.withOAuthToken(accessToken, loginName)
-				.build()
-				.resetAuth(CLIENT_ID, accessToken);
-
-			log.info(auth.getToken());
-
-			user.setProviderAccessToken(auth.getToken());
-			userRepository.save(user);
-		} catch (Exception e) {
-			log.info(e.getMessage());
-			// throw new GithubHttpRequestException("Github 404 에러", ErrorCode.GITHUB_AUTHENTICATION_TOKEN_INVALID);
-		}
+		// try { // 404 error
+		// 	GHAuthorization auth = new GitHubBuilder()
+		// 		.withOAuthToken(accessToken, loginName)
+		// 		.build()
+		// 		.resetAuth(CLIENT_ID, accessToken);
+		//
+		// 	log.info(auth.getToken());
+		//
+		// 	user.setProviderAccessToken(auth.getToken());
+		// 	userRepository.save(user);
+		// } catch (Exception e) {
+		// 	log.info(e.getMessage());
+		// 	// throw new GithubHttpRequestException("Github 404 에러", ErrorCode.GITHUB_AUTHENTICATION_TOKEN_INVALID);
+		// }
 
 		// try { // 404 error
 		// 	// POST 메소드 URL 생성 & header setting

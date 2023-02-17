@@ -36,7 +36,7 @@ public class Comment extends BaseEntity implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User writer;
 
-	@Column(name = "comment_content")
+	@Column(name = "comment_content", length = 3000)
 	private String commentContent; // 댓글 내용
 
 	public void updateContent(String commentContent) {
