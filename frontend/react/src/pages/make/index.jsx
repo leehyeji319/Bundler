@@ -148,13 +148,7 @@ function Make() {
   const handleChangeValues = (event, name, value) => {
     event.preventDefault();
 
-    // let str = "";
-    // str = value.replace(/\r\n/gi, "\n");
-    // str = value.replace(/\\n/gi, "\n");
-    // str = value.replace(/\n/gi, "\n");
-
     setValues({ ...values, [name]: value });
-    // setValues({ ...values, [name]: value });
   };
 
   // (4-1) bundle form 함수

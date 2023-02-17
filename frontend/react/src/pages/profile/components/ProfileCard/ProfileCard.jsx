@@ -31,6 +31,7 @@ function ProfileCard({
   GithubUrl,
   FollowingCount,
   FollowerCount,
+  githubCheck,
 }) {
   const { user } = useParams();
   const userId2 = useSelector((state) => state.authToken.userId);
@@ -68,11 +69,9 @@ function ProfileCard({
       })
       .then((res) => {
         setFollowingData(res.data);
-        console.log("Following DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("Following DATA ERROR");
       });
   }, []);
 
@@ -85,11 +84,9 @@ function ProfileCard({
       })
       .then((res) => {
         setFollowerData(res.data);
-        console.log("Follower DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("Follower DATA ERROR");
       });
   }, []);
 
@@ -176,14 +173,25 @@ function ProfileCard({
           </MDTypography>
           <MDBox sx={{ marginTop: "2px" }}>
             <AlternateEmailIcon sx={{ color: "gray" }} />
-            <MDTypography
-              variant="h7"
-              fontWeight="medium"
-              color="white"
-              sx={{ marginLeft: "10px", fontSize: "17px", marginBottom: "10px" }}
-            >
-              {email}
-            </MDTypography>
+            {githubCheck === "GITHUB" ? (
+              <MDTypography
+                variant="h7"
+                fontWeight="medium"
+                color="white"
+                sx={{ marginLeft: "10px", fontSize: "17px", marginBottom: "10px" }}
+              >
+                {nickname}
+              </MDTypography>
+            ) : (
+              <MDTypography
+                variant="h7"
+                fontWeight="medium"
+                color="white"
+                sx={{ marginLeft: "10px", fontSize: "17px", marginBottom: "10px" }}
+              >
+                {email}
+              </MDTypography>
+            )}
           </MDBox>
           <MDBox sx={{ alignItems: "left" }}>
             <GitHubIcon sx={{ color: "gray" }} />
@@ -383,6 +391,7 @@ function ProfileCard({
 // Default Vlaue
 ProfileCard.defaultProps = {
   profileImage: "",
+  githubCheck: "",
 };
 
 // Typechecking props for the SimpleBlogCard
@@ -395,6 +404,7 @@ ProfileCard.propTypes = {
   FollowingCount: PropTypes.number.isRequired,
   FollowerCount: PropTypes.number.isRequired,
   profileImage: PropTypes.string,
+  githubCheck: PropTypes.string,
 };
 
 export default ProfileCard;

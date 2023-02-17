@@ -27,36 +27,26 @@ import SelectedTab from "./Form/TabSelect";
 function Profile() {
   const { user } = useParams();
   const userId2 = useSelector((state) => state.authToken.userId);
-  console.log("userId", userId2);
-  console.log("user", user);
-  // console.log("USER", user);
-  // const pageUser = 1;
-  // const pageUser = user2.user;
+
   const pageUser = user !== undefined ? user : userId2;
-  console.log("pageUser", pageUser);
   const [tabvalue, setTabValue] = useState("cardTab");
 
   const handleChangeTab = (tabevent) => {
     setTabValue(tabevent.target.value);
   };
 
-  // console.log(userId);
-
   const [profileDataGet, setProfileData] = useState([]);
   const [CalendarData, setCalendar] = useState([]);
   const [CalendarDate, setDate] = useState([]);
   // 어세스토큰 5분마다 리셋
   const accessToken = useSelector((state) => state.authToken.accessToken);
-  console.log(accessToken);
   // 프로필 axios를 통해 먼저 렌더링
   useEffect(() => {
-    console.log("프로필 axios를 통해 먼저 렌더링");
     axios
       .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/mypage`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res) => {
-        console.log("프로필 axios를 통해 먼저 렌더링 then res", res);
         setProfileData(res.data);
         setCalendar(res.data.userCalendar);
         setDate(res.data.userCalendar.dates);
@@ -64,7 +54,7 @@ function Profile() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [accessToken]);
 
   // ---------------- 번들탭 Axios ------------------------------
   const [BundleData, setBundleData] = useState([]);
@@ -77,15 +67,11 @@ function Profile() {
       })
       .then((res3) => {
         setBundleData(res3.data);
-        console.log("Your Bundle DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("Your Bundle DATA ERROR");
       });
-  }, []);
-
-  // console.log(BundleData);
+  }, [accessToken]);
 
   // -------------------- 카드탭 Axios ----------------------------
   const [CardData, setCardData] = useState([]);
@@ -102,9 +88,7 @@ function Profile() {
         console.error(error);
         // setStatError("error_stat");
       });
-  }, []);
-
-  // console.log(CardData);
+  }, [accessToken]);
 
   // ------------------- 통계탭 Axios -------------------------------
   // -----stat만 axios 하나로 받고, 프로필이 json 파일 일때의 axios (23.02.09)-----
@@ -117,19 +101,13 @@ function Profile() {
       })
       .then((res2) => {
         setStatisticData(res2.data);
-        // setStatError("");
       })
       .catch((error) => {
         console.error(error);
-        // setStatError("error_stat");
       });
-  }, []);
+  }, [accessToken]);
 
   const profiledata = profileDataGet;
-
-  // console.log(BundleData);
-  // console.log(StatData);
-  // console.log(profiledata);
 
   const thisyear = CalendarData.year;
   const startDate = `${thisyear}-01-01`;
@@ -162,6 +140,7 @@ function Profile() {
                 group={profiledata.userGithubUrl}
                 FollowingCount={profiledata.userFollowingCount}
                 FollowerCount={profiledata.userFollowerCount}
+                githubCheck={profiledata.providerType}
                 sx={{
                   float: "left",
                 }}

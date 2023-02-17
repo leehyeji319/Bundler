@@ -14,7 +14,6 @@ const loginUser = async (info) => {
   })
     .then((result) => result)
     .catch((err) => err);
-  console.log(response);
   return response;
 };
 
