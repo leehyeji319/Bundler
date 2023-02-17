@@ -71,6 +71,9 @@ public class UserFeedController {
 			.getAuthentication()
 			.getPrincipal();
 
+		log.info("userPrincipal : " + userPrincipal);
+		log.info("userPrincipal.toString() : " + userPrincipal.toString());
+
 		Long currentUserId = Long.parseLong(userPrincipal.getUsername());
 
 		if (currentUserId.equals(userId)) {
@@ -92,6 +95,9 @@ public class UserFeedController {
 		org.springframework.security.core.userdetails.User userPrincipal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
 			.getAuthentication()
 			.getPrincipal();
+
+		log.info("userPrincipal : " + userPrincipal);
+		log.info("userPrincipal.toString() : " + userPrincipal.toString());
 
 		Long userId = Long.parseLong(userPrincipal.getUsername());
 
