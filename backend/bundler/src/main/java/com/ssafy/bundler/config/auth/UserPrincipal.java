@@ -29,7 +29,7 @@ import lombok.Setter;
 @Builder(toBuilder = true)
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 	private final Long userId;
-	private final String username;
+	// private final String username;
 	private final String password;
 	private final ProviderType providerType;
 	private final UserRole userRole;
@@ -53,7 +53,7 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
 	@Override
 	public String getUsername() {
-		return this.username;
+		return String.valueOf(this.userId);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
 		UserPrincipal userPrincipal = UserPrincipal.builder()
 			.userId(user.getUserId())
-			.username(user.getUserNickname())
+			// .username(user.getUserNickname())
 			.password(user.getUserPassword())
 			.userRole(UserRole.USER)
 			.authorities(Collections.singletonList(new SimpleGrantedAuthority(UserRole.USER.getCode())))
@@ -111,8 +111,8 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
 		if (user.getProviderType() != null) {
 			userPrincipal = userPrincipal.toBuilder()
-					.providerType(user.getProviderType())
-					.build();
+				.providerType(user.getProviderType())
+				.build();
 		}
 
 		return userPrincipal;

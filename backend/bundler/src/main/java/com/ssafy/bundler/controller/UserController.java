@@ -53,6 +53,9 @@ public class UserController {
 			.getAuthentication()
 			.getPrincipal();
 
+		log.info("principal : " + principal);
+		log.info("principal.toString() : " + principal.toString());
+
 		User user = userService.getUser(principal.getUsername());
 
 		return ApiResponse.success("user", user);
@@ -116,8 +119,7 @@ public class UserController {
 
 	//user의 팔로잉 목록 조회
 	@GetMapping("/{userId}/followings")
-	public ResponseEntity<FollowingListResponseDto> getUserFollowingList(@PathVariable Long userId) throws
-		Exception {
+	public ResponseEntity<FollowingListResponseDto> getUserFollowingList(@PathVariable Long userId) {
 		return ResponseEntity.ok(followService.getUserFollowingList(userId));
 	}
 
@@ -132,6 +134,9 @@ public class UserController {
 		org.springframework.security.core.userdetails.User userPrincipal = (org.springframework.security.core.userdetails.User)SecurityContextHolder.getContext()
 			.getAuthentication()
 			.getPrincipal();
+
+		log.info("userPrincipal : " + userPrincipal);
+		log.info("userPrincipal.toString() : " + userPrincipal.toString());
 
 		UserCalendarResponseDto calendar = userService.getDayFeedCount(userId);
 		UserMypageResponseDto mypageResponseDto = UserMypageResponseDto.builder().userCalendar(calendar).build();
