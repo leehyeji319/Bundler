@@ -14,9 +14,9 @@ function MakeCardList({ handleSelectedListCategory }) {
 
   // Data - local
   const columnList = [
-    { Header: "아이디", accessor: "userId", width: "10%" },
-    { Header: "제목", accessor: "feedTitle" },
-    { Header: "유형", accessor: "cardType", width: "20%" },
+    { Header: "No.", accessor: "cardno", width: "10%" },
+    { Header: "Title", accessor: "feedTitle" },
+    { Header: "Type", accessor: "cardType", width: "20%" },
   ];
 
   // ================= Function =====================

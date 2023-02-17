@@ -6,7 +6,6 @@ const api = apiInstance();
 
 // controller default page url
 const CARD_CONTROLLER = "/api/v1/cards";
-const BUNDLE_CONTROLLER = "/api/v1/bundles";
 
 // 카드 - 리스트 생성
 const apiPostCardList = async (params) => {
@@ -28,9 +27,10 @@ const apiPostCard = async (params) => {
   }
 };
 
+// 번들 생성
 const apiPostBundle = async (params) => {
   try {
-    const response = await api.post(`${BUNDLE_CONTROLLER}`, params);
+    const response = await api.post(`/api/v1/bundles`, params);
     return response;
   } catch (error) {
     return error;
@@ -39,13 +39,3 @@ const apiPostBundle = async (params) => {
 
 // export 함수
 export { apiPostCardList, apiPostCard, apiPostBundle };
-
-// Method 주소만 정의 -> 예시
-// const apiGetCard = async () => {
-//   try {
-//     const response = await mock.get(`/comments`);
-//     return response;
-//   } catch (error) {
-//     return error;
-//   }
-// };

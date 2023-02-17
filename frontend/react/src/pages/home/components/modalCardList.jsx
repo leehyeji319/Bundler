@@ -63,7 +63,6 @@ function ModalCardList({
 
   // api로 카드 detail 정보 가져오기
   const handleOpen = async () => {
-    // console.log(bundleCardId);
     await apiGetCardDetail(bundleCardId)
       .then(({ data }) => {
         setCardDetail(data);

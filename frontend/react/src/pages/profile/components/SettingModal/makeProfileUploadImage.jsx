@@ -9,7 +9,6 @@ import { Box, Button, Typography } from "@mui/material";
 // eslint-disable-next-line
 function MakeProfileImageUpload({ parentFunction }) {
   const [nowProfileimage, setProfileImages] = useState([]);
-  console.log(nowProfileimage);
   parentFunction(nowProfileimage);
   const maxNumber = 1;
 
@@ -17,7 +16,6 @@ function MakeProfileImageUpload({ parentFunction }) {
     // data for submit
     const formData = new FormData();
     formData.append("file", imageList);
-    console.log(formData);
 
     console.log(imageList, addUpdateIndex);
     setProfileImages(imageList);

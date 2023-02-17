@@ -24,7 +24,6 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
   // console.log(profileNowImg);
   // ------------- 프로필 이미지 파일 받아오기 ----------
   const parentFunction = (x) => {
-    console.log(x);
     setImageInput(x);
   };
 
@@ -47,14 +46,9 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
         userIntroduction: inputValue2,
       },
     })
-      .then((result) => {
-        console.log(result);
-        console.log("profile data fix good");
-        // window.open("/profile");
-      })
+      .then(() => {})
       .catch((error) => {
         console.error(error);
-        console.log("profile data fix error");
       });
   };
   // ------------------- 프로필 이미지 설정하기 --------------
@@ -70,14 +64,9 @@ function ProfileSetBox3({ SetImage, id, nickname, introduction }) {
       },
       data: ImageInput,
     })
-      .then((result) => {
-        console.log(result);
-        console.log("profile picture fix good");
-        // window.open("/profile");
-      })
+      .then(() => {})
       .catch((error) => {
         console.error(error);
-        console.log("profile picture fix error");
       });
   };
 
