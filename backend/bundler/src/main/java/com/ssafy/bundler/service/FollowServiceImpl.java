@@ -97,7 +97,9 @@ public class FollowServiceImpl implements FollowService {
 			return followingListResponseDto;
 		}
 
-		throw new NullPointerException();
+		return FollowingListResponseDto.builder()
+			.userId(userId)
+			.build();
 	}
 
 	@Override
@@ -128,7 +130,9 @@ public class FollowServiceImpl implements FollowService {
 			return followerListResponseDto;
 		}
 
-		throw new NullPointerException();
+		return FollowerListResponseDto.builder()
+			.userId(userId)
+			.build();
 	}
 
 	@Override
