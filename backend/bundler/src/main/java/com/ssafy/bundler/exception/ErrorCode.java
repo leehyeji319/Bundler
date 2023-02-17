@@ -14,6 +14,7 @@ public enum ErrorCode { // Response body에 담기는 값. 프론트에 보여�
 	HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 	SEARCH_USER_NOT_FOUND(400, "C007", "검색 결과가 없습니다."),
 	USER_NOT_FOUND(400, "C008", "존재하지 않는 사용자입니다."),
+	GITHUB_USER_ALREADY_EXIST(400, "C009", "이미 존재하는 Github 사용자입니다."),
 
 	// Member
 	EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),

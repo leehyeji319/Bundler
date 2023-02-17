@@ -21,6 +21,7 @@ import com.ssafy.bundler.config.oauthUserInfo.provider.OAuth2UserInfo;
 import com.ssafy.bundler.domain.ProviderType;
 import com.ssafy.bundler.domain.User;
 import com.ssafy.bundler.domain.UserRole;
+import com.ssafy.bundler.exception.ErrorCode;
 import com.ssafy.bundler.exception.OAuthUserAlreadyExistException;
 import com.ssafy.bundler.repository.UserRepository;
 
@@ -112,7 +113,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 				if (isOAuthUserExists) { //기존 OAuth 계정이 있었다면
 					log.info("기존 OAuth 계정이 있었음 -> 예외");
-					throw new OAuthUserAlreadyExistException(); //예외 발생
+					throw new OAuthUserAlreadyExistException("기존 OAuth 계정이 있었음",
+						ErrorCode.GITHUB_USER_ALREADY_EXIST); //예외 발생
 				} else { //기존 OAuth 계정이 없다면 (처음이면)
 					log.info("기존 OAuth 계정이 없음 -> 연동");
 
@@ -149,7 +151,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 				//OAuth 로그인 성공. -> 토큰 발급
 				loginUser = userRepository.findOneByProviderTypeAndProviderId(providerType, oAuthUserInfo.getId())
-					.orElseThrow(OAuthUserAlreadyExistException::new);
+					.orElseThrow(() -> new OAuthUserAlreadyExistException("기존 OAuth 계정이 있었음",
+						ErrorCode.GITHUB_USER_ALREADY_EXIST));
 
 				loginUser.setProviderAccessToken(userRequest.getAccessToken().getTokenValue());
 
