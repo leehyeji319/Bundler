@@ -9,15 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.bundler.domain.User;
-import com.ssafy.bundler.dto.user.AuthResponseDto;
 import com.ssafy.bundler.dto.user.Profile;
 import com.ssafy.bundler.dto.user.SearchUserListResponseDto;
-import com.ssafy.bundler.dto.user.SignupRequestDto;
 import com.ssafy.bundler.dto.user.UserCalendarDto;
 import com.ssafy.bundler.dto.user.UserCalendarResponseDto;
 import com.ssafy.bundler.dto.user.UserUpdateRequestDto;
-import com.ssafy.bundler.exception.EntityNotFoundException;
 import com.ssafy.bundler.exception.ErrorCode;
+import com.ssafy.bundler.exception.business.EntityNotFoundException;
 import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.repository.query.UserQueryRepository;
 
@@ -43,7 +41,7 @@ public class UserServiceImpl implements UserService {
 		List<User> userList = userRepository.findByUserNicknameContains(userNickname);
 
 		if (userList == null || userList.size() == 0) {
-			throw new EntityNotFoundException("검색 결과가 없습니다.", ErrorCode.USER_NOT_FOUND);
+			throw new EntityNotFoundException("검색 결과가 없습니다.", ErrorCode.SEARCH_USER_NOT_FOUND);
 		}
 
 		List<Profile> response = new ArrayList<>(userList.size());
@@ -83,13 +81,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUser(UserUpdateRequestDto user) {
-		User u = userRepository.findByUserId(user.getUserId()).orElseThrow();
+	public void updateUser(UserUpdateRequestDto userUpdateRequestDto) {
+		User user = userRepository.findByUserId(userUpdateRequestDto.getUserId()).orElseThrow();
 
-		userRepository.save(u.toBuilder()
-			.userIntroduction(user.getUserIntroduction())
-			.userProfileImage(user.getUserProfileImageUrl())
-			.userNickname(user.getUserNickname())
+		userRepository.save(user.toBuilder()
+			.userIntroduction(userUpdateRequestDto.getUserIntroduction())
+			.userNickname(userUpdateRequestDto.getUserNickname())
 			.build()
 		);
 	}
@@ -108,19 +105,18 @@ public class UserServiceImpl implements UserService {
 	// 	return null;
 	// }
 	@Transactional
-	public UserCalendarResponseDto getDayFeedCount(Long userId){
+	public UserCalendarResponseDto getDayFeedCount(Long userId) {
 		User user = userRepository.findById(userId).orElseThrow(
-			()->new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
+			() -> new IllegalArgumentException("해당 사용를 찾을 수 없습니다.")
 		);
 		List<UserCalendarDto> dates = userQueryRepository.findDayFeedCount(user.getUserId());
 		Integer year = LocalDate.now().getYear();
 		return UserCalendarResponseDto.builder().dates(dates).year(year).build();
 	}
+
 	@Transactional
-	public User getUserByUserId(Long userId){
+	public User getUserByUserId(Long userId) {
 		return userRepository.findByUserId(userId).orElseThrow();
 	}
-
-
 
 }

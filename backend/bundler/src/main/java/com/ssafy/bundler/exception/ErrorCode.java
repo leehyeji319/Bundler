@@ -12,17 +12,17 @@ public enum ErrorCode { // Response body에 담기는 값. 프론트에 보여�
 	INTERNAL_SERVER_ERROR(500, "C004", "Server Error"),
 	INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
 	HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
-	USER_NOT_FOUND(400, "C007", "검색 결과가 없습니다."),
-
+	SEARCH_USER_NOT_FOUND(400, "C007", "검색 결과가 없습니다."),
+	USER_NOT_FOUND(400, "C008", "존재하지 않는 사용자입니다."),
 
 	// Member
 	EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
 	LOGIN_INPUT_INVALID(400, "M002", "아이디나 비밀번호가 일치하지 않습니다."),
+	GITHUB_AUTHENTICATION_TOKEN_INVALID(400, "M003", "오류가 발생했습니다."),
 
 	// Coupon
 	COUPON_ALREADY_USE(400, "CO001", "Coupon was already used"),
-	COUPON_EXPIRE(400, "CO002", "Coupon was already expired")
-	;
+	COUPON_EXPIRE(400, "CO002", "Coupon was already expired");
 
 	private final String code;
 	private final String message;

@@ -51,7 +51,7 @@ public class User extends BaseEntity implements Serializable {
 	@Column(name = "user_introduction", nullable = true)
 	private String userIntroduction;
 
-	@Setter
+
 	@Column(name = "user_profile_image", nullable = true)
 	private String userProfileImage;
 
@@ -92,6 +92,14 @@ public class User extends BaseEntity implements Serializable {
 
 	@Column(name = "provider_email", nullable = true)
 	private String providerEmail;
+
+	@Setter
+	@Column(name = "provider_access_token", nullable = true)
+	private String providerAccessToken;
+
+	@Setter
+	@Column(name = "github_login_name", nullable = true)
+	private String githubLoginName;
 
 	@Setter
 	@Column(name = "github_url", nullable = true)

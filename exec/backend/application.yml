@@ -1,0 +1,86 @@
+server:
+    port: 8080
+    servlet:
+        context-path: /
+        encoding:
+            charset: utf-8
+            enabled: true
+
+spring:
+    datasource:
+        driver-class-name: org.mariadb.jdbc.Driver
+        url: jdbc:mariadb://localhost:3306/mydata?useUnicode=true&characterEncoding=utf-8
+        username: myuser
+        password: mypassword
+    output.ansi.enabled: always
+    jpa:
+        open-in-view: false
+        hibernate:
+        ddl-auto: create
+        naming:
+            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        show-sql: true
+        format-sql: true
+        properties:
+        hibernate:
+            dialect:
+            default_schema:
+        defer-datasource-initialization: true
+
+    jackson:
+        serialization:
+            write-dates-as-timestamps: false
+        time-zome: Asia/Seoul
+
+    security:
+        oauth2:
+            client:
+                registration:
+                    github:
+                        client-id: <GITHUB_OAUTH_APP_CLIENT_ID>
+                        client-secret: <GITHUB_OAUTH_APP_CLIENT_SECRET>
+                        scope:
+                        - repo
+                        - read:user
+
+logging.level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+    org:
+        springframework:
+        boot:
+            autoconfigure:
+            security: debug
+
+jwt.secret: <SECRET_FOR_JWT>
+
+app:
+    jwt:
+        secret: <SECRET_FOR_JWT>
+        accessTokenPeriod: 1800000
+        refreshTokenPeriod: 604800000
+
+    auth:
+        tokenSecret: <SECRET_FOR_JWT>
+        tokenExpiry: 1800000 #3분
+        refreshTokenExpiry: 604800000
+    oauth2:
+        authorizedRedirectUris:
+        - http://localhost:3000/
+    servlet:
+        multipart:
+            enabled: true
+            max-file-size: 20MB
+            max-request-size: 20MB
+cloud:
+    aws:
+        s3:
+        bucket: <CLOUD_AWS_S3_BUCKET>
+        region:
+            static: <CLOUD_AWS_S3_REGION>
+        stack:
+            auto: false
+
+        credentials:
+            accessKey: <CLOUD_AWS_S3_ACCESSKEY>
+            secretKey: <CLOUD_AWS_S3_SECRETKEY>

@@ -1,7 +1,7 @@
 package com.ssafy.bundler.controller;
 
-import org.junit.After;
-import org.junit.Before;
+import java.io.IOException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +9,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.bundler.domain.Card;
 import com.ssafy.bundler.domain.Comment;
 import com.ssafy.bundler.domain.Feed;
 import com.ssafy.bundler.domain.User;
+import com.ssafy.bundler.repository.CardRepository;
 import com.ssafy.bundler.repository.CommentRepository;
 import com.ssafy.bundler.repository.FeedRepository;
 import com.ssafy.bundler.repository.UserRepository;
+import com.ssafy.bundler.service.CardService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,34 +37,48 @@ public class CommentControllerTest {
 	@Autowired
 	private CommentRepository commentRepository;
 
+	@Autowired
+	private CardService cardService;
+
 	private Feed feed;
 	private User user;
 	private Comment comment;
+	@Autowired
+	private CardRepository cardRepository;
 
-	@Before
-	public void createTestData() {
+	@Transactional
+	@Test
+	public void githubPush() throws IOException {
+		User u = userRepository.findByUserId(Long.valueOf(2)).orElseThrow();
+		Card c = cardRepository.findById(Long.valueOf(64)).orElseThrow();
 
-		//given
-		feed = new Feed().builder().build();
-		feedRepository.save(feed);
-
-		user = new User().builder().build();
-		userRepository.save(user);
-
-		comment = new Comment().builder()
-			.feedId(feed.getFeedId())
-			.writer(user)
-			.commentContent("test comment")
-			.build();
-		commentRepository.save(comment);
+		cardService.fileUploadToGithub(u, c);
 	}
 
-	@After
-	public void deleteTestData() throws Exception {
-		System.out.println("deleteTestDatadeleteTestDatadeleteTestDatadeleteTestData");
-		feedRepository.deleteById(feed.getFeedId());
-		userRepository.deleteById(user.getUserId());
-	}
+	// @Before
+	// public void createTestData() {
+	//
+	// 	//given
+	// 	feed = new Feed().builder().build();
+	// 	feedRepository.save(feed);
+	//
+	// 	user = new User().builder().build();
+	// 	userRepository.save(user);
+	//
+	// 	comment = new Comment().builder()
+	// 		.feedId(feed.getFeedId())
+	// 		.writer(user)
+	// 		.commentContent("test comment")
+	// 		.build();
+	// 	commentRepository.save(comment);
+	// }
+
+	// @After
+	// public void deleteTestData() throws Exception {
+	// 	System.out.println("deleteTestDatadeleteTestDatadeleteTestDatadeleteTestData");
+	// 	feedRepository.deleteById(feed.getFeedId());
+	// 	userRepository.deleteById(user.getUserId());
+	// }
 
 	@Test
 	public void comment_be_created() throws Exception {

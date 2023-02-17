@@ -135,8 +135,8 @@ function MakeCategory({ handleCategory }) {
             sx={{ height: "50px" }}
           >
             <MenuItem value={24}>C/C++</MenuItem>
-            <MenuItem value={25}>JAVA</MenuItem>
-            <MenuItem value={26}>Python</MenuItem>
+            <MenuItem value={25}>Python</MenuItem>
+            <MenuItem value={26}>JAVA</MenuItem>
             <MenuItem value={27}>Kotlin</MenuItem>
             <MenuItem value={28}>Js/Html/Css</MenuItem>
             <MenuItem value={29}>SQL</MenuItem>

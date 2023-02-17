@@ -3,16 +3,7 @@ package com.ssafy.bundler.controller;
 import java.util.Date;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,16 +23,12 @@ import com.ssafy.bundler.dto.JwtTokenDto;
 import com.ssafy.bundler.dto.UserDto;
 import com.ssafy.bundler.dto.user.LoginRequestDto;
 import com.ssafy.bundler.dto.user.SignupRequestDto;
-import com.ssafy.bundler.exception.EntityNotFoundException;
-import com.ssafy.bundler.exception.ErrorCode;
 import com.ssafy.bundler.exception.LoginFailedException;
 import com.ssafy.bundler.repository.UserRefreshTokenRepository;
 import com.ssafy.bundler.repository.UserRepository;
 import com.ssafy.bundler.service.AuthService;
 import com.ssafy.bundler.util.CookieUtil;
-import com.ssafy.bundler.util.HeaderUtil;
 
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -59,7 +46,7 @@ public class AuthController {
 	private final AppProperties appProperties;
 	private final AuthTokenProvider authTokenProvider;
 
-//	@Qualifier(value = "customAuthenticationManager")
+	//	@Qualifier(value = "customAuthenticationManager")
 
 	// private AuthenticationManager customAuthenticationManager;
 	private final UserRepository userRepository;
@@ -91,30 +78,33 @@ public class AuthController {
 			.orElseThrow(() -> new LoginFailedException("해당 email을 가진 유저가 없음."));
 
 		log.info("user.getUserPassword() : " + user.getUserPassword());
-		log.info("bCryptPasswordEncoder.encode(authRequestDto.getPassword()) : " + bCryptPasswordEncoder.encode(authRequestDto.getPassword()));
+		log.info("bCryptPasswordEncoder.encode(authRequestDto.getPassword()) : " + bCryptPasswordEncoder.encode(
+			authRequestDto.getPassword()));
 		log.info("authRequestDto.getPassword() : " + authRequestDto.getPassword());
 
 		if (!bCryptPasswordEncoder.matches(authRequestDto.getPassword(), user.getUserPassword())) {
 			throw new LoginFailedException("비밀번호가 일치하지 않음.");
 		}
 
-		//		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-		//			authRequestDto.getEmail(),
-		//			authRequestDto.getPassword()
-		//		));
+		// Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+		// 	authRequestDto.getEmail(),
+		// 	authRequestDto.getPassword()
+		// ));
+
+		// SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		UserPrincipal userPrincipal = UserPrincipal.create(user);
 
-//		Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//				userPrincipal,
-//				null,
-//				userPrincipal.getAuthorities()
-//		));
-//		authentication.setAuthenticated(true);
+		//		Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+		//				userPrincipal,
+		//				null,
+		//				userPrincipal.getAuthorities()
+		//		));
+		//		authentication.setAuthenticated(true);
 
 		String userEmail = authRequestDto.getEmail();
-//		SecurityContextHolder.getContext().setAuthentication(authentication);
-//		authentication.setAuthenticated(true);
+		//		SecurityContextHolder.getContext().setAuthentication(authentication);
+		//		authentication.setAuthenticated(true);
 
 		Date now = new Date();
 		AuthToken accessToken = authTokenProvider.createAuthToken(
@@ -125,7 +115,7 @@ public class AuthController {
 
 		long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 		AuthToken refreshToken = authTokenProvider.createAuthToken(
-//			appProperties.getAuth().getTokenSecret(),
+			//			appProperties.getAuth().getTokenSecret(),
 			String.valueOf(user.getUserId()),
 			new Date(now.getTime() + refreshTokenExpiry)
 		);
@@ -173,21 +163,21 @@ public class AuthController {
 
 	@PostMapping("/refresh")
 	public ResponseEntity refreshToken(HttpServletRequest request, HttpServletResponse response) {
-//		// access token 확인
-//		String accessToken = HeaderUtil.getAccessToken(request);
-//		AuthToken authToken = authTokenProvider.convertAuthToken(accessToken);
-//		if (!authToken.validate()) {
-//			return ResponseEntity.internalServerError().body(ApiResponse.invalidAccessToken());
-//		}
-//
-//		// expired access token 인지 확인
-//		Claims claims = authToken.getExpiredTokenClaims();
-//		if (claims == null) {
-//			return ResponseEntity.internalServerError().body(ApiResponse.notExpiredTokenYet());
-//		}
-//
-//		String userId = claims.getSubject();
-//		UserRole userRole = UserRole.of(claims.get("role", String.class));
+		//		// access token 확인
+		//		String accessToken = HeaderUtil.getAccessToken(request);
+		//		AuthToken authToken = authTokenProvider.convertAuthToken(accessToken);
+		//		if (!authToken.validate()) {
+		//			return ResponseEntity.internalServerError().body(ApiResponse.invalidAccessToken());
+		//		}
+		//
+		//		// expired access token 인지 확인
+		//		Claims claims = authToken.getExpiredTokenClaims();
+		//		if (claims == null) {
+		//			return ResponseEntity.internalServerError().body(ApiResponse.notExpiredTokenYet());
+		//		}
+		//
+		//		String userId = claims.getSubject();
+		//		UserRole userRole = UserRole.of(claims.get("role", String.class));
 
 		// refresh token
 		String refreshToken = CookieUtil.getCookie(request, REFRESH_TOKEN)
@@ -195,12 +185,12 @@ public class AuthController {
 			.orElse((null));
 		AuthToken authRefreshToken = authTokenProvider.convertAuthToken(refreshToken);
 
-		log.info("authRefreshToken: "+ authRefreshToken.getToken());
+		log.info("authRefreshToken: " + authRefreshToken.getToken());
 
-//		if (authRefreshToken.validate()) {
-//			log.info("invalid !!!!!!!!!!");
-//			return ResponseEntity.internalServerError().body(ApiResponse.invalidRefreshToken());
-//		}
+		//		if (authRefreshToken.validate()) {
+		//			log.info("invalid !!!!!!!!!!");
+		//			return ResponseEntity.internalServerError().body(ApiResponse.invalidRefreshToken());
+		//		}
 
 		log.info("authRefreshToken.getUserId() : " + authRefreshToken.getUserId());
 
@@ -208,11 +198,11 @@ public class AuthController {
 
 		// userId refresh token 으로 DB 확인
 		UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserIdAndRefreshToken(
-				userId,
+			userId,
 			refreshToken);
-//		UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByRefreshToken(
-//			refreshToken
-//		);
+		//		UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByRefreshToken(
+		//			refreshToken
+		//		);
 
 		if (userRefreshToken == null) {
 			return ResponseEntity.internalServerError().body(ApiResponse.invalidRefreshToken());
@@ -221,31 +211,31 @@ public class AuthController {
 		Date now = new Date();
 		AuthToken newAccessToken = authTokenProvider.createAuthToken(
 			String.valueOf(userId),
-//			userRole.getCode(),
+			//			userRole.getCode(),
 			new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
 		);
 
 		long validTime = authRefreshToken.getTokenClaims().getExpiration().getTime() - now.getTime();
 
 		// refresh 토큰 기간이 3일 이하로 남은 경우, refresh 토큰 갱신
-// 		if (validTime <= THREE_DAYS_MSEC) {
-// 			// refresh 토큰 설정
-// 			long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
-//
-// 			authRefreshToken = authTokenProvider.createAuthToken(
-// //				appProperties.getAuth().getTokenSecret(),
-// 				String.valueOf(userId),
-// 				new Date(now.getTime() + refreshTokenExpiry)
-// 			);
-//
-// 			// DB에 refresh 토큰 업데이트
-// 			userRefreshToken.setRefreshToken(authRefreshToken.getToken());
-// 			userRefreshToken = userRefreshTokenRepository.save(userRefreshToken);
-//
-// 			int cookieMaxAge = (int)refreshTokenExpiry / 60;
-// 			CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
-// 			CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
-// 		}
+		// 		if (validTime <= THREE_DAYS_MSEC) {
+		// 			// refresh 토큰 설정
+		// 			long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
+		//
+		// 			authRefreshToken = authTokenProvider.createAuthToken(
+		// //				appProperties.getAuth().getTokenSecret(),
+		// 				String.valueOf(userId),
+		// 				new Date(now.getTime() + refreshTokenExpiry)
+		// 			);
+		//
+		// 			// DB에 refresh 토큰 업데이트
+		// 			userRefreshToken.setRefreshToken(authRefreshToken.getToken());
+		// 			userRefreshToken = userRefreshTokenRepository.save(userRefreshToken);
+		//
+		// 			int cookieMaxAge = (int)refreshTokenExpiry / 60;
+		// 			CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+		// 			CookieUtil.addCookie(response, REFRESH_TOKEN, authRefreshToken.getToken(), cookieMaxAge);
+		// 		}
 
 		User u = userRepository.findByUserId(userId).orElseThrow();
 
