@@ -62,8 +62,7 @@ function ProfileCard({
   // 팔로잉 Axios
   useEffect(() => {
     axios
-      // .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${user}/followings`, {
-    .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/followings`, {
+      .get(`${process.env.REACT_APP_PORT_GLOBAL}/api/v1/users/${pageUser}/followings`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res) => {
