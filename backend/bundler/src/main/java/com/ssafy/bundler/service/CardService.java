@@ -356,6 +356,8 @@ public class CardService {
 		try {
 			repo = github.getRepository(loginName + "/" + REPOSITORY_NAME);
 		} catch (Exception e) { //기존 Bundler repository가 없으면 생성
+			log.error(e.getMessage());
+
 			repo = github.createRepository(REPOSITORY_NAME)
 				.autoInit(true)
 				.owner(loginName) //github login name으로 repository의 owner 설정
@@ -394,6 +396,8 @@ public class CardService {
 				BRANCH_NAME_MAIN
 			);
 		} catch (Exception e) { //존재하지 않으면 파일 새로 생성
+			log.error(e.getMessage());
+
 			repo.createContent()
 				.branch(BRANCH_NAME_MAIN)
 				.content(new FileUtil().write(card.getFeedTitle(), card.getFeedContent()))
