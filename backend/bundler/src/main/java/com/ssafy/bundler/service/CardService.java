@@ -380,6 +380,8 @@ public class CardService {
 				.description(REPOSITORY_DESCRIPTION)
 				.defaultBranch(BRANCH_NAME_MAIN)
 				.create();
+
+			repo = github.getRepository(loginName + "/" + REPOSITORY_NAME);
 		}
 
 		/* 이전 커밋의 해시 얻어오기 */
