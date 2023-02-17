@@ -5,6 +5,8 @@
 
 import PropTypes from "prop-types";
 import { apiGetBundleDetail } from "apis/api/apiHomePage";
+import Modal from "@mui/material/Modal";
+import bundlerRabbit from "assets/images/bundler/bundler_rabbit_6.png";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 // @mui material components
@@ -46,6 +48,10 @@ function ProfileBundle({ infoBundle }) {
 
   // 후하...
   // 번들 상세 조회
+  const [isModalDetailOpend, setIsModalDetailOpend] = useState(false);
+  const modalEetailOpen = () => setIsModalDetailOpend(true);
+  const modalDetailClose = () => setIsModalDetailOpend(false);
+
   const handleBundleDetail = () => {
     const getInfo = async () => {
       await apiGetBundleDetail(infoBundle.bundleId)
@@ -60,11 +66,15 @@ function ProfileBundle({ infoBundle }) {
   // 번들 상세 조회 모달 클릭
   const handleCardListOpen = () => {
     handleBundleDetail(); // api 통신 - 번들 상세 정보 가져오기
-    BundleSetOpen();
+    console.log(infoBundle);
+    console.log(infoBundle.bundleThumbnail === "");
+    console.log(bundlerRabbit);
+    modalEetailOpen(); // modal detail 열기
   };
 
   useEffect(() => {
-    console.log(infoBundle.bundleThumbnail === null);
+    console.log(infoBundle.bundleThumbnail);
+    console.log(bundlerRabbit);
   }, []);
 
   const CardStyles = {
@@ -94,22 +104,23 @@ function ProfileBundle({ infoBundle }) {
       }}
     >
       <ModalCardList
-        open={open4}
+        open={isModalDetailOpend}
         handleCommetList={handleBundleDetail}
-        handleCardClose={BundleSetClose}
+        handleCardClose={modalDetailClose}
         bundleId={infoBundle.bundleId}
         cardList={infoBundle.cardBundleQueryDtoList}
         commentList={bundleDetail.bundleCommentResponseList}
-      >
+      />
+      <Modal open={open4} onClose={BundleSetClose}>
         <BundleSetBox
           SelectBundleId={infoBundle.bundleId}
           bundleImage={infoBundle.bundleThumbnail}
           bundleThumtext={infoBundle.bundleThumbnailText}
           bundleTitle={infoBundle.feedTitle}
           bundleThumbnail={infoBundle.bundleThumbnail}
-          bundlePrivate={infoBundle.isBundlePrivate}
+          bundlePrivate={infoBundle.bundlePrivate}
         />
-      </ModalCardList>
+      </Modal>
       <MDBox
         position="relative"
         width="100.25%"
@@ -117,27 +128,51 @@ function ProfileBundle({ infoBundle }) {
         borderRadius="xl"
         style={{ overflow: "hidden" }}
       >
-        <CardMedia
-          src={infoBundle.bundleThumbnail}
-          component="img"
-          title={infoBundle.feedTitle}
-          sx={{
-            maxWidth: "100%",
-            margin: 0,
-            boxShadow: ({ boxShadows: { md } }) => md,
-            objectFit: "cover",
-            objectPosition: "center",
-            opacity: "50%",
-            width: "400px",
-            height: "220px",
-            overflow: "hidden",
-            // width: "400px",
-            // height: "220px",
-          }}
-          onMouseEnter={() => setCardImgHover(true)}
-          onMouseLeave={() => setCardImgHover(false)}
-          style={CardImgHover ? CardHoverStyles : CardStyles}
-        />
+        {infoBundle.bundleThumbnail === "" ? (
+          <CardMedia
+            src={bundlerRabbit}
+            component="img"
+            title={infoBundle.feedTitle}
+            sx={{
+              maxWidth: "100%",
+              margin: 0,
+              boxShadow: ({ boxShadows: { md } }) => md,
+              objectFit: "cover",
+              objectPosition: "center",
+              opacity: "50%",
+              width: "400px",
+              height: "220px",
+              overflow: "hidden",
+              // width: "400px",
+              // height: "220px",
+            }}
+            onMouseEnter={() => setCardImgHover(true)}
+            onMouseLeave={() => setCardImgHover(false)}
+            style={CardImgHover ? CardHoverStyles : CardStyles}
+          />
+        ) : (
+          <CardMedia
+            src={infoBundle.bundleThumbnail}
+            component="img"
+            title={infoBundle.feedTitle}
+            sx={{
+              maxWidth: "100%",
+              margin: 0,
+              boxShadow: ({ boxShadows: { md } }) => md,
+              objectFit: "cover",
+              objectPosition: "center",
+              opacity: "50%",
+              width: "400px",
+              height: "220px",
+              overflow: "hidden",
+              // width: "400px",
+              // height: "220px",
+            }}
+            onMouseEnter={() => setCardImgHover(true)}
+            onMouseLeave={() => setCardImgHover(false)}
+            style={CardImgHover ? CardHoverStyles : CardStyles}
+          />
+        )}
         <MDTypography // 번들 썸네일 텍스트
           position="absolute"
           sx={{
@@ -176,7 +211,7 @@ function ProfileBundle({ infoBundle }) {
                 }}
               >
                 {/* {isBundleDefault === "false" ? ( */}
-                {infoBundle.isBundleDefault === false ? (
+                {infoBundle.bundleDefault === false ? (
                   <MDBox // 썸네일 번들 하단 - 1. 좋아요와 좋아요 숫자
                     sx={{
                       marginLeft: "10px",
@@ -201,7 +236,7 @@ function ProfileBundle({ infoBundle }) {
                         float: "left",
                       }}
                     >
-                      {infoBundle.bundleLike}
+                      {infoBundle.feedLikeCnt}
                     </MDTypography>
                   </MDBox>
                 ) : (
@@ -220,7 +255,7 @@ function ProfileBundle({ infoBundle }) {
                   }}
                 >
                   {/* {isBundlePrivate === "true" ? ( */}
-                  {infoBundle.isBundlePrivate === true ? (
+                  {infoBundle.bundlePrivate === true ? (
                     <MDBox>
                       <LockIcon
                         sx={{
@@ -286,22 +321,24 @@ ProfileBundle.defaultProps = {
     bundleId: 0,
     feedTitle: "",
     bundleLike: 0,
-    isBundlePrivate: false,
-    isBundleDefault: false,
+    bundlePrivate: false,
+    bundleDefault: false,
     bundleThumbnail: "",
     bundleThumbnailText: "",
     cardBundleQueryDtoList: [],
+    feedLikeCnt: 0,
   },
 };
 
 // 썸네일 카드의 프롭타입 설정
 ProfileBundle.propTypes = {
   infoBundle: PropTypes.shape({
+    feedLikeCnt: PropTypes.number,
     bundleId: PropTypes.number.isRequired,
     feedTitle: PropTypes.string.isRequired,
     bundleLike: PropTypes.number.isRequired,
-    isBundlePrivate: PropTypes.bool.isRequired,
-    isBundleDefault: PropTypes.bool.isRequired,
+    bundlePrivate: PropTypes.bool.isRequired,
+    bundleDefault: PropTypes.bool.isRequired,
     bundleThumbnail: PropTypes.string.isRequired,
     bundleThumbnailText: PropTypes.string.isRequired,
     cardBundleQueryDtoList: PropTypes.shape(PropTypes.array),
