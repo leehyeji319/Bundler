@@ -51,10 +51,10 @@ public class Feed extends BaseEntity implements Serializable {
 	@Column(name = "feed_id")
 	private Long feedId;
 
-	@Column(name = "feed_title")
+	@Column(name = "feed_title", length = 1000)
 	private String feedTitle;
 
-	@Column(name = "feed_content")
+	@Column(name = "feed_content", length = 3000)
 	private String feedContent;
 
 	@Column(name = "feed_like_cnt")

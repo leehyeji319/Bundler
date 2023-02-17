@@ -34,10 +34,10 @@ public class Bundle extends Feed implements Serializable {
 	@Column(name = "bundle_id", insertable = false, updatable = false)
 	private Long bundleId;
 
-	@Column(name = "bundle_thumbnail")
+	@Column(name = "bundle_thumbnail", length = 3000)
 	private String bundleThumbnail;
 
-	@Column(name = "bundle_thumbnail_text")
+	@Column(name = "bundle_thumbnail_text", length = 3000)
 	private String bundleThumbnailText;
 
 	@Column(name = "is_bundle_private")
@@ -46,7 +46,7 @@ public class Bundle extends Feed implements Serializable {
 	@Column(name = "is_bundle_default")
 	private boolean isBundleDefault;
 
-	@Column(name = "bundle_thumbnail_file_name")
+	@Column(name = "bundle_thumbnail_file_name", length = 3000)
 	private String bundleThumbnailFileName;
 
 	@Builder.Default

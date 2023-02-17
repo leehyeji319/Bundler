@@ -42,10 +42,10 @@ public class Card extends Feed implements Serializable {
 	@Column(name = "card_scrap_cnt")
 	private int cardScrapCnt;
 
-	@Column(name = "card_description")
+	@Column(name = "card_description", length = 3000)
 	private String cardDescription;
 
-	@Column(name = "card_commentary")
+	@Column(name = "card_commentary", length = 3000)
 	private String cardCommentary;
 
 	@Column(name = "card_type")
