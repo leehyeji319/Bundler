@@ -74,7 +74,7 @@ function Make() {
   // (4) Bundle Form && Toggle
   const [bundleToggle, setBundleToggle] = useState(false); // 번들 토글 버튼
   const [bundleForm, setBundleForm] = useState({
-    userId: 1,
+    userId,
     feedType: "BUNDLE",
     bundleThumbnail: "",
     bundleThumbnailText: "",
