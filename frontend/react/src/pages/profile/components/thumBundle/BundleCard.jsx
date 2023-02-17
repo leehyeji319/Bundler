@@ -1,8 +1,3 @@
-// react-router components
-// import { Link } from "react-router-dom";
-// import MuiLink from "@mui/material/Link";
-// import MDButton from "components/MDButton";
-
 import PropTypes from "prop-types";
 import { apiGetBundleDetail } from "apis/api/apiHomePage";
 import Modal from "@mui/material/Modal";
@@ -11,14 +6,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 
 // @mui material components
 import Card from "@mui/material/Card";
-// import Modal from "@mui/material/Modal";
-import { useState, useEffect } from "react";
-// import defaultRabbit from "assets/images/bundler/bundler_rabbit_5.png";
-// import { NightShelter } from "@mui/icons-material";
-// import Divider from "@mui/material/Divider";
-// import Icon from "@mui/material/Icon";
+import { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-// import MobileScreenShareIcon from '@mui/icons-material/MobileScreenShare';
 import LockIcon from "@mui/icons-material/Lock";
 
 import CardMedia from "@mui/material/CardMedia";
@@ -31,7 +20,7 @@ import MDButton from "components/MDButton";
 import MDTypography from "components/MDTypography";
 import Grid from "@mui/material/Grid";
 import BundleSetBox from "../SettingModal/BundleSetting";
-// import CardImg from "assets/images/bundler/bundlerRabbit.png";
+
 function ProfileBundle({ infoBundle }) {
   // const [open, setOpen] = useState(false);
   // const handleOpen = () => setOpen(true);
@@ -66,16 +55,8 @@ function ProfileBundle({ infoBundle }) {
   // 번들 상세 조회 모달 클릭
   const handleCardListOpen = () => {
     handleBundleDetail(); // api 통신 - 번들 상세 정보 가져오기
-    console.log(infoBundle);
-    console.log(infoBundle.bundleThumbnail === "");
-    console.log(bundlerRabbit);
     modalEetailOpen(); // modal detail 열기
   };
-
-  useEffect(() => {
-    console.log(infoBundle.bundleThumbnail);
-    console.log(bundlerRabbit);
-  }, []);
 
   const CardStyles = {
     // width: "400px",

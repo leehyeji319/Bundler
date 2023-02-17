@@ -23,7 +23,6 @@ function SkillSetBox({ pageUser }) {
   const skillSetUser = pageUser;
   const accessToken = useSelector((state) => state.authToken.accessToken);
   const settingwho = skillSetUser.pageUser;
-  // console.log(settingwho);
   const pagemove2 = Number(settingwho);
 
   const useStyles = makeStyles({
@@ -77,19 +76,12 @@ function SkillSetBox({ pageUser }) {
         Authorization: `Bearer ${accessToken}`,
       },
     })
-      .then((result) => {
-        console.log(result);
-        console.log("skill data good");
-        // window.open("/profile");
-      })
+      .then(() => {})
       .catch((error) => {
         console.error(error);
-        console.log("skill data error");
       });
   };
 
-  // console.log(items);
-  // console.log(items2);
   // -------------- 취소 버튼 ---------------------
   const cancelBtn = (event) => {
     event.preventDefault();

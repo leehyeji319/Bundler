@@ -49,8 +49,6 @@ function MySkill(pageUser) {
 
   // eslint-disable-next-line
   const SkillpageUser = pageUser.pageUser;
-  // console.log(pageUser);
-  // console.log(SkillpageUser);
   const accessToken = useSelector((state) => state.authToken.accessToken);
 
   useEffect(() => {
@@ -62,20 +60,11 @@ function MySkill(pageUser) {
         // setSkillJobData(res.data);
         setJobData(res.data.job);
         setSkillData(res.data.skill);
-        console.log(res.data);
-        console.log("SkillJob DATA OK");
       })
       .catch((error) => {
         console.error(error);
-        console.log("SkillJob DATA ERROR");
       });
   }, []);
-
-  // console.log(JobDataGet);
-  // const userJobNum = JobDataGet.length;
-  // console.log(userJobNum);
-  // const userSkillNum = SkillDataGet.length;
-  // console.log(userSkillNum);
 
   return (
     <MDBox

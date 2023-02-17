@@ -47,14 +47,9 @@ function BundleSetBox({
         bundlePrivate: inputValue4,
       },
     })
-      .then((result) => {
-        console.log(result);
-        console.log("bundle data fix good");
-        // window.open("/profile");
-      })
+      .then(() => {})
       .catch((error) => {
         console.error(error);
-        console.log("bundle data fix error");
       });
   };
 
