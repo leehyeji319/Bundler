@@ -13,7 +13,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Card from "@mui/material/Card";
 // import Modal from "@mui/material/Modal";
 import { useState, useEffect } from "react";
-import defaultRabbit from "assets/images/bundler/bundler_rabbit_5.png";
+// import defaultRabbit from "assets/images/bundler/bundler_rabbit_5.png";
 // import { NightShelter } from "@mui/icons-material";
 // import Divider from "@mui/material/Divider";
 // import Icon from "@mui/material/Icon";
