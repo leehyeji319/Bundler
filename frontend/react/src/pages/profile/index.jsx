@@ -56,7 +56,7 @@ function Profile() {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then((res) => {
-        console.log("프로필 axios를 통해 먼저 렌더링 then res",res);
+        console.log("프로필 axios를 통해 먼저 렌더링 then res", res);
         setProfileData(res.data);
         setCalendar(res.data.userCalendar);
         setDate(res.data.userCalendar.dates);
