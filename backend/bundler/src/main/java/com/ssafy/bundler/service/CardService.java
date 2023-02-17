@@ -77,6 +77,8 @@ public class CardService {
 	@Transactional
 	public Long saveCard(CardSaveRequestDto requestDto) {
 
+		log.info("requestDto.userId : " + requestDto.getUserId());
+
 		User writerUser = userRepository.findByUserId(requestDto.getUserId()).orElseThrow(() ->
 			new IllegalArgumentException("해당 유저가 존재하지 않습니다. userId= " + requestDto.getUserId()));
 
@@ -281,15 +283,24 @@ public class CardService {
 		String accessToken = user.getProviderAccessToken();
 		String loginName = user.getGithubLoginName();
 
+		log.info("accessToken : " + accessToken);
+		log.info("loginName : " + loginName);
+
 		String commitMessage = String.format("[%s-%s] %s",
 			card.getCategory().getParent().getCategoryName(),
 			card.getCategory().getCategoryName(),
 			card.getFeedTitle());
 
+		log.info("commitMessage ------------------------------");
+
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd");
 		LocalDate cardCreatedDay = LocalDate.from(card.getCreatedAt());
 
+		log.info("cardCreatedDay ------------------------------");
+
 		String commitPath = formatter.format(cardCreatedDay) + "/" + card.getFeedTitle() + ".md";
+
+		log.info("commitPath ------------------------------");
 
 		///////////////////////////////////////////////////////////////
 
@@ -346,16 +357,21 @@ public class CardService {
 		// accessToken = auth.getToken();
 
 		//	2. 갱신된 토큰으로 github 정보 가져오기
-		GitHub github = new GitHubBuilder()
-			.withOAuthToken(accessToken, loginName)
-			.build();
+		GitHub github = null;
+		try {
+			github = new GitHubBuilder()
+				.withOAuthToken(accessToken, loginName)
+				.build();
+		} catch (Exception e) {
+			log.error("000000000000000000  " + e.getMessage());
+		}
 
 		/* repository 생성 */
 		GHRepository repo = null;
 		try {
 			repo = github.getRepository(loginName + "/" + REPOSITORY_NAME);
 		} catch (Exception e) { //기존 Bundler repository가 없으면 생성
-			log.error(e.getMessage());
+			log.error("11111111111111111111" + e.getMessage());
 
 			repo = github.createRepository(REPOSITORY_NAME)
 				.autoInit(true)
@@ -369,7 +385,12 @@ public class CardService {
 		/* 이전 커밋의 해시 얻어오기 */
 		// GHRepository getRepo = github.getRepository("Bundler");
 		// String sha1 = getRepo.getBranch("main").getSHA1();
-		String sha1 = repo.getBranch(BRANCH_NAME_MAIN).getSHA1();
+		String sha1 = null;
+		try {
+			sha1 = repo.getBranch(BRANCH_NAME_MAIN).getSHA1();
+		} catch (Exception e) {
+			log.error("22222222222222" + e.getMessage());
+		}
 
 		/* 파일 생성 (굳이 파일을 I/O 할 필요 없어서 생략) */
 		// String directory = "c:" + File.separator + "bundler" + File.separator;
@@ -395,7 +416,7 @@ public class CardService {
 				BRANCH_NAME_MAIN
 			);
 		} catch (Exception e) { //존재하지 않으면 파일 새로 생성
-			log.error(e.getMessage());
+			log.error("33333333333333" + e.getMessage());
 
 			repo.createContent()
 				.branch(BRANCH_NAME_MAIN)
