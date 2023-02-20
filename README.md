@@ -11,7 +11,7 @@
 | 개발기간 | 2022년 1월 1일 ~ 2월 17일       |
 | 플랫폼   | Web |
 | 개발인원  | 총 6명 (프론트엔드 3명, 백엔드 3명) |
-| Link  |  [Bundler](https://web-snowman-20z52flc2u4w7q.gksl2.cloudtype.app/) |<br/><br/>
+| Link  |  [Bundler](https://i8a810.p.ssafy.io/) |<br/><br/>
 
 
 
